@@ -918,15 +918,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#why-another-ingress-controller" class="md-nav__link">
-    <span class="md-ellipsis">
-      Why another Ingress controller?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#is-coxswain-production-ready" class="md-nav__link">
     <span class="md-ellipsis">
       Is Coxswain production-ready?
@@ -936,9 +927,51 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#why-another-ingress-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why another Ingress controller?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#does-coxswain-support-ingress-and-gateway-api-at-the-same-time" class="md-nav__link">
     <span class="md-ellipsis">
       Does Coxswain support Ingress and Gateway API at the same time?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-the-controllerproxy-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why the controller/proxy split?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-does-ingress-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      How does Ingress fit?
     </span>
   </a>
   
@@ -1019,15 +1052,21 @@
 
 <h1 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h1>
 <h2 id="general">General<a class="headerlink" href="#general" title="Permanent link">&para;</a></h2>
-<h3 id="why-another-ingress-controller">Why another Ingress controller?<a class="headerlink" href="#why-another-ingress-controller" title="Permanent link">&para;</a></h3>
-<p>Coxswain is a single Rust binary that combines the controller and the proxy in one process. The routing table is built from Kubernetes watch events and exposed to the proxy as an immutable snapshot behind an atomic pointer; updates swap the pointer rather than mutating in place. TLS certificates from <code>kubernetes.io/tls</code> Secrets are loaded the same way. The proxy is built on <a href="https://github.com/cloudflare/pingora">Pingora</a>. Multi-replica deployments coordinate only on which replica writes status conditions back to the API server, via a Kubernetes <code>Lease</code>; every replica serves traffic at all times.</p>
-<p>That design is a particular set of trade-offs — single-binary deployment, no config-file rendering layer, no separate xDS pipeline — and it is not strictly better than every alternative. The comparison tables below describe specific architectural differences against other controllers; pick whichever fits your operational model.</p>
 <h3 id="is-coxswain-production-ready">Is Coxswain production-ready?<a class="headerlink" href="#is-coxswain-production-ready" title="Permanent link">&para;</a></h3>
-<p>Not yet. It is in active development toward a v0.1 release. The core routing, TLS, and leader election logic is solid, but some advanced features are missing and the API surface may change. See the <a href="https://github.com/orgs/coxswain-labs/projects/2">Roadmap</a>.</p>
+<p>Not yet. The project is undergoing a significant architectural refactor — splitting the single-binary monolith into a controller pod and a read-only proxy pool (see <a href="../architecture/">Architecture</a>). Routing, TLS, and leader-election internals are well-tested, but the deployment topology, configuration surface, and several features are still in flux. See the <a href="https://github.com/orgs/coxswain-labs/projects/2">Roadmap</a>.</p>
+<h3 id="why-another-ingress-controller">Why another Ingress controller?<a class="headerlink" href="#why-another-ingress-controller" title="Permanent link">&para;</a></h3>
+<p>Coxswain separates the controller (the sole Kubernetes writer) from the proxy (a read-only Pingora data plane). The routing table is built from Kubernetes watch events and exposed to the proxy as an immutable snapshot behind an atomic pointer; TLS certificates are loaded the same way. Proxies have no leader election and scale horizontally with no coordination.</p>
+<p>See <a href="#comparison">Comparison</a> for specific differences against other controllers.</p>
 <h3 id="does-coxswain-support-ingress-and-gateway-api-at-the-same-time">Does Coxswain support Ingress and Gateway API at the same time?<a class="headerlink" href="#does-coxswain-support-ingress-and-gateway-api-at-the-same-time" title="Permanent link">&para;</a></h3>
 <p>Yes. Both <code>Ingress</code> and <code>HTTPRoute</code> objects contribute to the same routing table. You can migrate from Ingress to Gateway API incrementally — both can be active simultaneously.</p>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<h3 id="why-the-controllerproxy-split">Why the controller/proxy split?<a class="headerlink" href="#why-the-controllerproxy-split" title="Permanent link">&para;</a></h3>
+<p>Embedding status writes in the proxy would force leader election into the data plane: only one replica could write at a time, and horizontal scaling would require electing more leaders. Making the controller the sole Kubernetes writer keeps proxy pods stateless, eliminates inter-replica coordination, and shrinks the proxy's RBAC surface to zero write verbs — a compromised proxy pod cannot write to the API server at all. The read-only invariant is enforced by RBAC, not by convention.</p>
+<p>See <a href="../architecture/#modes">Architecture</a> for the four operating modes.</p>
+<h3 id="how-does-ingress-fit">How does Ingress fit?<a class="headerlink" href="#how-does-ingress-fit" title="Permanent link">&para;</a></h3>
+<p>Classic <code>Ingress</code> resources are always served by the shared-proxy pool — <code>Ingress</code> has no equivalent of <code>parametersRef</code>. Gateway API users can opt a <code>Gateway</code> into an isolated per-Gateway proxy pod via <code>parametersRef</code> on the <code>GatewayClass</code> (cluster-wide default) or on the <code>Gateway</code> itself; the controller provisions and manages that pod.</p>
 <h2 id="comparison">Comparison<a class="headerlink" href="#comparison" title="Permanent link">&para;</a></h2>
-<p>These tables compare verifiable architectural choices, not performance or quality. The reference projects all run the Gateway API conformance suite, all support multi-replica deployments, and all serve traffic in production at many organisations. The differences are in how each is built, not in whether each works.</p>
+<p>Architectural differences only — not performance or quality. All projects below run the Gateway API conformance suite and serve production traffic.</p>
 <h3 id="ingress-nginx-vs-coxswain">ingress-nginx vs. Coxswain<a class="headerlink" href="#ingress-nginx-vs-coxswain" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1041,7 +1080,7 @@
 <tr>
 <td>Process model</td>
 <td>Go controller + nginx worker processes in the same container</td>
-<td>Single Rust binary; controller and proxy in one process</td>
+<td>Split controller pod (leader-elected, K8s writes) + horizontally-scalable read-only Pingora proxy pods; Helm renders a controller + shared-proxy by default</td>
 </tr>
 <tr>
 <td>Config-application model</td>
@@ -1051,7 +1090,7 @@
 <tr>
 <td>Gateway API surface</td>
 <td>Available via separate <a href="https://github.com/nginx/nginx-gateway-fabric">NGINX Gateway Fabric</a> project</td>
-<td>Built into the same binary as Ingress support</td>
+<td>Same controller manages both; default shared-proxy pool serves both</td>
 </tr>
 <tr>
 <td>Annotation ecosystem</td>
@@ -1083,7 +1122,7 @@
 <tr>
 <td>Multi-replica state</td>
 <td>Replicas coordinate shared state (e.g. ACME) via Traefik Hub or external KV</td>
-<td>Replicas coordinate only status-write leadership via a Kubernetes <code>Lease</code>; routing state is independent per replica</td>
+<td>Only the controller pod elects a leader (Kubernetes <code>Lease</code>) for status writes; proxy pods are stateless and need no coordination</td>
 </tr>
 <tr>
 <td>Gateway API surface</td>
@@ -1105,7 +1144,7 @@
 <tr>
 <td>Process model</td>
 <td>Control-plane Pod translates Gateway API to xDS; Envoy Pods consume xDS</td>
-<td>Single Pod containing both controller and proxy</td>
+<td>Split controller + read-only Pingora proxy pods; each proxy self-watches Kubernetes rather than consuming xDS</td>
 </tr>
 <tr>
 <td>Data-plane configuration</td>

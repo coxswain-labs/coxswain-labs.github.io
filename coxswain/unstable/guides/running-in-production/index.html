@@ -1087,13 +1087,51 @@
 <h2 id="health-probes">Health probes<a class="headerlink" href="#health-probes" title="Permanent link">&para;</a></h2>
 <p>The default Helm chart wires both probes automatically. Do not disable them:</p>
 <ul>
-<li><strong>Readiness</strong> (<code>/readyz</code>, port <code>8081</code>) — Coxswain reports <code>Ready</code> only after the initial routing table is built. Kubernetes will not send traffic to the pod until this probe passes.</li>
 <li><strong>Liveness</strong> (<code>/healthz</code>, port <code>8081</code>) — always 200 while the process is running.</li>
+<li><strong>Readiness</strong> (<code>/readyz</code>, port <code>8081</code>) — returns 200 only once every subsystem in the pod reaches <code>Ready</code> or <code>Degraded</code>.</li>
+</ul>
+<p>Subsystems have four states:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+<th>Effect on <code>/readyz</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pending</code></td>
+<td>Still initialising</td>
+<td>503</td>
+</tr>
+<tr>
+<td><code>Ready</code></td>
+<td>Fully operational</td>
+<td>passes</td>
+</tr>
+<tr>
+<td><code>Degraded</code></td>
+<td>Partial fault, still serving</td>
+<td>passes</td>
+</tr>
+<tr>
+<td><code>Failed</code></td>
+<td>Fatal error</td>
+<td>503</td>
+</tr>
+</tbody>
+</table>
+<p>Readiness gates differ by mode:</p>
+<ul>
+<li><strong>Controller pod</strong> — all Kubernetes reflectors must complete their initial list and the controller must have acquired (or be in standby for) the Lease.</li>
+<li><strong>Shared-proxy and gateway-proxy pods</strong> — all Kubernetes reflectors must complete their initial list and the routing table must be built at least once. Proxy pods do not participate in leader election and do not wait for the controller.</li>
 </ul>
 <p>Verify the probes are present on the deployed pod:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>deploy<span class="w"> </span>coxswain<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.template.spec.containers[0].readinessProbe}&#39;</span>
 </code></pre></div>
+<p>If <code>/readyz</code> returns 503 on a running pod, inspect <code>/status</code> to see which subsystem is blocked — see <a href="../troubleshooting/#readyz-returns-503-on-startup">Troubleshooting</a>.</p>
 <h2 id="graceful-shutdown">Graceful shutdown<a class="headerlink" href="#graceful-shutdown" title="Permanent link">&para;</a></h2>
 <p>On <code>SIGTERM</code>, Coxswain drains in-flight connections for <code>--proxy-shutdown-grace-period</code> (default <code>30s</code>), then forcibly closes any remaining connections after <code>--proxy-shutdown-timeout</code> (default <code>5s</code>). Make sure the grace period aligns with your load balancer's connection draining timeout.</p>
 <p>For long-lived connections (WebSocket, SSE), increase the grace period:</p>

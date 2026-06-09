@@ -890,27 +890,129 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#modes" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
+      Modes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-modecontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      --mode=controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-modeshared-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      --mode=shared-proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-modegateway-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      --mode=gateway-proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-modedev" class="md-nav__link">
+    <span class="md-ellipsis">
+      --mode=dev
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-split-shared-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default (split shared pool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mixed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strict-multi-tenant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strict multi-tenant
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress-only
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-transport" class="md-nav__link">
+    <span class="md-ellipsis">
+      State transport
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#multi-replica-and-leader-election" class="md-nav__link">
+  <a href="#rbac-by-mode" class="md-nav__link">
     <span class="md-ellipsis">
-      Multi-replica and leader election
+      RBAC by mode
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#tls-hot-reload" class="md-nav__link">
+  <a href="#admin-endpoints-by-mode" class="md-nav__link">
     <span class="md-ellipsis">
-      TLS hot-reload
+      Admin endpoints by mode
     </span>
   </a>
   
@@ -920,15 +1022,6 @@
   <a href="#request-path" class="md-nav__link">
     <span class="md-ellipsis">
       Request path
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#readiness" class="md-nav__link">
-    <span class="md-ellipsis">
-      Readiness
     </span>
   </a>
   
@@ -981,67 +1074,233 @@
 
 
 <h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Coxswain runs as one or more pods, each in one of four <code>--mode</code> values. The controller is the sole Kubernetes writer; proxies are read-only data planes that build their routing table directly from Kubernetes watch events and scale horizontally with no coordination.</p>
 <pre class="mermaid"><code>flowchart LR
-    Client([Client]) --&gt;|HTTP / HTTPS| Proxy
+    Clients([Clients])
+    K8s[Kubernetes\nAPI Server]
 
-    subgraph pod[Coxswain]
-        direction TB
-        Controller --&gt;|atomic swap| RT[(Routing\nTable)]
-        Controller --&gt;|atomic swap| TLS[(TLS\nStore)]
-        RT --&gt;|atomic read| Proxy
-        TLS --&gt;|SNI handshake| Proxy
+    subgraph cs[coxswain-system]
+        SP[Shared-proxy pods]
+        C[Controller pod]
     end
 
-    K8s[Kubernetes\nAPI Server] --&gt;|watch events| Controller
-    Controller --&gt;|status writes\nleader only| K8s
-    Proxy --&gt;|forward| Upstream([Upstream\nPods])</code></pre>
-<p>The controller watches Kubernetes objects and maintains the routing and TLS tables. The proxy reads from those tables on every request via a single atomic load — no locks, no channels. Routing and TLS updates take effect on the next request after the swap, with no restart and no dropped connections.</p>
-<h2 id="multi-replica-and-leader-election">Multi-replica and leader election<a class="headerlink" href="#multi-replica-and-leader-election" title="Permanent link">&para;</a></h2>
-<p>All replicas reconcile watch events and maintain their own routing table independently. They all serve traffic all the time. What leader election controls is narrower: only <strong>status writes</strong> (the conditions written back to <code>Ingress</code>, <code>Gateway</code>, and <code>HTTPRoute</code> objects).</p>
+    subgraph ns[gateway-namespace]
+        GP[Per-Gateway proxy pod]
+    end
+
+    Clients --&gt; SP &amp; GP
+    K8s --&gt;|watch, read-only| SP &amp; GP
+    K8s --&gt;|watch| C
+    C --&gt;|status writes\nleader only| K8s</code></pre>
+<h2 id="modes">Modes<a class="headerlink" href="#modes" title="Permanent link">&para;</a></h2>
+<h3 id="-modecontroller"><code>--mode=controller</code><a class="headerlink" href="#-modecontroller" title="Permanent link">&para;</a></h3>
+<p>Watches Ingress, GatewayClass, Gateway, HTTPRoute, and related resources cluster-wide; writes status conditions back to them; provisions per-Gateway proxy <code>Deployment</code> and <code>Service</code> objects when a Gateway opts into dedicated mode. Leader-elected via a Kubernetes <code>Lease</code> in <code>coxswain-system</code> — status writes pause for up to one Lease TTL during a leader transition; traffic is unaffected. Scales vertically (one active replica + optional warm standby).</p>
+<h3 id="-modeshared-proxy"><code>--mode=shared-proxy</code><a class="headerlink" href="#-modeshared-proxy" title="Permanent link">&para;</a></h3>
+<p>Stateless read-only Pingora data plane. Serves every <code>Ingress</code> and every <code>Gateway</code> not opted into dedicated mode. Scales horizontally with no leader election and no inter-replica coordination.</p>
+<h3 id="-modegateway-proxy"><code>--mode=gateway-proxy</code><a class="headerlink" href="#-modegateway-proxy" title="Permanent link">&para;</a></h3>
+<p>Read-only proxy scoped to a single Gateway. Provisioned by the controller in the Gateway's namespace (or a namespace specified via <code>parametersRef</code>) with namespace-scoped RBAC. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
+<h3 id="-modedev"><code>--mode=dev</code><a class="headerlink" href="#-modedev" title="Permanent link">&para;</a></h3>
+<p>Single-process all-in-one combining controller and proxy in one binary, for local development and conformance against <code>kind</code> / OrbStack.</p>
+<div class="admonition warning">
+<p class="admonition-title">Never rendered by Helm</p>
+<p>Dev mode is a contributor convenience; do not run it in production.</p>
+</div>
+<h2 id="deployment-models">Deployment models<a class="headerlink" href="#deployment-models" title="Permanent link">&para;</a></h2>
+<h3 id="default-split-shared-pool">Default (split shared pool)<a class="headerlink" href="#default-split-shared-pool" title="Permanent link">&para;</a></h3>
+<p>The Helm chart default. One controller <code>Deployment</code> and one shared-proxy <code>Deployment</code> in <code>coxswain-system</code>.</p>
 <pre class="mermaid"><code>flowchart LR
     K8s[Kubernetes API]
 
-    subgraph A[Replica A — leader]
-        direction TB
-        CA[Controller] --&gt; RTA[(Routing Table)]
-        RTA --&gt; PA[Proxy]
+    subgraph cs[coxswain-system]
+        C[Controller\npod]
+        SP[Shared-proxy\npods]
     end
 
-    subgraph B[Replica B]
-        direction TB
-        CB[Controller] --&gt; RTB[(Routing Table)]
-        RTB --&gt; PB[Proxy]
+    K8s --&gt;|watch| C
+    C --&gt;|status writes| K8s
+    K8s --&gt;|watch| SP
+
+    Clients([Clients]) --&gt;|Ingress +\nGateway traffic| SP</code></pre>
+<h3 id="mixed">Mixed<a class="headerlink" href="#mixed" title="Permanent link">&para;</a></h3>
+<p>The default layout plus per-Gateway proxy pods in user namespaces. Workload teams opt a <code>Gateway</code> into dedicated mode via <code>parametersRef</code>; the controller provisions the per-Gateway pod automatically.</p>
+<pre class="mermaid"><code>flowchart LR
+    K8s[Kubernetes API]
+
+    subgraph cs[coxswain-system]
+        C[Controller\npod]
+        SP[Shared-proxy\npods]
     end
 
-    K8s --&gt;|watch| CA
-    K8s --&gt;|watch| CB
-    CA --&gt;|status writes| K8s
+    subgraph ns[team-namespace]
+        GP[Per-Gateway\nproxy pod]
+    end
 
-    Clients([Clients]) --&gt; PA
-    Clients --&gt; PB</code></pre>
-<p>The leader is determined by a Kubernetes <code>Lease</code> in <code>coxswain-system</code>. When the leader is lost, status writes pause for up to one lease TTL (default 15 s) while the new leader is elected. Traffic continues uninterrupted on all replicas during the transition.</p>
-<h2 id="tls-hot-reload">TLS hot-reload<a class="headerlink" href="#tls-hot-reload" title="Permanent link">&para;</a></h2>
-<p>Coxswain watches all <code>kubernetes.io/tls</code> Secrets. When a Secret is created, updated, or deleted — including automatic renewals by cert-manager — the TLS store is rebuilt and swapped atomically. New connections immediately use the new certificate; connections already in progress complete with the old one. No restart is required.</p>
+    K8s --&gt;|watch| C
+    C --&gt;|status writes| K8s
+    C --&gt;|provisions| GP
+    K8s --&gt;|watch| SP
+    K8s --&gt;|watch| GP
+
+    Clients([Clients]) --&gt;|Ingress +\nother Gateways| SP
+    Clients --&gt;|team Gateway\ntraffic| GP</code></pre>
+<h3 id="strict-multi-tenant">Strict multi-tenant<a class="headerlink" href="#strict-multi-tenant" title="Permanent link">&para;</a></h3>
+<p>Every Gateway gets its own proxy pod; the shared-proxy <code>Deployment</code> runs at <code>replicas: 0</code>. Classic <code>Ingress</code> is unavailable in this model.</p>
+<pre class="mermaid"><code>flowchart LR
+    K8s[Kubernetes API]
+
+    subgraph cs[coxswain-system]
+        C[Controller\npod]
+    end
+
+    subgraph ns_a[team-a-namespace]
+        GPA[Per-Gateway\nproxy — team A]
+    end
+
+    subgraph ns_b[team-b-namespace]
+        GPB[Per-Gateway\nproxy — team B]
+    end
+
+    K8s --&gt;|watch| C
+    C --&gt;|status writes| K8s
+    C --&gt;|provisions| GPA
+    C --&gt;|provisions| GPB
+    K8s --&gt;|watch| GPA
+    K8s --&gt;|watch| GPB
+
+    ClientsA([Team A clients]) --&gt; GPA
+    ClientsB([Team B clients]) --&gt; GPB</code></pre>
+<h3 id="ingress-only">Ingress-only<a class="headerlink" href="#ingress-only" title="Permanent link">&para;</a></h3>
+<p>For clusters without Gateway API CRDs. The controller detects their absence at startup and skips Gateway API reconciliation; the shared-proxy pool serves all <code>Ingress</code> resources.</p>
+<pre class="mermaid"><code>flowchart LR
+    K8s[Kubernetes API]
+
+    subgraph cs[coxswain-system]
+        C[Controller\npod]
+        SP[Shared-proxy\npods]
+    end
+
+    K8s --&gt;|watch\nIngress only| C
+    C --&gt;|status writes| K8s
+    K8s --&gt;|watch\nIngress only| SP
+
+    Clients([Clients]) --&gt;|Ingress traffic| SP</code></pre>
+<h2 id="state-transport">State transport<a class="headerlink" href="#state-transport" title="Permanent link">&para;</a></h2>
+<p>Each proxy pod self-watches Kubernetes directly:</p>
+<ul>
+<li>A <strong>shared-proxy</strong> uses a broad cluster-wide filter covering all routing CRs (HTTPRoute, Ingress, Gateway, Service, EndpointSlice).</li>
+<li>A <strong>gateway-proxy</strong> uses a narrow filter scoped to a single Gateway's label and namespace.</li>
+</ul>
+<p>There is no xDS server and no IPC between the controller and any proxy — the controller never pushes data, and a controller crash never disrupts proxy traffic. A future <code>--source=xds</code> mode could be added behind the same <code>RoutingSource</code> trait boundary without touching proxy code.</p>
+<h2 id="rbac-by-mode">RBAC by mode<a class="headerlink" href="#rbac-by-mode" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Verb</th>
+<th style="text-align: center;"><code>controller</code></th>
+<th style="text-align: center;"><code>shared-proxy</code></th>
+<th style="text-align: center;"><code>gateway-proxy</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTPRoute, Gateway, GatewayClass, Ingress, IngressClass</td>
+<td>list, watch, get</td>
+<td style="text-align: center;">✓ (cluster)</td>
+<td style="text-align: center;">✓ (cluster)</td>
+<td style="text-align: center;">✓ (namespace)</td>
+</tr>
+<tr>
+<td>Service, EndpointSlice</td>
+<td>list, watch, get</td>
+<td style="text-align: center;">✓ (cluster)</td>
+<td style="text-align: center;">✓ (cluster)</td>
+<td style="text-align: center;">✓ (namespace)</td>
+</tr>
+<tr>
+<td>Secret (<code>kubernetes.io/tls</code>)</td>
+<td>list, watch, get</td>
+<td style="text-align: center;">✓ (cluster)</td>
+<td style="text-align: center;">✓ (cluster)</td>
+<td style="text-align: center;">✓ (namespace)</td>
+</tr>
+<tr>
+<td>HTTPRoute, Gateway, Ingress <code>/status</code></td>
+<td>update, patch</td>
+<td style="text-align: center;">✓ (cluster)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Deployment, Service</td>
+<td>create, update, delete</td>
+<td style="text-align: center;">✓ (scoped)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Lease</td>
+<td>create, update, get</td>
+<td style="text-align: center;">✓ (<code>coxswain-system</code>)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="admin-endpoints-by-mode">Admin endpoints by mode<a class="headerlink" href="#admin-endpoints-by-mode" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th style="text-align: center;">Controller</th>
+<th style="text-align: center;">Shared-proxy</th>
+<th style="text-align: center;">Per-Gateway proxy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/healthz</code>, <code>/readyz</code></td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr>
+<td><code>/metrics</code></td>
+<td style="text-align: center;">✓ (reconcile counts, leader status)</td>
+<td style="text-align: center;">✓ (traffic, errors)</td>
+<td style="text-align: center;">✓ (scoped to this Gateway)</td>
+</tr>
+<tr>
+<td><code>/status</code></td>
+<td style="text-align: center;">✓ (subsystems + counters)</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr>
+<td><code>/routes</code></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr>
+<td><code>/cluster</code></td>
+<td style="text-align: center;">✓ (all Gateways/Ingresses aggregate)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+</tbody>
+</table>
 <h2 id="request-path">Request path<a class="headerlink" href="#request-path" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
-    A([TCP\nconnection]) --&gt; B{HTTPS?}
-    B --&gt;|yes| C[SNI handshake\nselects certificate]
+    A([TCP connection]) --&gt; B{TLS?}
+    B --&gt;|yes| C[SNI cert\nselection]
     B --&gt;|no| D
-    C --&gt; D[Read host,\npath and query]
-    D --&gt; E[Load routing\ntable snapshot]
-    E --&gt; F[Host + rule\nmatching]
-    F --&gt;|no match| G([404 / 503])
-    F --&gt;|match| H[Round-robin\nupstream pick]
-    H --&gt; I([Forward request\nreturn response])</code></pre>
-<h2 id="readiness">Readiness<a class="headerlink" href="#readiness" title="Permanent link">&para;</a></h2>
-<p><code>/readyz</code> returns 200 once every subsystem reports <code>Ready</code> or <code>Degraded</code>. On a freshly started pod this requires:</p>
-<ul>
-<li>All Kubernetes reflectors have completed their initial list — CRDs must be installed and RBAC must be correct.</li>
-<li>The routing table has been built at least once.</li>
-</ul>
-<p>Subsystems have four states: <code>Pending</code> (still initialising — keeps <code>/readyz</code> at 503), <code>Ready</code>, <code>Degraded</code> (partial fault but still serving), and <code>Failed</code>. <code>Ready</code> and <code>Degraded</code> both pass the readiness gate; <code>Pending</code> and <code>Failed</code> block it.</p>
-<p>If <code>/readyz</code> returns 503 on a running pod, inspect <code>/status</code> to see which subsystem is blocked.</p>
+    C --&gt; D[Route lookup\nhost + path]
+    D --&gt;|no match| E([404 / 503])
+    D --&gt;|match| F[Pick upstream]
+    F --&gt; G([Forward])</code></pre>
+<p>The routing table is an immutable snapshot behind an atomic pointer; each request reads it with a single atomic load — no locks, no channels. Reconciles build a new snapshot and swap the pointer atomically; the next request sees the new routing, in-flight requests are unaffected.</p>
+<p>TLS works the same way: the TLS store is an atomic snapshot rebuilt on every <code>kubernetes.io/tls</code> Secret change. New connections use the new certificate; connections in progress complete with the old one.</p>
 
 
 
