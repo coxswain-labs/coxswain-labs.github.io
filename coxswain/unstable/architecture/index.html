@@ -890,46 +890,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#modes" class="md-nav__link">
+  <a href="#roles" class="md-nav__link">
     <span class="md-ellipsis">
-      Modes
+      Roles
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Modes">
+    <nav class="md-nav" aria-label="Roles">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#-modecontroller" class="md-nav__link">
+  <a href="#serve-controller" class="md-nav__link">
     <span class="md-ellipsis">
-      --mode=controller
+      serve controller
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#-modeshared-proxy" class="md-nav__link">
+  <a href="#serve-proxy-shared" class="md-nav__link">
     <span class="md-ellipsis">
-      --mode=shared-proxy
+      serve proxy --shared
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#-modegateway-proxy" class="md-nav__link">
+  <a href="#serve-proxy-dedicated" class="md-nav__link">
     <span class="md-ellipsis">
-      --mode=gateway-proxy
+      serve proxy --dedicated
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#-modedev" class="md-nav__link">
+  <a href="#serve-dev" class="md-nav__link">
     <span class="md-ellipsis">
-      --mode=dev
+      serve dev
     </span>
   </a>
   
@@ -1074,7 +1074,7 @@
 
 
 <h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
-<p>Coxswain runs as one or more pods, each in one of four <code>--mode</code> values. The controller is the sole Kubernetes writer; proxies are read-only data planes that build their routing table directly from Kubernetes watch events and scale horizontally with no coordination.</p>
+<p>Coxswain runs as one or more pods, each invoked with a <code>serve &lt;role&gt;</code> subcommand. The controller is the sole Kubernetes writer; proxies are read-only data planes that build their routing table directly from Kubernetes watch events and scale horizontally with no coordination.</p>
 <pre class="mermaid"><code>flowchart LR
     Clients([Clients])
     K8s[Kubernetes\nAPI Server]
@@ -1092,15 +1092,18 @@
     K8s --&gt;|watch, read-only| SP &amp; GP
     K8s --&gt;|watch| C
     C --&gt;|status writes\nleader only| K8s</code></pre>
-<h2 id="modes">Modes<a class="headerlink" href="#modes" title="Permanent link">&para;</a></h2>
-<h3 id="-modecontroller"><code>--mode=controller</code><a class="headerlink" href="#-modecontroller" title="Permanent link">&para;</a></h3>
+<h2 id="roles">Roles<a class="headerlink" href="#roles" title="Permanent link">&para;</a></h2>
+<h3 id="serve-controller"><code>serve controller</code><a class="headerlink" href="#serve-controller" title="Permanent link">&para;</a></h3>
 <p>Watches Ingress, GatewayClass, Gateway, HTTPRoute, and related resources cluster-wide; writes status conditions back to them; provisions per-Gateway proxy <code>Deployment</code> and <code>Service</code> objects when a Gateway opts into dedicated mode. Leader-elected via a Kubernetes <code>Lease</code> in <code>coxswain-system</code> — status writes pause for up to one Lease TTL during a leader transition; traffic is unaffected. Scales vertically (one active replica + optional warm standby).</p>
-<h3 id="-modeshared-proxy"><code>--mode=shared-proxy</code><a class="headerlink" href="#-modeshared-proxy" title="Permanent link">&para;</a></h3>
+<p>The provisioning operator runs as a kube-rs <code>Controller</code> alongside the status writer in the same pod. Its reconcile loop resolves each Gateway's effective <code>CoxswainGatewayParameters</code> (per-field overlay: Gateway's <code>parametersRef</code> wins per-field, GatewayClass's fills the rest; <code>podTemplate</code> strategic-merges across both layers) and renders the desired <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code>. The <code>podTemplate</code> escape hatch is merged onto the rendered Deployment with <code>kubectl apply</code> strategic-merge semantics — <code>containers</code> merges by <code>name</code>, <code>tolerations</code> by <code>(key, operator)</code>, container-level <code>env</code> by <code>name</code>, and so on — so sidecar injection and env overlays behave the way operators expect from native K8s tooling.</p>
+<p>As of issue #207 the operator runs in <em>log-only</em> mode: it hashes the rendered specs and logs the YAML at <code>INFO</code> whenever they change. No cluster writes happen — the controller's RBAC at this stage carries <code>get/list/watch</code> on <code>CoxswainGatewayParameters</code> but no create/update on <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code>. Step 9 (#208) promotes the operator to server-side-apply and adds the matching RBAC.</p>
+<h3 id="serve-proxy-shared"><code>serve proxy --shared</code><a class="headerlink" href="#serve-proxy-shared" title="Permanent link">&para;</a></h3>
 <p>Stateless read-only Pingora data plane. Serves every <code>Ingress</code> and every <code>Gateway</code> not opted into dedicated mode. Scales horizontally with no leader election and no inter-replica coordination.</p>
-<h3 id="-modegateway-proxy"><code>--mode=gateway-proxy</code><a class="headerlink" href="#-modegateway-proxy" title="Permanent link">&para;</a></h3>
-<p>Read-only proxy scoped to a single Gateway. Provisioned by the controller in the Gateway's namespace (or a namespace specified via <code>parametersRef</code>) with namespace-scoped RBAC. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
-<h3 id="-modedev"><code>--mode=dev</code><a class="headerlink" href="#-modedev" title="Permanent link">&para;</a></h3>
-<p>Single-process all-in-one combining controller and proxy in one binary, for local development and conformance against <code>kind</code> / OrbStack.</p>
+<h3 id="serve-proxy-dedicated"><code>serve proxy --dedicated</code><a class="headerlink" href="#serve-proxy-dedicated" title="Permanent link">&para;</a></h3>
+<p>Read-only proxy scoped to a single Gateway (identified by <code>--gateway-name</code> and <code>--gateway-namespace</code>). Provisioned by the controller in the Gateway's namespace (or a namespace specified via <code>parametersRef</code>) — see Step 9 of the architecture plan. Has its own rollout, failure domain, and <code>/metrics</code>. As of issue #206 (v0.2), the dedicated proxy runs with the same cluster-wide-reads RBAC profile as the shared proxy; per-namespace read narrowing is paired with Step 10's per-Gateway-proxy <code>RoleBinding</code> reconciliation.</p>
+<p>When the target Gateway has any listener with <code>allowedRoutes.namespaces.from: All</code> or <code>Selector</code>, the operator must explicitly opt in to broader RBAC via <code>--allow-cluster-wide-route-read</code> (for <code>from: All</code>) or <code>--allow-cluster-wide-namespace-read</code> (for <code>from: Selector</code>). Today these flags govern a startup warning only; once Step 10 lands, listeners using a non-<code>Same</code> <code>from</code> without the matching opt-in will be marked <code>Accepted=false</code>.</p>
+<h3 id="serve-dev"><code>serve dev</code><a class="headerlink" href="#serve-dev" title="Permanent link">&para;</a></h3>
+<p>Hidden single-process all-in-one combining controller and proxy in one binary, for local development and conformance against <code>kind</code> / OrbStack.</p>
 <div class="admonition warning">
 <p class="admonition-title">Never rendered by Helm</p>
 <p>Dev mode is a contributor convenience; do not run it in production.</p>
@@ -1188,7 +1191,7 @@
 <p>Each proxy pod self-watches Kubernetes directly:</p>
 <ul>
 <li>A <strong>shared-proxy</strong> uses a broad cluster-wide filter covering all routing CRs (HTTPRoute, Ingress, Gateway, Service, EndpointSlice).</li>
-<li>A <strong>gateway-proxy</strong> uses a narrow filter scoped to a single Gateway's label and namespace.</li>
+<li>A <strong>dedicated proxy</strong> (<code>--dedicated</code>) narrows its routing-table build to a single named Gateway; cross-namespace backends and TLS Secrets resolve via <code>ReferenceGrant</code> as usual. Per-namespace watch narrowing (and the matching RBAC narrowing) is paired with Step 10 of the architecture plan; until then the dedicated proxy uses cluster-wide reads with zero write verbs, identical to the shared-proxy RBAC profile.</li>
 </ul>
 <p>There is no xDS server and no IPC between the controller and any proxy — the controller never pushes data, and a controller crash never disrupts proxy traffic. A future <code>--source=xds</code> mode could be added behind the same <code>RoutingSource</code> trait boundary without touching proxy code.</p>
 <h2 id="rbac-by-mode">RBAC by mode<a class="headerlink" href="#rbac-by-mode" title="Permanent link">&para;</a></h2>
@@ -1199,7 +1202,7 @@
 <th>Verb</th>
 <th style="text-align: center;"><code>controller</code></th>
 <th style="text-align: center;"><code>shared-proxy</code></th>
-<th style="text-align: center;"><code>gateway-proxy</code></th>
+<th style="text-align: center;"><code>dedicated-proxy</code></th>
 </tr>
 </thead>
 <tbody>
@@ -1208,21 +1211,21 @@
 <td>list, watch, get</td>
 <td style="text-align: center;">✓ (cluster)</td>
 <td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (namespace)</td>
+<td style="text-align: center;">✓ (cluster today; namespace after Step 10)</td>
 </tr>
 <tr>
 <td>Service, EndpointSlice</td>
 <td>list, watch, get</td>
 <td style="text-align: center;">✓ (cluster)</td>
 <td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (namespace)</td>
+<td style="text-align: center;">✓ (cluster today; namespace after Step 10)</td>
 </tr>
 <tr>
 <td>Secret (<code>kubernetes.io/tls</code>)</td>
 <td>list, watch, get</td>
 <td style="text-align: center;">✓ (cluster)</td>
 <td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (namespace)</td>
+<td style="text-align: center;">✓ (cluster today; namespace after Step 10)</td>
 </tr>
 <tr>
 <td>HTTPRoute, Gateway, Ingress <code>/status</code></td>
@@ -1254,7 +1257,7 @@
 <th>Endpoint</th>
 <th style="text-align: center;">Controller</th>
 <th style="text-align: center;">Shared-proxy</th>
-<th style="text-align: center;">Per-Gateway proxy</th>
+<th style="text-align: center;">Dedicated-proxy</th>
 </tr>
 </thead>
 <tbody>

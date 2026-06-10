@@ -1227,7 +1227,7 @@
 <li>All Kubernetes reflectors emit their first <code>InitDone</code> event (CRDs must be installed)</li>
 <li>The routing table is built for the first time</li>
 </ol>
-<p>Inspect the per-subsystem detail via the admin port (open <code>kubectl -n coxswain-system port-forward svc/coxswain-internal 8082:8082</code> in a separate terminal first; Helm installs use the Service name <code>&lt;release&gt;-internal</code>):</p>
+<p>Inspect the per-subsystem detail via the admin port (open <code>kubectl -n coxswain-system port-forward svc/coxswain-shared-proxy-internal 8082:8082</code> in a separate terminal first; Helm installs use the Service name <code>&lt;release&gt;-internal</code>):</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/status<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 </code></pre></div>
 <p>Example output:</p>
@@ -1335,7 +1335,7 @@
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>Replace <code>&lt;release&gt;</code> with the Helm release name (or use <code>coxswain-internal</code> for raw-manifest installs):</p>
+<p>Replace <code>&lt;release&gt;</code> with the Helm release name (or use <code>coxswain-shared-proxy-internal</code> for raw-manifest installs):</p>
 <div class="highlight"><pre><span></span><code><span class="nt">scrape_configs</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
 <span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>

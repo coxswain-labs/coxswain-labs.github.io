@@ -997,7 +997,7 @@
 <h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h1>
 <h2 id="port-forward">Port forward<a class="headerlink" href="#port-forward" title="Permanent link">&para;</a></h2>
 <p>Most commands below query the admin port. Open a port-forward in a separate terminal first: </p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-internal<span class="w"> </span><span class="m">8082</span>:8082
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-shared-proxy-internal<span class="w"> </span><span class="m">8082</span>:8082
 </code></pre></div>
 <h2 id="readyz-returns-503-on-startup"><code>/readyz</code> returns 503 on startup<a class="headerlink" href="#readyz-returns-503-on-startup" title="Permanent link">&para;</a></h2>
 <p>The readiness endpoint gates on every registered subsystem reaching <code>Ready</code> or <code>Degraded</code>. During startup it stays <code>503</code> until:</p>

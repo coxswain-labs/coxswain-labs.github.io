@@ -1130,7 +1130,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>httproute<span class="
 <h2 id="step-6-verify-traffic">Step 6 — Verify traffic<a class="headerlink" href="#step-6-verify-traffic" title="Permanent link">&para;</a></h2>
 <p>The proxy port depends on your cluster and install method. For a local cluster with a <code>NodePort</code> or port-forwarded service:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Find the proxy service address</span>
-kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>coxswain-proxy
+kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>coxswain-shared-proxy
 
 <span class="c1"># Test via Host header</span>
 curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: echo.example.com&quot;</span><span class="w"> </span>http://&lt;proxy-address&gt;/
