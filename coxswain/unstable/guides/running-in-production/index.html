@@ -772,6 +772,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#live-gateway-listener-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Live Gateway listener changes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#status-address" class="md-nav__link">
     <span class="md-ellipsis">
       Status address
@@ -1138,6 +1147,12 @@
 <div class="highlight"><pre><span></span><code>--proxy-shutdown-grace-period<span class="o">=</span>60s
 --proxy-shutdown-timeout<span class="o">=</span>10s
 </code></pre></div>
+<h2 id="live-gateway-listener-changes">Live Gateway listener changes<a class="headerlink" href="#live-gateway-listener-changes" title="Permanent link">&para;</a></h2>
+<p>When a Gateway's listener set changes (port added or removed), Coxswain reconciles listeners in-process without restarting. New ports are bound immediately; removed ports enter a drain window (<code>--proxy-listener-drain-timeout</code>, default <code>30s</code>) during which in-flight requests complete normally before the socket is released.</p>
+<p>Tune the drain timeout to cover your longest expected upstream latency:</p>
+<div class="highlight"><pre><span></span><code>--proxy-listener-drain-timeout<span class="o">=</span>60s
+</code></pre></div>
+<p>The <code>coxswain_proxy_requests_force_closed_total{reason="drain_exceeded"}</code> metric increments for any connection that could not finish within the window. It should remain at 0 under normal operation; a non-zero value means the drain timeout is too short for your workload.</p>
 <h2 id="status-address">Status address<a class="headerlink" href="#status-address" title="Permanent link">&para;</a></h2>
 <p>Set <code>--status-address</code> to the external IP or hostname of your load balancer. Without it, <code>Ingress.status</code> and <code>Gateway.status.addresses</code> are left empty, which breaks cert-manager HTTP-01 challenges and external-dns.</p>
 <div class="highlight"><pre><span></span><code>--status-address<span class="o">=</span><span class="m">203</span>.0.113.10
