@@ -144,9 +144,19 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -154,7 +164,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -287,6 +297,12 @@
   
     
     
+      
+  
+  
+  
+    
+    
       <li class="md-tabs__item">
         <a href="../guides/ingress/" class="md-tabs__link">
           
@@ -295,6 +311,9 @@
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -551,9 +570,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#supported-kubernetes-distributions" class="md-nav__link">
+  <a href="#install-methods" class="md-nav__link">
     <span class="md-ellipsis">
-      Supported Kubernetes distributions
+      Install methods
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-distributions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kubernetes distributions
     </span>
   </a>
   
@@ -693,12 +721,52 @@
   
   
   
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ingress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../guides/ingress/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ingress
+    Overview
   </span>
   
 
@@ -707,6 +775,54 @@
   
 
               
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Gateway API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Gateway API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -719,7 +835,7 @@
         
   
   <span class="md-ellipsis">
-    Gateway API
+    Overview
   </span>
   
 
@@ -740,7 +856,76 @@
         
   
   <span class="md-ellipsis">
-    Dedicated-mode Gateways
+    Dedicated proxy pools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/running-in-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in production
   </span>
   
 
@@ -762,27 +947,6 @@
   
   <span class="md-ellipsis">
     TLS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guides/running-in-production/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Running in production
   </span>
   
 
@@ -829,6 +993,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -989,7 +1161,15 @@
 
 
 <h1 id="installation-overview">Installation overview<a class="headerlink" href="#installation-overview" title="Permanent link">&para;</a></h1>
-<p>Coxswain can be installed three ways. Choose the one that fits your workflow:</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Kubernetes 1.30+</strong></li>
+<li><strong>Gateway API CRDs</strong> (standard channel, v1.5.x or later matching the Coxswain release):</li>
+</ul>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
+</code></pre></div>
+<h2 id="install-methods">Install methods<a class="headerlink" href="#install-methods" title="Permanent link">&para;</a></h2>
+<p>Choose the one that fits your workflow:</p>
 <table>
 <thead>
 <tr>
@@ -1012,25 +1192,8 @@
 </tr>
 </tbody>
 </table>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<p>All install methods share the same prerequisites:</p>
-<ul>
-<li><strong>Kubernetes 1.30+</strong></li>
-<li><strong>Gateway API CRDs</strong> (standard channel, v1.5.x or later matching the Coxswain release):</li>
-</ul>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
-</code></pre></div>
-<ul>
-<li>RBAC permission to create <code>ClusterRole</code>, <code>ClusterRoleBinding</code>, <code>Namespace</code>, and <code>Lease</code> objects.</li>
-</ul>
-<h2 id="supported-kubernetes-distributions">Supported Kubernetes distributions<a class="headerlink" href="#supported-kubernetes-distributions" title="Permanent link">&para;</a></h2>
-<p>Coxswain has been tested on:</p>
-<ul>
-<li>OrbStack (local)</li>
-<li>kind (CI and local)</li>
-<li>Vanilla kubeadm clusters</li>
-</ul>
-<p>Any conformant Kubernetes 1.30+ distribution should work. File an issue if you encounter distribution-specific behaviour.</p>
+<h2 id="kubernetes-distributions">Kubernetes distributions<a class="headerlink" href="#kubernetes-distributions" title="Permanent link">&para;</a></h2>
+<p>Any conformant Kubernetes 1.30+ distribution should work. Tested on kind (CI and local development) and OrbStack. File an issue if you encounter distribution-specific behaviour.</p>
 <h2 id="resource-requirements">Resource requirements<a class="headerlink" href="#resource-requirements" title="Permanent link">&para;</a></h2>
 <p>Default resource requests in the Helm chart:</p>
 <table>

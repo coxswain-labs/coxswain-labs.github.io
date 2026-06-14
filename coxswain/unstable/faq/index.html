@@ -142,9 +142,19 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -152,7 +162,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -283,6 +293,12 @@
   
     
     
+      
+  
+  
+  
+    
+    
       <li class="md-tabs__item">
         <a href="../guides/ingress/" class="md-tabs__link">
           
@@ -291,6 +307,9 @@
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -619,12 +638,52 @@
   
   
   
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ingress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../guides/ingress/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ingress
+    Overview
   </span>
   
 
@@ -633,6 +692,54 @@
   
 
               
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Gateway API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Gateway API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -645,7 +752,7 @@
         
   
   <span class="md-ellipsis">
-    Gateway API
+    Overview
   </span>
   
 
@@ -666,7 +773,76 @@
         
   
   <span class="md-ellipsis">
-    Dedicated-mode Gateways
+    Dedicated proxy pools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/running-in-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in production
   </span>
   
 
@@ -688,27 +864,6 @@
   
   <span class="md-ellipsis">
     TLS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guides/running-in-production/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Running in production
   </span>
   
 
@@ -755,6 +910,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1045,6 +1208,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1074,7 +1246,7 @@
 <h1 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h1>
 <h2 id="general">General<a class="headerlink" href="#general" title="Permanent link">&para;</a></h2>
 <h3 id="is-coxswain-production-ready">Is Coxswain production-ready?<a class="headerlink" href="#is-coxswain-production-ready" title="Permanent link">&para;</a></h3>
-<p>Not yet. The project is undergoing a significant architectural refactor — splitting the single-binary monolith into a controller pod and a read-only proxy pool (see <a href="../architecture/">Architecture</a>). Routing, TLS, and leader-election internals are well-tested, but the deployment topology, configuration surface, and several features are still in flux. See the <a href="https://github.com/orgs/coxswain-labs/projects/2">Roadmap</a>.</p>
+<p>Not yet. Coxswain is pre-1.0: the API surface and configuration flags may change between minor releases. The core architecture — a leader-elected controller pod writing status, backed by one or more read-only Pingora proxy pods — is stable and well-tested.</p>
 <h3 id="why-another-ingress-controller">Why another Ingress controller?<a class="headerlink" href="#why-another-ingress-controller" title="Permanent link">&para;</a></h3>
 <p>Coxswain separates the controller (the sole Kubernetes writer) from the proxy (a read-only Pingora data plane). The routing table is built from Kubernetes watch events and exposed to the proxy as an immutable snapshot behind an atomic pointer; TLS certificates are loaded the same way. Proxies have no leader election and scale horizontally with no coordination.</p>
 <p>See <a href="#comparison">Comparison</a> for specific differences against other controllers.</p>
@@ -1083,9 +1255,9 @@
 <h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
 <h3 id="why-the-controllerproxy-split">Why the controller/proxy split?<a class="headerlink" href="#why-the-controllerproxy-split" title="Permanent link">&para;</a></h3>
 <p>Embedding status writes in the proxy would force leader election into the data plane: only one replica could write at a time, and horizontal scaling would require electing more leaders. Making the controller the sole Kubernetes writer keeps proxy pods stateless, eliminates inter-replica coordination, and shrinks the proxy's RBAC surface to zero write verbs — a compromised proxy pod cannot write to the API server at all. The read-only invariant is enforced by RBAC, not by convention.</p>
-<p>See <a href="../architecture/#modes">Architecture</a> for the four operating modes.</p>
+<p>See <a href="../architecture/#deployment-models">Architecture</a> for the two macro deployment models (Shared and Dedicated).</p>
 <h3 id="how-does-ingress-fit">How does Ingress fit?<a class="headerlink" href="#how-does-ingress-fit" title="Permanent link">&para;</a></h3>
-<p>Classic <code>Ingress</code> resources are always served by the shared-proxy pool — <code>Ingress</code> has no equivalent of <code>parametersRef</code>. Gateway API users can opt a <code>Gateway</code> into an isolated per-Gateway proxy pod via <code>parametersRef</code> on the <code>GatewayClass</code> (cluster-wide default) or on the <code>Gateway</code> itself; the controller provisions and manages that pod.</p>
+<p>Classic <code>Ingress</code> resources are always served by the shared proxy pool — <code>Ingress</code> has no equivalent of <code>parametersRef</code>. Gateway API users can opt a <code>Gateway</code> into a dedicated proxy (per Gateway) via <code>parametersRef</code> on the <code>GatewayClass</code> (cluster-wide default) or on the <code>Gateway</code> itself; the controller provisions and manages that dedicated proxy automatically. See <a href="../guides/dedicated-mode/">Dedicated proxy pools</a> for the full walkthrough.</p>
 <h2 id="comparison">Comparison<a class="headerlink" href="#comparison" title="Permanent link">&para;</a></h2>
 <p>Architectural differences only — not performance or quality. All projects below run the Gateway API conformance suite and serve production traffic.</p>
 <h3 id="ingress-nginx-vs-coxswain">ingress-nginx vs. Coxswain<a class="headerlink" href="#ingress-nginx-vs-coxswain" title="Permanent link">&para;</a></h3>
@@ -1101,7 +1273,7 @@
 <tr>
 <td>Process model</td>
 <td>Go controller + nginx worker processes in the same container</td>
-<td>Split controller pod (leader-elected, K8s writes) + horizontally-scalable read-only Pingora proxy pods; Helm renders a controller + shared-proxy by default</td>
+<td>Split controller pod (leader-elected, K8s writes) + horizontally-scalable read-only Pingora proxy pods; Helm renders a controller + shared proxy by default</td>
 </tr>
 <tr>
 <td>Config-application model</td>
@@ -1111,7 +1283,7 @@
 <tr>
 <td>Gateway API surface</td>
 <td>Available via separate <a href="https://github.com/nginx/nginx-gateway-fabric">NGINX Gateway Fabric</a> project</td>
-<td>Same controller manages both; default shared-proxy pool serves both</td>
+<td>Same controller manages both; default shared proxy pool serves both</td>
 </tr>
 <tr>
 <td>Annotation ecosystem</td>
@@ -1184,6 +1356,14 @@
 </tr>
 </tbody>
 </table>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<p>See <a href="../guides/troubleshooting/">Troubleshooting</a> for step-by-step diagnostic commands. Common dedicated-mode questions:</p>
+<ul>
+<li><strong>Dedicated proxy pod not starting</strong> — see <a href="../guides/troubleshooting/#dedicated-proxy-pod-never-becomes-ready">Dedicated proxy pod never becomes Ready</a>.</li>
+<li><strong><code>forbidden</code> errors in proxy logs</strong> — see <a href="../guides/troubleshooting/#rbac-denials-in-dedicated-proxy-logs">RBAC denials in dedicated proxy logs</a>.</li>
+<li><strong>Provisioned resources left behind after Gateway deletion</strong> — see <a href="../guides/troubleshooting/#provisioned-resources-not-garbage-collected-after-gateway-deletion">Provisioned resources not garbage-collected after Gateway deletion</a>.</li>
+<li><strong>Controller not reconciling Gateway API resources</strong> — see <a href="../guides/troubleshooting/#controller-stuck-in-ingress-only-mode">Controller stuck in Ingress-only mode</a>.</li>
+</ul>
 
 
 

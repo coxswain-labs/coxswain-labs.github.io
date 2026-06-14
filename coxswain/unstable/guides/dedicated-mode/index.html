@@ -16,7 +16,7 @@
         <link rel="prev" href="../gateway-api/">
       
       
-        <link rel="next" href="../tls/">
+        <link rel="next" href="../running-in-production/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Dedicated-mode Gateways - Coxswain</title>
+        <title>Dedicated proxy pools - Coxswain</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#dedicated-mode-gateways" class="md-skip">
+        <a href="#dedicated-proxy-pools" class="md-skip">
           Skip to content
         </a>
       
@@ -131,7 +131,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Dedicated-mode Gateways
+              Dedicated proxy pools
             
           </span>
         </div>
@@ -144,9 +144,19 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -154,7 +164,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -287,6 +297,14 @@
   
     
     
+      
+  
+  
+    
+  
+  
+    
+    
       <li class="md-tabs__item md-tabs__item--active">
         <a href="../ingress/" class="md-tabs__link">
           
@@ -295,6 +313,9 @@
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -626,12 +647,55 @@
   
   
   
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Ingress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../ingress/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ingress
+    Overview
   </span>
   
 
@@ -640,6 +704,59 @@
   
 
               
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Gateway API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Gateway API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -652,7 +769,7 @@
         
   
   <span class="md-ellipsis">
-    Gateway API
+    Overview
   </span>
   
 
@@ -682,7 +799,7 @@
           
   
   <span class="md-ellipsis">
-    Dedicated-mode Gateways
+    Dedicated proxy pools
   </span>
   
 
@@ -693,7 +810,7 @@
         
   
   <span class="md-ellipsis">
-    Dedicated-mode Gateways
+    Dedicated proxy pools
   </span>
   
 
@@ -715,26 +832,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#run-a-dedicated-proxy-manually" class="md-nav__link">
+  <a href="#opt-a-gateway-into-a-dedicated-pool" class="md-nav__link">
     <span class="md-ellipsis">
-      Run a dedicated proxy manually
+      Opt a Gateway into a dedicated pool
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Run a dedicated proxy manually">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cross-namespace-route-attachment-from-all-from-selector" class="md-nav__link">
-    <span class="md-ellipsis">
-      Cross-namespace route attachment (from: All / from: Selector)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -747,6 +849,15 @@
   
     <nav class="md-nav" aria-label="Automatic provisioning by the controller">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-namespace-route-attachment-from-all-from-selector" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-namespace route attachment (from: All / from: Selector)
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#rbac" class="md-nav__link">
@@ -762,10 +873,91 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#run-a-dedicated-proxy-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run a dedicated proxy manually
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../running-in-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in production
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -783,27 +975,6 @@
   
   <span class="md-ellipsis">
     TLS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../running-in-production/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Running in production
   </span>
   
 
@@ -850,6 +1021,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1009,46 +1188,81 @@
   
 
 
-<h1 id="dedicated-mode-gateways">Dedicated-mode Gateways<a class="headerlink" href="#dedicated-mode-gateways" title="Permanent link">&para;</a></h1>
-<p>Dedicated-mode runs a per-Gateway data plane: one coxswain-proxy pod that watches only the resources relevant to a single named Gateway. The shared-pool data plane (<code>serve proxy --shared</code>) keeps serving Ingress and non-dedicated Gateway traffic; the controller pod provisions and manages the dedicated pod through <code>CoxswainGatewayParameters</code>.</p>
-<p>Two ways to run a dedicated proxy:</p>
-<ul>
-<li><strong>Automatic provisioning</strong> (production): the controller pod (or <code>serve dev</code>) detects any Gateway whose <code>parametersRef</code> (or whose <code>GatewayClass</code>'s <code>parametersRef</code>) points at a <code>CoxswainGatewayParameters</code> object and provisions a <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code> triple, owner-referenced to the parent Gateway so deletion cascades. The proxy pod runs with per-namespace RBAC narrowed to exactly the namespaces the target Gateway's HTTPRoutes need to read.</li>
-<li><strong>Manual</strong> (for debugging or for parity testing against the shared pool): you run <code>serve proxy --dedicated --gateway-name=NAME --gateway-namespace=NS</code> directly. The proxy filters the routing-table build to the named Gateway via its existing <code>parentRef</code> check.</li>
-</ul>
-<h2 id="run-a-dedicated-proxy-manually">Run a dedicated proxy manually<a class="headerlink" href="#run-a-dedicated-proxy-manually" title="Permanent link">&para;</a></h2>
-<p>Apply the dev Gateway fixture so there's something to attach to:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/dev/echo-backends.yaml
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/dev/httproute.yaml<span class="w">   </span><span class="c1"># creates the `coxswain-test` Gateway</span>
+<h1 id="dedicated-proxy-pools">Dedicated proxy pools<a class="headerlink" href="#dedicated-proxy-pools" title="Permanent link">&para;</a></h1>
+<p>A <strong>dedicated proxy (per Gateway)</strong> is a proxy <code>Deployment</code> the controller provisions for a single named <code>Gateway</code>, serving only that Gateway's routes in isolation from the shared pool. It is a pool in its own right — a <code>Deployment</code> scaled by <code>CoxswainGatewayParameters.spec.replicas</code> (default <code>1</code>), not a single pod — with its own <code>Service</code>, <code>ServiceAccount</code>, and narrowed RBAC.</p>
+<p>This is a Gateway API feature. A <code>Gateway</code> opts in through <code>spec.infrastructure.parametersRef</code> (GEP-1762), or inherits the choice from its <code>GatewayClass</code>'s <code>spec.parametersRef</code>, pointing at a <code>CoxswainGatewayParameters</code> object. Classic <code>Ingress</code> has no equivalent of <code>parametersRef</code> and is always served by the <a href="../../architecture/#shared">shared pool</a> — as is every Gateway that doesn't opt in.</p>
+<h2 id="opt-a-gateway-into-a-dedicated-pool">Opt a Gateway into a dedicated pool<a class="headerlink" href="#opt-a-gateway-into-a-dedicated-pool" title="Permanent link">&para;</a></h2>
+<p>Create a <code>CoxswainGatewayParameters</code> object and point the <code>Gateway</code> at it via <code>spec.infrastructure.parametersRef</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainGatewayParameters</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tenant-a-defaults</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tenant-a</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">              </span><span class="c1"># scale the dedicated pool; defaults to 1</span>
+<span class="w">  </span><span class="nt">serviceType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterIP</span>
+<span class="w">  </span><span class="c1"># image: defaults to the controller&#39;s own image when omitted</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tenant-a-gw</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tenant-a</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">infrastructure</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">parametersRef</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainGatewayParameters</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tenant-a-defaults</span><span class="w">     </span><span class="c1"># in the Gateway&#39;s own namespace</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<p>Then start the dedicated proxy in its own terminal alongside the controller:</p>
-<div class="highlight"><pre><span></span><code>cargo<span class="w"> </span>run<span class="w"> </span>--bin<span class="w"> </span>coxswain<span class="w"> </span>--<span class="w"> </span>serve<span class="w"> </span>proxy<span class="w"> </span>--dedicated<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--gateway-name<span class="w"> </span>coxswain-test<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--gateway-namespace<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--log-format<span class="w"> </span>console
-</code></pre></div>
-<p>Verify only that Gateway's routes are loaded:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
-</code></pre></div>
-<p>The output lists exactly the hosts the target Gateway's HTTPRoutes serve; Ingress routes and routes attached to other Gateways do not appear.</p>
-<h3 id="cross-namespace-route-attachment-from-all-from-selector">Cross-namespace route attachment (<code>from: All</code> / <code>from: Selector</code>)<a class="headerlink" href="#cross-namespace-route-attachment-from-all-from-selector" title="Permanent link">&para;</a></h3>
-<p>When a listener declares <code>allowedRoutes.namespaces.from: All</code> or <code>from: Selector</code>, the controller automatically:</p>
-<ol>
-<li>Creates a <code>ClusterRoleBinding</code> granting the proxy SA cluster-wide <code>HTTPRoute</code> reads (<code>coxswain-gateway-proxy-cluster-wide-route-reader</code>).</li>
-<li>For <code>from: Selector</code>: also creates a <code>ClusterRoleBinding</code> for cluster-wide <code>Namespace</code> reads (<code>coxswain-gateway-proxy-cluster-wide-namespace-reader</code>).</li>
-<li>Renders <code>--allow-cluster-wide-route-read</code> (and <code>--allow-cluster-wide-namespace-read</code>) into the proxy Deployment args.</li>
-<li>The proxy spawns a single cluster-wide <code>HTTPRoute</code> reflector instead of the per-namespace one, so routes from all namespaces become visible.</li>
-</ol>
-<p>No <code>CoxswainGatewayParameters</code> fields or manual opt-in are needed — the Gateway spec is the single source of truth. The <code>ClusterRoleBinding</code>s are removed automatically when the listener mode changes back to <code>from: Same</code> or the Gateway is deleted.</p>
-<p>For <strong>manual invocations</strong> (<code>serve proxy --dedicated</code>), pass the flags explicitly:</p>
-<div class="highlight"><pre><span></span><code>cargo<span class="w"> </span>run<span class="w"> </span>--bin<span class="w"> </span>coxswain<span class="w"> </span>--<span class="w"> </span>serve<span class="w"> </span>proxy<span class="w"> </span>--dedicated<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--gateway-name<span class="w"> </span>coxswain-test<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--gateway-namespace<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--allow-cluster-wide-route-read<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--log-format<span class="w"> </span>console
-</code></pre></div>
+<p>A <code>Gateway</code> can only reference a <code>CoxswainGatewayParameters</code> in its own namespace — the reference carries no namespace field. To set defaults for every dedicated Gateway cluster-wide, attach the <code>parametersRef</code> to the <code>GatewayClass</code> instead; a Gateway-level reference overlays the class-level one field by field.</p>
+<p>Tunable fields on <code>CoxswainGatewayParameters</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Effect</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>replicas</code></td>
+<td>Replica count for the provisioned proxy Deployment</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>resources</code></td>
+<td>Resource requests/limits on the proxy container</td>
+<td>controller default</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>Override the proxy image</td>
+<td>controller's own image</td>
+</tr>
+<tr>
+<td><code>serviceType</code></td>
+<td><code>LoadBalancer</code>, <code>NodePort</code>, or <code>ClusterIP</code> for the proxy Service</td>
+<td><code>LoadBalancer</code></td>
+</tr>
+<tr>
+<td><code>podTemplate</code></td>
+<td>Partial <code>PodTemplateSpec</code> merged over the rendered template (nodeSelector, tolerations, env, sidecars, …)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
 <h2 id="automatic-provisioning-by-the-controller">Automatic provisioning by the controller<a class="headerlink" href="#automatic-provisioning-by-the-controller" title="Permanent link">&para;</a></h2>
-<p><code>serve controller</code> (and <code>serve dev</code>) runs a provisioning operator that watches every <code>Gateway</code>. For any Gateway whose <code>parametersRef</code> (or whose <code>GatewayClass</code>'s <code>parametersRef</code>) points at a <code>CoxswainGatewayParameters</code> object, the operator applies a dedicated-proxy <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code> to the cluster via server-side-apply under field manager <code>coxswain-controller</code>, owner-referenced to the parent Gateway so deletion cascades.</p>
+<p><code>serve controller</code> (and <code>serve dev</code>) runs a provisioning operator that watches every <code>Gateway</code>. For any Gateway whose <code>parametersRef</code> (or whose <code>GatewayClass</code>'s <code>parametersRef</code>) resolves to a <code>CoxswainGatewayParameters</code> object, the operator applies a dedicated-proxy <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code> to the cluster via server-side-apply under field manager <code>coxswain-controller</code>, owner-referenced to the parent Gateway so deletion cascades.</p>
 <p>Apply the dev fixture set and verify the resources land:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/dev/dedicated-gateway/
 
@@ -1066,11 +1280,43 @@ kubectl<span class="w"> </span>get<span class="w"> </span>deploy,svc,sa<span cla
 <span class="c1"># All three resources disappear within ~30s.</span>
 </code></pre></div>
 <p>If <code>parametersRef</code> targets a missing <code>CoxswainGatewayParameters</code> object, the operator publishes an <code>Accepted=False, reason=InvalidParameters</code> condition on the Gateway via the shared override channel.</p>
+<h3 id="cross-namespace-route-attachment-from-all-from-selector">Cross-namespace route attachment (<code>from: All</code> / <code>from: Selector</code>)<a class="headerlink" href="#cross-namespace-route-attachment-from-all-from-selector" title="Permanent link">&para;</a></h3>
+<p>When a listener declares <code>allowedRoutes.namespaces.from: All</code> or <code>from: Selector</code>, the controller automatically:</p>
+<ol>
+<li>Creates a <code>ClusterRoleBinding</code> granting the proxy SA cluster-wide <code>HTTPRoute</code> reads (<code>coxswain-gateway-proxy-cluster-wide-route-reader</code>).</li>
+<li>For <code>from: Selector</code>: also creates a <code>ClusterRoleBinding</code> for cluster-wide <code>Namespace</code> reads (<code>coxswain-gateway-proxy-cluster-wide-namespace-reader</code>).</li>
+<li>Renders <code>--allow-cluster-wide-route-read</code> (and <code>--allow-cluster-wide-namespace-read</code>) into the proxy Deployment args.</li>
+<li>The proxy spawns a single cluster-wide <code>HTTPRoute</code> reflector instead of the per-namespace one, so routes from all namespaces become visible.</li>
+</ol>
+<p>No <code>CoxswainGatewayParameters</code> fields or manual opt-in are needed — the Gateway spec is the single source of truth. The <code>ClusterRoleBinding</code>s are removed automatically when the listener mode changes back to <code>from: Same</code> or the Gateway is deleted.</p>
 <h3 id="rbac">RBAC<a class="headerlink" href="#rbac" title="Permanent link">&para;</a></h3>
 <p>The controller maintains two layers of RBAC for each dedicated proxy:</p>
 <p><strong>Per-namespace <code>RoleBinding</code>s</strong> — for every namespace the Gateway's HTTPRoutes route a backend into (gated by <code>ReferenceGrant</code> for cross-namespace refs), the controller reconciles a <code>RoleBinding</code> tying the provisioned <code>ServiceAccount</code> to <code>coxswain-gateway-proxy-reader</code>. The proxy pod's <code>--proxy-watch-namespaces</code> arg mirrors this binding set so they can't drift.</p>
 <p><strong><code>ClusterRoleBinding</code>s (auto-provisioned)</strong> — when any listener declares <code>from: All</code> or <code>from: Selector</code>, the controller creates the cluster-wide bindings described above. They are deleted when the listener mode reverts to <code>from: Same</code> or the Gateway is removed.</p>
 <p>The Gateway carries a <code>gateway.coxswain-labs.dev/dedicated-cleanup</code> finalizer so both per-namespace and cluster-wide bindings are removed before Kubernetes finalizes the Gateway deletion.</p>
+<h2 id="run-a-dedicated-proxy-manually">Run a dedicated proxy manually<a class="headerlink" href="#run-a-dedicated-proxy-manually" title="Permanent link">&para;</a></h2>
+<p>For debugging or for parity testing against the shared pool, you can run a dedicated proxy directly instead of having the controller provision it. The proxy filters the routing-table build to the named Gateway via its existing <code>parentRef</code> check — no <code>parametersRef</code> is required for the manual path.</p>
+<p>Apply the dev Gateway fixture so there's something to attach to:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/dev/echo-backends.yaml
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/dev/httproute.yaml<span class="w">   </span><span class="c1"># creates the `coxswain-test` Gateway</span>
+</code></pre></div>
+<p>Then start the dedicated proxy in its own terminal alongside the controller:</p>
+<div class="highlight"><pre><span></span><code>cargo<span class="w"> </span>run<span class="w"> </span>--bin<span class="w"> </span>coxswain<span class="w"> </span>--<span class="w"> </span>serve<span class="w"> </span>proxy<span class="w"> </span>--dedicated<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gateway-name<span class="w"> </span>coxswain-test<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gateway-namespace<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-format<span class="w"> </span>console
+</code></pre></div>
+<p>Verify only that Gateway's routes are loaded:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+</code></pre></div>
+<p>The output lists exactly the hosts the target Gateway's HTTPRoutes serve; Ingress routes and routes attached to other Gateways do not appear.</p>
+<p>For a listener with <code>from: All</code> or <code>from: Selector</code>, pass the cluster-wide flags explicitly — the controller adds these automatically in provisioned mode:</p>
+<div class="highlight"><pre><span></span><code>cargo<span class="w"> </span>run<span class="w"> </span>--bin<span class="w"> </span>coxswain<span class="w"> </span>--<span class="w"> </span>serve<span class="w"> </span>proxy<span class="w"> </span>--dedicated<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gateway-name<span class="w"> </span>coxswain-test<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--gateway-namespace<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--allow-cluster-wide-route-read<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-format<span class="w"> </span>console
+</code></pre></div>
 
 
 

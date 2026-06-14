@@ -144,9 +144,19 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -154,7 +164,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -287,6 +297,14 @@
   
     
     
+      
+  
+  
+    
+  
+  
+    
+    
       <li class="md-tabs__item md-tabs__item--active">
         <a href="../ingress/" class="md-tabs__link">
           
@@ -295,6 +313,9 @@
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -626,12 +647,55 @@
   
   
   
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Ingress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../ingress/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ingress
+    Overview
   </span>
   
 
@@ -640,6 +704,57 @@
   
 
               
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Gateway API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Gateway API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -652,7 +767,7 @@
         
   
   <span class="md-ellipsis">
-    Gateway API
+    Overview
   </span>
   
 
@@ -673,7 +788,81 @@
         
   
   <span class="md-ellipsis">
-    Dedicated-mode Gateways
+    Dedicated proxy pools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../running-in-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in production
   </span>
   
 
@@ -695,27 +884,6 @@
   
   <span class="md-ellipsis">
     TLS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../running-in-production/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Running in production
   </span>
   
 
@@ -844,6 +1012,42 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dedicated-proxy-pod-never-becomes-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dedicated proxy pod never becomes Ready
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rbac-denials-in-dedicated-proxy-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      RBAC denials in dedicated proxy logs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provisioned-resources-not-garbage-collected-after-gateway-deletion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provisioned resources not garbage-collected after Gateway deletion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controller-stuck-in-ingress-only-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controller stuck in Ingress-only mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#high-memory-usage" class="md-nav__link">
     <span class="md-ellipsis">
       High memory usage
@@ -855,6 +1059,14 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -1097,6 +1309,57 @@ kubectl<span class="w"> </span>describe<span class="w"> </span>gateway<span clas
 <li>All replicas are crashing before they can acquire the lease — check <code>kubectl -n coxswain-system logs -l app.kubernetes.io/name=coxswain</code>.</li>
 <li>Clock skew between nodes — the default lease TTL (<code>--controller-lease-ttl=15s</code>) assumes clocks are synchronised within a few seconds.</li>
 </ul>
+<h2 id="dedicated-proxy-pod-never-becomes-ready">Dedicated proxy pod never becomes Ready<a class="headerlink" href="#dedicated-proxy-pod-never-becomes-ready" title="Permanent link">&para;</a></h2>
+<p>After the controller provisions a dedicated proxy (because a <code>Gateway</code> carries a <code>parametersRef</code> → <code>CoxswainGatewayParameters</code>), the pod should reach <code>Running</code> within the same time it takes any Deployment to pull its image and pass readiness checks.</p>
+<p>If the pod is stuck:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check the Deployment events</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>describe<span class="w"> </span>deployment<span class="w"> </span>&lt;gateway-name&gt;-coxswain
+
+<span class="c1"># Check the pod events</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span>gateway.networking.k8s.io/gateway-name<span class="o">=</span>&lt;gateway-name&gt;
+
+<span class="c1"># Check controller logs for reconcile errors</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>controller<span class="w"> </span>--tail<span class="o">=</span><span class="m">100</span>
+</code></pre></div>
+<p>Common causes:</p>
+<ul>
+<li><strong><code>Accepted=False, reason=InvalidParameters</code> on the Gateway</strong> — the <code>parametersRef</code> points at a <code>CoxswainGatewayParameters</code> object that doesn't exist or is in the wrong namespace. Create the object or fix the reference; the controller will reconcile and provision the pod.</li>
+<li><strong>Image pull error</strong> — the dedicated proxy uses the same image as the controller; verify <code>imagePullSecrets</code> and registry credentials in the Gateway's target namespace.</li>
+<li><strong>RBAC missing</strong> — the controller <code>ServiceAccount</code> needs permission to create <code>Deployment</code>, <code>Service</code>, <code>ServiceAccount</code>, and <code>RoleBinding</code> objects in the Gateway's namespace. If the Helm chart was upgraded without running <code>helm upgrade</code>, re-run it to restore the latest ClusterRole.</li>
+</ul>
+<h2 id="rbac-denials-in-dedicated-proxy-logs">RBAC denials in dedicated proxy logs<a class="headerlink" href="#rbac-denials-in-dedicated-proxy-logs" title="Permanent link">&para;</a></h2>
+<p>The dedicated proxy runs with per-namespace narrowed RBAC: its <code>ServiceAccount</code> holds read permissions only in the namespaces the Gateway's HTTPRoutes route backends into. A <code>forbidden</code> error in the proxy logs means the proxy is trying to read a resource outside its provisioned namespace set.</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>logs<span class="w"> </span>deployment/&lt;gateway-name&gt;-coxswain<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>forbidden
+</code></pre></div>
+<p>Common causes:</p>
+<ul>
+<li><strong>Route backend in a namespace not covered by a <code>RoleBinding</code></strong> — the controller derives <code>--proxy-watch-namespaces</code> from the same set of namespaces it has provisioned <code>RoleBinding</code>s for. If a route refers to a backend in namespace <code>B</code> and no <code>RoleBinding</code> exists there, the proxy can't read <code>Service</code>/<code>EndpointSlice</code> objects in <code>B</code>. Check whether a <code>ReferenceGrant</code> exists from <code>B</code> allowing the route's parent namespace to reference it; without the grant, the backend is rejected by the controller before the proxy sees it.</li>
+<li><strong>Cross-namespace route attachment</strong> — <code>allowedRoutes.namespaces.from: All</code> or <code>from: Selector</code> requires a <code>ClusterRoleBinding</code> for cluster-wide <code>HTTPRoute</code> reads. The controller creates these automatically when the listener mode is set. If the <code>ClusterRoleBinding</code> is missing, verify the controller is running and not in an error loop (<code>kubectl -n coxswain-system logs -l app.kubernetes.io/component=controller</code>).</li>
+</ul>
+<h2 id="provisioned-resources-not-garbage-collected-after-gateway-deletion">Provisioned resources not garbage-collected after Gateway deletion<a class="headerlink" href="#provisioned-resources-not-garbage-collected-after-gateway-deletion" title="Permanent link">&para;</a></h2>
+<p>When a <code>Gateway</code> is deleted, Kubernetes owner-reference GC removes the provisioned <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> (all owner-referenced to the Gateway). Cross-namespace <code>RoleBinding</code>s are not owner-referenced (Kubernetes does not support cross-namespace owner references for namespaced resources), so they are cleaned up by the controller via the <code>gateway.coxswain-labs.dev/dedicated-cleanup</code> finalizer.</p>
+<p>If resources are not disappearing after a <code>kubectl delete gateway</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check whether the finalizer is still present (it should be removed by the controller)</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>&lt;name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;ns&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.finalizers}&#39;</span>
+
+<span class="c1"># Check controller logs for cleanup errors</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>controller<span class="w"> </span>--tail<span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>dedicated-cleanup
+</code></pre></div>
+<p>Common causes:</p>
+<ul>
+<li><strong>Controller is not running or has lost the leader lease</strong> — the finalizer is processed only by the active controller replica. If the controller is down or failing to elect a leader, the Gateway will be stuck in a terminating state until the controller recovers.</li>
+<li><strong><code>RoleBinding</code> delete permission removed</strong> — if the controller's <code>ClusterRole</code> was modified to remove <code>rolebinding</code> delete permissions, cleanup stalls. Re-apply the Helm chart to restore the correct ClusterRole.</li>
+</ul>
+<h2 id="controller-stuck-in-ingress-only-mode">Controller stuck in Ingress-only mode<a class="headerlink" href="#controller-stuck-in-ingress-only-mode" title="Permanent link">&para;</a></h2>
+<p>At startup, the controller probes for Gateway API CRDs (<code>gatewayclass.gateway.networking.k8s.io</code>, <code>gateway.gateway.networking.k8s.io</code>, <code>httproute.gateway.networking.k8s.io</code>). If any are absent, it drops the Gateway API reconciliation pipelines and runs as a pure Ingress controller.</p>
+<p>Symptoms: no <code>GatewayClass</code>, <code>Gateway</code>, or <code>HTTPRoute</code> conditions are written; <code>kubectl get gatewayclass coxswain</code> returns nothing.</p>
+<p>Fix: install the Gateway API CRDs and restart the controller.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install the standard-channel CRDs (adjust the version to match your cluster)</span>
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml
+
+<span class="c1"># Restart the controller so it re-probes</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>rollout<span class="w"> </span>restart<span class="w"> </span>deployment/coxswain-controller
+</code></pre></div>
 <h2 id="high-memory-usage">High memory usage<a class="headerlink" href="#high-memory-usage" title="Permanent link">&para;</a></h2>
 <p>The routing table is rebuilt from scratch on every reconcile. Very large clusters (thousands of <code>HTTPRoute</code> objects) may show elevated memory during rebuilds. Each completed rebuild releases the old table; the GC-free nature of Rust means this is deterministic rather than dependent on a garbage collector schedule.</p>
 <p>Profile with:</p>

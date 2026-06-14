@@ -144,9 +144,19 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -154,7 +164,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -285,6 +295,12 @@
   
     
     
+      
+  
+  
+  
+    
+    
       <li class="md-tabs__item">
         <a href="../guides/ingress/" class="md-tabs__link">
           
@@ -293,6 +309,9 @@
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -621,12 +640,52 @@
   
   
   
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ingress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../guides/ingress/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ingress
+    Overview
   </span>
   
 
@@ -635,6 +694,54 @@
   
 
               
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Gateway API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Gateway API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -647,7 +754,7 @@
         
   
   <span class="md-ellipsis">
-    Gateway API
+    Overview
   </span>
   
 
@@ -668,7 +775,76 @@
         
   
   <span class="md-ellipsis">
-    Dedicated-mode Gateways
+    Dedicated proxy pools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/running-in-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in production
   </span>
   
 
@@ -690,27 +866,6 @@
   
   <span class="md-ellipsis">
     TLS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guides/running-in-production/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Running in production
   </span>
   
 
@@ -757,6 +912,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -972,36 +1135,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#default-split-shared-pool" class="md-nav__link">
+  <a href="#shared" class="md-nav__link">
     <span class="md-ellipsis">
-      Default (split shared pool)
+      Shared
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#mixed" class="md-nav__link">
+  <a href="#dedicated-per-gateway" class="md-nav__link">
     <span class="md-ellipsis">
-      Mixed
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#strict-multi-tenant" class="md-nav__link">
-    <span class="md-ellipsis">
-      Strict multi-tenant
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ingress-only" class="md-nav__link">
-    <span class="md-ellipsis">
-      Ingress-only
+      Dedicated (per Gateway)
     </span>
   </a>
   
@@ -1101,29 +1246,41 @@
     K8s[Kubernetes\nAPI Server]
 
     subgraph cs[coxswain-system]
-        SP[Shared-proxy pods]
-        C[Controller pod]
+        SP["Proxy pool (shared)"]
+        C[Controller]
     end
 
-    subgraph ns[gateway-namespace]
-        GP[Per-Gateway proxy pod]
+    subgraph ns[gw-namespace-1]
+        GP["Proxy pool (dedicated)"]
+        A1(app-1)
+    end
+
+    subgraph n1[ns-1]
+        A2(app-2)
+    end
+
+    subgraph n2[ns-2]
+        A3(app-3)
     end
 
     Clients --&gt; SP &amp; GP
     K8s --&gt;|watch, read-only| SP &amp; GP
     K8s --&gt;|watch| C
-    C --&gt;|status writes\nleader only| K8s</code></pre>
+    C --&gt;|status writes\nleader only| K8s
+    SP --&gt; A2 &amp; A3
+    GP --&gt; A1
+    GP -.-&gt;|cross-namespace\nvia ReferenceGrant| A2</code></pre>
 <h2 id="roles">Roles<a class="headerlink" href="#roles" title="Permanent link">&para;</a></h2>
 <h3 id="serve-controller"><code>serve controller</code><a class="headerlink" href="#serve-controller" title="Permanent link">&para;</a></h3>
-<p>Watches Ingress, GatewayClass, Gateway, HTTPRoute, and related resources cluster-wide; writes status conditions back to them; provisions per-Gateway proxy <code>Deployment</code> and <code>Service</code> objects when a Gateway opts into dedicated mode. Leader-elected via a Kubernetes <code>Lease</code> in <code>coxswain-system</code> — status writes pause for up to one Lease TTL during a leader transition; traffic is unaffected. Scales vertically (one active replica + optional warm standby).</p>
+<p>Watches Ingress, GatewayClass, Gateway, HTTPRoute, and related resources cluster-wide; writes status conditions back to them; provisions per-Gateway proxy <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> objects when a Gateway opts into dedicated mode. Leader-elected via a Kubernetes <code>Lease</code> in <code>coxswain-system</code> — status writes pause for up to one Lease TTL during a leader transition; traffic is unaffected. Scales vertically (one active replica + optional warm standby).</p>
 <p>The provisioning operator runs as a kube-rs <code>Controller</code> alongside the status writer in the same pod. Its reconcile loop resolves each Gateway's effective <code>CoxswainGatewayParameters</code> (per-field overlay: Gateway's <code>parametersRef</code> wins per-field, GatewayClass's fills the rest; <code>podTemplate</code> strategic-merges across both layers) and renders the desired <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code>. The <code>podTemplate</code> escape hatch is merged onto the rendered Deployment with <code>kubectl apply</code> strategic-merge semantics — <code>containers</code> merges by <code>name</code>, <code>tolerations</code> by <code>(key, operator)</code>, container-level <code>env</code> by <code>name</code>, and so on — so sidecar injection and env overlays behave the way operators expect from native K8s tooling.</p>
-<p>The same reconcile loop also manages per-namespace <code>RoleBinding</code>s for the proxy's <code>ServiceAccount</code> (#209): one binding per namespace the Gateway's HTTPRoutes route a backend into (gated by <code>ReferenceGrant</code> for cross-namespace refs), each binding the SA to the static <code>coxswain-gateway-proxy-reader</code> <code>ClusterRole</code>. A finalizer <code>gateway.coxswain-labs.dev/dedicated-cleanup</code> on every dedicated Gateway guarantees cross-namespace bindings are removed before K8s finalizes the Gateway deletion (cross-namespace owner references aren't supported by K8s GC for namespaced resources, so cleanup is reconcile-driven via a <code>managed-by</code> label selector).</p>
+<p>The same reconcile loop also manages per-namespace <code>RoleBinding</code>s for the proxy's <code>ServiceAccount</code>: one binding per namespace the Gateway's HTTPRoutes route a backend into (gated by <code>ReferenceGrant</code> for cross-namespace refs), each binding the SA to the static <code>coxswain-gateway-proxy-reader</code> <code>ClusterRole</code>. A finalizer <code>gateway.coxswain-labs.dev/dedicated-cleanup</code> on every dedicated Gateway guarantees cross-namespace bindings are removed before K8s finalizes the Gateway deletion (cross-namespace owner references aren't supported by K8s GC for namespaced resources, so cleanup is reconcile-driven via a <code>managed-by</code> label selector).</p>
 <h3 id="serve-proxy-shared"><code>serve proxy --shared</code><a class="headerlink" href="#serve-proxy-shared" title="Permanent link">&para;</a></h3>
 <p>Stateless read-only Pingora data plane. Serves every <code>Ingress</code> and every <code>Gateway</code> not opted into dedicated mode. Scales horizontally with no leader election and no inter-replica coordination.</p>
 <h3 id="serve-proxy-dedicated"><code>serve proxy --dedicated</code><a class="headerlink" href="#serve-proxy-dedicated" title="Permanent link">&para;</a></h3>
-<p>Read-only proxy scoped to a single Gateway (identified by <code>--gateway-name</code> and <code>--gateway-namespace</code>). Provisioned by the controller in the Gateway's namespace (or a namespace specified via <code>parametersRef</code>) — see Step 9 of the architecture plan. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
-<p>As of #209 the dedicated proxy runs with <strong>per-namespace narrowed RBAC</strong>: the controller renders <code>--proxy-watch-namespaces=&lt;ns1&gt;,&lt;ns2&gt;,...</code> into the container args, and the proxy spawns one reflector per (resource, namespace) pair scoped to exactly the namespaces the controller has provisioned <code>RoleBinding</code>s for. The binding set and the watch set are derived from the same desired-namespace computation in the controller, so they can't drift. The <code>GatewayClass</code> watch is dropped on this path — the controller is the authority on "this Gateway is dedicated and mine".</p>
-<p>When any listener declares <code>allowedRoutes.namespaces.from: All</code> or <code>from: Selector</code>, the controller automatically grants the dedicated proxy cluster-wide <code>HTTPRoute</code> reads (and cluster-wide <code>Namespace</code> reads for <code>from: Selector</code>) by creating a <code>ClusterRoleBinding</code> to the matching static <code>ClusterRole</code>. No operator opt-in field is needed — the Gateway spec is the single source of truth. The controller passes <code>--allow-cluster-wide-route-read</code> / <code>--allow-cluster-wide-namespace-read</code> into the proxy's container args and the proxy spawns a single cluster-wide <code>HTTPRoute</code> reflector instead of the per-namespace one, making cross-namespace routes visible to the routing table builder (#229).</p>
+<p>Read-only proxy scoped to a single Gateway (identified by <code>--gateway-name</code> and <code>--gateway-namespace</code>). Provisioned by the controller in the Gateway's own namespace. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
+<p>The dedicated proxy runs with <strong>per-namespace narrowed RBAC</strong>: the controller renders <code>--proxy-watch-namespaces=&lt;ns1&gt;,&lt;ns2&gt;,...</code> into the container args, and the proxy spawns one reflector per (resource, namespace) pair scoped to exactly the namespaces the controller has provisioned <code>RoleBinding</code>s for. The binding set and the watch set are derived from the same desired-namespace computation in the controller, so they can't drift. The <code>GatewayClass</code> watch is dropped on this path — the controller is the authority on "this Gateway is dedicated and mine".</p>
+<p>When any listener declares <code>allowedRoutes.namespaces.from: All</code> or <code>from: Selector</code>, the controller automatically grants the dedicated proxy cluster-wide <code>HTTPRoute</code> reads (and cluster-wide <code>Namespace</code> reads for <code>from: Selector</code>) by creating a <code>ClusterRoleBinding</code> to the matching static <code>ClusterRole</code>. No operator opt-in field is needed — the Gateway spec is the single source of truth. The controller passes <code>--allow-cluster-wide-route-read</code> / <code>--allow-cluster-wide-namespace-read</code> into the proxy's container args and the proxy spawns a single cluster-wide <code>HTTPRoute</code> reflector instead of the per-namespace one, making cross-namespace routes visible to the routing table builder.</p>
 <h3 id="serve-dev"><code>serve dev</code><a class="headerlink" href="#serve-dev" title="Permanent link">&para;</a></h3>
 <p>Hidden single-process all-in-one combining controller and proxy in one binary, for local development and conformance against <code>kind</code> / OrbStack.</p>
 <div class="admonition warning">
@@ -1131,33 +1288,76 @@
 <p>Dev mode is a contributor convenience; do not run it in production.</p>
 </div>
 <h2 id="deployment-models">Deployment models<a class="headerlink" href="#deployment-models" title="Permanent link">&para;</a></h2>
-<h3 id="default-split-shared-pool">Default (split shared pool)<a class="headerlink" href="#default-split-shared-pool" title="Permanent link">&para;</a></h3>
-<p>The Helm chart default. One controller <code>Deployment</code> and one shared-proxy <code>Deployment</code> in <code>coxswain-system</code>.</p>
+<p>Coxswain has two macro deployment models: <strong>Shared</strong> and <strong>Dedicated</strong>. They are not mutually exclusive — a production cluster typically runs a shared proxy pool alongside one or more dedicated proxies for Gateways that need isolation.</p>
+<h3 id="shared">Shared<a class="headerlink" href="#shared" title="Permanent link">&para;</a></h3>
+<p>One cluster-wide proxy pool serves every <code>Ingress</code> and every <code>Gateway</code> that has not opted into dedicated mode. This is the Helm chart default: one controller <code>Deployment</code> and one shared proxy <code>Deployment</code> in <code>coxswain-system</code>.</p>
 <pre class="mermaid"><code>flowchart LR
     K8s[Kubernetes API]
 
     subgraph cs[coxswain-system]
-        C[Controller\npod]
-        SP[Shared-proxy\npods]
+        C[Controller]
+        SP["Proxy pool (shared)"]
+    end
+
+    subgraph n1[ns-1]
+        A1(app-1)
+    end
+
+    subgraph n2[ns-2]
+        A2(app-2)
     end
 
     K8s --&gt;|watch| C
     C --&gt;|status writes| K8s
     K8s --&gt;|watch| SP
 
-    Clients([Clients]) --&gt;|Ingress +\nGateway traffic| SP</code></pre>
-<h3 id="mixed">Mixed<a class="headerlink" href="#mixed" title="Permanent link">&para;</a></h3>
-<p>The default layout plus per-Gateway proxy pods in user namespaces. Workload teams opt a <code>Gateway</code> into dedicated mode via <code>parametersRef</code>; the controller provisions the per-Gateway pod automatically.</p>
+    Clients([Clients]) --&gt;|Ingress +\nGateway traffic| SP
+    SP --&gt; A1 &amp; A2</code></pre>
+<p><strong>Ingress-only (runtime variant):</strong> when Gateway API CRDs are absent at startup, the controller detects their absence, skips Gateway API reconciliation, and the shared proxy pool serves all <code>Ingress</code> resources.</p>
 <pre class="mermaid"><code>flowchart LR
     K8s[Kubernetes API]
 
     subgraph cs[coxswain-system]
-        C[Controller\npod]
-        SP[Shared-proxy\npods]
+        C[Controller]
+        SP["Proxy pool (shared)"]
     end
 
-    subgraph ns[team-namespace]
-        GP[Per-Gateway\nproxy pod]
+    subgraph n1[ns-1]
+        A1(app-1)
+    end
+
+    subgraph n2[ns-2]
+        A2(app-2)
+    end
+
+    K8s --&gt;|watch\nIngress only| C
+    C --&gt;|status writes| K8s
+    K8s --&gt;|watch\nIngress only| SP
+
+    Clients([Clients]) --&gt;|Ingress traffic| SP
+    SP --&gt; A1 &amp; A2</code></pre>
+<h3 id="dedicated-per-gateway">Dedicated (per Gateway)<a class="headerlink" href="#dedicated-per-gateway" title="Permanent link">&para;</a></h3>
+<p>When a <code>Gateway</code> carries a <code>parametersRef</code> pointing at a <code>CoxswainGatewayParameters</code> object (either on the Gateway directly or inherited from its <code>GatewayClass</code>), the controller provisions a dedicated proxy — its own <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> — in the Gateway's namespace. Traffic for that Gateway is served exclusively by its dedicated proxy pool; the shared proxy pool continues to serve everything else.</p>
+<p>A cluster running some dedicated Gateways alongside the shared pool is the typical mixed arrangement:</p>
+<pre class="mermaid"><code>flowchart LR
+    K8s[Kubernetes API]
+
+    subgraph cs[coxswain-system]
+        C[Controller]
+        SP["Proxy pool (shared)"]
+    end
+
+    subgraph ns[gw-namespace-1]
+        GP["Proxy pool (dedicated)"]
+        A1(app-1)
+    end
+
+    subgraph n1[ns-1]
+        A2(app-2)
+    end
+
+    subgraph n2[ns-2]
+        A3(app-3)
     end
 
     K8s --&gt;|watch| C
@@ -1167,22 +1367,25 @@
     K8s --&gt;|watch| GP
 
     Clients([Clients]) --&gt;|Ingress +\nother Gateways| SP
-    Clients --&gt;|team Gateway\ntraffic| GP</code></pre>
-<h3 id="strict-multi-tenant">Strict multi-tenant<a class="headerlink" href="#strict-multi-tenant" title="Permanent link">&para;</a></h3>
-<p>Every Gateway gets its own proxy pod; the shared-proxy <code>Deployment</code> runs at <code>replicas: 0</code>. Classic <code>Ingress</code> is unavailable in this model.</p>
+    Clients --&gt;|gw-namespace-1 Gateway\ntraffic| GP
+    SP --&gt; A2 &amp; A3
+    GP --&gt; A1</code></pre>
+<p>When every Gateway opts into dedicated mode and the shared proxy <code>Deployment</code> is scaled to <code>replicas: 0</code>, each team's Gateway gets a fully isolated data plane. Classic <code>Ingress</code> is unavailable in this arrangement.</p>
 <pre class="mermaid"><code>flowchart LR
     K8s[Kubernetes API]
 
     subgraph cs[coxswain-system]
-        C[Controller\npod]
+        C[Controller]
     end
 
-    subgraph ns_a[team-a-namespace]
-        GPA[Per-Gateway\nproxy — team A]
+    subgraph ns_a[gw-namespace-1]
+        GPA["Proxy pool (dedicated)"]
+        A1(app-1)
     end
 
-    subgraph ns_b[team-b-namespace]
-        GPB[Per-Gateway\nproxy — team B]
+    subgraph ns_b[gw-namespace-2]
+        GPB["Proxy pool (dedicated)"]
+        A2(app-2)
     end
 
     K8s --&gt;|watch| C
@@ -1192,30 +1395,17 @@
     K8s --&gt;|watch| GPA
     K8s --&gt;|watch| GPB
 
-    ClientsA([Team A clients]) --&gt; GPA
-    ClientsB([Team B clients]) --&gt; GPB</code></pre>
-<h3 id="ingress-only">Ingress-only<a class="headerlink" href="#ingress-only" title="Permanent link">&para;</a></h3>
-<p>For clusters without Gateway API CRDs. The controller detects their absence at startup and skips Gateway API reconciliation; the shared-proxy pool serves all <code>Ingress</code> resources.</p>
-<pre class="mermaid"><code>flowchart LR
-    K8s[Kubernetes API]
-
-    subgraph cs[coxswain-system]
-        C[Controller\npod]
-        SP[Shared-proxy\npods]
-    end
-
-    K8s --&gt;|watch\nIngress only| C
-    C --&gt;|status writes| K8s
-    K8s --&gt;|watch\nIngress only| SP
-
-    Clients([Clients]) --&gt;|Ingress traffic| SP</code></pre>
+    ClientsA([Clients]) --&gt; GPA
+    ClientsB([Clients]) --&gt; GPB
+    GPA --&gt; A1
+    GPB --&gt; A2</code></pre>
 <h2 id="state-transport">State transport<a class="headerlink" href="#state-transport" title="Permanent link">&para;</a></h2>
 <p>Each proxy pod self-watches Kubernetes directly:</p>
 <ul>
-<li>A <strong>shared-proxy</strong> uses a broad cluster-wide filter covering all routing CRs (HTTPRoute, Ingress, Gateway, Service, EndpointSlice).</li>
-<li>A <strong>dedicated proxy</strong> (<code>--dedicated</code>) narrows its routing-table build to a single named Gateway; cross-namespace backends and TLS Secrets resolve via <code>ReferenceGrant</code> as usual. As of #209 it also narrows its <strong>watches</strong> to the namespaces the controller has rendered into <code>--proxy-watch-namespaces</code>, matching the per-namespace <code>RoleBinding</code>s the same reconcile cycle provisioned for the proxy SA.</li>
+<li>A <strong>shared proxy</strong> uses a broad cluster-wide filter covering all routing CRs (HTTPRoute, Ingress, Gateway, Service, EndpointSlice).</li>
+<li>A <strong>dedicated proxy</strong> (<code>--dedicated</code>) narrows its routing-table build to a single named Gateway; cross-namespace backends and TLS Secrets resolve via <code>ReferenceGrant</code> as usual. It also narrows its <strong>watches</strong> to the namespaces the controller has rendered into <code>--proxy-watch-namespaces</code>, matching the per-namespace <code>RoleBinding</code>s the same reconcile cycle provisioned for the proxy SA.</li>
 </ul>
-<p>There is no xDS server and no IPC between the controller and any proxy — the controller never pushes data, and a controller crash never disrupts proxy traffic. A future <code>--source=xds</code> mode could be added behind the same <code>RoutingSource</code> trait boundary without touching proxy code.</p>
+<p>There is no xDS server and no IPC between the controller and any proxy — the controller never pushes data, and a controller crash never disrupts proxy traffic. This self-watch model may be revisited in the future for scenarios such as very large clusters, where having every proxy replica watch the full set of resources independently becomes expensive.</p>
 <h2 id="rbac-by-mode">RBAC by mode<a class="headerlink" href="#rbac-by-mode" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1279,14 +1469,14 @@
 </tr>
 <tr>
 <td>Lease</td>
-<td>create, update, get</td>
+<td>get, create, patch</td>
 <td style="text-align: center;">✓ (<code>coxswain-system</code>)</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 </tr>
 </tbody>
 </table>
-<p>The dedicated-proxy permissions come from a single static <code>ClusterRole</code> <code>coxswain-gateway-proxy-reader</code> (shipped by the Helm chart and <code>deploy/manifests/dedicated-proxy-clusterrole.yaml</code>) bound via per-namespace <code>RoleBinding</code>s reconciled by the controller (#209). A compromised dedicated-proxy <code>ServiceAccount</code> holds reads only in the namespaces its Gateway has routes into — not in any other namespace, and zero write verbs anywhere.</p>
+<p>The dedicated-proxy permissions come from a single static <code>ClusterRole</code> <code>coxswain-gateway-proxy-reader</code> (shipped by the Helm chart and <code>deploy/manifests/dedicated-proxy-clusterrole.yaml</code>) bound via per-namespace <code>RoleBinding</code>s reconciled by the controller. A compromised dedicated-proxy <code>ServiceAccount</code> holds reads only in the namespaces its Gateway has routes into — not in any other namespace, and zero write verbs anywhere.</p>
 <h2 id="admin-endpoints-by-mode">Admin endpoints by mode<a class="headerlink" href="#admin-endpoints-by-mode" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

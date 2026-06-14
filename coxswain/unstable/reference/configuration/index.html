@@ -144,9 +144,19 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -154,7 +164,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -285,6 +295,12 @@
   
     
     
+      
+  
+  
+  
+    
+    
       <li class="md-tabs__item">
         <a href="../../guides/ingress/" class="md-tabs__link">
           
@@ -293,6 +309,9 @@
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -621,12 +640,52 @@
   
   
   
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ingress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../guides/ingress/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ingress
+    Overview
   </span>
   
 
@@ -635,6 +694,54 @@
   
 
               
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Gateway API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Gateway API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -647,7 +754,7 @@
         
   
   <span class="md-ellipsis">
-    Gateway API
+    Overview
   </span>
   
 
@@ -668,7 +775,76 @@
         
   
   <span class="md-ellipsis">
-    Dedicated-mode Gateways
+    Dedicated proxy pools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/running-in-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in production
   </span>
   
 
@@ -690,27 +866,6 @@
   
   <span class="md-ellipsis">
     TLS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../guides/running-in-production/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Running in production
   </span>
   
 
@@ -757,6 +912,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1016,7 +1179,7 @@
 
 
 <h1 id="configuration-reference">Configuration reference<a class="headerlink" href="#configuration-reference" title="Permanent link">&para;</a></h1>
-<p>Coxswain is configured via environment variables. Every setting has a <code>COXSWAIN_*</code> env var that maps directly to the underlying flag.</p>
+<p>Coxswain is configured via environment variables. Each setting maps to an environment variable (the <code>COXSWAIN_*</code> family, plus the Downward-API <code>POD_NAME</code> / <code>POD_NAMESPACE</code>) and an equivalent CLI flag.</p>
 <h2 id="setting-configuration">Setting configuration<a class="headerlink" href="#setting-configuration" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Helm</label><label for="__tabbed_1_2">Raw manifests / Kustomize</label></div>
 <div class="tabbed-content">
@@ -1026,7 +1189,7 @@
 <span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--set<span class="w"> </span>proxy.http.port<span class="o">=</span><span class="m">80</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--set<span class="w"> </span>proxy.https.port<span class="o">=</span><span class="m">443</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span>controller.watchNamespace<span class="o">=</span>my-namespace
+<span class="w">  </span>--set<span class="w"> </span><span class="nv">watchNamespace</span><span class="o">=</span>my-namespace
 </code></pre></div>
 <p>Or via a <code>values.yaml</code> file:</p>
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>upgrade<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
@@ -1036,11 +1199,11 @@
 <p>See the <a href="../../installation/helm/">Helm install guide</a> for the full values reference.</p>
 </div>
 <div class="tabbed-block">
-<p>Set environment variables directly on the <code>Deployment</code>:</p>
+<p>Set environment variables directly on the relevant <code>Deployment</code> (controller or shared proxy):</p>
 <div class="highlight"><pre><span></span><code><span class="nt">env</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COXSWAIN_PROXY_HTTP_PORT</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COXSWAIN_INGRESS_HTTP_PORT</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;80&quot;</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COXSWAIN_PROXY_HTTPS_PORT</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COXSWAIN_INGRESS_HTTPS_PORT</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;443&quot;</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COXSWAIN_STATUS_ADDRESS</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;203.0.113.10&quot;</span>
@@ -1059,6 +1222,18 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>COXSWAIN_ACCESS_LOG</code></td>
+<td><code>--access-log</code></td>
+<td><code>true</code></td>
+<td>Emit one structured access-log event per proxied request on the <code>coxswain_proxy::access</code> target; set <code>false</code> to silence. See <a href="../observability/#access-logs">Observability</a></td>
+</tr>
+<tr>
+<td><code>COXSWAIN_ACCESS_LOG_PATH_MODE</code></td>
+<td><code>--access-log-path-mode</code></td>
+<td><code>full</code></td>
+<td>What the access-log <code>path</code> field records: <code>full</code>, <code>pattern</code>, or <code>none</code></td>
+</tr>
 <tr>
 <td><code>COXSWAIN_ADMIN_PORT</code></td>
 <td><code>--admin-port</code></td>
@@ -1084,12 +1259,6 @@
 <td>GatewayClass <code>spec.controllerName</code> to claim</td>
 </tr>
 <tr>
-<td><code>COXSWAIN_CONTROLLER_WATCH_NAMESPACE</code></td>
-<td><code>--controller-watch-namespace</code></td>
-<td><em>(cluster-wide)</em></td>
-<td>Restrict watch to a single namespace</td>
-</tr>
-<tr>
 <td><code>COXSWAIN_HEALTH_PORT</code></td>
 <td><code>--health-port</code></td>
 <td><code>8081</code></td>
@@ -1099,7 +1268,19 @@
 <td><code>COXSWAIN_INGRESS_DEFAULT_BACKEND</code></td>
 <td><code>--ingress-default-backend</code></td>
 <td><em>(none)</em></td>
-<td>Cluster-wide fallback backend for <code>Ingress</code> rules that match no rule, expressed as <code>&lt;namespace&gt;/&lt;service&gt;:&lt;port&gt;</code></td>
+<td>Cluster-wide fallback backend for <code>Ingress</code> requests that match no rule, expressed as <code>&lt;namespace&gt;/&lt;service&gt;:&lt;port&gt;</code></td>
+</tr>
+<tr>
+<td><code>COXSWAIN_INGRESS_HTTP_PORT</code></td>
+<td><code>--ingress-http-port</code></td>
+<td><em>(none)</em></td>
+<td>Port for inbound HTTP traffic; unset to bind no static Ingress HTTP listener</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_INGRESS_HTTPS_PORT</code></td>
+<td><code>--ingress-https-port</code></td>
+<td><em>(none)</em></td>
+<td>Port for inbound HTTPS traffic (SNI TLS); unset to bind no static Ingress HTTPS listener</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_LOG</code></td>
@@ -1114,16 +1295,10 @@
 <td><code>json</code> (production) or <code>console</code> (human-readable)</td>
 </tr>
 <tr>
-<td><code>POD_NAME</code></td>
-<td><code>--pod-name</code></td>
-<td><code>coxswain-local</code></td>
-<td>Pod name used as the leader-election holder identity</td>
-</tr>
-<tr>
-<td><code>POD_NAMESPACE</code></td>
-<td><code>--pod-namespace</code></td>
-<td><code>coxswain-system</code></td>
-<td>Pod namespace used to scope the leader-election Lease</td>
+<td><code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code></td>
+<td><code>--management-bind-address</code></td>
+<td><code>0.0.0.0</code></td>
+<td>IP the health (<code>/healthz</code>, <code>/readyz</code>) and admin (<code>/metrics</code>, <code>/routes</code>) servers bind to</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_PROXY_ACCEPT_PROXY_PROTOCOL</code></td>
@@ -1135,7 +1310,7 @@
 <td><code>COXSWAIN_PROXY_BIND_ADDRESS</code></td>
 <td><code>--proxy-bind-address</code></td>
 <td><code>0.0.0.0</code></td>
-<td>IP address shared by all proxy, health, and admin listeners</td>
+<td>IP the data-plane HTTP/HTTPS proxy listeners bind to; health and admin bind separately via <code>--management-bind-address</code></td>
 </tr>
 <tr>
 <td><code>COXSWAIN_PROXY_DEFAULT_BACKEND_REQUEST_TIMEOUT</code></td>
@@ -1150,16 +1325,10 @@
 <td>Default total request timeout (client → proxy → upstream → client) when <code>HTTPRouteRule.timeouts.request</code> is not set</td>
 </tr>
 <tr>
-<td><code>COXSWAIN_PROXY_HTTP_PORT</code></td>
-<td><code>--proxy-http-port</code></td>
-<td><em>(none)</em></td>
-<td>Port for inbound HTTP traffic; unset to disable the HTTP listener</td>
-</tr>
-<tr>
-<td><code>COXSWAIN_PROXY_HTTPS_PORT</code></td>
-<td><code>--proxy-https-port</code></td>
-<td><em>(none)</em></td>
-<td>Port for inbound HTTPS traffic (SNI TLS); unset to disable</td>
+<td><code>COXSWAIN_PROXY_LISTENER_DRAIN_TIMEOUT</code></td>
+<td><code>--proxy-listener-drain-timeout</code></td>
+<td><code>30s</code></td>
+<td>Drain window for in-flight requests when a Gateway listener is removed at runtime</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_PROXY_SHUTDOWN_GRACE_PERIOD</code></td>
@@ -1177,7 +1346,7 @@
 <td><code>COXSWAIN_PROXY_THREADS</code></td>
 <td><code>--proxy-threads</code></td>
 <td><code>2</code></td>
-<td>Worker threads; set to CPU core count for maximum throughput</td>
+<td>Worker threads per proxy service; set to CPU core count for maximum throughput</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_PROXY_TRUSTED_SOURCES</code></td>
@@ -1191,8 +1360,30 @@
 <td><em>(none)</em></td>
 <td>IP or hostname written to <code>Ingress.status</code> and <code>Gateway.status.addresses</code>; required for cert-manager HTTP-01 and external-dns</td>
 </tr>
+<tr>
+<td><code>COXSWAIN_WATCH_NAMESPACE</code></td>
+<td><code>--watch-namespace</code></td>
+<td><em>(cluster-wide)</em></td>
+<td>Restrict the controller and proxy watch to a single namespace; both pods must be set to the same value</td>
+</tr>
+<tr>
+<td><code>POD_NAME</code></td>
+<td><code>--pod-name</code></td>
+<td><code>coxswain-local</code></td>
+<td>Pod name used as the leader-election holder identity</td>
+</tr>
+<tr>
+<td><code>POD_NAMESPACE</code></td>
+<td><code>--pod-namespace</code></td>
+<td><code>coxswain-system</code></td>
+<td>Pod namespace used to scope the leader-election Lease</td>
+</tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The dedicated proxy provisioning flags (<code>--gateway-name</code>, <code>--gateway-namespace</code>, <code>--allow-cluster-wide-route-read</code>, <code>--allow-cluster-wide-namespace-read</code>, <code>--proxy-watch-namespaces</code>) are set by the controller on the proxy Deployments it provisions, or passed by hand only when running a dedicated proxy manually. See <a href="../../guides/dedicated-mode/">Dedicated proxy pools</a>.</p>
+</div>
 <h2 id="ports-summary">Ports summary<a class="headerlink" href="#ports-summary" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1207,13 +1398,13 @@
 <tr>
 <td>HTTP proxy</td>
 <td><em>(none)</em></td>
-<td><code>COXSWAIN_PROXY_HTTP_PORT</code></td>
+<td><code>COXSWAIN_INGRESS_HTTP_PORT</code></td>
 <td>Inbound HTTP data plane</td>
 </tr>
 <tr>
 <td>HTTPS proxy</td>
 <td><em>(none)</em></td>
-<td><code>COXSWAIN_PROXY_HTTPS_PORT</code></td>
+<td><code>COXSWAIN_INGRESS_HTTPS_PORT</code></td>
 <td>Inbound HTTPS data plane (SNI TLS)</td>
 </tr>
 <tr>
@@ -1233,7 +1424,7 @@
 <p>The proxy listeners are disabled unless their port is explicitly set. The Helm chart defaults <code>proxy.http.port</code> to <code>80</code> and <code>proxy.https.port</code> to <code>443</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>There is currently one bind address (<code>COXSWAIN_PROXY_BIND_ADDRESS</code>) shared by all listeners. Separate bind addresses for proxy vs. admin/health will be added in a future release.</p>
+<p>The data plane and the management surface bind independently: <code>COXSWAIN_PROXY_BIND_ADDRESS</code> for the HTTP/HTTPS proxy listeners, and <code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code> for the health and admin servers. Both default to <code>0.0.0.0</code>; set the management address to a management-network IP to keep <code>/metrics</code>, <code>/routes</code>, and the health endpoints off the data-plane interface.</p>
 </div>
 <h2 id="leader-election">Leader election<a class="headerlink" href="#leader-election" title="Permanent link">&para;</a></h2>
 <p>All replicas maintain a current routing table and serve traffic; only the leader writes status back to <code>Ingress</code>, <code>Gateway</code>, and <code>HTTPRoute</code> objects. The lease parameters must satisfy <code>lease-ttl ≥ 3 × lease-renew-interval</code>.</p>

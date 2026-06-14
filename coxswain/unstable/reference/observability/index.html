@@ -144,9 +144,19 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -154,7 +164,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -285,6 +295,12 @@
   
     
     
+      
+  
+  
+  
+    
+    
       <li class="md-tabs__item">
         <a href="../../guides/ingress/" class="md-tabs__link">
           
@@ -293,6 +309,9 @@
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -621,12 +640,52 @@
   
   
   
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ingress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../guides/ingress/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ingress
+    Overview
   </span>
   
 
@@ -635,6 +694,54 @@
   
 
               
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Gateway API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Gateway API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -647,7 +754,7 @@
         
   
   <span class="md-ellipsis">
-    Gateway API
+    Overview
   </span>
   
 
@@ -668,7 +775,76 @@
         
   
   <span class="md-ellipsis">
-    Dedicated-mode Gateways
+    Dedicated proxy pools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/running-in-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in production
   </span>
   
 
@@ -690,27 +866,6 @@
   
   <span class="md-ellipsis">
     TLS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../guides/running-in-production/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Running in production
   </span>
   
 
@@ -757,6 +912,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -916,9 +1079,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#dedicated-mode-label-injection" class="md-nav__link">
+  <a href="#metric-labels-per-gateway" class="md-nav__link">
     <span class="md-ellipsis">
-      Dedicated-mode label injection
+      Metric labels per Gateway
     </span>
   </a>
   
@@ -1202,7 +1365,7 @@
 </tr>
 </tbody>
 </table>
-<p>The existing listener-lifecycle series from <a href="https://github.com/coxswain-labs/coxswain/issues/231">#231</a> are also exposed: <code>coxswain_proxy_listeners_active</code>, <code>coxswain_proxy_listener_lifecycle_total</code>, <code>coxswain_proxy_listener_drain_duration_seconds</code>, <code>coxswain_proxy_requests_force_closed_total</code>.</p>
+<p>The following listener-lifecycle metrics are also exposed: <code>coxswain_proxy_listeners_active</code>, <code>coxswain_proxy_listener_lifecycle_total</code>, <code>coxswain_proxy_listener_drain_duration_seconds</code>, <code>coxswain_proxy_requests_force_closed_total</code>.</p>
 <h3 id="controller-pod-metrics-coxswain_controller_">Controller-pod metrics (<code>coxswain_controller_*</code>)<a class="headerlink" href="#controller-pod-metrics-coxswain_controller_" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1285,17 +1448,23 @@
 </tr>
 </tbody>
 </table>
-<h3 id="dedicated-mode-label-injection">Dedicated-mode label injection<a class="headerlink" href="#dedicated-mode-label-injection" title="Permanent link">&para;</a></h3>
-<p>The proxy never bakes a <code>gateway_name</code> / <code>gateway_namespace</code> label into its emitted series — doing so would multiply request-counter cardinality across every dedicated Gateway. Instead, the operator-rendered dedicated-proxy pods carry the Gateway identity as <strong>pod labels</strong> (<code>gateway.networking.k8s.io/gateway-name</code>, <code>gateway.networking.k8s.io/gateway-namespace</code>), and the chart's PodMonitor copies those onto the scraped samples as target labels:</p>
+<h3 id="metric-labels-per-gateway">Metric labels per Gateway<a class="headerlink" href="#metric-labels-per-gateway" title="Permanent link">&para;</a></h3>
+<p>When you run a <a href="../../guides/dedicated-mode/">dedicated proxy pool</a>, you usually want to slice its metrics by Gateway. Coxswain does <strong>not</strong> bake the Gateway identity into the emitted series — a <code>gateway_name</code> / <code>gateway_namespace</code> label on every counter would multiply request-counter cardinality across every dedicated Gateway, and the shared pool has no single Gateway to name.</p>
+<p>Instead the identity rides in as a <strong>scrape-time target label</strong>. Each proxy pod the controller provisions carries the Gateway it serves as two pod labels:</p>
+<ul>
+<li><code>gateway.networking.k8s.io/gateway-name</code> — the Gateway name (the GEP-1762 well-known label).</li>
+<li><code>gateway.coxswain-labs.dev/gateway-namespace</code> — the Gateway namespace (a Coxswain label; the upstream group defines no namespace label).</li>
+</ul>
+<p>The chart's PodMonitor then copies those pod labels onto every scraped sample via <code>relabelings</code>, so they appear on the metrics without ever touching the series the proxy emits:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">relabelings</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sourceLabels</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">__meta_kubernetes_pod_label_gateway_networking_k8s_io_gateway_name</span>
 <span class="w">    </span><span class="nt">targetLabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway_name</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sourceLabels</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">__meta_kubernetes_pod_label_gateway_networking_k8s_io_gateway_namespace</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">__meta_kubernetes_pod_label_gateway_coxswain_labs_dev_gateway_namespace</span>
 <span class="w">    </span><span class="nt">targetLabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway_namespace</span>
 </code></pre></div>
-<p>Shared-pool pods don't carry those labels; the relabel leaves the target empty, which is the intended behaviour.</p>
+<p>(The <code>__meta_kubernetes_pod_label_*</code> source names are Prometheus's mangling of the pod-label keys — dots and slashes become underscores.) Pods in the shared pool don't carry those labels, so the relabel leaves <code>gateway_name</code> / <code>gateway_namespace</code> empty on shared pool samples — which is how you tell the two apart in a query.</p>
 <h2 id="health-endpoints">Health endpoints<a class="headerlink" href="#health-endpoints" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1323,7 +1492,7 @@
 <li>All Kubernetes reflectors emit their first <code>InitDone</code> event (CRDs must be installed)</li>
 <li>The routing table is built for the first time</li>
 </ol>
-<p>Inspect the per-subsystem detail via the admin port (open <code>kubectl -n coxswain-system port-forward svc/coxswain-shared-proxy-internal 8082:8082</code> in a separate terminal first; Helm installs use the Service name <code>&lt;release&gt;-internal</code>):</p>
+<p>Inspect the per-subsystem detail via the admin port (open <code>kubectl -n coxswain-system port-forward svc/coxswain-shared-proxy-internal 8082:8082</code> in a separate terminal first; a non-default Helm release name <code>&lt;rel&gt;</code> prefixes the Service as <code>&lt;rel&gt;-coxswain-shared-proxy-internal</code>):</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/health<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 </code></pre></div>
 <p>Example output:</p>
@@ -1516,20 +1685,20 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Prometheus operator (PodMonitor)</label><label for="__tabbed_1_2">Prometheus scrape_configs</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>The chart ships a <code>PodMonitor</code> template gated on <code>.Values.podMonitor.enabled</code>. Enable it with <code>--set podMonitor.enabled=true</code> (or <code>podMonitor.enabled: true</code> in your values file). One selector matches both the shared-proxy pool and the operator-rendered dedicated proxies; the relabel block injects <code>gateway_name</code> / <code>gateway_namespace</code> on dedicated metrics only (see <a href="#dedicated-mode-label-injection">Dedicated-mode label injection</a> above).</p>
-<p>Why <code>PodMonitor</code> and not <code>ServiceMonitor</code>? Dedicated-proxy Services don't expose port <code>8082</code> — adding it would leak <code>/metrics</code> onto the LoadBalancer IP. PodMonitor scrapes the pod directly (port <code>admin</code>, <code>:8082</code>) and skips that issue entirely. Shared-pool pods are also discovered the same way, so one resource covers every coxswain proxy in the cluster.</p>
+<p>The chart ships a <code>PodMonitor</code> template gated on <code>.Values.podMonitor.enabled</code>. Enable it with <code>--set podMonitor.enabled=true</code> (or <code>podMonitor.enabled: true</code> in your values file). One selector matches both the shared proxy pool and the operator-rendered dedicated proxies; the relabel block injects <code>gateway_name</code> / <code>gateway_namespace</code> on dedicated metrics only (see <a href="#metric-labels-per-gateway">Metric labels per Gateway</a> above).</p>
+<p>Why <code>PodMonitor</code> and not <code>ServiceMonitor</code>? Dedicated proxy Services don't expose port <code>8082</code> — adding it would leak <code>/metrics</code> onto the LoadBalancer IP. PodMonitor scrapes the pod directly (port <code>admin</code>, <code>:8082</code>) and skips that issue entirely. Shared pool pods are also discovered the same way, so one resource covers every coxswain proxy in the cluster.</p>
 <p>Hardened installs that pin <code>podMonitorSelector</code> on the <code>Prometheus</code> resource must update it to include the chart's labels (<code>app.kubernetes.io/name: coxswain</code>) — by default kube-prometheus-stack matches both <code>ServiceMonitor</code> and <code>PodMonitor</code> broadly.</p>
 </div>
 <div class="tabbed-block">
-<p>Replace <code>&lt;release&gt;</code> with the Helm release name (or use the literal <code>coxswain-shared-proxy-internal</code> for raw-manifest installs). Dedicated-proxy metrics aren't reachable through this Service surface — use the PodMonitor path for full coverage.</p>
+<p>The Service names below are for the default <code>coxswain</code> release and for raw-manifest installs; a non-default Helm release name <code>&lt;rel&gt;</code> prefixes them as <code>&lt;rel&gt;-coxswain-shared-proxy-internal</code> and <code>&lt;rel&gt;-coxswain-controller</code>. Dedicated proxy metrics aren't reachable through this Service surface — use the PodMonitor path for full coverage.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">scrape_configs</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-shared</span>
 <span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;&lt;release&gt;-internal.coxswain-system.svc:8082&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;coxswain-shared-proxy-internal.coxswain-system.svc:8082&#39;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/metrics</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-controller</span>
 <span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;&lt;release&gt;-controller.coxswain-system.svc:8082&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;coxswain-controller.coxswain-system.svc:8082&#39;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/metrics</span>
 </code></pre></div>
 </div>
