@@ -1312,7 +1312,7 @@
 </tr>
 <tr>
 <td><code>/api/v1/health</code></td>
-<td style="text-align: center;">✓ (subsystem detail)</td>
+<td style="text-align: center;">✓ (subsystem detail, version, leader)</td>
 <td style="text-align: center;">✓</td>
 <td style="text-align: center;">✓</td>
 </tr>
@@ -1323,8 +1323,14 @@
 <td style="text-align: center;">✓</td>
 </tr>
 <tr>
-<td><code>/api/v1/cluster</code></td>
-<td style="text-align: center;">✓ (all Gateways/Ingresses aggregate)</td>
+<td><code>GET /</code> (operator UI) + <code>/api/v1/{fleet,routing}/*</code></td>
+<td style="text-align: center;">✓ (cluster-wide aggregate + summaries)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td><code>/api/v1/{problems,events,manifests/*,pods/*/logs}</code></td>
+<td style="text-align: center;">✓</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 </tr>
