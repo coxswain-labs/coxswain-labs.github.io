@@ -664,6 +664,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../guides/dedicated-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dedicated-mode Gateways
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../guides/tls/" class="md-nav__link">
         
   
@@ -1102,7 +1123,7 @@
 <h3 id="serve-proxy-dedicated"><code>serve proxy --dedicated</code><a class="headerlink" href="#serve-proxy-dedicated" title="Permanent link">&para;</a></h3>
 <p>Read-only proxy scoped to a single Gateway (identified by <code>--gateway-name</code> and <code>--gateway-namespace</code>). Provisioned by the controller in the Gateway's namespace (or a namespace specified via <code>parametersRef</code>) — see Step 9 of the architecture plan. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
 <p>As of #209 the dedicated proxy runs with <strong>per-namespace narrowed RBAC</strong>: the controller renders <code>--proxy-watch-namespaces=&lt;ns1&gt;,&lt;ns2&gt;,...</code> into the container args, and the proxy spawns one reflector per (resource, namespace) pair scoped to exactly the namespaces the controller has provisioned <code>RoleBinding</code>s for. The binding set and the watch set are derived from the same desired-namespace computation in the controller, so they can't drift. The <code>GatewayClass</code> watch is dropped on this path — the controller is the authority on "this Gateway is dedicated and mine".</p>
-<p>When the target Gateway has any listener with <code>allowedRoutes.namespaces.from: All</code> or <code>Selector</code>, the operator must explicitly opt in to broader RBAC via <code>--allow-cluster-wide-route-read</code> (for <code>from: All</code>) or <code>--allow-cluster-wide-namespace-read</code> (for <code>from: Selector</code>). These flags exist as CLI args today and govern a startup warning; the matching CRD fields (<code>spec.proxy.allowClusterWideRouteRead</code> / <code>allowClusterWideNamespaceRead</code>) and the <code>Accepted=false</code> listener-refusal status condition land in #229.</p>
+<p>When any listener declares <code>allowedRoutes.namespaces.from: All</code> or <code>from: Selector</code>, the controller automatically grants the dedicated proxy cluster-wide <code>HTTPRoute</code> reads (and cluster-wide <code>Namespace</code> reads for <code>from: Selector</code>) by creating a <code>ClusterRoleBinding</code> to the matching static <code>ClusterRole</code>. No operator opt-in field is needed — the Gateway spec is the single source of truth. The controller passes <code>--allow-cluster-wide-route-read</code> / <code>--allow-cluster-wide-namespace-read</code> into the proxy's container args and the proxy spawns a single cluster-wide <code>HTTPRoute</code> reflector instead of the per-namespace one, making cross-namespace routes visible to the routing table builder (#229).</p>
 <h3 id="serve-dev"><code>serve dev</code><a class="headerlink" href="#serve-dev" title="Permanent link">&para;</a></h3>
 <p>Hidden single-process all-in-one combining controller and proxy in one binary, for local development and conformance against <code>kind</code> / OrbStack.</p>
 <div class="admonition warning">
@@ -1290,8 +1311,8 @@
 <td style="text-align: center;">✓ (scoped to this Gateway)</td>
 </tr>
 <tr>
-<td><code>/status</code></td>
-<td style="text-align: center;">✓ (subsystems + counters)</td>
+<td><code>/api/v1/health</code></td>
+<td style="text-align: center;">✓ (subsystem detail)</td>
 <td style="text-align: center;">✓</td>
 <td style="text-align: center;">✓</td>
 </tr>
@@ -1302,7 +1323,7 @@
 <td style="text-align: center;">✓</td>
 </tr>
 <tr>
-<td><code>/cluster</code></td>
+<td><code>/api/v1/cluster</code></td>
 <td style="text-align: center;">✓ (all Gateways/Ingresses aggregate)</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>

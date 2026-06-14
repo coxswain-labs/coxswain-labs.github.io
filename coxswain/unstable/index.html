@@ -455,15 +455,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-coxswain-does" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Coxswain does
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#quick-install" class="md-nav__link">
     <span class="md-ellipsis">
       Quick install
@@ -729,6 +720,27 @@
   
   
     <li class="md-nav__item">
+      <a href="guides/dedicated-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dedicated-mode Gateways
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="guides/tls/" class="md-nav__link">
         
   
@@ -961,46 +973,14 @@
 
 
 <h1 id="coxswain">Coxswain<a class="headerlink" href="#coxswain" title="Permanent link">&para;</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Early development</p>
-<p>Coxswain is under active development and not yet ready for production. Contribution guidelines will follow as the project matures.</p>
+<div class="admonition info">
+<p class="admonition-title">Pre-1.0 — early adopter release</p>
+<p>Coxswain's core proxy is functional and passes the full Gateway API standard conformance suite.
+The per-Ingress annotation surface is under active development (v0.3).
+<strong>Production use is at your own risk.</strong> Feedback and contributions are welcome.</p>
 </div>
-<p>A Rust Kubernetes Ingress and Gateway API controller backed by <a href="https://github.com/cloudflare/pingora">Pingora</a> as the proxy engine.</p>
-<h2 id="what-coxswain-does">What Coxswain does<a class="headerlink" href="#what-coxswain-does" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Feature</th>
-<th>Detail</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Routing updates</strong></td>
-<td>Routes are applied via an immutable-snapshot atomic-pointer swap on every reconcile — no config reload, no process restart</td>
-</tr>
-<tr>
-<td><strong>Gateway API + Ingress</strong></td>
-<td>Both <code>HTTPRoute</code> and classic <code>Ingress</code> resources are served by the same controller and proxy fleet; both contribute to the same routing table</td>
-</tr>
-<tr>
-<td><strong>Multi-replica</strong></td>
-<td>All replicas reconcile and serve traffic; a Kubernetes <code>Lease</code> coordinates which replica writes status conditions</td>
-</tr>
-<tr>
-<td><strong>TLS hot-reload</strong></td>
-<td>New and renewed certificates are picked up from <code>kubernetes.io/tls</code> Secrets without a restart</td>
-</tr>
-<tr>
-<td><strong>Prometheus metrics</strong></td>
-<td><code>/metrics</code> on the admin port</td>
-</tr>
-<tr>
-<td><strong>Structured logging</strong></td>
-<td>JSON (production) or human-readable console format</td>
-</tr>
-</tbody>
-</table>
+<p>Coxswain is a Kubernetes Ingress and Gateway API controller written in Rust, using <a href="https://github.com/cloudflare/pingora">Pingora</a> — Cloudflare's battle-tested proxy library — as the data plane. It serves both <code>Ingress</code> and <code>HTTPRoute</code> resources from the same proxy fleet, applies routing changes without restarts, and hot-reloads TLS certificates as Secrets change.</p>
+<p>The controller and proxy run as separate pod roles with a strict RBAC boundary: the controller holds all write permissions; proxy pods are read-only. This split makes multi-replica, multi-tenant, and dedicated-mode deployments straightforward.</p>
 <h2 id="quick-install">Quick install<a class="headerlink" href="#quick-install" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># 1. Install Gateway API CRDs</span>
 kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
@@ -1010,7 +990,38 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 </code></pre></div>
 <p>See <a href="getting-started/">Getting started</a> for the complete walkthrough, or <a href="installation/">Installation</a> for all install methods.</p>
 <h2 id="roadmap">Roadmap<a class="headerlink" href="#roadmap" title="Permanent link">&para;</a></h2>
-<p>The <a href="https://github.com/orgs/coxswain-labs/projects/2" target="_blank">Coxswain Roadmap Project</a> tracks current scope per milestone.</p>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Theme</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>v0.1</strong></td>
+<td>Foundation — Gateway API conformant (standard channel), Ingress support, signed OCI image, Helm chart</td>
+<td>Done</td>
+</tr>
+<tr>
+<td><strong>v0.2</strong></td>
+<td>Architecture — controller/proxy split, dedicated proxy mode, operator web UI</td>
+<td>In progress</td>
+</tr>
+<tr>
+<td><strong>v0.3</strong></td>
+<td>Ingress completeness — <code>ingress.coxswain-labs.dev/*</code> annotation surface, nginx migration path</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td><strong>v0.4</strong></td>
+<td>Gateway API extended — BackendTLSPolicy, client/backend mTLS, HTTP/2 downstream, ListenerSet</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="https://github.com/orgs/coxswain-labs/projects/2" target="_blank">Coxswain Roadmap Project</a> has the full issue-level breakdown.</p>
 
 
 

@@ -16,7 +16,7 @@
         <link rel="prev" href="../ingress/">
       
       
-        <link rel="next" href="../tls/">
+        <link rel="next" href="../dedicated-mode/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -761,6 +761,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allowedroutesnamespacesfrom" class="md-nav__link">
+    <span class="md-ellipsis">
+      allowedRoutes.namespaces.from
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -940,6 +955,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dedicated-mode Gateways
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1263,8 +1299,33 @@
 <span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
 <span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span><span class="w">        </span><span class="c1"># Same, All, or Selector</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span><span class="w">        </span><span class="c1"># see below</span>
 </code></pre></div>
+<h4 id="allowedroutesnamespacesfrom"><code>allowedRoutes.namespaces.from</code><a class="headerlink" href="#allowedroutesnamespacesfrom" title="Permanent link">&para;</a></h4>
+<p>Controls which namespaces may attach <code>HTTPRoute</code>s to this listener.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Same</code> (default)</td>
+<td>Only routes in the Gateway's own namespace can attach.</td>
+</tr>
+<tr>
+<td><code>All</code></td>
+<td>Routes from any namespace can attach.</td>
+</tr>
+<tr>
+<td><code>Selector</code></td>
+<td>Routes from namespaces matching <code>namespaces.selector</code> (a label selector) can attach.</td>
+</tr>
+</tbody>
+</table>
+<p><code>All</code> and <code>Selector</code> cause the controller to automatically grant the dedicated proxy cluster-wide <code>HTTPRoute</code> reads. No extra fields on <code>CoxswainGatewayParameters</code> are required — the listener spec is the single source of truth. See the <a href="../dedicated-mode/#cross-namespace-route-attachment-from-all--from-selector">dedicated-mode guide</a> for details.</p>
 <h3 id="supported-fields">Supported fields<a class="headerlink" href="#supported-fields" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1510,7 +1571,7 @@
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
 <span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span><span class="w">                    </span><span class="c1"># attach to the listener on port 443 only</span>
 </code></pre></div>
-<p>The route must be in the same namespace as the Gateway, or the Gateway must set <code>allowedRoutes.namespaces.from: All</code> (or use a <code>Selector</code>).</p>
+<p>The route must be in the same namespace as the Gateway unless the listener's <a href="#allowedroutesnamespacesconfigfrom"><code>allowedRoutes.namespaces.from</code></a> is set to <code>All</code> or <code>Selector</code>.</p>
 <h3 id="path-matching">Path matching<a class="headerlink" href="#path-matching" title="Permanent link">&para;</a></h3>
 <table>
 <thead>

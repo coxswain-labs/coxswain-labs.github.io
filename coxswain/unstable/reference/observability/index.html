@@ -664,6 +664,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../guides/dedicated-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dedicated-mode Gateways
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../guides/tls/" class="md-nav__link">
         
   
@@ -877,36 +898,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#http-proxy-metrics" class="md-nav__link">
+  <a href="#proxy-pod-metrics-coxswain_proxy_" class="md-nav__link">
     <span class="md-ellipsis">
-      HTTP proxy metrics
+      Proxy-pod metrics (coxswain_proxy_*)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#routing-table-metrics" class="md-nav__link">
+  <a href="#controller-pod-metrics-coxswain_controller_" class="md-nav__link">
     <span class="md-ellipsis">
-      Routing table metrics
+      Controller-pod metrics (coxswain_controller_*)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#controller-metrics" class="md-nav__link">
+  <a href="#dedicated-mode-label-injection" class="md-nav__link">
     <span class="md-ellipsis">
-      Controller metrics
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tls-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      TLS metrics
+      Dedicated-mode label injection
     </span>
   </a>
   
@@ -932,6 +944,48 @@
       Routes endpoint
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access logs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Access logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path-redaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Path redaction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtering-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtering access logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1052,154 +1106,196 @@
 
 
 <h1 id="observability-reference">Observability reference<a class="headerlink" href="#observability-reference" title="Permanent link">&para;</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Planned catalog — not yet implemented</p>
-<p>The metrics tables below describe the <strong>planned v0.2 catalog</strong>. They are not emitted by the current build. The <code>/metrics</code> endpoint is reachable today but only exposes the default <code>prometheus</code> collector. Per-request and routing-table metrics land in <a href="https://github.com/coxswain-labs/coxswain/issues/20">#20</a>; access logging in <a href="https://github.com/coxswain-labs/coxswain/issues/21">#21</a>. Treat this page as a design preview, not a runtime reference.</p>
-</div>
 <h2 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">&para;</a></h2>
-<p>Coxswain exposes the Prometheus endpoint at <code>http://&lt;admin-address&gt;:&lt;admin-port&gt;/metrics</code> (default port <code>8082</code>). The catalog below is the <strong>planned</strong> shape for v0.2 — none of these series are emitted by the current build.</p>
-<h3 id="http-proxy-metrics">HTTP proxy metrics<a class="headerlink" href="#http-proxy-metrics" title="Permanent link">&para;</a></h3>
+<p>Coxswain exposes the Prometheus endpoint at <code>http://&lt;admin-address&gt;:&lt;admin-port&gt;/metrics</code> (default port <code>8082</code>). Series are emitted under one of two prefixes that identify the pod role:</p>
+<ul>
+<li><code>coxswain_proxy_*</code> — emitted by <code>serve proxy --shared</code>, <code>serve proxy --dedicated</code>, and the proxy half of <code>serve dev</code>.</li>
+<li><code>coxswain_controller_*</code> — emitted by <code>serve controller</code> and the controller half of <code>serve dev</code>.</li>
+</ul>
+<p>The <code>route</code> Prometheus label is a <strong>stable rule identifier</strong>, not a request path. Operators reading <code>coxswain_proxy_requests_total{route="httproute/checkout/api:0"}</code> see the same label value on the matching access-log line's <code>route_id</code> field, so a Grafana → Loki/Tempo pivot is an exact join (no fuzzy host/path matching). Path patterns stay on the access log for human-readable display.</p>
+<p>Route id formats:</p>
+<ul>
+<li>HTTPRoute: <code>httproute/&lt;namespace&gt;/&lt;name&gt;:&lt;rule_index&gt;</code> — <code>rule_index</code> is the position in <code>spec.rules[]</code>.</li>
+<li>Ingress per-rule: <code>ingress/&lt;namespace&gt;/&lt;name&gt;:&lt;r&gt;.&lt;p&gt;</code> — nested <code>(rules, paths)</code> index, mirroring the YAML structure.</li>
+<li>Ingress <code>spec.defaultBackend</code>: <code>ingress/&lt;namespace&gt;/&lt;name&gt;:default</code>.</li>
+<li>The controller-wide <code>--ingress-default-backend</code> fallback: <code>ingress-default-backend/&lt;service-namespace&gt;/&lt;service-name&gt;</code>.</li>
+</ul>
+<h3 id="proxy-pod-metrics-coxswain_proxy_">Proxy-pod metrics (<code>coxswain_proxy_*</code>)<a class="headerlink" href="#proxy-pod-metrics-coxswain_proxy_" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
 <th>Metric</th>
 <th>Type</th>
 <th>Labels</th>
-<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>coxswain_requests_total</code></td>
+<td><code>coxswain_proxy_requests_total</code></td>
 <td>Counter</td>
-<td><code>host</code>, <code>method</code>, <code>status</code></td>
-<td>Total HTTP requests processed by the proxy</td>
+<td><code>listener</code>, <code>route</code>, <code>method</code>, <code>status_code</code></td>
 </tr>
 <tr>
-<td><code>coxswain_request_duration_seconds</code></td>
+<td><code>coxswain_proxy_request_duration_seconds</code></td>
 <td>Histogram</td>
-<td><code>host</code>, <code>method</code>, <code>status</code></td>
-<td>Request latency from proxy receipt to upstream response</td>
+<td><code>listener</code>, <code>route</code></td>
 </tr>
 <tr>
-<td><code>coxswain_upstream_connections_total</code></td>
+<td><code>coxswain_proxy_upstream_errors_total</code></td>
 <td>Counter</td>
-<td><code>host</code>, <code>upstream</code></td>
-<td>Total connections opened to upstream services</td>
+<td><code>listener</code>, <code>route</code>, <code>upstream</code>, <code>error_type</code> (<code>connect</code>/<code>timeout</code>/<code>refused</code>/<code>tls</code>/<code>5xx</code>/<code>other</code>)</td>
 </tr>
 <tr>
-<td><code>coxswain_upstream_connection_errors_total</code></td>
-<td>Counter</td>
-<td><code>host</code>, <code>upstream</code>, <code>error</code></td>
-<td>Upstream connection errors (timeout, refused, etc.)</td>
+<td><code>coxswain_proxy_active_upstreams</code></td>
+<td>Gauge</td>
+<td><code>upstream</code></td>
 </tr>
 <tr>
-<td><code>coxswain_active_connections</code></td>
+<td><code>coxswain_proxy_routing_table_hosts</code></td>
 <td>Gauge</td>
 <td>—</td>
-<td>Current number of active proxy connections</td>
 </tr>
-</tbody>
-</table>
-<h3 id="routing-table-metrics">Routing table metrics<a class="headerlink" href="#routing-table-metrics" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
 <tr>
-<th>Metric</th>
-<th>Type</th>
-<th>Labels</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>coxswain_routing_table_hosts</code></td>
+<td><code>coxswain_proxy_routing_table_routes</code></td>
 <td>Gauge</td>
-<td>—</td>
-<td>Number of hostnames in the active routing table</td>
+<td><code>kind</code> (<code>ingress</code>/<code>gateway</code>)</td>
 </tr>
 <tr>
-<td><code>coxswain_routing_table_rebuilds_total</code></td>
+<td><code>coxswain_proxy_routing_table_rebuilds_total</code></td>
 <td>Counter</td>
-<td><code>reason</code></td>
-<td>Number of times the routing table was rebuilt</td>
+<td><code>result</code> (<code>ok</code>/<code>error</code>)</td>
 </tr>
 <tr>
-<td><code>coxswain_routing_table_rebuild_duration_seconds</code></td>
+<td><code>coxswain_proxy_routing_table_rebuild_duration_seconds</code></td>
 <td>Histogram</td>
 <td>—</td>
-<td>Time taken to rebuild the routing table</td>
 </tr>
-</tbody>
-</table>
-<h3 id="controller-metrics">Controller metrics<a class="headerlink" href="#controller-metrics" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
 <tr>
-<th>Metric</th>
-<th>Type</th>
-<th>Labels</th>
-<th>Description</th>
+<td><code>coxswain_proxy_tls_certs_loaded</code></td>
+<td>Gauge</td>
+<td><code>bucket</code> (<code>exact</code>/<code>wildcard</code>/<code>default</code>)</td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td><code>coxswain_reconcile_total</code></td>
+<td><code>coxswain_proxy_tls_cert_expiry_seconds</code></td>
+<td>Gauge</td>
+<td><code>sni</code></td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_tls_handshakes_total</code></td>
 <td>Counter</td>
-<td><code>resource</code>, <code>result</code></td>
-<td>Reconciliation cycles by resource type and outcome</td>
+<td><code>result</code> (<code>ok</code>/<code>fail</code>), <code>version</code></td>
 </tr>
 <tr>
-<td><code>coxswain_reconcile_duration_seconds</code></td>
+<td><code>coxswain_proxy_connections_active</code></td>
+<td>Gauge</td>
+<td><code>listener</code></td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_connections_total</code></td>
+<td>Counter</td>
+<td><code>listener</code></td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_connection_duration_seconds</code></td>
 <td>Histogram</td>
-<td><code>resource</code></td>
-<td>Time taken per reconciliation cycle</td>
-</tr>
-<tr>
-<td><code>coxswain_watch_events_total</code></td>
-<td>Counter</td>
-<td><code>resource</code>, <code>event_type</code></td>
-<td>Kubernetes watch events received</td>
-</tr>
-<tr>
-<td><code>coxswain_leader_transitions_total</code></td>
-<td>Counter</td>
-<td>—</td>
-<td>Number of leader election transitions</td>
-</tr>
-<tr>
-<td><code>coxswain_is_leader</code></td>
-<td>Gauge</td>
-<td>—</td>
-<td><code>1</code> if this replica is the current leader, <code>0</code> otherwise</td>
+<td><code>listener</code></td>
 </tr>
 </tbody>
 </table>
-<h3 id="tls-metrics">TLS metrics<a class="headerlink" href="#tls-metrics" title="Permanent link">&para;</a></h3>
+<p>The existing listener-lifecycle series from <a href="https://github.com/coxswain-labs/coxswain/issues/231">#231</a> are also exposed: <code>coxswain_proxy_listeners_active</code>, <code>coxswain_proxy_listener_lifecycle_total</code>, <code>coxswain_proxy_listener_drain_duration_seconds</code>, <code>coxswain_proxy_requests_force_closed_total</code>.</p>
+<h3 id="controller-pod-metrics-coxswain_controller_">Controller-pod metrics (<code>coxswain_controller_*</code>)<a class="headerlink" href="#controller-pod-metrics-coxswain_controller_" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
 <th>Metric</th>
 <th>Type</th>
 <th>Labels</th>
-<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>coxswain_tls_secrets_loaded</code></td>
+<td><code>coxswain_controller_leader</code></td>
 <td>Gauge</td>
-<td>—</td>
-<td>Number of TLS Secrets currently loaded</td>
+<td>— (1 when this replica holds the lease)</td>
 </tr>
 <tr>
-<td><code>coxswain_tls_secret_reloads_total</code></td>
+<td><code>coxswain_controller_leader_transitions_total</code></td>
 <td>Counter</td>
-<td><code>reason</code></td>
-<td>TLS Secret reloads (cert rotation, new Secret, etc.)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>coxswain_controller_reconcile_total</code></td>
+<td>Counter</td>
+<td><code>controller</code>, <code>result</code> (<code>ok</code>/<code>error</code>)</td>
+</tr>
+<tr>
+<td><code>coxswain_controller_reconcile_duration_seconds</code></td>
+<td>Histogram</td>
+<td><code>controller</code></td>
+</tr>
+<tr>
+<td><code>coxswain_controller_reconcile_errors_total</code></td>
+<td>Counter</td>
+<td><code>controller</code></td>
+</tr>
+<tr>
+<td><code>coxswain_controller_status_patch_total</code></td>
+<td>Counter</td>
+<td><code>kind</code>, <code>result</code> (<code>ok</code>/<code>error</code>/<code>conflict</code>)</td>
+</tr>
+<tr>
+<td><code>coxswain_controller_status_patch_duration_seconds</code></td>
+<td>Histogram</td>
+<td><code>kind</code></td>
+</tr>
+<tr>
+<td><code>coxswain_controller_watch_events_total</code></td>
+<td>Counter</td>
+<td><code>kind</code>, <code>event</code> (<code>init_done</code>/<code>apply</code>/<code>delete</code>/<code>restart</code>)</td>
+</tr>
+<tr>
+<td><code>coxswain_controller_watch_errors_total</code></td>
+<td>Counter</td>
+<td><code>kind</code></td>
+</tr>
+<tr>
+<td><code>coxswain_controller_routing_table_hosts</code></td>
+<td>Gauge</td>
+<td>— (mirrors the proxy view; drift indicates a stale snapshot)</td>
+</tr>
+<tr>
+<td><code>coxswain_controller_routing_table_routes</code></td>
+<td>Gauge</td>
+<td><code>kind</code></td>
+</tr>
+<tr>
+<td><code>coxswain_controller_routing_table_rebuilds_total</code></td>
+<td>Counter</td>
+<td><code>result</code></td>
+</tr>
+<tr>
+<td><code>coxswain_controller_routing_table_rebuild_duration_seconds</code></td>
+<td>Histogram</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>coxswain_controller_tls_certs_loaded</code></td>
+<td>Gauge</td>
+<td><code>bucket</code></td>
 </tr>
 </tbody>
 </table>
+<h3 id="dedicated-mode-label-injection">Dedicated-mode label injection<a class="headerlink" href="#dedicated-mode-label-injection" title="Permanent link">&para;</a></h3>
+<p>The proxy never bakes a <code>gateway_name</code> / <code>gateway_namespace</code> label into its emitted series — doing so would multiply request-counter cardinality across every dedicated Gateway. Instead, the operator-rendered dedicated-proxy pods carry the Gateway identity as <strong>pod labels</strong> (<code>gateway.networking.k8s.io/gateway-name</code>, <code>gateway.networking.k8s.io/gateway-namespace</code>), and the chart's PodMonitor copies those onto the scraped samples as target labels:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">relabelings</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sourceLabels</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">__meta_kubernetes_pod_label_gateway_networking_k8s_io_gateway_name</span>
+<span class="w">    </span><span class="nt">targetLabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway_name</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sourceLabels</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">__meta_kubernetes_pod_label_gateway_networking_k8s_io_gateway_namespace</span>
+<span class="w">    </span><span class="nt">targetLabel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway_namespace</span>
+</code></pre></div>
+<p>Shared-pool pods don't carry those labels; the relabel leaves the target empty, which is the intended behaviour.</p>
 <h2 id="health-endpoints">Health endpoints<a class="headerlink" href="#health-endpoints" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1228,14 +1324,11 @@
 <li>The routing table is built for the first time</li>
 </ol>
 <p>Inspect the per-subsystem detail via the admin port (open <code>kubectl -n coxswain-system port-forward svc/coxswain-shared-proxy-internal 8082:8082</code> in a separate terminal first; Helm installs use the Service name <code>&lt;release&gt;-internal</code>):</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/status<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/health<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 </code></pre></div>
 <p>Example output:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.1.0&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;synced&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;leader&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;host_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;subsystems&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;controller&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ready&quot;</span><span class="p">,</span>
@@ -1255,11 +1348,116 @@
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>The <code>synced</code> field is <code>true</code> when all subsystems are ready and is provided for dashboard compatibility.</p>
 <h2 id="routes-endpoint">Routes endpoint<a class="headerlink" href="#routes-endpoint" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 </code></pre></div>
 <p>Returns the active routing table as JSON — all hostname entries, their rules, and resolved upstream addresses. Useful for debugging routing decisions without reading raw Kubernetes objects.</p>
+<h2 id="access-logs">Access logs<a class="headerlink" href="#access-logs" title="Permanent link">&para;</a></h2>
+<p>Coxswain emits one structured log event per proxied request at <code>INFO</code> level on the <code>coxswain_proxy::access</code> target. Access logs are active by default; set <code>--access-log=false</code> (or <code>COXSWAIN_ACCESS_LOG=false</code>) to disable them entirely.</p>
+<h3 id="log-fields">Log fields<a class="headerlink" href="#log-fields" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>host</code></td>
+<td>string</td>
+<td><code>Host</code> header value</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>string</td>
+<td>HTTP method</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>string</td>
+<td>Request path — see <code>--access-log-path-mode</code> below</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>integer</td>
+<td>Response HTTP status code</td>
+</tr>
+<tr>
+<td><code>route_id</code></td>
+<td>string</td>
+<td>Canonical rule identifier; same value as the <code>route</code> Prometheus label. Empty for requests that bypass routing (e.g. 404 with no matching host)</td>
+</tr>
+<tr>
+<td><code>upstream</code></td>
+<td>string</td>
+<td>Name of the matched upstream service</td>
+</tr>
+<tr>
+<td><code>upstream_addr</code></td>
+<td>string</td>
+<td>Selected endpoint <code>ip:port</code></td>
+</tr>
+<tr>
+<td><code>duration_ms</code></td>
+<td>integer</td>
+<td>Total request duration in milliseconds</td>
+</tr>
+<tr>
+<td><code>bytes_sent</code></td>
+<td>integer</td>
+<td>Response body bytes sent to the client</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>string</td>
+<td>Error message if the request failed (omitted on success)</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>route_id</code> field is the <strong>join key</strong> for pivoting from a Grafana alert into a log slice. Copy the metric label value verbatim into a Loki / CloudWatch / Splunk filter to land on the exact rule's traffic.</p>
+<p>The <code>timestamp</code> field is written automatically by the logging subscriber in RFC 3339 format.</p>
+<h3 id="path-redaction">Path redaction<a class="headerlink" href="#path-redaction" title="Permanent link">&para;</a></h3>
+<p>The <code>--access-log-path-mode</code> flag (or <code>COXSWAIN_ACCESS_LOG_PATH_MODE</code>) controls what the <code>path</code> field contains:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th><code>path</code> field content</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>full</code> (default)</td>
+<td>The concrete request path, e.g. <code>/users/42/orders/7</code></td>
+<td>Standard traffic analysis</td>
+</tr>
+<tr>
+<td><code>pattern</code></td>
+<td>The matched rule's registered path pattern, e.g. <code>/users/</code></td>
+<td>Cardinality reduction; the proxy holds this without config duplication</td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>Field omitted entirely</td>
+<td>Strict path redaction</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Prefer pipeline-side redaction</p>
+<p>Redacting at the log-collection pipeline is the architecturally correct default — it keeps the proxy emitting ground truth while centralising PII policy. Use <code>pattern</code> or <code>none</code> only when the pipeline genuinely cannot filter.</p>
+</div>
+<h3 id="filtering-access-logs">Filtering access logs<a class="headerlink" href="#filtering-access-logs" title="Permanent link">&para;</a></h3>
+<p>Access logs are emitted on the <code>coxswain_proxy::access</code> target, so they can be silenced independently of other logs:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Silence access logs, keep controller logs at INFO</span>
+--log<span class="o">=</span>info,coxswain_proxy::access<span class="o">=</span>off
+
+<span class="c1"># Or via environment variable</span>
+<span class="nv">COXSWAIN_LOG</span><span class="o">=</span>info,coxswain_proxy::access<span class="o">=</span>off
+</code></pre></div>
 <h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h2>
 <p>Coxswain uses structured logging via <code>tracing</code>. Configure the level with <code>--log</code> (or <code>COXSWAIN_LOG</code>):</p>
 <table>
@@ -1315,31 +1513,23 @@
 </tbody>
 </table>
 <h2 id="prometheus-scrape-configuration">Prometheus scrape configuration<a class="headerlink" href="#prometheus-scrape-configuration" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Prometheus operator (ServiceMonitor)</label><label for="__tabbed_1_2">Prometheus scrape_configs</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Prometheus operator (PodMonitor)</label><label for="__tabbed_1_2">Prometheus scrape_configs</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>Coxswain installs two Services that share the <code>app.kubernetes.io/name: coxswain</code> label: the proxy Service (<code>http</code>, <code>https</code> ports) and the internal Service (<code>health</code>, <code>admin</code> ports). The ServiceMonitor below selects both, but <code>port: admin</code> only matches the internal Service, so the proxy Service produces no scrape targets and is silently ignored.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">monitoring.coreos.com/v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceMonitor</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-system</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
-<span class="w">  </span><span class="nt">endpoints</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
-<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/metrics</span>
-<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15s</span>
-</code></pre></div>
+<p>The chart ships a <code>PodMonitor</code> template gated on <code>.Values.podMonitor.enabled</code>. Enable it with <code>--set podMonitor.enabled=true</code> (or <code>podMonitor.enabled: true</code> in your values file). One selector matches both the shared-proxy pool and the operator-rendered dedicated proxies; the relabel block injects <code>gateway_name</code> / <code>gateway_namespace</code> on dedicated metrics only (see <a href="#dedicated-mode-label-injection">Dedicated-mode label injection</a> above).</p>
+<p>Why <code>PodMonitor</code> and not <code>ServiceMonitor</code>? Dedicated-proxy Services don't expose port <code>8082</code> — adding it would leak <code>/metrics</code> onto the LoadBalancer IP. PodMonitor scrapes the pod directly (port <code>admin</code>, <code>:8082</code>) and skips that issue entirely. Shared-pool pods are also discovered the same way, so one resource covers every coxswain proxy in the cluster.</p>
+<p>Hardened installs that pin <code>podMonitorSelector</code> on the <code>Prometheus</code> resource must update it to include the chart's labels (<code>app.kubernetes.io/name: coxswain</code>) — by default kube-prometheus-stack matches both <code>ServiceMonitor</code> and <code>PodMonitor</code> broadly.</p>
 </div>
 <div class="tabbed-block">
-<p>Replace <code>&lt;release&gt;</code> with the Helm release name (or use <code>coxswain-shared-proxy-internal</code> for raw-manifest installs):</p>
+<p>Replace <code>&lt;release&gt;</code> with the Helm release name (or use the literal <code>coxswain-shared-proxy-internal</code> for raw-manifest installs). Dedicated-proxy metrics aren't reachable through this Service surface — use the PodMonitor path for full coverage.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">scrape_configs</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-shared</span>
 <span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;&lt;release&gt;-internal.coxswain-system.svc:8082&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/metrics</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-controller</span>
+<span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;&lt;release&gt;-controller.coxswain-system.svc:8082&#39;</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/metrics</span>
 </code></pre></div>
 </div>

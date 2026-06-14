@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/guides/tls/">
       
       
-        <link rel="prev" href="../gateway-api/">
+        <link rel="prev" href="../dedicated-mode/">
       
       
         <link rel="next" href="../running-in-production/">
@@ -666,6 +666,27 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dedicated-mode Gateways
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1254,7 +1275,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w">
 </code></pre></div>
 <p>Check the routing table and logs:</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://localhost:8082/routes
-curl<span class="w"> </span>http://localhost:8082/status
+curl<span class="w"> </span>http://localhost:8082/api/v1/health
 </code></pre></div>
 <p>A missing or malformed Secret produces a warning log but does not affect HTTP routes.</p>
 
