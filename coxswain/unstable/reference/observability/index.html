@@ -1518,7 +1518,7 @@
 <span class="p">}</span>
 </code></pre></div>
 <h2 id="routes-endpoint">Routes endpoint<a class="headerlink" href="#routes-endpoint" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 </code></pre></div>
 <p>Returns the active routing table as JSON — all hostname entries, their rules, and resolved upstream addresses. Useful for debugging routing decisions without reading raw Kubernetes objects.</p>
 <h2 id="access-logs">Access logs<a class="headerlink" href="#access-logs" title="Permanent link">&para;</a></h2>
