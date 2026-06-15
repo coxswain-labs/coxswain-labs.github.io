@@ -695,6 +695,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/ingress-annotations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annotations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1307,6 +1328,11 @@
 <td><code>coxswain_proxy_upstream_errors_total</code></td>
 <td>Counter</td>
 <td><code>listener</code>, <code>route</code>, <code>upstream</code>, <code>error_type</code> (<code>connect</code>/<code>timeout</code>/<code>refused</code>/<code>tls</code>/<code>5xx</code>/<code>other</code>)</td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_upstream_retries_total</code></td>
+<td>Counter</td>
+<td><code>listener</code>, <code>route</code>, <code>upstream</code>, <code>condition</code> (<code>connect-failure</code>/<code>timeout</code>/<code>5xx</code>)</td>
 </tr>
 <tr>
 <td><code>coxswain_proxy_active_upstreams</code></td>
