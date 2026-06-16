@@ -2,74 +2,74 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/architecture/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/faq/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/getting-started/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/guides/dedicated-mode/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/guides/gateway-api/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/guides/ingress-annotations/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/guides/ingress/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/guides/running-in-production/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/guides/tls/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/guides/troubleshooting/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/guides/verifying-releases/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/installation/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/installation/helm/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/installation/manifests/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/reference/configuration/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
     <url>
          <loc>https://docs.coxswain-labs.dev/coxswain/stable/reference/observability/</loc>
-         <lastmod>2026-06-15</lastmod>
+         <lastmod>2026-06-16</lastmod>
     </url>
 </urlset>
