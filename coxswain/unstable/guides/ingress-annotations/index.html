@@ -850,6 +850,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="rewrite-target">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#capture-group-substitution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capture-group substitution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-regex" class="md-nav__link">
+    <span class="md-ellipsis">
+      use-regex
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1270,7 +1294,7 @@
 
 
 <h1 id="ingress-annotations">Ingress annotations<a class="headerlink" href="#ingress-annotations" title="Permanent link">&para;</a></h1>
-<p>Coxswain supports the <code>ingress.coxswain-labs.dev/*</code> annotation namespace for per-Ingress configuration. All annotations are optional and apply uniformly to every rule and path in the Ingress. Invalid values emit a controller warning and are treated as absent — the Ingress is never rejected.</p>
+<p>Coxswain supports the <code>ingress.coxswain-labs.dev/*</code> annotation namespace for per-Ingress configuration. All annotations are optional and are set once per Ingress; most apply uniformly to every rule and path (<code>use-regex</code> additionally keys off each rule's <code>pathType</code>). Invalid values emit a controller warning and are treated as absent — the Ingress is never rejected.</p>
 <h2 id="quick-reference">Quick reference<a class="headerlink" href="#quick-reference" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1323,6 +1347,12 @@
 <td>string</td>
 <td><code>HTTP</code></td>
 <td><code>"GRPC"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/use-regex</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
 </tr>
 </tbody>
 </table>
@@ -1394,7 +1424,52 @@
 <span class="w">                </span><span class="nt">port</span><span class="p">:</span>
 <span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
 </code></pre></div>
-<p>Regex capture-group substitutions (e.g. <code>/v2$1</code>) are not yet supported and are tracked separately.</p>
+<h3 id="capture-group-substitution">Capture-group substitution<a class="headerlink" href="#capture-group-substitution" title="Permanent link">&para;</a></h3>
+<p>On a <strong>regex path</strong> (<code>pathType: ImplementationSpecific</code> with <a href="#use-regex"><code>use-regex: "true"</code></a>), <code>rewrite-target</code> may reference capture groups from the path pattern with <code>$1</code>…<code>$n</code>. The groups are expanded against the matched request path:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/use-regex</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/$1</span><span class="w">        </span><span class="c1"># GET /svc/users/42 → upstream GET /users/42</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/svc/(.*)</span><span class="w">            </span><span class="c1"># paths must start with &quot;/&quot; (no leading ^)</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<p>A <code>$n</code> with no corresponding group expands to the empty string. On a non-regex path (<code>Prefix</code>/<code>Exact</code>) <code>rewrite-target</code> is always a literal replacement — <code>$1</code> is treated as the literal text <code>$1</code>, not a capture reference.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>rewrite-target</code> is a single per-Ingress value shared by every path in the Ingress. Two paths in one Ingress cannot have different rewrite templates — split them across Ingresses, or use a Gateway API <code>HTTPRoute</code> (which has per-rule filters), if you need that.</p>
+</div>
+<h2 id="use-regex"><code>use-regex</code><a class="headerlink" href="#use-regex" title="Permanent link">&para;</a></h2>
+<p>Opt in to <strong>regular-expression path matching</strong> for this Ingress's <code>pathType: ImplementationSpecific</code> rules. With <code>use-regex: "true"</code>, the <code>path</code> of each such rule is compiled and matched as a regular expression (the same engine as Gateway API <code>HTTPRoute</code> <code>RegularExpression</code> matches); without it (the default), <code>ImplementationSpecific</code> paths collapse to <code>Prefix</code> matching, so existing manifests are unchanged.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/use-regex</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/item/[0-9]+</span><span class="w">        </span><span class="c1"># regex: matches /item/42, not /item/abc</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<p><strong>Per-path, not per-host.</strong> <code>use-regex</code> is an Ingress-wide <em>enable</em>; the per-path lever is the standard <code>pathType</code> field. Only <code>ImplementationSpecific</code> rules become regex — <code>Prefix</code> and <code>Exact</code> rules in the same Ingress are unaffected. This differs from nginx-ingress, where <code>use-regex</code> (or <code>rewrite-target</code>) on any path forces regex matching across <strong>all</strong> paths of the host; Coxswain never does this.</p>
+<p><strong>Matching semantics.</strong> The pattern is matched unanchored and is evaluated <strong>after</strong> exact and prefix routes on the same host — a literal <code>Prefix</code>/<code>Exact</code> rule that also matches wins over a regex rule. The Kubernetes API server requires every Ingress path to start with <code>/</code>, so a regex path is always rooted there (<code>/svc/(.*)</code>, not <code>^/svc/(.*)</code>); use <code>$</code> to anchor the end.</p>
+<p><strong>Invalid patterns.</strong> A path whose value is not a valid regular expression is skipped with a controller <code>WARN</code>; the rest of the Ingress (and the routing table) is unaffected.</p>
+<p><strong>Migrating from nginx-ingress.</strong> The canonical nginx pairing — <code>nginx.ingress.kubernetes.io/use-regex</code> + <code>nginx.ingress.kubernetes.io/rewrite-target: /$2</code> with <code>pathType: ImplementationSpecific</code> — maps directly onto the Coxswain annotations of the same names. See <a href="#capture-group-substitution">capture-group substitution</a>.</p>
 <h2 id="backend-protocol"><code>backend-protocol</code><a class="headerlink" href="#backend-protocol" title="Permanent link">&para;</a></h2>
 <p>Overrides the upstream wire protocol derived from the Service <code>appProtocol</code> field. Explicit operator intent always wins over <code>appProtocol</code> inference.</p>
 <table>
