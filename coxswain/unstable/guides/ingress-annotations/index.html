@@ -861,6 +861,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#class-level-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class-level defaults
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1413,6 +1422,43 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><code>GRPC</code> maps to cleartext HTTP/2 (<code>h2c</code>). For gRPC over TLS, use <code>backend-protocol: HTTPS</code> — gRPC-over-TLS support via a single annotation value is tracked separately.</p>
+</div>
+<h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
+<p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainIngressClassParameters</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">public-defaults</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-system</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">defaultAnnotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/connect-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10s&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry-on</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;connect-failure,5xx&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/max-retries</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2&quot;</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IngressClass</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">controller</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-labs.dev/gateway-controller</span>
+<span class="w">  </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainIngressClassParameters</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">public-defaults</span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-system</span>
+<span class="w">    </span><span class="nt">scope</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span>
+</code></pre></div>
+<p><strong>Precedence</strong> (highest wins, per key):</p>
+<ol>
+<li>The annotation set on the Ingress itself.</li>
+<li>The class default from <code>spec.defaultAnnotations</code>.</li>
+<li>The built-in Coxswain default.</li>
+</ol>
+<p>The merge is per-key: an Ingress that sets only <code>connect-timeout</code> still inherits the class's <code>retry-on</code> and <code>max-retries</code>. The keys and value formats in <code>defaultAnnotations</code> are exactly the per-Ingress ones; an invalid value emits a warning and falls back to the built-in default, the same as if it were set directly on an Ingress (an empty string <code>""</code> is <strong>not</strong> an "unset" override — it parses, warns, and falls back).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>CoxswainIngressClassParameters</code> is namespaced, so <code>spec.parameters</code> must set <code>scope: Namespace</code> and a <code>namespace</code>. A reference that is missing, names a different kind, or omits its namespace is logged as a warning and ignored — affected Ingresses still route with built-in defaults rather than being rejected. Because <code>IngressClass</code> has no status subresource, this condition is surfaced in the controller log, not on the object.</p>
 </div>
 
 
