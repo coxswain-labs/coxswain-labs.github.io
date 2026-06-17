@@ -877,6 +877,132 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#request-header-modification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request header modification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Request header modification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-header-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      request-header-set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-header-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      request-header-add
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-header-remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      request-header-remove
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response-header-modification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response header modification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Response header modification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#response-header-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      response-header-set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-header-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      response-header-add
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-header-remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      response-header-remove
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#request-redirect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request redirect
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force-https-redirect-ssl-redirect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Force-HTTPS redirect (ssl-redirect)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Force-HTTPS redirect (ssl-redirect)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ssl-redirect" class="md-nav__link">
+    <span class="md-ellipsis">
+      ssl-redirect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssl-redirect-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      ssl-redirect-code
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#backend-protocol" class="md-nav__link">
     <span class="md-ellipsis">
       backend-protocol
@@ -1343,16 +1469,94 @@
 <td><code>"/v2"</code></td>
 </tr>
 <tr>
-<td><code>ingress.coxswain-labs.dev/backend-protocol</code></td>
-<td>string</td>
-<td><code>HTTP</code></td>
-<td><code>"GRPC"</code></td>
-</tr>
-<tr>
 <td><code>ingress.coxswain-labs.dev/use-regex</code></td>
 <td>boolean</td>
 <td><code>false</code></td>
 <td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/request-header-set</code></td>
+<td>newline-list</td>
+<td><em>none</em></td>
+<td><code>"X-Via: coxswain"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/request-header-add</code></td>
+<td>newline-list</td>
+<td><em>none</em></td>
+<td><code>"X-Tag: v2"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/request-header-remove</code></td>
+<td>csv</td>
+<td><em>none</em></td>
+<td><code>"X-Forwarded-For"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/response-header-set</code></td>
+<td>newline-list</td>
+<td><em>none</em></td>
+<td><code>"Cache-Control: no-store"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/response-header-add</code></td>
+<td>newline-list</td>
+<td><em>none</em></td>
+<td><code>"X-Frame-Options: DENY"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/response-header-remove</code></td>
+<td>csv</td>
+<td><em>none</em></td>
+<td><code>"Server"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-scheme</code></td>
+<td>string</td>
+<td><em>none</em></td>
+<td><code>"https"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-hostname</code></td>
+<td>string</td>
+<td><em>none</em></td>
+<td><code>"www.example.com"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-port</code></td>
+<td>integer</td>
+<td><em>none</em></td>
+<td><code>"443"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-path</code></td>
+<td>string</td>
+<td><em>none</em></td>
+<td><code>"/v2"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-status-code</code></td>
+<td>integer</td>
+<td><code>302</code></td>
+<td><code>"301"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/ssl-redirect</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/ssl-redirect-code</code></td>
+<td>integer</td>
+<td><code>308</code></td>
+<td><code>"301"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/backend-protocol</code></td>
+<td>string</td>
+<td><code>HTTP</code></td>
+<td><code>"GRPC"</code></td>
 </tr>
 </tbody>
 </table>
@@ -1470,6 +1674,102 @@
 <p><strong>Matching semantics.</strong> The pattern is matched unanchored and is evaluated <strong>after</strong> exact and prefix routes on the same host — a literal <code>Prefix</code>/<code>Exact</code> rule that also matches wins over a regex rule. The Kubernetes API server requires every Ingress path to start with <code>/</code>, so a regex path is always rooted there (<code>/svc/(.*)</code>, not <code>^/svc/(.*)</code>); use <code>$</code> to anchor the end.</p>
 <p><strong>Invalid patterns.</strong> A path whose value is not a valid regular expression is skipped with a controller <code>WARN</code>; the rest of the Ingress (and the routing table) is unaffected.</p>
 <p><strong>Migrating from nginx-ingress.</strong> The canonical nginx pairing — <code>nginx.ingress.kubernetes.io/use-regex</code> + <code>nginx.ingress.kubernetes.io/rewrite-target: /$2</code> with <code>pathType: ImplementationSpecific</code> — maps directly onto the Coxswain annotations of the same names. See <a href="#capture-group-substitution">capture-group substitution</a>.</p>
+<h2 id="request-header-modification">Request header modification<a class="headerlink" href="#request-header-modification" title="Permanent link">&para;</a></h2>
+<p>Three annotations control the request headers forwarded to the upstream pod. All three are applied together in a single pass — order within a pass is: set, add, then remove.</p>
+<h3 id="request-header-set"><code>request-header-set</code><a class="headerlink" href="#request-header-set" title="Permanent link">&para;</a></h3>
+<p>Overwrites the named header(s) on the upstream request, regardless of what the client sent. The annotation value is a <strong>newline-separated</strong> list of <code>Name: Value</code> pairs (one per line). This format preserves comma-bearing values such as <code>Cache-Control: no-cache, no-store</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/request-header-set</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">X-Via: coxswain</span>
+<span class="w">  </span><span class="no">X-Forwarded-Proto: https</span>
+</code></pre></div>
+<h3 id="request-header-add"><code>request-header-add</code><a class="headerlink" href="#request-header-add" title="Permanent link">&para;</a></h3>
+<p>Appends the named header(s) on the upstream request without removing any existing value. Same newline-separated <code>Name: Value</code> format as <code>request-header-set</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/request-header-add</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Tag:</span><span class="nv"> </span><span class="s">v2&quot;</span>
+</code></pre></div>
+<h3 id="request-header-remove"><code>request-header-remove</code><a class="headerlink" href="#request-header-remove" title="Permanent link">&para;</a></h3>
+<p>Removes the named header(s) from the upstream request before forwarding. The annotation value is a <strong>comma-separated</strong> list of header names (names never contain commas).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/request-header-remove</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Real-IP,</span><span class="nv"> </span><span class="s">X-Forwarded-For&quot;</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An invalid header name or value in <code>request-header-set</code> / <code>request-header-add</code> causes the entire <code>RequestHeaderModifier</code> (all three keys combined) to be silently dropped with a controller warning; the Ingress itself is not rejected and still routes normally.</p>
+</div>
+<h2 id="response-header-modification">Response header modification<a class="headerlink" href="#response-header-modification" title="Permanent link">&para;</a></h2>
+<p>Mirror of the request header annotations, applied to the downstream response before delivery to the client. Apply order is the same: set, add, remove.</p>
+<h3 id="response-header-set"><code>response-header-set</code><a class="headerlink" href="#response-header-set" title="Permanent link">&para;</a></h3>
+<p>Overwrites the named header(s) on the downstream response. Newline-separated <code>Name: Value</code> pairs.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/response-header-set</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">Cache-Control: no-store</span>
+<span class="w">  </span><span class="no">X-Content-Type-Options: nosniff</span>
+</code></pre></div>
+<h3 id="response-header-add"><code>response-header-add</code><a class="headerlink" href="#response-header-add" title="Permanent link">&para;</a></h3>
+<p>Appends the named header(s) to the downstream response.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/response-header-add</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Frame-Options:</span><span class="nv"> </span><span class="s">DENY&quot;</span>
+</code></pre></div>
+<h3 id="response-header-remove"><code>response-header-remove</code><a class="headerlink" href="#response-header-remove" title="Permanent link">&para;</a></h3>
+<p>Removes the named header(s) from the downstream response. Comma-separated header names.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/response-header-remove</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Server,</span><span class="nv"> </span><span class="s">X-Powered-By&quot;</span>
+</code></pre></div>
+<h2 id="request-redirect">Request redirect<a class="headerlink" href="#request-redirect" title="Permanent link">&para;</a></h2>
+<p>Six annotations configure an HTTP redirect response. Any combination of the fields below may be omitted; omitted fields are inherited from the original request (hostname is preserved, path is preserved, etc.). The redirect fires at the proxy layer — the upstream backend is never reached.</p>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>redirect-scheme</code></td>
+<td><code>http</code> or <code>https</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>redirect-hostname</code></td>
+<td>hostname string</td>
+<td>replaces the Host header</td>
+</tr>
+<tr>
+<td><code>redirect-port</code></td>
+<td>port integer</td>
+<td>explicit port in the Location</td>
+</tr>
+<tr>
+<td><code>redirect-path</code></td>
+<td>absolute path</td>
+<td>full path replacement</td>
+</tr>
+<tr>
+<td><code>redirect-status-code</code></td>
+<td><code>301</code>, <code>302</code>, <code>307</code>, <code>308</code></td>
+<td>defaults to <code>302</code></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/redirect-scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https&quot;</span>
+<span class="nt">ingress.coxswain-labs.dev/redirect-hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;www.example.com&quot;</span>
+<span class="nt">ingress.coxswain-labs.dev/redirect-status-code</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;301&quot;</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>redirect-*</code> annotations and <code>ssl-redirect</code> are mutually exclusive. If any <code>redirect-*</code> key is present, <code>ssl-redirect</code> is ignored. This avoids emitting two <code>RequestRedirect</code> filters on the same route.</p>
+</div>
+<h2 id="force-https-redirect-ssl-redirect">Force-HTTPS redirect (<code>ssl-redirect</code>)<a class="headerlink" href="#force-https-redirect-ssl-redirect" title="Permanent link">&para;</a></h2>
+<h3 id="ssl-redirect"><code>ssl-redirect</code><a class="headerlink" href="#ssl-redirect" title="Permanent link">&para;</a></h3>
+<p>When set to <code>"true"</code>, every request on the <strong>HTTP listener</strong> for this Ingress receives a redirect to the same URL rewritten to <code>https://</code>. The HTTPS listener entry is unaffected — requests already over TLS are served normally.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/ssl-redirect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<h3 id="ssl-redirect-code"><code>ssl-redirect-code</code><a class="headerlink" href="#ssl-redirect-code" title="Permanent link">&para;</a></h3>
+<p>Overrides the redirect status code issued by <code>ssl-redirect</code>. Accepted values: <code>301</code>, <code>302</code>, <code>307</code>, <code>308</code>. Defaults to <code>308</code> (Permanent Redirect, preserves the request method).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/ssl-redirect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="nt">ingress.coxswain-labs.dev/ssl-redirect-code</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;301&quot;</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>ssl-redirect</code> is a shortcut for a scheme-only <code>RequestRedirect</code> filter scoped to the HTTP listener port. It is equivalent to setting <code>redirect-scheme: https</code> with <code>redirect-status-code: 308</code>, but only fires on port 80 (or whichever HTTP port the controller is configured with). Requests already arriving on the TLS listener are not redirected, regardless of the annotation.</p>
+</div>
 <h2 id="backend-protocol"><code>backend-protocol</code><a class="headerlink" href="#backend-protocol" title="Permanent link">&para;</a></h2>
 <p>Overrides the upstream wire protocol derived from the Service <code>appProtocol</code> field. Explicit operator intent always wins over <code>appProtocol</code> inference.</p>
 <table>
