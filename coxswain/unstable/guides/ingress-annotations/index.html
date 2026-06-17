@@ -1081,6 +1081,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rate limiting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rate limiting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rate-limit-rps" class="md-nav__link">
+    <span class="md-ellipsis">
+      rate-limit-rps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rate-limit-burst" class="md-nav__link">
+    <span class="md-ellipsis">
+      rate-limit-burst
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rate-limit-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      rate-limit-by
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#class-level-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       Class-level defaults
@@ -1275,6 +1317,27 @@
   
   <span class="md-ellipsis">
     TLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate limiting
   </span>
   
 
@@ -1663,6 +1726,24 @@
 <td><em>none</em></td>
 <td><code>"X-Session-Id"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/rate-limit-rps</code></td>
+<td>integer</td>
+<td><em>none</em> (disabled)</td>
+<td><code>"100"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/rate-limit-burst</code></td>
+<td>integer</td>
+<td><code>0</code></td>
+<td><code>"50"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/rate-limit-by</code></td>
+<td><code>ip</code> or <code>header:Name</code></td>
+<td><code>"ip"</code></td>
+<td><code>"header:X-Api-Key"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -2018,6 +2099,48 @@
 <p class="admonition-title">Note</p>
 <p>The Gateway API binding for session persistence is tracked in <a href="https://github.com/coxswain-labs/coxswain/issues/355">#355</a>. It is deferred because the only Gateway API surface for session persistence in our pinned crate is experimental-only (which Coxswain never compiles into release images), and the <code>BackendLBPolicy</code> resource originally proposed is not an upstream Gateway API type. Today the <code>session-*</code> annotations are the Ingress-only entry point.</p>
 </div>
+<h2 id="rate-limiting">Rate limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h2>
+<p>Caps the request rate accepted from each client before forwarding to the upstream. Over-limit requests are rejected with <strong>429 Too Many Requests</strong> and a <code>Retry-After</code> header (in whole seconds) telling the client when to retry. See the <a href="../rate-limiting/">Rate limiting guide</a> for full semantics and Gateway API usage.</p>
+<h3 id="rate-limit-rps"><code>rate-limit-rps</code><a class="headerlink" href="#rate-limit-rps" title="Permanent link">&para;</a></h3>
+<p>Sustained request rate in requests per second, per client. Must be a positive integer &gt;= 1. Absent or invalid values disable rate limiting for the route (<strong>fail-open</strong>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;100&quot;</span>
+</code></pre></div>
+<h3 id="rate-limit-burst"><code>rate-limit-burst</code><a class="headerlink" href="#rate-limit-burst" title="Permanent link">&para;</a></h3>
+<p>Number of requests above the sustained rate that a client may send in a short burst when it has been idle. The total burst capacity is <code>rps + burst</code> — a client that has accumulated headroom can send that many requests before being throttled. Defaults to <code>0</code> (no burst above sustained rate).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-burst</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;50&quot;</span>
+</code></pre></div>
+<h3 id="rate-limit-by"><code>rate-limit-by</code><a class="headerlink" href="#rate-limit-by" title="Permanent link">&para;</a></h3>
+<p>Selects the dimension used to identify each client for its own rate-limit bucket. Two modes:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"ip"</code> (default)</td>
+<td>One bucket per real client IP (or L4 peer when not behind a PROXY-protocol LB)</td>
+</tr>
+<tr>
+<td><code>"header:Name"</code></td>
+<td>One bucket per unique value of the named request header</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-by</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;header:X-Api-Key&quot;</span>
+</code></pre></div>
+<p>When the keying dimension is not available for a request (undeterminable IP, or absent header on a header-keyed route) the request is <strong>admitted without counting</strong> (<strong>fail-open</strong>) — a missing key never blocks traffic.</p>
+<p>An unrecognised <code>rate-limit-by</code> value emits a controller warning and falls back to <code>"ip"</code>.</p>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
