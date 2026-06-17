@@ -1021,6 +1021,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#allow-source-range" class="md-nav__link">
+    <span class="md-ellipsis">
+      allow-source-range
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#class-level-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       Class-level defaults
@@ -1573,6 +1582,12 @@
 <td><em>none</em></td>
 <td><code>"8m"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/allow-source-range</code></td>
+<td>cidr-list</td>
+<td><em>none</em></td>
+<td><code>"10.0.0.0/8,192.168.1.0/24"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -1853,6 +1868,21 @@
 <li>For chunked or streaming uploads (no <code>Content-Length</code>), the proxy counts bytes as they arrive and aborts with 413 the moment the running total crosses the limit.</li>
 </ul>
 <p>Omitting the annotation imposes no limit. An unparseable value (e.g. <code>"8mb"</code>, <code>"lots"</code>) emits a controller warning and is treated as absent — the route serves with no body cap rather than being rejected (<strong>fail-open</strong>).</p>
+<h2 id="allow-source-range"><code>allow-source-range</code><a class="headerlink" href="#allow-source-range" title="Permanent link">&para;</a></h2>
+<p>Restricts the Ingress to a set of client source IPs. A request whose client IP falls outside <strong>every</strong> listed range is rejected with <strong>403 Forbidden</strong> before any upstream connection is opened — the equivalent of nginx-ingress's <code>whitelist-source-range</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/allow-source-range</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10.0.0.0/8,192.168.1.0/24&quot;</span>
+</code></pre></div>
+<p>The value is a comma-separated list of IPv4/IPv6 CIDR blocks. A bare address without a prefix (<code>10.0.0.1</code>, <code>2001:db8::1</code>) is accepted as a host route (<code>/32</code> / <code>/128</code>). Whitespace around entries is trimmed.</p>
+<p><strong>Which IP is matched.</strong> When the proxy sits behind a load balancer speaking the <a href="../../reference/configuration/">PROXY protocol</a> (<code>--proxy-accept-proxy-protocol</code>), the match uses the <strong>real client IP</strong> carried in the PROXY header. Otherwise it uses the L4 peer address of the connection. Deploy behind a PROXY-protocol-aware load balancer (or set <code>externalTrafficPolicy: Local</code>) so the proxy observes real client IPs rather than the LB's address.</p>
+<p><strong>Matching is strict.</strong> CIDR membership is exact per address family — an IPv4-mapped IPv6 client (<code>::ffff:10.0.0.1</code>) does <strong>not</strong> match an IPv4 CIDR. List both families if your clients can arrive over either.</p>
+<p><strong>Failure handling:</strong></p>
+<ul>
+<li>An invalid CIDR token emits a controller warning and is <strong>skipped</strong>; the remaining valid ranges still apply.</li>
+<li>If <strong>every</strong> token is invalid (or the annotation is absent/empty), the allow-list is treated as absent — <strong>all</strong> source IPs are admitted (<strong>fail-open</strong> at parse time, so a typo never locks out all traffic).</li>
+<li>Once an allow-list is in effect, a request whose source IP cannot be determined is <strong>denied</strong> (<strong>fail-closed</strong> at request time) — an un-attributable client must not pass a security control.</li>
+</ul>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
