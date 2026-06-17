@@ -1030,6 +1030,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cache-enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      cache-enabled
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#class-level-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       Class-level defaults
@@ -1588,6 +1597,12 @@
 <td><em>none</em></td>
 <td><code>"10.0.0.0/8,192.168.1.0/24"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/cache-enabled</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -1883,6 +1898,30 @@
 <li>If <strong>every</strong> token is invalid (or the annotation is absent/empty), the allow-list is treated as absent — <strong>all</strong> source IPs are admitted (<strong>fail-open</strong> at parse time, so a typo never locks out all traffic).</li>
 <li>Once an allow-list is in effect, a request whose source IP cannot be determined is <strong>denied</strong> (<strong>fail-closed</strong> at request time) — an un-attributable client must not pass a security control.</li>
 </ul>
+<h2 id="cache-enabled"><code>cache-enabled</code><a class="headerlink" href="#cache-enabled" title="Permanent link">&para;</a></h2>
+<p>Opts the Ingress into RFC 7234 HTTP response caching. When <code>"true"</code>, the proxy serves cacheable responses from an in-memory cache instead of contacting the upstream on every request — cutting upstream load and client latency for static assets and public API responses.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/cache-enabled</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<p><strong>What gets cached.</strong> Caching is conservative by design — only responses the upstream explicitly marks fresh are stored:</p>
+<ul>
+<li>Only <code>GET</code> and <code>HEAD</code> responses are eligible.</li>
+<li>The response must carry explicit freshness: <code>Cache-Control: max-age=…</code> or <code>Expires</code>. A response with neither is <strong>not</strong> cached (there is no implicit TTL).</li>
+<li><code>Cache-Control: no-store</code> and <code>no-cache</code> on the response are honoured — such responses are never stored.</li>
+<li><code>Vary</code> is respected: responses are keyed by the request values of the listed headers, so content negotiation stays correct.</li>
+</ul>
+<p><strong>Bypass.</strong> Requests carrying an <code>Authorization</code> or <code>Cookie</code> header bypass the cache entirely — per-user responses must never be served to another client.</p>
+<p><strong>Served-from-cache responses</strong> carry an <code>Age</code> header (seconds since the entry was stored), per RFC 7234.</p>
+<p><strong>Cache size.</strong> The cache is shared across all cache-enabled routes in a proxy and bounded by <code>--cache-max-size</code> (default <code>100m</code>, binary units; <code>0</code> disables caching). When full, least-recently-used entries are evicted. See the <a href="../../reference/configuration/">configuration reference</a>.</p>
+<p><strong>Purging.</strong> A cached entry can be evicted on demand via the proxy admin port:</p>
+<div class="highlight"><pre><span></span><code>DELETE /cache/{host}/{path}
+</code></pre></div>
+<p>For example <code>DELETE /cache/cache.example.com/assets/app.js</code> purges the <code>GET cache.example.com/assets/app.js</code> entry. The response reports whether an entry was removed (<code>{"purged": true}</code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Gateway API binding for caching (an <code>HTTPRoute</code> <code>ExtensionRef</code> filter pointing at a <code>CoxswainCachePolicy</code>) is tracked separately; today <code>cache-enabled</code> is the Ingress-only entry point.</p>
+</div>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>

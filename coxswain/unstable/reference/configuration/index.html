@@ -1262,6 +1262,12 @@
 <td>Port for admin, metrics, and diagnostics endpoints</td>
 </tr>
 <tr>
+<td><code>COXSWAIN_CACHE_MAX_SIZE</code></td>
+<td><code>--cache-max-size</code></td>
+<td><code>100m</code></td>
+<td>Maximum total size of the in-memory response cache shared by routes with <code>ingress.coxswain-labs.dev/cache-enabled</code>; bare byte count or binary suffix (<code>k</code>/<code>m</code>/<code>g</code>); <code>0</code> disables caching. See <a href="../../guides/ingress-annotations/#cache-enabled">Ingress annotations</a></td>
+</tr>
+<tr>
 <td><code>COXSWAIN_CONTROLLER_LEASE_RENEW_INTERVAL</code></td>
 <td><code>--controller-lease-renew-interval</code></td>
 <td><code>5s</code></td>
