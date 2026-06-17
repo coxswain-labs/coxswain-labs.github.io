@@ -1039,6 +1039,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#session-affinity-sticky-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Session affinity (sticky sessions)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Session affinity (sticky sessions)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-affinity-cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      session-affinity: cookie
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-affinity-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      session-affinity: header
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recovery and limits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#class-level-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       Class-level defaults
@@ -1603,6 +1645,24 @@
 <td><code>false</code></td>
 <td><code>"true"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/session-affinity</code></td>
+<td><code>cookie</code> or <code>header</code></td>
+<td><em>none</em></td>
+<td><code>"cookie"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/session-cookie-name</code></td>
+<td>string</td>
+<td><code>__coxswain_session</code></td>
+<td><code>"SESSIONID"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/session-header</code></td>
+<td>string</td>
+<td><em>none</em></td>
+<td><code>"X-Session-Id"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -1921,6 +1981,42 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The Gateway API binding for caching (an <code>HTTPRoute</code> <code>ExtensionRef</code> filter pointing at a <code>CoxswainCachePolicy</code>) is tracked separately; today <code>cache-enabled</code> is the Ingress-only entry point.</p>
+</div>
+<h2 id="session-affinity-sticky-sessions">Session affinity (sticky sessions)<a class="headerlink" href="#session-affinity-sticky-sessions" title="Permanent link">&para;</a></h2>
+<p>Pins each client to the same backend pod, so stateful workloads (in-memory sessions, WebSocket connections) keep reaching the endpoint that holds their state. A backend without these annotations stays on the default weighted round-robin.</p>
+<p>Affinity is <strong>stateless</strong> — there is no server-side session table. The pin is carried entirely in the request, so it works the same across proxy replicas and needs no coordination. Two modes:</p>
+<h3 id="session-affinity-cookie"><code>session-affinity: cookie</code><a class="headerlink" href="#session-affinity-cookie" title="Permanent link">&para;</a></h3>
+<p>The proxy injects a cookie on the first response identifying the chosen pod, and routes subsequent requests bearing that cookie back to it.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/session-affinity</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cookie&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/session-cookie-name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SESSIONID&quot;</span><span class="w">   </span><span class="c1"># optional</span>
+</code></pre></div>
+<ul>
+<li>The first request (no cookie) is load-balanced normally, then pinned: the response carries <code>Set-Cookie: &lt;name&gt;=&lt;token&gt;; Path=/; HttpOnly</code>. The token encodes the endpoint; no raw pod IP is exposed.</li>
+<li><code>session-cookie-name</code> sets the cookie name (default <code>__coxswain_session</code>). A name that is not a valid cookie token warns and falls back to the default.</li>
+<li>The cookie is a <strong>session cookie</strong> (no <code>Max-Age</code>); it lives for the browser session.</li>
+</ul>
+<h3 id="session-affinity-header"><code>session-affinity: header</code><a class="headerlink" href="#session-affinity-header" title="Permanent link">&para;</a></h3>
+<p>The value of a request header is hashed to consistently select a pod — no cookie is issued. Use this when the client already carries a stable identifier (a session token, an API key).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/session-affinity</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;header&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/session-header</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Session-Id&quot;</span>
+</code></pre></div>
+<ul>
+<li><code>session-header</code> is <strong>required</strong> in header mode; if it is missing or not a valid header name, affinity is disabled (warning) and the route round-robins.</li>
+<li>Selection uses <strong>rendezvous (HRW) hashing</strong> over the live endpoints, so a header value keeps its pod as long as that pod exists, and only the keys of a removed pod are redistributed.</li>
+<li>A request that does not carry the header round-robins (and never receives a cookie).</li>
+</ul>
+<h3 id="recovery-and-limits">Recovery and limits<a class="headerlink" href="#recovery-and-limits" title="Permanent link">&para;</a></h3>
+<ul>
+<li>If a pinned pod is <strong>removed or scaled away</strong>, the next request from that client no longer resolves to a live endpoint: it falls back to round-robin and (in cookie mode) re-establishes affinity with a fresh cookie.</li>
+<li>An unknown <code>session-affinity</code> value (anything other than <code>cookie</code>/<code>header</code>) warns and disables affinity — the Ingress still serves.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Gateway API binding for session persistence is tracked in <a href="https://github.com/coxswain-labs/coxswain/issues/355">#355</a>. It is deferred because the only Gateway API surface for session persistence in our pinned crate is experimental-only (which Coxswain never compiles into release images), and the <code>BackendLBPolicy</code> resource originally proposed is not an upstream Gateway API type. Today the <code>session-*</code> annotations are the Ingress-only entry point.</p>
 </div>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
