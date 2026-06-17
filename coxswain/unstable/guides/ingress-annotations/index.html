@@ -1012,6 +1012,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#max-body-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      max-body-size
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#class-level-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       Class-level defaults
@@ -1558,6 +1567,12 @@
 <td><code>HTTP</code></td>
 <td><code>"GRPC"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/max-body-size</code></td>
+<td>size</td>
+<td><em>none</em></td>
+<td><code>"8m"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -1798,6 +1813,46 @@
 <p class="admonition-title">Note</p>
 <p><code>GRPC</code> maps to cleartext HTTP/2 (<code>h2c</code>). For gRPC over TLS, use <code>backend-protocol: HTTPS</code> — gRPC-over-TLS support via a single annotation value is tracked separately.</p>
 </div>
+<h2 id="max-body-size"><code>max-body-size</code><a class="headerlink" href="#max-body-size" title="Permanent link">&para;</a></h2>
+<p>Caps the request body size. A request whose body exceeds the limit is rejected with <strong>413 Payload Too Large</strong> and never reaches the upstream.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/max-body-size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8m&quot;</span>
+</code></pre></div>
+<p>The value is a byte count, optionally suffixed with a binary unit (case-insensitive):</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"10485760"</code></td>
+<td>10485760 (bare byte count)</td>
+</tr>
+<tr>
+<td><code>"512k"</code></td>
+<td>512 × 1024</td>
+</tr>
+<tr>
+<td><code>"8m"</code></td>
+<td>8 × 1024²</td>
+</tr>
+<tr>
+<td><code>"1g"</code></td>
+<td>1 × 1024³</td>
+</tr>
+</tbody>
+</table>
+<p>Units are <strong>binary</strong> (<code>k</code> = 1024, <code>m</code> = 1024², <code>g</code> = 1024³), matching nginx-ingress's <code>proxy-body-size</code>.</p>
+<p>Enforcement is two-layered and never buffers the whole body:</p>
+<ul>
+<li>When the request declares a <code>Content-Length</code> larger than the limit, it is rejected up front — before any upstream connection is opened.</li>
+<li>For chunked or streaming uploads (no <code>Content-Length</code>), the proxy counts bytes as they arrive and aborts with 413 the moment the running total crosses the limit.</li>
+</ul>
+<p>Omitting the annotation imposes no limit. An unparseable value (e.g. <code>"8mb"</code>, <code>"lots"</code>) emits a controller warning and is treated as absent — the route serves with no body cap rather than being rejected (<strong>fail-open</strong>).</p>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
