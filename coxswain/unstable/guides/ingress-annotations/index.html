@@ -1021,6 +1021,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mirror-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      mirror-target
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mirror-target">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#body-mirroring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Body mirroring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Observability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#allow-source-range" class="md-nav__link">
     <span class="md-ellipsis">
       allow-source-range
@@ -1757,6 +1790,12 @@
 <td><code>"8m"</code></td>
 </tr>
 <tr>
+<td><code>ingress.coxswain-labs.dev/mirror-target</code></td>
+<td><code>svc.ns[:port]</code></td>
+<td><em>none</em></td>
+<td><code>"echo-b.default.svc:3000"</code></td>
+</tr>
+<tr>
 <td><code>ingress.coxswain-labs.dev/allow-source-range</code></td>
 <td>cidr-list</td>
 <td><em>none</em></td>
@@ -2114,6 +2153,54 @@
 <li>For chunked or streaming uploads (no <code>Content-Length</code>), the proxy counts bytes as they arrive and aborts with 413 the moment the running total crosses the limit.</li>
 </ul>
 <p>Omitting the annotation imposes no limit. An unparseable value (e.g. <code>"8mb"</code>, <code>"lots"</code>) emits a controller warning and is treated as absent — the route serves with no body cap rather than being rejected (<strong>fail-open</strong>).</p>
+<h2 id="mirror-target"><code>mirror-target</code><a class="headerlink" href="#mirror-target" title="Permanent link">&para;</a></h2>
+<p>Sends a <strong>fire-and-forget copy</strong> of every matched request to a secondary backend while the primary request completes normally. The mirror response is discarded entirely — the client only ever sees the primary backend's response. Mirror failures (connect error, timeout, bad response) are logged at <code>WARN</code> level and do not affect the primary.</p>
+<p><strong>Typical use cases</strong>: shadow-testing a new service version under live traffic, capturing request patterns for offline analysis, dark-launch evaluation.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/mirror-target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;echo-b.my-namespace.svc:3000&quot;</span>
+</code></pre></div>
+<p>The value is <code>&lt;service&gt;.&lt;namespace&gt;[.svc[.cluster.local]]:&lt;port&gt;</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Form</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Short</td>
+<td><code>echo-b.my-namespace:3000</code></td>
+</tr>
+<tr>
+<td><code>.svc</code> suffix</td>
+<td><code>echo-b.my-namespace.svc:3000</code></td>
+</tr>
+<tr>
+<td>FQDN</td>
+<td><code>echo-b.my-namespace.svc.cluster.local:3000</code></td>
+</tr>
+</tbody>
+</table>
+<p>The mirror target is resolved to pod endpoints at reconcile time (not per-request). If the Service does not exist or has no ready endpoints, a controller warning is emitted and the mirror is <strong>silently disabled</strong> — the primary route still serves. The Ingress is never rejected.</p>
+<p><strong>The target namespace must match the Ingress namespace.</strong> Cross-namespace references are rejected at reconcile time (controller warning + mirror disabled). An Ingress author can only shadow traffic to Services they own — they must not be able to send mirrored requests (which include request headers) to Services in other namespaces.</p>
+<h3 id="body-mirroring">Body mirroring<a class="headerlink" href="#body-mirroring" title="Permanent link">&para;</a></h3>
+<p>By default (without <code>max-body-size</code>) the mirror receives the request headers and an empty body. To mirror the full request body, set <code>max-body-size</code> on the same Ingress — the proxy buffers each request body up to the cap and includes it verbatim in the mirror sub-request:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/mirror-target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shadow-svc.my-namespace.svc:8080&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/max-body-size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1m&quot;</span>
+</code></pre></div>
+<p><code>max-body-size</code> already rejects requests exceeding the cap with 413, so the mirror buffer is inherently bounded — no additional memory risk is introduced.</p>
+<div class="admonition note">
+<p class="admonition-title">Body-mirroring for large payloads</p>
+<p>Stream-concurrent mirroring (mirror body as it arrives, no buffering) is planned (#360). Until then, mirror with a body cap is the recommended pattern for production use.</p>
+</div>
+<h3 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h3>
+<p>Every mirror sub-request appears in the <strong>proxy access log</strong> as a separate row with <code>mirror = true</code>. The row carries the same fields as a primary row (<code>host</code>, <code>path</code>, <code>upstream</code>, <code>status</code>) so mirror traffic is visible in any log aggregation pipeline.</p>
+<p>A mirror timeout of 5 s is applied per sub-request; the primary never waits for the mirror to finish.</p>
+<p><code>Authorization</code>, <code>Cookie</code>, and <code>Proxy-Authorization</code> headers are <strong>always stripped</strong> from mirror sub-requests. The mirror backend is a shadow endpoint whose trustworthiness is not guaranteed; forwarding user credentials to it would make it a credential-harvesting surface.</p>
 <h2 id="allow-source-range"><code>allow-source-range</code><a class="headerlink" href="#allow-source-range" title="Permanent link">&para;</a></h2>
 <p>Restricts the Ingress to a set of client source IPs. A request whose client IP falls outside <strong>every</strong> listed range is rejected with <strong>403 Forbidden</strong> before any upstream connection is opened — the equivalent of nginx-ingress's <code>whitelist-source-range</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
