@@ -1123,6 +1123,66 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-url
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-timeout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-response-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-response-headers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-always-set-cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-always-set-cookie
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-basic-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-basic-secret
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#class-level-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       Class-level defaults
@@ -1744,6 +1804,36 @@
 <td><code>"ip"</code></td>
 <td><code>"header:X-Api-Key"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-url</code></td>
+<td>URL</td>
+<td><em>none</em></td>
+<td><code>"http://auth.ns.svc/auth"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-timeout</code></td>
+<td>duration</td>
+<td><code>"2s"</code></td>
+<td><code>"500ms"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-response-headers</code></td>
+<td>csv</td>
+<td><em>none</em></td>
+<td><code>"X-Auth-User"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-always-set-cookie</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-basic-secret</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-htpasswd"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -2141,6 +2231,73 @@
 </code></pre></div>
 <p>When the keying dimension is not available for a request (undeterminable IP, or absent header on a header-keyed route) the request is <strong>admitted without counting</strong> (<strong>fail-open</strong>) — a missing key never blocks traffic.</p>
 <p>An unrecognised <code>rate-limit-by</code> value emits a controller warning and falls back to <code>"ip"</code>.</p>
+<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
+<p>Coxswain supports two authentication modes on Ingresses: <strong>external auth</strong> (HTTP sub-request) and <strong>basic auth</strong> (htpasswd Secret). Both are enforced at the proxy before any upstream connection; a failure never reaches the backend.</p>
+<p><code>auth-url</code> and <code>auth-basic-secret</code> are mutually exclusive. If both are present, <code>auth-url</code> wins and a controller warning is emitted.</p>
+<h3 id="auth-url"><code>auth-url</code><a class="headerlink" href="#auth-url" title="Permanent link">&para;</a></h3>
+<p>Forwards a sub-request to an external authorization service before proxying. If the service returns <strong>2xx</strong> the original request is forwarded; any other status code is returned to the client as-is (body + headers), and the upstream is never hit.</p>
+<p>The sub-request is sent to the configured URL using the <strong>original request method and Host header</strong>, carrying the client's headers (<code>Authorization</code>, <code>Cookie</code>, etc.) — the auth service sees the genuine request context. No body is forwarded. On a network error or timeout (configurable via <code>auth-timeout</code>), the proxy returns <strong>503</strong> and blocks the request (fail-closed).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://oauth2-proxy.oauth.svc.cluster.local/oauth2/auth&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2s&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-response-headers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Auth-User,X-Auth-Groups&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-always-set-cookie</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<h3 id="auth-timeout"><code>auth-timeout</code><a class="headerlink" href="#auth-timeout" title="Permanent link">&para;</a></h3>
+<p>Maximum time to wait for the auth sub-request to respond. Accepts any duration string (e.g. <code>"500ms"</code>, <code>"5s"</code>). Default: <code>2s</code>. On timeout the proxy returns <strong>503</strong> (fail-closed).</p>
+<h3 id="auth-response-headers"><code>auth-response-headers</code><a class="headerlink" href="#auth-response-headers" title="Permanent link">&para;</a></h3>
+<p>Comma-separated list of header names to copy from a <strong>2xx auth response</strong> onto the <strong>upstream request</strong> (so the backend sees e.g. <code>X-Auth-User</code>). The echo backend reflects them back in its JSON body, making this assertion testable end-to-end.</p>
+<h3 id="auth-always-set-cookie"><code>auth-always-set-cookie</code><a class="headerlink" href="#auth-always-set-cookie" title="Permanent link">&para;</a></h3>
+<p>When <code>"true"</code>, any <code>Set-Cookie</code> header present in the auth <strong>deny response</strong> is forwarded to the client. This enables login-redirect flows where the IdP sets a session cookie on the 302 response. Default: <code>false</code>.</p>
+<h3 id="auth-basic-secret"><code>auth-basic-secret</code><a class="headerlink" href="#auth-basic-secret" title="Permanent link">&para;</a></h3>
+<p>Enables <strong>HTTP Basic Authentication</strong> backed by an htpasswd Secret. Value is <code>namespace/name</code> of a <code>Secret</code> resource with:</p>
+<ul>
+<li><strong>Type</strong>: <code>Opaque</code></li>
+<li><strong>Key</strong>: <code>auth</code></li>
+<li><strong>Value</strong>: standard htpasswd content (one <code>username:hash</code> line per credential)</li>
+<li><strong>Supported hash algorithms</strong>: <code>bcrypt</code> (<code>$2a$</code>, <code>$2b$</code>, <code>$2y$</code>) and <code>SHA1</code> (<code>{SHA}base64</code>). Lines using other schemes are skipped with a controller warning.</li>
+</ul>
+<p><strong>The Secret must carry the <code>ingress.coxswain-labs.dev/auth-basic: "true"</code> label.</strong> The proxy watches only labeled Secrets (the data-plane read-only invariant — the proxy never holds cluster-wide Secret access). A referenced Secret that is absent or unlabeled causes the proxy to return <strong>503</strong> for every request to that Ingress (<strong>fail-closed</strong>). This is intentional: misconfigured auth silences traffic rather than silently bypassing it.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-htpasswd</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-basic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span>
+<span class="nt">data</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># alice:secret (bcrypt)  bob:secret (SHA1)</span>
+<span class="w">  </span><span class="nt">auth</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">YWxpY2U6JDJ5JDA0JHdyUkZRU0NCZXpZTFR5V1hKS1dldXVPaHRGdWtyQWo3UHpQWXRRc09ORWg4ck9PampJTGFLCmJvYjp7U0hBfTVlbjZHNk1lelJyb1QzWEtxa2RQT21ZL0JmUT0K</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-basic-secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/my-htpasswd&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p>Requests without credentials receive <strong>401</strong> with a <code>WWW-Authenticate: Basic realm="coxswain"</code> header. Invalid credentials also receive <strong>401</strong>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Hardening</p>
+<p>Credential hashes are zeroed from memory when the credential list is replaced at reconcile time (<code>zeroize</code>). The Helm chart already ships <code>seccompProfile: RuntimeDefault</code>, <code>readOnlyRootFilesystem: true</code>, and <code>capabilities.drop: ALL</code> by default. For the remaining defense-in-depth, configure nodes with <code>vm.swappiness=0</code> so hashes can't be paged to disk — this is a node-level kernel parameter that Kubernetes cannot enforce per-pod.</p>
+</div>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
