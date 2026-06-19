@@ -1267,6 +1267,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#satisfy" class="md-nav__link">
+    <span class="md-ellipsis">
+      satisfy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#client-certificate-mtls" class="md-nav__link">
     <span class="md-ellipsis">
       Client certificate mTLS
@@ -2060,6 +2069,12 @@
 <td><code>"my-ns/my-htpasswd"</code></td>
 </tr>
 <tr>
+<td><code>ingress.coxswain-labs.dev/satisfy</code></td>
+<td><code>any</code> or <code>all</code></td>
+<td><code>all</code></td>
+<td><code>"any"</code></td>
+</tr>
+<tr>
 <td><code>ingress.coxswain-labs.dev/compression-gzip</code></td>
 <td>boolean</td>
 <td><code>false</code></td>
@@ -2675,6 +2690,38 @@
 <p class="admonition-title">Hardening</p>
 <p>Credential hashes are zeroed from memory when the credential list is replaced at reconcile time (<code>zeroize</code>). The Helm chart already ships <code>seccompProfile: RuntimeDefault</code>, <code>readOnlyRootFilesystem: true</code>, and <code>capabilities.drop: ALL</code> by default. For the remaining defense-in-depth, configure nodes with <code>vm.swappiness=0</code> so hashes can't be paged to disk — this is a node-level kernel parameter that Kubernetes cannot enforce per-pod.</p>
 </div>
+<h2 id="satisfy"><code>satisfy</code><a class="headerlink" href="#satisfy" title="Permanent link">&para;</a></h2>
+<p>Controls how <code>allow-source-range</code> and the authentication annotations (<code>auth-url</code>, <code>auth-basic-secret</code>) combine when <strong>both</strong> are configured on the same Ingress. With only one of the two gates present, <code>satisfy</code> has no observable effect.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>all</code> (<strong>default</strong>)</td>
+<td>Both the IP allow-list <strong>and</strong> auth must pass. This matches the behaviour you get when <code>satisfy</code> is absent.</td>
+</tr>
+<tr>
+<td><code>any</code></td>
+<td>The IP allow-list <strong>or</strong> auth passing is sufficient. A request is denied only when <strong>both</strong> gates fail.</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>deny-source-range</code> always fires first</strong> — regardless of <code>satisfy</code>. A client IP that matches the deny-list is rejected with <strong>403</strong> before allow-list or auth is consulted.</p>
+<p><strong>Typical use case — office IP bypasses the login page:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/satisfy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;any&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/allow-source-range</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;203.0.113.0/24&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://oauth2-proxy.oauth.svc/oauth2/auth&quot;</span>
+</code></pre></div>
+<p>Requests from <code>203.0.113.0/24</code> (trusted office network) are admitted without an auth round-trip. Requests from any other IP go through OAuth2. A client that is neither on the trusted network nor authenticated is rejected with the auth service's denial response.</p>
+<p><strong><code>any</code> with no allow-list.</strong> When <code>satisfy: any</code> is set but <code>allow-source-range</code> is absent, only the auth gate exists — every request goes through auth as usual (no change in behaviour).</p>
+<p><strong><code>any</code> with no auth.</strong> When <code>satisfy: any</code> is set but no auth annotation is present, every request that passes the IP allow-list is admitted — again, no change from the <code>all</code> behaviour (the second gate doesn't exist).</p>
+<p>An unknown value emits a controller warning and falls back to <code>"all"</code> (fail-safe: the stricter gate).</p>
 <h2 id="client-certificate-mtls">Client certificate mTLS<a class="headerlink" href="#client-certificate-mtls" title="Permanent link">&para;</a></h2>
 <p>Requires clients to present a valid TLS certificate during the handshake — <strong>mutual TLS (mTLS)</strong>. When enabled, the proxy aborts the handshake if the client presents no certificate or one not signed by the configured CA. This matches the semantics of Istio's <code>tls.mode: MUTUAL</code>: enforcement is at the TLS layer, not HTTP, so there is no 400/403 response — the connection simply does not complete.</p>
 <p><strong>Enforcement model.</strong> The proxy aborts the TLS handshake (BoringSSL <code>FAIL_IF_NO_PEER_CERT</code>). Clients that present no cert or a cert from an unknown CA receive a TLS alert; HTTP never starts. The backend pod is never reached.</p>
