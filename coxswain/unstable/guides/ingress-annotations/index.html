@@ -1234,6 +1234,66 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#compression-" class="md-nav__link">
+    <span class="md-ellipsis">
+      compression-*
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="compression-*">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compression-gzip-compression-brotli" class="md-nav__link">
+    <span class="md-ellipsis">
+      compression-gzip / compression-brotli
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compression-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      compression-level
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compression-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      compression-types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compression-min-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      compression-min-size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behaviour
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#class-level-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       Class-level defaults
@@ -1897,6 +1957,36 @@
 <td><em>none</em></td>
 <td><code>"my-ns/my-htpasswd"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/compression-gzip</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/compression-brotli</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/compression-level</code></td>
+<td>integer 1–9</td>
+<td><code>6</code></td>
+<td><code>"5"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/compression-types</code></td>
+<td>csv of MIME types</td>
+<td>see below</td>
+<td><code>"text/html,application/json"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/compression-min-size</code></td>
+<td>size</td>
+<td><code>1024</code></td>
+<td><code>"4k"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -2434,6 +2524,101 @@
 <p><strong>Format</strong>: a Go <code>time.ParseDuration</code> string, e.g. <code>"30s"</code>, <code>"2m"</code>, <code>"90s"</code>. Absent or invalid values warn and fall back to Pingora's default (connections are evicted by LRU capacity pressure, not by age).</p>
 <p><strong>Observability</strong>: the <code>coxswain_proxy_upstream_connections_total{state="reused"}</code> counter increments every time a request reuses a pooled connection. Compare it with <code>{state="new"}</code> to gauge keepalive efficiency for a route.</p>
 <p><strong>Global pool size</strong>: the total number of idle upstream connections across all routes is bounded by <code>--proxy-upstream-keepalive-pool-size</code> (default: 128). Set it via the Helm value <code>proxy.shared.upstreamKeepalivePoolSize</code> or the env var <code>COXSWAIN_PROXY_UPSTREAM_KEEPALIVE_POOL_SIZE</code>. Raise it for deployments with many distinct upstream hosts/ports; lower it to reduce file-descriptor usage.</p>
+<h2 id="compression-"><code>compression-*</code><a class="headerlink" href="#compression-" title="Permanent link">&para;</a></h2>
+<p>Opt-in, per-Ingress on-the-fly response compression. The proxy compresses upstream responses before
+forwarding them to the client, negotiated against the client's <code>Accept-Encoding</code> header. Nothing is
+compressed unless at least one codec is explicitly enabled.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/compression-gzip</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/compression-brotli</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/compression-level</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;6&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/compression-types</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;text/html,text/plain,text/css,application/json,application/javascript&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/compression-min-size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1024&quot;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>compression-gzip</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>compression-brotli</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>compression-level</code></td>
+<td>integer, 1–9</td>
+<td><code>6</code></td>
+</tr>
+<tr>
+<td><code>compression-types</code></td>
+<td>CSV of MIME types</td>
+<td><code>text/html,text/plain,text/css,application/json,application/javascript</code></td>
+</tr>
+<tr>
+<td><code>compression-min-size</code></td>
+<td>byte count (suffixes <code>k</code>/<code>m</code>/<code>g</code> accepted)</td>
+<td><code>1024</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="compression-gzip-compression-brotli"><code>compression-gzip</code> / <code>compression-brotli</code><a class="headerlink" href="#compression-gzip-compression-brotli" title="Permanent link">&para;</a></h3>
+<p>Enable the respective codec. Both are <code>false</code> by default — no compression is applied to any Ingress
+unless at least one is set to <code>"true"</code>. Setting both to <code>"true"</code> enables dual-codec support: brotli
+is preferred when the client advertises <code>br</code> in <code>Accept-Encoding</code>; gzip is used otherwise.</p>
+<h3 id="compression-level"><code>compression-level</code><a class="headerlink" href="#compression-level" title="Permanent link">&para;</a></h3>
+<p>Compression effort on a 1–9 scale (1 = fastest/least compression, 9 = slowest/best compression).
+The same level is applied to both gzip and brotli. Values outside the 1–9 range emit a warning and
+fall back to <code>6</code>. The default of <code>6</code> is a good balance for most workloads.</p>
+<h3 id="compression-types"><code>compression-types</code><a class="headerlink" href="#compression-types" title="Permanent link">&para;</a></h3>
+<p>Comma-separated list of MIME types to compress. Only responses whose <code>Content-Type</code> header matches
+an entry in this list (the media type before any <code>;parameters</code>) are compressed. Matching is
+case-insensitive. The default list covers the most common compressible types:</p>
+<div class="highlight"><pre><span></span><code>text/html, text/plain, text/css, application/json, application/javascript
+</code></pre></div>
+<p>An empty or entirely-invalid list falls back to the default. Responses with binary types such as
+<code>image/png</code>, <code>video/mp4</code>, or <code>application/octet-stream</code> are passed through unmodified regardless of
+this setting.</p>
+<h3 id="compression-min-size"><code>compression-min-size</code><a class="headerlink" href="#compression-min-size" title="Permanent link">&para;</a></h3>
+<p>Minimum response body size, in bytes, before compression is attempted. Responses whose
+<code>Content-Length</code> is present and smaller than this threshold are passed through without compression.
+When <code>Content-Length</code> is absent (chunked transfer encoding), the response is always eligible —
+the proxy cannot know the full size without buffering.</p>
+<p>The default is <code>1024</code> bytes (1 KiB). The value accepts the <code>k</code>/<code>m</code>/<code>g</code> suffix for convenience
+(<code>"4k"</code> = 4096, <code>"1m"</code> = 1048576). Invalid values warn and fall back to <code>1024</code>.</p>
+<h3 id="behaviour">Behaviour<a class="headerlink" href="#behaviour" title="Permanent link">&para;</a></h3>
+<p>Compression is applied only when <strong>all</strong> of the following hold:</p>
+<ol>
+<li>At least one codec (<code>compression-gzip</code> or <code>compression-brotli</code>) is enabled.</li>
+<li>The client advertises the codec in <code>Accept-Encoding</code>.</li>
+<li>The upstream response does not already have a <code>Content-Encoding</code> header — pre-compressed
+   responses (e.g. assets served pre-compressed by the upstream) are forwarded unchanged.</li>
+<li>The response <code>Content-Type</code> (before <code>;</code>) matches an entry in <code>compression-types</code>.</li>
+<li>Either <code>Content-Length</code> is absent, or its value is ≥ <code>compression-min-size</code>.</li>
+<li>The response status is a normal body-bearing code (1xx, 204, and 304 responses are passed through).</li>
+</ol>
+<p>When compression fires, the proxy:
+- Sets <code>Content-Encoding: gzip</code> or <code>Content-Encoding: br</code>.
+- Appends <code>Accept-Encoding</code> to the <code>Vary</code> header (or creates it), so downstream caches serve the
+  correct variant.
+- Removes <code>Content-Length</code> (the compressed size differs from the original) and <code>Accept-Ranges</code>
+  (byte-range requests are incompatible with on-the-fly compression).</p>
+<div class="admonition note">
+<p class="admonition-title">q-values</p>
+<p>q-values in <code>Accept-Encoding</code> are not arbitrated — presence of a codec token is sufficient to
+select it. This matches Pingora's own behaviour. When both codecs are enabled and the client
+sends both <code>br</code> and <code>gzip</code>, brotli always wins regardless of q-values.</p>
+</div>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
