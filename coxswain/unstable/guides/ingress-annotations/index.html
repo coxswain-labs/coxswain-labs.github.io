@@ -1072,6 +1072,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#trust-forwarded-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      trust-forwarded-for
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="trust-forwarded-for">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-resolution-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      IP resolution algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forwarded-for-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      forwarded-for-header
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forwarded-for-trusted-cidrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      forwarded-for-trusted-cidrs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cache-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       cache-enabled
@@ -1928,6 +1970,24 @@
 <td><code>"1.2.3.0/24,5.6.7.8/32"</code></td>
 </tr>
 <tr>
+<td><code>ingress.coxswain-labs.dev/trust-forwarded-for</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/forwarded-for-header</code></td>
+<td>string</td>
+<td><code>X-Forwarded-For</code></td>
+<td><code>"CF-Connecting-IP"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/forwarded-for-trusted-cidrs</code></td>
+<td>cidr-list</td>
+<td><em>none</em> (unconditional)</td>
+<td><code>"10.0.0.0/8"</code></td>
+</tr>
+<tr>
 <td><code>ingress.coxswain-labs.dev/cache-enabled</code></td>
 <td>boolean</td>
 <td><code>false</code></td>
@@ -2382,7 +2442,7 @@
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/allow-source-range</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10.0.0.0/8,192.168.1.0/24&quot;</span>
 </code></pre></div>
 <p>The value is a comma-separated list of IPv4/IPv6 CIDR blocks. A bare address without a prefix (<code>10.0.0.1</code>, <code>2001:db8::1</code>) is accepted as a host route (<code>/32</code> / <code>/128</code>). Whitespace around entries is trimmed.</p>
-<p><strong>Which IP is matched.</strong> When the proxy sits behind a load balancer speaking the <a href="../../reference/configuration/">PROXY protocol</a> (<code>--proxy-accept-proxy-protocol</code>), the match uses the <strong>real client IP</strong> carried in the PROXY header. Otherwise it uses the L4 peer address of the connection. Deploy behind a PROXY-protocol-aware load balancer (or set <code>externalTrafficPolicy: Local</code>) so the proxy observes real client IPs rather than the LB's address.</p>
+<p><strong>Which IP is matched.</strong> When the proxy sits behind a load balancer speaking the <a href="../../reference/configuration/">PROXY protocol</a> (<code>--proxy-accept-proxy-protocol</code>), the match uses the <strong>real client IP</strong> carried in the PROXY header. Otherwise it uses the L4 peer address of the connection. Deploy behind a PROXY-protocol-aware load balancer (or set <code>externalTrafficPolicy: Local</code>) so the proxy observes real client IPs rather than the LB's address. When <code>trust-forwarded-for</code> is also set, see the <a href="#trust-forwarded-for">Trusted proxy headers</a> section — the effective client IP may come from a forwarded header instead.</p>
 <p><strong>Matching is strict.</strong> CIDR membership is exact per address family — an IPv4-mapped IPv6 client (<code>::ffff:10.0.0.1</code>) does <strong>not</strong> match an IPv4 CIDR. List both families if your clients can arrive over either.</p>
 <p><strong>Failure handling:</strong></p>
 <ul>
@@ -2397,7 +2457,7 @@
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/deny-source-range</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.2.3.0/24,5.6.7.8/32&quot;</span>
 </code></pre></div>
 <p>The value is a comma-separated list of IPv4/IPv6 CIDR blocks. A bare address without a prefix (<code>10.0.0.1</code>, <code>2001:db8::1</code>) is accepted as a host route (<code>/32</code> / <code>/128</code>). Whitespace around entries is trimmed.</p>
-<p><strong>Which IP is matched.</strong> Same as <code>allow-source-range</code>: the real client IP from the PROXY protocol when available, otherwise the L4 peer address.</p>
+<p><strong>Which IP is matched.</strong> Same as <code>allow-source-range</code>: the real client IP from the PROXY protocol when available, otherwise the L4 peer address. When <code>trust-forwarded-for</code> is also set, the effective client IP may come from a forwarded header — see <a href="#trust-forwarded-for">Trusted proxy headers</a>.</p>
 <p><strong>Matching is strict.</strong> CIDR membership is exact per address family — an IPv4-mapped IPv6 client (<code>::ffff:10.0.0.1</code>) does <strong>not</strong> match an IPv4 CIDR.</p>
 <p><strong>Evaluation order.</strong> <code>deny-source-range</code> is evaluated <strong>before</strong> <code>allow-source-range</code>. When both annotations are set, a client IP that falls inside the deny list is rejected with 403 even if the allow-list would have admitted it.</p>
 <p><strong>Unattributable client IP.</strong> If the client's IP cannot be determined, the deny-list does <strong>not</strong> block the request — a block list only acts on IPs it can positively attribute to a listed range. (This is the inverse of <code>allow-source-range</code>'s fail-closed behaviour.)</p>
@@ -2405,6 +2465,46 @@
 <ul>
 <li>An invalid CIDR token emits a controller warning and is <strong>skipped</strong>; the remaining valid ranges still apply.</li>
 <li>If <strong>every</strong> token is invalid (or the annotation is absent/empty), the block list is treated as absent — <strong>no</strong> source IPs are blocked (<strong>fail-open</strong> at parse time, so a typo never silently blocks all traffic).</li>
+</ul>
+<h2 id="trust-forwarded-for"><code>trust-forwarded-for</code><a class="headerlink" href="#trust-forwarded-for" title="Permanent link">&para;</a></h2>
+<p>Lets the proxy extract the <strong>real client IP</strong> from a forwarded-for header — necessary when Coxswain sits behind a cloud LB or CDN that terminates the connection and puts the original client IP in a header like <code>X-Forwarded-For</code> or <code>CF-Connecting-IP</code>.</p>
+<p>Without this annotation, IP-based features (<code>allow-source-range</code>, <code>deny-source-range</code>, <code>rate-limit-by: ip</code>) always see the <strong>L4 peer address</strong> (the LB's IP), making per-client controls ineffective behind a proxy.</p>
+<p><strong>Master switch — disabled by default</strong> to prevent header injection by untrusted peers:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/trust-forwarded-for</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<h3 id="ip-resolution-algorithm">IP resolution algorithm<a class="headerlink" href="#ip-resolution-algorithm" title="Permanent link">&para;</a></h3>
+<p>When <code>trust-forwarded-for: "true"</code> is set, the proxy resolves the effective client IP once per request (after route matching) using this four-step algorithm:</p>
+<ol>
+<li><strong>L4 base IP</strong> — real client addr from PROXY protocol if present, otherwise the TCP peer addr.</li>
+<li><strong>No config</strong> — if the Ingress has no <code>trust-forwarded-for</code>, use the L4 base IP (current behavior unchanged).</li>
+<li><strong>CIDR gate</strong> — if <code>forwarded-for-trusted-cidrs</code> is non-empty AND the L4 base IP is <strong>not</strong> in any listed CIDR, the forwarded header is ignored (anti-spoofing) and the L4 base IP is used.</li>
+<li><strong>Header parse</strong> — parse the configured header (default <code>X-Forwarded-For</code>), scan the comma-separated IP list left-to-right, and use the <strong>first non-private IP</strong> found. If no non-private IP is found, fall back to the L4 base IP.</li>
+</ol>
+<p>"Private/reserved" means RFC 1918 (<code>10/8</code>, <code>172.16/12</code>, <code>192.168/16</code>), loopback (<code>127/8</code>, <code>::1</code>), link-local (<code>169.254/16</code>, <code>fe80::/10</code>), ULA (<code>fc00::/7</code>), and unspecified.</p>
+<h3 id="forwarded-for-header"><code>forwarded-for-header</code><a class="headerlink" href="#forwarded-for-header" title="Permanent link">&para;</a></h3>
+<p>Which header to read the forwarded IP from. Defaults to <code>X-Forwarded-For</code>. Override for CDNs that use a proprietary header:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/trust-forwarded-for</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/forwarded-for-header</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CF-Connecting-IP&quot;</span>
+</code></pre></div>
+<p>Header lookup is case-insensitive. The value is trimmed of surrounding whitespace. If the annotation is absent or empty, <code>X-Forwarded-For</code> is used.</p>
+<h3 id="forwarded-for-trusted-cidrs"><code>forwarded-for-trusted-cidrs</code><a class="headerlink" href="#forwarded-for-trusted-cidrs" title="Permanent link">&para;</a></h3>
+<p>The anti-spoofing gate: only trust the forwarded header when the <strong>L4 peer address</strong> is inside one of the listed CIDRs. A request from a peer outside this list is treated as if <code>trust-forwarded-for</code> were off — the forwarded header is silently ignored and the L4 IP is used instead.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/trust-forwarded-for</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/forwarded-for-trusted-cidrs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10.0.0.0/8,172.16.0.0/12&quot;</span>
+</code></pre></div>
+<p>The value is a comma-separated list of IPv4/IPv6 CIDR blocks (same format as <code>allow-source-range</code>). Whitespace is trimmed.</p>
+<p><strong>When absent or empty</strong>, the forwarded header is trusted unconditionally for <strong>every</strong> L4 peer — only do this when the deployment topology guarantees that only a trusted proxy can reach Coxswain directly.</p>
+<p><strong>Security note.</strong> Always set <code>forwarded-for-trusted-cidrs</code> to the IP range of your load balancer or CDN edge nodes. Without it, any client that can reach the proxy port can forge the forwarded header and bypass IP-based controls.</p>
+<p><strong>Failure handling:</strong></p>
+<ul>
+<li>An invalid CIDR token emits a controller warning and is skipped.</li>
+<li>If every token is invalid, the CIDR list is treated as absent (unconditional trust) and a controller warning is emitted.</li>
 </ul>
 <h2 id="cache-enabled"><code>cache-enabled</code><a class="headerlink" href="#cache-enabled" title="Permanent link">&para;</a></h2>
 <p>Opts the Ingress into RFC 7234 HTTP response caching. When <code>"true"</code>, the proxy serves cacheable responses from an in-memory cache instead of contacting the upstream on every request — cutting upstream load and client latency for static assets and public API responses.</p>
