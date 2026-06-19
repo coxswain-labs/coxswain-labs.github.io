@@ -1397,6 +1397,12 @@
 <td>Worker threads per proxy service; set to CPU core count for maximum throughput</td>
 </tr>
 <tr>
+<td><code>COXSWAIN_PROXY_UPSTREAM_KEEPALIVE_POOL_SIZE</code></td>
+<td><code>--proxy-upstream-keepalive-pool-size</code></td>
+<td><code>128</code></td>
+<td>Maximum idle upstream connections in Pingora's keepalive pool; connections beyond the limit are evicted LRU</td>
+</tr>
+<tr>
 <td><code>COXSWAIN_PROXY_TRUSTED_SOURCES</code></td>
 <td><code>--proxy-trusted-sources</code></td>
 <td><em>(none)</em></td>

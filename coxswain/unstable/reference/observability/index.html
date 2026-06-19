@@ -1356,6 +1356,11 @@
 <td><code>listener</code>, <code>route</code>, <code>upstream</code>, <code>condition</code> (<code>connect-failure</code>/<code>timeout</code>/<code>5xx</code>)</td>
 </tr>
 <tr>
+<td><code>coxswain_proxy_upstream_connections_total</code></td>
+<td>Counter</td>
+<td><code>state</code> (<code>new</code>/<code>reused</code>) — incremented once per request; <code>reused</code> climbs when upstream keepalive is effective</td>
+</tr>
+<tr>
 <td><code>coxswain_proxy_active_upstreams</code></td>
 <td>Gauge</td>
 <td><code>upstream</code></td>

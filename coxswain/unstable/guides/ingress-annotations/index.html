@@ -1216,6 +1216,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#upstream-keepalive-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      upstream-keepalive-timeout
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#class-level-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       Class-level defaults
@@ -2385,6 +2394,15 @@
 <p class="admonition-title">Hardening</p>
 <p>Credential hashes are zeroed from memory when the credential list is replaced at reconcile time (<code>zeroize</code>). The Helm chart already ships <code>seccompProfile: RuntimeDefault</code>, <code>readOnlyRootFilesystem: true</code>, and <code>capabilities.drop: ALL</code> by default. For the remaining defense-in-depth, configure nodes with <code>vm.swappiness=0</code> so hashes can't be paged to disk — this is a node-level kernel parameter that Kubernetes cannot enforce per-pod.</p>
 </div>
+<h2 id="upstream-keepalive-timeout"><code>upstream-keepalive-timeout</code><a class="headerlink" href="#upstream-keepalive-timeout" title="Permanent link">&para;</a></h2>
+<p>Controls how long Pingora keeps an idle upstream connection in its keepalive pool before evicting it.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/upstream-keepalive-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;60s&quot;</span>
+</code></pre></div>
+<p><strong>Format</strong>: a Go <code>time.ParseDuration</code> string, e.g. <code>"30s"</code>, <code>"2m"</code>, <code>"90s"</code>. Absent or invalid values warn and fall back to Pingora's default (connections are evicted by LRU capacity pressure, not by age).</p>
+<p><strong>Observability</strong>: the <code>coxswain_proxy_upstream_connections_total{state="reused"}</code> counter increments every time a request reuses a pooled connection. Compare it with <code>{state="new"}</code> to gauge keepalive efficiency for a route.</p>
+<p><strong>Global pool size</strong>: the total number of idle upstream connections across all routes is bounded by <code>--proxy-upstream-keepalive-pool-size</code> (default: 128). Set it via the Helm value <code>proxy.shared.upstreamKeepalivePoolSize</code> or the env var <code>COXSWAIN_PROXY_UPSTREAM_KEEPALIVE_POOL_SIZE</code>. Raise it for deployments with many distinct upstream hosts/ports; lower it to reduce file-descriptor usage.</p>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
