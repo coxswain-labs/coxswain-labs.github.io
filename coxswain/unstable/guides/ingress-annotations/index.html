@@ -1378,6 +1378,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#load-balance" class="md-nav__link">
+    <span class="md-ellipsis">
+      load-balance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="load-balance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mapping-to-gateway-api-istio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping to Gateway API / Istio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip_hash-and-forwarded-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      ip_hash and forwarded-for
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#class-level-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       Class-level defaults
@@ -2106,6 +2148,12 @@
 <td>boolean</td>
 <td><code>false</code></td>
 <td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/load-balance</code></td>
+<td><code>round_robin</code>, <code>least_conn</code>, <code>ewma</code>, <code>ip_hash</code></td>
+<td><code>round_robin</code></td>
+<td><code>"least_conn"</code></td>
 </tr>
 </tbody>
 </table>
@@ -2837,6 +2885,71 @@ the proxy cannot know the full size without buffering.</p>
 select it. This matches Pingora's own behaviour. When both codecs are enabled and the client
 sends both <code>br</code> and <code>gzip</code>, brotli always wins regardless of q-values.</p>
 </div>
+<h2 id="load-balance"><code>load-balance</code><a class="headerlink" href="#load-balance" title="Permanent link">&para;</a></h2>
+<p>Selects the algorithm used to pick an upstream endpoint for each request within the backend group of a route.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/load-balance</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;least_conn&quot;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>round_robin</code></td>
+<td><em>(default)</em> Weighted round-robin using the GCD-reduced slot array. Zero per-request overhead.</td>
+</tr>
+<tr>
+<td><code>least_conn</code></td>
+<td>Routes to the endpoint with the fewest in-flight requests. Maintains an atomic in-flight counter per endpoint; the counter is incremented on selection and decremented when the response completes (or when a retry selects a different endpoint).</td>
+</tr>
+<tr>
+<td><code>ewma</code></td>
+<td>Routes to the endpoint with the lowest exponentially-weighted moving-average response latency (α = 1/8). Unsampled endpoints (active=0) are probed first. Latency is folded in at end-of-request.</td>
+</tr>
+<tr>
+<td><code>ip_hash</code></td>
+<td>Consistent hash on the resolved client IP (see <a href="#trust-forwarded-for"><code>trust-forwarded-for</code></a> for how the IP is resolved). Requests from the same IP always land on the same endpoint; unlike cookie affinity, no state is injected into the response. Falls back to round-robin if the client IP is unavailable.</td>
+</tr>
+</tbody>
+</table>
+<p>Unknown values warn and fall back to <code>round_robin</code>; routing is never interrupted.</p>
+<h3 id="mapping-to-gateway-api-istio">Mapping to Gateway API / Istio<a class="headerlink" href="#mapping-to-gateway-api-istio" title="Permanent link">&para;</a></h3>
+<p><code>load-balance</code> maps to <code>DestinationRule.trafficPolicy.loadBalancer</code> in Istio:</p>
+<table>
+<thead>
+<tr>
+<th>Coxswain value</th>
+<th>Istio / Envoy equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>round_robin</code></td>
+<td><code>ROUND_ROBIN</code></td>
+</tr>
+<tr>
+<td><code>least_conn</code></td>
+<td><code>LEAST_REQUEST</code></td>
+</tr>
+<tr>
+<td><code>ewma</code></td>
+<td><code>LEAST_REQUEST</code> with latency-weighted selection</td>
+</tr>
+<tr>
+<td><code>ip_hash</code></td>
+<td><code>CONSISTENT_HASH</code> (source-ip)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ip_hash-and-forwarded-for"><code>ip_hash</code> and forwarded-for<a class="headerlink" href="#ip_hash-and-forwarded-for" title="Permanent link">&para;</a></h3>
+<p>When <a href="#trust-forwarded-for"><code>trust-forwarded-for</code></a> is enabled, <code>ip_hash</code> uses the resolved client IP (the first non-private address from the forwarded header, gated by <a href="#forwarded-for-trusted-cidrs"><code>forwarded-for-trusted-cidrs</code></a> if set). This means a load balancer that rewrites the source IP still produces consistent upstream pinning based on the real client address.</p>
+<h3 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h3>
+<p>All algorithms run on the hot path without locks. <code>round_robin</code> allocates nothing per request. <code>least_conn</code> and <code>ewma</code> perform a linear scan over the endpoint list (typically 1–10 pods per Service) using relaxed atomics, which is negligible compared to I/O. <code>ip_hash</code> hashes IP octets with FNV-1a and does a modular index — also negligible.</p>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
