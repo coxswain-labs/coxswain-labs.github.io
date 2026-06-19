@@ -1225,6 +1225,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#client-certificate-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client certificate mTLS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Client certificate mTLS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-tls-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-tls-secret
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-tls-verify-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-tls-verify-depth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-tls-pass-certificate-to-upstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-tls-pass-certificate-to-upstream
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#upstream-keepalive-timeout" class="md-nav__link">
     <span class="md-ellipsis">
       upstream-keepalive-timeout
@@ -1987,6 +2029,24 @@
 <td><code>1024</code></td>
 <td><code>"4k"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-tls-secret</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-ca"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-tls-verify-depth</code></td>
+<td>integer</td>
+<td><code>1</code></td>
+<td><code>"2"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-tls-pass-certificate-to-upstream</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -2514,6 +2574,64 @@
 <div class="admonition tip">
 <p class="admonition-title">Hardening</p>
 <p>Credential hashes are zeroed from memory when the credential list is replaced at reconcile time (<code>zeroize</code>). The Helm chart already ships <code>seccompProfile: RuntimeDefault</code>, <code>readOnlyRootFilesystem: true</code>, and <code>capabilities.drop: ALL</code> by default. For the remaining defense-in-depth, configure nodes with <code>vm.swappiness=0</code> so hashes can't be paged to disk — this is a node-level kernel parameter that Kubernetes cannot enforce per-pod.</p>
+</div>
+<h2 id="client-certificate-mtls">Client certificate mTLS<a class="headerlink" href="#client-certificate-mtls" title="Permanent link">&para;</a></h2>
+<p>Requires clients to present a valid TLS certificate during the handshake — <strong>mutual TLS (mTLS)</strong>. When enabled, the proxy aborts the handshake if the client presents no certificate or one not signed by the configured CA. This matches the semantics of Istio's <code>tls.mode: MUTUAL</code>: enforcement is at the TLS layer, not HTTP, so there is no 400/403 response — the connection simply does not complete.</p>
+<p><strong>Enforcement model.</strong> The proxy aborts the TLS handshake (BoringSSL <code>FAIL_IF_NO_PEER_CERT</code>). Clients that present no cert or a cert from an unknown CA receive a TLS alert; HTTP never starts. The backend pod is never reached.</p>
+<p><strong>HTTP listener.</strong> Plain-HTTP (port 80) requests to an mTLS host are not affected by these annotations. If you want to prevent clients from sending plain-HTTP requests at all, combine <code>auth-tls-secret</code> with <code>ssl-redirect: "true"</code> on the same Ingress.</p>
+<p><strong>Cross-SNI guard.</strong> On a shared TLS connection whose SNI selected a different (non-mTLS) host, a <code>Host:</code> header naming an mTLS host returns <code>421 Misdirected Request</code> — the connection never verified a client cert and cannot be reused to access the mTLS resource.</p>
+<p><strong>Fail-closed on bad CA.</strong> If the referenced Secret is absent, unlabeled, missing the <code>ca.crt</code> key, or its PEM is unparseable, the proxy installs an empty verify store for that host. Every TLS handshake to that host is aborted until the Secret is corrected. This matches the <code>auth-basic-secret</code> fail-closed policy.</p>
+<h3 id="auth-tls-secret"><code>auth-tls-secret</code><a class="headerlink" href="#auth-tls-secret" title="Permanent link">&para;</a></h3>
+<p>Reference to a Kubernetes <code>Opaque</code> Secret in <code>namespace/name</code> form whose <code>ca.crt</code> key holds one or more PEM-encoded CA certificates used to verify the client certificate chain.</p>
+<p><strong>The Secret must carry the <code>ingress.coxswain-labs.dev/auth-tls: "true"</code> label.</strong> The data-plane proxy watches only labeled Secrets (the read-only-proxy invariant — the proxy never holds cluster-wide Secret access). An unlabeled or missing Secret causes every TLS handshake to the Ingress host to be aborted (<strong>fail-closed</strong>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-client-ca</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-tls</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span>
+<span class="nt">data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ca.crt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;base64-encoded PEM CA cert(s)&gt;</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-tls-secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/my-client-ca&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-server-cert</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<h3 id="auth-tls-verify-depth"><code>auth-tls-verify-depth</code><a class="headerlink" href="#auth-tls-verify-depth" title="Permanent link">&para;</a></h3>
+<p>Maximum TLS certificate chain verification depth. With depth <code>1</code> (the default) only a direct CA-signed leaf is accepted — no intermediate CAs. With depth <code>2</code>, one intermediate CA is allowed. Must be a positive integer &gt;= 1. Absent or invalid values warn and fall back to <code>1</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/auth-tls-verify-depth</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2&quot;</span>
+</code></pre></div>
+<h3 id="auth-tls-pass-certificate-to-upstream"><code>auth-tls-pass-certificate-to-upstream</code><a class="headerlink" href="#auth-tls-pass-certificate-to-upstream" title="Permanent link">&para;</a></h3>
+<p>When <code>"true"</code>, the verified client certificate PEM is URL-encoded and injected on the upstream request as the <code>X-SSL-Client-Cert</code> header. The backend can decode it for audit logging, identity extraction, or further authorization. Default: <code>false</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/auth-tls-pass-certificate-to-upstream</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<p>The header value is the raw PEM of the client leaf certificate, percent-encoded (all non-alphanumeric characters encoded). Backends decode it with a standard URL-decode.</p>
+<div class="admonition note">
+<p class="admonition-title">v1 limitation</p>
+<p><code>auth-tls-*</code> annotations are read directly off <code>Ingress.metadata.annotations</code>. They do not inherit class-level defaults from a <code>CoxswainIngressClassParameters</code> resource. Per-class mTLS defaults are tracked for a future release.</p>
 </div>
 <h2 id="upstream-keepalive-timeout"><code>upstream-keepalive-timeout</code><a class="headerlink" href="#upstream-keepalive-timeout" title="Permanent link">&para;</a></h2>
 <p>Controls how long Pingora keeps an idle upstream connection in its keepalive pool before evicting it.</p>
