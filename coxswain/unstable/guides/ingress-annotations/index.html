@@ -877,6 +877,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#path-normalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      path-normalize
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#request-header-modification" class="md-nav__link">
     <span class="md-ellipsis">
       Request header modification
@@ -2155,6 +2164,12 @@
 <td><code>round_robin</code></td>
 <td><code>"hash:uri"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/path-normalize</code></td>
+<td><code>none</code>, <code>base</code>, <code>merge-slashes</code>, <code>decode-and-merge-slashes</code></td>
+<td><code>base</code></td>
+<td><code>"merge-slashes"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -2271,6 +2286,60 @@
 <p><strong>Matching semantics.</strong> The pattern is matched unanchored and is evaluated <strong>after</strong> exact and prefix routes on the same host — a literal <code>Prefix</code>/<code>Exact</code> rule that also matches wins over a regex rule. The Kubernetes API server requires every Ingress path to start with <code>/</code>, so a regex path is always rooted there (<code>/svc/(.*)</code>, not <code>^/svc/(.*)</code>); use <code>$</code> to anchor the end.</p>
 <p><strong>Invalid patterns.</strong> A path whose value is not a valid regular expression is skipped with a controller <code>WARN</code>; the rest of the Ingress (and the routing table) is unaffected.</p>
 <p><strong>Migrating from nginx-ingress.</strong> The canonical nginx pairing — <code>nginx.ingress.kubernetes.io/use-regex</code> + <code>nginx.ingress.kubernetes.io/rewrite-target: /$2</code> with <code>pathType: ImplementationSpecific</code> — maps directly onto the Coxswain annotations of the same names. See <a href="#capture-group-substitution">capture-group substitution</a>.</p>
+<h2 id="path-normalize"><code>path-normalize</code><a class="headerlink" href="#path-normalize" title="Permanent link">&para;</a></h2>
+<p>Controls how request paths are normalised before routing and before being forwarded upstream. Coxswain mirrors <a href="https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-ProxyPathNormalization">Envoy/Istio's <code>pathNormalization</code></a> — the same four-level enum with <code>base</code> as the cluster-wide default.</p>
+<p>Normalisation runs <strong>before</strong> the routing lookup; the canonical path is used for the path match <em>and</em> is sent to the upstream unchanged by a <code>rewrite-target</code> (if one is configured, it is applied on top of the normalised path).</p>
+<p><strong>Gateway API <code>HTTPRoute</code> resources always use <code>base</code> normalization.</strong> There is no per-<code>HTTPRoute</code> override annotation; the behaviour is controlled at the infrastructure level, matching Istio's model.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Transformations applied</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>none</code></td>
+<td>No-op — raw request path is routed and forwarded as-is.</td>
+</tr>
+<tr>
+<td><code>base</code> <em>(default)</em></td>
+<td>Percent-decode unreserved characters (<code>%2e</code>→<code>.</code>, <code>%2d</code>→<code>-</code>, etc.); convert <code>\</code> to <code>/</code>; remove dot segments (<code>.</code> and <code>..</code>, RFC 3986 §5.2.4). <code>%2f</code> and <code>%5c</code> are <strong>not</strong> decoded — they remain encoded to prevent path-traversal bypasses.</td>
+</tr>
+<tr>
+<td><code>merge-slashes</code></td>
+<td>Everything in <code>base</code>, plus collapse consecutive slashes (<code>//</code> → <code>/</code>).</td>
+</tr>
+<tr>
+<td><code>decode-and-merge-slashes</code></td>
+<td>Everything in <code>merge-slashes</code>, plus decode <code>%2f</code>→<code>/</code> and <code>%5c</code>→<code>\</code> before the rest of the pipeline. Use only when your backend expects literal <code>/</code> from encoded segments and you understand the security trade-off.</td>
+</tr>
+</tbody>
+</table>
+<p>Each level includes all transformations of the levels before it.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Collapse // produced by client-side path joining.</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/path-normalize</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;merge-slashes&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/api/v1</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<p><strong>Conflict resolution.</strong> Multiple Ingresses can share the same host (using the standard Ingress host/path merging). When they set different <code>path-normalize</code> levels for the same host, the <strong>first Ingress</strong> (ordered by <code>creationTimestamp</code>, namespace/name for ties) wins; subsequent conflicting levels are ignored with a controller <code>WARN</code>. Setting the same level on two Ingresses sharing a host is not a conflict.</p>
+<p><strong>Performance.</strong> Paths that are already in canonical form take a single linear scan and allocate nothing; allocation only occurs when the path actually changes, and then it is bounded by the path length. The common case (clean paths through <code>base</code>) is effectively free.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>decode-and-merge-slashes</code> decodes <code>%2f</code>/<code>%5c</code> before routing, which allows a request for <code>/api%2fv1</code> to match the <code>/api/v1</code> prefix. Only enable this level if your backend requires it — it removes the URL-encoding layer that prevents path-traversal via encoded slashes.</p>
+</div>
 <h2 id="request-header-modification">Request header modification<a class="headerlink" href="#request-header-modification" title="Permanent link">&para;</a></h2>
 <p>Three annotations control the request headers forwarded to the upstream pod. All three are applied together in a single pass — order within a pass is: set, add, then remove.</p>
 <h3 id="request-header-set"><code>request-header-set</code><a class="headerlink" href="#request-header-set" title="Permanent link">&para;</a></h3>
