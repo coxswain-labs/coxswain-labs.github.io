@@ -627,6 +627,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#validatingadmissionpolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      ValidatingAdmissionPolicy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#uninstall" class="md-nav__link">
     <span class="md-ellipsis">
       Uninstall
@@ -1320,6 +1329,13 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 <p class="admonition-title">Note</p>
 <p><code>controller.watchNamespace</code> only narrows what the controller reads — the chart still installs the cluster-wide <code>ClusterRole</code>/<code>ClusterRoleBinding</code>. To scope RBAC as well, render the manifests with <code>helm template</code> and edit them by hand before applying.</p>
 </div>
+<h2 id="validatingadmissionpolicy">ValidatingAdmissionPolicy<a class="headerlink" href="#validatingadmissionpolicy" title="Permanent link">&para;</a></h2>
+<p>On Kubernetes ≥ 1.30, the chart installs a <code>ValidatingAdmissionPolicy</code> that rejects Ingresses carrying malformed <code>ingress.coxswain-labs.dev/*</code> annotation values at <code>kubectl apply</code> time. The policy is enabled by default and silently skipped on clusters that do not advertise <code>admissionregistration.k8s.io/v1/ValidatingAdmissionPolicy</code>, so installing on an older cluster is safe.</p>
+<p>To disable it explicitly:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span>--create-namespace<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>vap.enabled<span class="o">=</span><span class="nb">false</span>
+</code></pre></div>
 <h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>uninstall<span class="w"> </span>coxswain<span class="w"> </span>--namespace<span class="w"> </span>coxswain-system
 kubectl<span class="w"> </span>delete<span class="w"> </span>namespace<span class="w"> </span>coxswain-system
