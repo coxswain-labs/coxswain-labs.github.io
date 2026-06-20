@@ -1174,6 +1174,75 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Circuit breaker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Circuit breaker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker-threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      circuit-breaker-threshold
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      circuit-breaker-window
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker-open-duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      circuit-breaker-open-duration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker-min-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      circuit-breaker-min-requests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker-max-open-duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      circuit-breaker-max-open-duration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rate-limiting" class="md-nav__link">
     <span class="md-ellipsis">
       Rate limiting
@@ -2170,6 +2239,36 @@
 <td><code>base</code></td>
 <td><code>"merge-slashes"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/circuit-breaker-threshold</code></td>
+<td>integer 1–100</td>
+<td><em>none</em> (disabled)</td>
+<td><code>"50"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/circuit-breaker-window</code></td>
+<td>duration</td>
+<td><code>10s</code></td>
+<td><code>"30s"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/circuit-breaker-open-duration</code></td>
+<td>duration</td>
+<td><code>5s</code></td>
+<td><code>"10s"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/circuit-breaker-min-requests</code></td>
+<td>integer</td>
+<td><code>10</code></td>
+<td><code>"5"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/circuit-breaker-max-open-duration</code></td>
+<td>duration</td>
+<td><em>none</em> (constant)</td>
+<td><code>"60s"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -2683,6 +2782,49 @@
 <p class="admonition-title">Note</p>
 <p>The Gateway API binding for session persistence is tracked in <a href="https://github.com/coxswain-labs/coxswain/issues/355">#355</a>. It is deferred because the only Gateway API surface for session persistence in our pinned crate is experimental-only (which Coxswain never compiles into release images), and the <code>BackendLBPolicy</code> resource originally proposed is not an upstream Gateway API type. Today the <code>session-*</code> annotations are the Ingress-only entry point.</p>
 </div>
+<h2 id="circuit-breaker">Circuit breaker<a class="headerlink" href="#circuit-breaker" title="Permanent link">&para;</a></h2>
+<p>The per-upstream-endpoint circuit breaker trips when a backend pod's <strong>error rate</strong> exceeds a threshold, returning fail-fast <strong>503</strong> responses to clients until the pod shows signs of recovery. This is the Ingress equivalent of Envoy/Istio <strong>outlier detection</strong>: a single degraded pod trips only its own breaker; healthy pods serving the same Ingress keep accepting traffic.</p>
+<p>The breaker is implemented with <a href="https://docs.rs/failsafe">failsafe</a>'s EWMA (exponentially weighted moving average) success-rate policy. Breaker state is tracked per <code>(route, endpoint-IP:port)</code> pair — one state machine per upstream pod, per route.</p>
+<p><strong>State machine:</strong></p>
+<ol>
+<li><strong>Closed</strong> (initial) — requests flow normally; errors accumulate against the EWMA window.</li>
+<li><strong>Open</strong> — error rate exceeded <code>threshold</code> after <code>min-requests</code> samples; requests fail-fast 503 without reaching the upstream. The breaker stays Open for <code>open-duration</code> (or exponentially longer, up to <code>max-open-duration</code>, on repeated trips).</li>
+<li><strong>HalfOpen</strong> — after <code>open-duration</code> one probe request is let through. If it succeeds, the breaker closes; if it fails, it re-opens for another <code>open-duration</code>.</li>
+</ol>
+<p><strong>Observability</strong> — three Prometheus series on the proxy admin <code>/metrics</code> endpoint:</p>
+<ul>
+<li><code>coxswain_proxy_circuit_breaker_state{route, upstream}</code> — <code>0</code> = closed, <code>1</code> = open, <code>2</code> = half-open.</li>
+<li><code>coxswain_proxy_circuit_breaker_rejected_total{route, upstream}</code> — count of fail-fast 503s issued while the breaker was open.</li>
+<li><code>coxswain_proxy_circuit_breaker_transitions_total{route, upstream, to}</code> — cumulative state transitions; <code>to</code> is <code>"open"</code>, <code>"half_open"</code>, or <code>"closed"</code>.</li>
+</ul>
+<h3 id="circuit-breaker-threshold"><code>circuit-breaker-threshold</code><a class="headerlink" href="#circuit-breaker-threshold" title="Permanent link">&para;</a></h3>
+<p><strong>Required.</strong> Error-rate percentage (1–100) that trips the breaker. Absent or invalid → breaker disabled (fail-open).</p>
+<p>Maps to <code>failsafe</code>'s <code>required_success_rate = 1 - threshold/100</code>. A value of <code>50</code> trips the breaker when fewer than 50% of requests succeed.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/circuit-breaker-threshold</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;50&quot;</span>
+</code></pre></div>
+<h3 id="circuit-breaker-window"><code>circuit-breaker-window</code><a class="headerlink" href="#circuit-breaker-window" title="Permanent link">&para;</a></h3>
+<p>EWMA sliding window over which the success rate is measured. Duration string (e.g. <code>"10s"</code>). Default: <code>10s</code>.</p>
+<h3 id="circuit-breaker-open-duration"><code>circuit-breaker-open-duration</code><a class="headerlink" href="#circuit-breaker-open-duration" title="Permanent link">&para;</a></h3>
+<p>How long the breaker stays Open before allowing a half-open probe. Duration string. Default: <code>5s</code>.</p>
+<p>When <code>circuit-breaker-max-open-duration</code> is absent this is a <strong>constant</strong> backoff (every trip stays Open for exactly this duration). When <code>max-open-duration</code> is set this is the <strong>initial</strong> duration and the window grows exponentially across repeated trips.</p>
+<h3 id="circuit-breaker-min-requests"><code>circuit-breaker-min-requests</code><a class="headerlink" href="#circuit-breaker-min-requests" title="Permanent link">&para;</a></h3>
+<p>Minimum number of requests that must have been observed in the current window before the policy evaluates and can trip the breaker. Prevents a single early failure on a low-traffic route from opening the breaker. Integer ≥ 1. Default: <code>10</code>.</p>
+<h3 id="circuit-breaker-max-open-duration"><code>circuit-breaker-max-open-duration</code><a class="headerlink" href="#circuit-breaker-max-open-duration" title="Permanent link">&para;</a></h3>
+<p><strong>Optional.</strong> Upper bound for exponential backoff. When set, each successive trip doubles the open-duration (starting from <code>circuit-breaker-open-duration</code>) up to this cap. Absent → constant backoff (each trip uses the same <code>open-duration</code>).</p>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/circuit-breaker-threshold</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;50&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/circuit-breaker-window</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10s&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/circuit-breaker-open-duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5s&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/circuit-breaker-min-requests</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/circuit-breaker-max-open-duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;60s&quot;</span>
+</code></pre></div>
+<p><strong>Fail-fast behaviour:</strong> when the breaker is Open, the proxy returns 503 immediately without connecting to the upstream. The client sees 503; other healthy pods serving the same route continue accepting traffic via load-balancing.</p>
+<p><strong>Invalid values</strong> (zero threshold, unparseable duration, non-integer min-requests) emit a controller warning and disable the breaker for that route (<strong>fail-open</strong>) — a misconfigured annotation never blocks all traffic.</p>
+<hr />
 <h2 id="rate-limiting">Rate limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h2>
 <p>Caps the request rate accepted from each client before forwarding to the upstream. Over-limit requests are rejected with <strong>429 Too Many Requests</strong> and a <code>Retry-After</code> header (in whole seconds) telling the client when to retry. See the <a href="../rate-limiting/">Rate limiting guide</a> for full semantics and Gateway API usage.</p>
 <h3 id="rate-limit-rps"><code>rate-limit-rps</code><a class="headerlink" href="#rate-limit-rps" title="Permanent link">&para;</a></h3>
