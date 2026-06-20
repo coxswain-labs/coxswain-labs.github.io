@@ -1397,9 +1397,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#ip_hash-and-forwarded-for" class="md-nav__link">
+  <a href="#hashsource-ip-and-forwarded-for" class="md-nav__link">
     <span class="md-ellipsis">
-      ip_hash and forwarded-for
+      hash:source-ip and forwarded-for
     </span>
   </a>
   
@@ -2151,9 +2151,9 @@
 </tr>
 <tr>
 <td><code>ingress.coxswain-labs.dev/load-balance</code></td>
-<td><code>round_robin</code>, <code>least_conn</code>, <code>ewma</code>, <code>ip_hash</code></td>
+<td><code>round_robin</code>, <code>least_conn</code>, <code>ewma</code>, <code>ip_hash</code>, <code>hash:uri</code>, <code>hash:source-ip</code>, <code>hash:header=&lt;name&gt;</code>, <code>hash:cookie=&lt;name&gt;</code></td>
 <td><code>round_robin</code></td>
-<td><code>"least_conn"</code></td>
+<td><code>"hash:uri"</code></td>
 </tr>
 </tbody>
 </table>
@@ -2913,10 +2913,27 @@ sends both <code>br</code> and <code>gzip</code>, brotli always wins regardless 
 </tr>
 <tr>
 <td><code>ip_hash</code></td>
+<td>Alias for <code>hash:source-ip</code> (backward-compatible).</td>
+</tr>
+<tr>
+<td><code>hash:uri</code></td>
+<td>Consistent hash on the full request URI (path + query string). Requests to the same URI always land on the same endpoint. Falls back to round-robin if the path is empty.</td>
+</tr>
+<tr>
+<td><code>hash:source-ip</code></td>
 <td>Consistent hash on the resolved client IP (see <a href="#trust-forwarded-for"><code>trust-forwarded-for</code></a> for how the IP is resolved). Requests from the same IP always land on the same endpoint; unlike cookie affinity, no state is injected into the response. Falls back to round-robin if the client IP is unavailable.</td>
+</tr>
+<tr>
+<td><code>hash:header=&lt;name&gt;</code></td>
+<td>Consistent hash on the value of the named request header (e.g. <code>hash:header=x-user-id</code>). An empty or absent header falls back to round-robin.</td>
+</tr>
+<tr>
+<td><code>hash:cookie=&lt;name&gt;</code></td>
+<td>Consistent hash on the value of the named cookie (e.g. <code>hash:cookie=session</code>). An absent or empty cookie falls back to round-robin.</td>
 </tr>
 </tbody>
 </table>
+<p>All <code>hash:*</code> values (and <code>ip_hash</code>) use <strong>rendezvous (HRW) hashing</strong>: when an endpoint is removed, only its keys are redistributed; all other keys remain on their existing endpoints. This is strictly better than modulo hashing, which reshuffles nearly every key on a membership change.</p>
 <p>Unknown values warn and fall back to <code>round_robin</code>; routing is never interrupted.</p>
 <h3 id="mapping-to-gateway-api-istio">Mapping to Gateway API / Istio<a class="headerlink" href="#mapping-to-gateway-api-istio" title="Permanent link">&para;</a></h3>
 <p><code>load-balance</code> maps to <code>DestinationRule.trafficPolicy.loadBalancer</code> in Istio:</p>
@@ -2941,15 +2958,27 @@ sends both <code>br</code> and <code>gzip</code>, brotli always wins regardless 
 <td><code>LEAST_REQUEST</code> with latency-weighted selection</td>
 </tr>
 <tr>
-<td><code>ip_hash</code></td>
-<td><code>CONSISTENT_HASH</code> (source-ip)</td>
+<td><code>ip_hash</code> / <code>hash:source-ip</code></td>
+<td><code>CONSISTENT_HASH</code> (<code>useSourceIp: true</code>)</td>
+</tr>
+<tr>
+<td><code>hash:uri</code></td>
+<td><code>CONSISTENT_HASH</code> (HTTP URI — closest analogue)</td>
+</tr>
+<tr>
+<td><code>hash:header=&lt;name&gt;</code></td>
+<td><code>CONSISTENT_HASH</code> (<code>httpHeaderName: &lt;name&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>hash:cookie=&lt;name&gt;</code></td>
+<td><code>CONSISTENT_HASH</code> (<code>httpCookie.name: &lt;name&gt;</code>)</td>
 </tr>
 </tbody>
 </table>
-<h3 id="ip_hash-and-forwarded-for"><code>ip_hash</code> and forwarded-for<a class="headerlink" href="#ip_hash-and-forwarded-for" title="Permanent link">&para;</a></h3>
-<p>When <a href="#trust-forwarded-for"><code>trust-forwarded-for</code></a> is enabled, <code>ip_hash</code> uses the resolved client IP (the first non-private address from the forwarded header, gated by <a href="#forwarded-for-trusted-cidrs"><code>forwarded-for-trusted-cidrs</code></a> if set). This means a load balancer that rewrites the source IP still produces consistent upstream pinning based on the real client address.</p>
+<h3 id="hashsource-ip-and-forwarded-for"><code>hash:source-ip</code> and forwarded-for<a class="headerlink" href="#hashsource-ip-and-forwarded-for" title="Permanent link">&para;</a></h3>
+<p>When <a href="#trust-forwarded-for"><code>trust-forwarded-for</code></a> is enabled, <code>hash:source-ip</code> (and its alias <code>ip_hash</code>) uses the resolved client IP (the first non-private address from the forwarded header, gated by <a href="#forwarded-for-trusted-cidrs"><code>forwarded-for-trusted-cidrs</code></a> if set). This means a load balancer that rewrites the source IP still produces consistent upstream pinning based on the real client address.</p>
 <h3 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h3>
-<p>All algorithms run on the hot path without locks. <code>round_robin</code> allocates nothing per request. <code>least_conn</code> and <code>ewma</code> perform a linear scan over the endpoint list (typically 1–10 pods per Service) using relaxed atomics, which is negligible compared to I/O. <code>ip_hash</code> hashes IP octets with FNV-1a and does a modular index — also negligible.</p>
+<p>All algorithms run on the hot path without locks. <code>round_robin</code> allocates nothing per request. <code>least_conn</code> and <code>ewma</code> perform a linear scan over the endpoint list (typically 1–10 pods per Service) using relaxed atomics, which is negligible compared to I/O. <code>hash:*</code> values extract and hash the relevant request attribute with FNV-1a, then perform a linear rendezvous scan — negligible. The <code>hash:uri</code> path allocates a single joined <code>path?query</code> string only when a query string is present; all other hash sources are allocation-free on the hot path.</p>
 <h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
 <p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
