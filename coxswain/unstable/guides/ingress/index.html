@@ -876,6 +876,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#graceful-endpoint-removal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graceful endpoint removal
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1540,7 +1549,17 @@
 <span class="w">                </span><span class="nt">port</span><span class="p">:</span>
 <span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
 </code></pre></div>
-<p>The referenced Secret must have <code>type: kubernetes.io/tls</code> with <code>tls.crt</code> and <code>tls.key</code>:</p>
+<p>The referenced Secret must have <code>type: kubernetes.io/tls</code> with <code>tls.crt</code> and <code>tls.key</code>.</p>
+<h2 id="graceful-endpoint-removal">Graceful endpoint removal<a class="headerlink" href="#graceful-endpoint-removal" title="Permanent link">&para;</a></h2>
+<p>When a pod is deleted (rolling deploy, scale-down, preStop hook), the Kubernetes EndpointSlice
+controller marks its endpoint <code>terminating=true</code>. Coxswain's reflector reads this condition and
+immediately removes the endpoint from the active routing pool: <strong>no new requests are sent to the
+pod once it enters the terminating state</strong>.</p>
+<p>Requests that are already in flight on an open connection to that pod complete naturally — the
+underlying TCP stream is unaffected by routing-table swaps, so in-flight work is not interrupted.
+New requests are routed to the remaining healthy endpoints.</p>
+<p>The effective drain window is bounded by the pod's <code>terminationGracePeriodSeconds</code>. Design your
+<code>preStop</code> hooks to complete within this budget.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
 <span class="nt">metadata</span><span class="p">:</span>
