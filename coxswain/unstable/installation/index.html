@@ -1222,7 +1222,7 @@
 <tbody>
 <tr>
 <td><a href="helm/">Helm</a></td>
-<td>Production; values-driven configuration, easy upgrades</td>
+<td>Production; values-driven configuration, easy upgrades, includes Services and PodDisruptionBudgets</td>
 </tr>
 <tr>
 <td><a href="kustomize/">Kustomize</a></td>
@@ -1234,6 +1234,7 @@
 </tr>
 </tbody>
 </table>
+<p>All three methods install the Coxswain CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30). Services and <code>PodDisruptionBudget</code> are Helm-only.</p>
 <h2 id="kubernetes-distributions">Kubernetes distributions<a class="headerlink" href="#kubernetes-distributions" title="Permanent link">&para;</a></h2>
 <p>Any conformant Kubernetes 1.30+ distribution should work. Tested on kind (CI and local development) and OrbStack. File an issue if you encounter distribution-specific behaviour.</p>
 <h2 id="resource-requirements">Resource requirements<a class="headerlink" href="#resource-requirements" title="Permanent link">&para;</a></h2>

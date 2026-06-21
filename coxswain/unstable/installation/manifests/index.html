@@ -1203,7 +1203,11 @@
 
 
 <h1 id="raw-manifests-install">Raw manifests install<a class="headerlink" href="#raw-manifests-install" title="Permanent link">&para;</a></h1>
-<p>Every Coxswain release publishes a pre-rendered <code>install.yaml</code> as a GitHub Release asset. It includes the <code>Namespace</code>, <code>RBAC</code>, <code>GatewayClass</code>, <code>IngressClass</code>, <code>Services</code>, <code>PodDisruptionBudget</code>, and <code>Deployments</code> (controller and shared proxy), with the image pinned to the exact release tag.</p>
+<p>Every Coxswain release publishes a pre-rendered <code>install.yaml</code> as a GitHub Release asset. It includes the <code>Namespace</code>, <code>RBAC</code>, <code>GatewayClass</code>, <code>IngressClass</code>, <code>CoxswainGatewayParameters</code> and <code>RateLimit</code> CRDs, a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation, and <code>Deployments</code> (controller and shared proxy), with the image pinned to the exact release tag.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>ValidatingAdmissionPolicy</code> is silently skipped on clusters that do not advertise <code>admissionregistration.k8s.io/v1/ValidatingAdmissionPolicy</code> (Kubernetes &lt; 1.30). Service and PodDisruptionBudget resources are Helm-only; use the <a href="../helm/">Helm install</a> for production deployments.</p>
+</div>
 <h2 id="install-the-latest-release">Install the latest release<a class="headerlink" href="#install-the-latest-release" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
 kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
@@ -1221,7 +1225,7 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/vX.Y.Z/install.yaml
 </code></pre></div>
-<p>The rolling update strategy on each Deployment ensures zero-downtime upgrades when <code>replicaCount</code> ≥ 2.</p>
+<p>The rolling update strategy on each Deployment ensures zero-downtime upgrades when running ≥ 2 replicas.</p>
 <h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/vX.Y.Z/install.yaml
 </code></pre></div>

@@ -1262,7 +1262,7 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 </thead>
 <tbody>
 <tr>
-<td><code>replicaCount</code></td>
+<td><code>controller.replicas</code></td>
 <td><code>1</code></td>
 <td>Number of controller replicas (run <code>≥ 2</code> in production)</td>
 </tr>
@@ -1272,12 +1272,12 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 <td>Image tag to deploy</td>
 </tr>
 <tr>
-<td><code>controller.name</code></td>
+<td><code>controllerName</code></td>
 <td><code>coxswain-labs.dev/gateway-controller</code></td>
 <td>GatewayClass <code>controllerName</code> to claim</td>
 </tr>
 <tr>
-<td><code>controller.watchNamespace</code></td>
+<td><code>watchNamespace</code></td>
 <td><code>""</code></td>
 <td>Restrict watch to a single namespace; empty = cluster-wide</td>
 </tr>
@@ -1292,29 +1292,29 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 <td>HTTPS proxy listener port</td>
 </tr>
 <tr>
-<td><code>proxy.threads</code></td>
+<td><code>proxy.shared.threads</code></td>
 <td><code>2</code></td>
-<td>Worker threads per proxy service</td>
+<td>Worker threads per shared-proxy service</td>
 </tr>
 <tr>
-<td><code>resources.requests.cpu</code></td>
+<td><code>proxy.shared.resources.requests.cpu</code></td>
 <td><code>100m</code></td>
-<td>CPU request</td>
+<td>Shared-proxy CPU request</td>
 </tr>
 <tr>
-<td><code>resources.requests.memory</code></td>
+<td><code>proxy.shared.resources.requests.memory</code></td>
 <td><code>128Mi</code></td>
-<td>Memory request</td>
+<td>Shared-proxy memory request</td>
 </tr>
 <tr>
-<td><code>resources.limits.cpu</code></td>
+<td><code>proxy.shared.resources.limits.cpu</code></td>
 <td><code>500m</code></td>
-<td>CPU limit</td>
+<td>Shared-proxy CPU limit</td>
 </tr>
 <tr>
-<td><code>resources.limits.memory</code></td>
+<td><code>proxy.shared.resources.limits.memory</code></td>
 <td><code>256Mi</code></td>
-<td>Memory limit</td>
+<td>Shared-proxy memory limit</td>
 </tr>
 </tbody>
 </table>
@@ -1323,11 +1323,11 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 <p>By default Coxswain watches the entire cluster. To restrict to a single namespace:</p>
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span>--create-namespace<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span>controller.watchNamespace<span class="o">=</span>my-namespace
+<span class="w">  </span>--set<span class="w"> </span><span class="nv">watchNamespace</span><span class="o">=</span>my-namespace
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code>controller.watchNamespace</code> only narrows what the controller reads — the chart still installs the cluster-wide <code>ClusterRole</code>/<code>ClusterRoleBinding</code>. To scope RBAC as well, render the manifests with <code>helm template</code> and edit them by hand before applying.</p>
+<p><code>watchNamespace</code> only narrows what the controller reads — the chart still installs the cluster-wide <code>ClusterRole</code>/<code>ClusterRoleBinding</code>. To scope RBAC as well, render the manifests with <code>helm template</code> and edit them by hand before applying.</p>
 </div>
 <h2 id="validatingadmissionpolicy">ValidatingAdmissionPolicy<a class="headerlink" href="#validatingadmissionpolicy" title="Permanent link">&para;</a></h2>
 <p>On Kubernetes ≥ 1.30, the chart installs a <code>ValidatingAdmissionPolicy</code> that rejects Ingresses carrying malformed <code>ingress.coxswain-labs.dev/*</code> annotation values at <code>kubectl apply</code> time. The policy is enabled by default and silently skipped on clusters that do not advertise <code>admissionregistration.k8s.io/v1/ValidatingAdmissionPolicy</code>, so installing on an older cluster is safe.</p>

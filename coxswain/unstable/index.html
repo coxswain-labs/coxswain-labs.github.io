@@ -474,18 +474,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-install" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Quick install
+      Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#roadmap" class="md-nav__link">
+  <a href="#quick-install" class="md-nav__link">
     <span class="md-ellipsis">
-      Roadmap
+      Quick install
     </span>
   </a>
   
@@ -1180,15 +1180,20 @@
 <h1 id="coxswain">Coxswain<a class="headerlink" href="#coxswain" title="Permanent link">&para;</a></h1>
 <div class="admonition info">
 <p class="admonition-title">Pre-1.0 — early adopter release</p>
-<p>Coxswain's core proxy is functional and passes the full Gateway API standard conformance suite.
-The per-Ingress annotation surface is under active development (v0.3).
-<strong>Production use is at your own risk.</strong> Feedback and contributions are welcome.</p>
+<p>Coxswain's core proxy is functional and ships a complete <code>ingress.coxswain-labs.dev/*</code> annotation surface with admission-time validation.
+Active development continues toward v0.4 (Gateway API extended features). Feedback and contributions are welcome.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Production use</p>
+<p>Coxswain is under active development, production use is at your own risk.</p>
+</div>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>A Kubernetes Ingress and Gateway API controller written in Rust, backed by <a href="https://github.com/cloudflare/pingora">Pingora</a> — Cloudflare's battle-tested proxy library.</p>
 <ul>
 <li>Bridges classic <code>Ingress</code> and Gateway API <code>HTTPRoute</code> in a single proxy fleet</li>
 <li>Routing changes and TLS certificate rotations take effect without restarting the proxy</li>
 <li>Controller/proxy split with a strict RBAC boundary — proxy pods hold zero write permissions</li>
+<li>Rich <code>ingress.coxswain-labs.dev/*</code> annotation surface with admission-time validation via <code>ValidatingAdmissionPolicy</code></li>
 </ul>
 <p>See <a href="architecture/">Architecture</a> for the deployment models and RBAC boundary.</p>
 <h2 id="quick-install">Quick install<a class="headerlink" href="#quick-install" title="Permanent link">&para;</a></h2>
@@ -1199,38 +1204,6 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/latest/download/install.yaml
 </code></pre></div>
 <p>See <a href="getting-started/">Getting started</a> for the complete walkthrough, or <a href="installation/">Installation</a> for all install methods.</p>
-<h2 id="roadmap">Roadmap<a class="headerlink" href="#roadmap" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Milestone</th>
-<th>Theme</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>v0.1</strong></td>
-<td>Foundation — Gateway API conformant (standard channel), Ingress support, signed OCI image, Helm chart</td>
-<td>Done</td>
-</tr>
-<tr>
-<td><strong>v0.2</strong></td>
-<td>Architecture — controller/proxy split, dedicated proxy mode, operator web UI</td>
-<td>Done</td>
-</tr>
-<tr>
-<td><strong>v0.3</strong></td>
-<td>Ingress completeness — <code>ingress.coxswain-labs.dev/*</code> annotation surface, nginx migration path</td>
-<td>Planned</td>
-</tr>
-<tr>
-<td><strong>v0.4</strong></td>
-<td>Gateway API extended — BackendTLSPolicy, client/backend mTLS, HTTP/2 downstream, ListenerSet</td>
-<td>Planned</td>
-</tr>
-</tbody>
-</table>
 
 
 

@@ -1090,6 +1090,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ingress-route-is-shadowed-by-a-conflict" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress route is shadowed by a conflict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingress-annotation-has-no-effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress annotation has no effect
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#high-memory-usage" class="md-nav__link">
     <span class="md-ellipsis">
       High memory usage
@@ -1396,12 +1414,37 @@ kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span cl
 <p>At startup, the controller probes for Gateway API CRDs (<code>gatewayclass.gateway.networking.k8s.io</code>, <code>gateway.gateway.networking.k8s.io</code>, <code>httproute.gateway.networking.k8s.io</code>). If any are absent, it drops the Gateway API reconciliation pipelines and runs as a pure Ingress controller.</p>
 <p>Symptoms: no <code>GatewayClass</code>, <code>Gateway</code>, or <code>HTTPRoute</code> conditions are written; <code>kubectl get gatewayclass coxswain</code> returns nothing.</p>
 <p>Fix: install the Gateway API CRDs and restart the controller.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install the standard-channel CRDs (adjust the version to match your cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml
+<div class="highlight"><pre><span></span><code><span class="c1"># Install the standard-channel CRDs</span>
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
 
 <span class="c1"># Restart the controller so it re-probes</span>
 kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>rollout<span class="w"> </span>restart<span class="w"> </span>deployment/coxswain-controller
 </code></pre></div>
+<h2 id="ingress-route-is-shadowed-by-a-conflict">Ingress route is shadowed by a conflict<a class="headerlink" href="#ingress-route-is-shadowed-by-a-conflict" title="Permanent link">&para;</a></h2>
+<p>When two <code>Ingress</code> objects claim the same host and path combination, only one wins (see <a href="../ingress/#multiple-ingresses-on-the-same-host">Multi-Ingress merging and conflict precedence</a>). The losing Ingress's route is silently dropped from the routing table. The controller emits a <code>Warning</code> Event on the shadowed Ingress to make the conflict visible:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>ingress<span class="w"> </span>&lt;shadowed-ingress&gt;
+<span class="c1"># ...</span>
+<span class="c1"># Events:</span>
+<span class="c1">#   Type     Reason         Age  From               Message</span>
+<span class="c1">#   ----     ------         ---  ----               -------</span>
+<span class="c1">#   Warning  RouteConflict  1m   coxswain           Route on host app.example.com path /api is shadowed by default/winning-ingress</span>
+</code></pre></div>
+<p>You can also query events directly:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>RouteConflict<span class="w"> </span>-A
+</code></pre></div>
+<p>To resolve: ensure only one Ingress claims a given <code>(host, path)</code> slot, or migrate the conflicting rules into a single Ingress object.</p>
+<h2 id="ingress-annotation-has-no-effect">Ingress annotation has no effect<a class="headerlink" href="#ingress-annotation-has-no-effect" title="Permanent link">&para;</a></h2>
+<p>If an <code>ingress.coxswain-labs.dev/*</code> annotation value is invalid, the controller ignores it (fail-open) and emits a <code>Warning</code> Event on the Ingress:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>ingress<span class="w"> </span>&lt;name&gt;
+<span class="c1"># Events:</span>
+<span class="c1">#   Type     Reason            Age  From               Message</span>
+<span class="c1">#   ----     ------            ---  ----               -------</span>
+<span class="c1">#   Warning  InvalidAnnotation  1m  coxswain           connect-timeout: invalid duration &quot;5 seconds&quot; — expected a Go duration string (e.g. &quot;5s&quot;, &quot;1m30s&quot;)</span>
+</code></pre></div>
+<p>Query all annotation-parse warnings in the cluster:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>InvalidAnnotation<span class="w"> </span>-A
+</code></pre></div>
+<p>On Kubernetes ≥ 1.30 with the Helm chart, the <code>ValidatingAdmissionPolicy</code> catches most invalid values at <code>kubectl apply</code> time — the admission rejection message matches the Event message format above.</p>
 <h2 id="high-memory-usage">High memory usage<a class="headerlink" href="#high-memory-usage" title="Permanent link">&para;</a></h2>
 <p>The routing table is rebuilt from scratch on every reconcile. Very large clusters (thousands of <code>HTTPRoute</code> objects) may show elevated memory during rebuilds. Each completed rebuild releases the old table; the GC-free nature of Rust means this is deterministic rather than dependent on a garbage collector schedule.</p>
 <p>Profile with:</p>

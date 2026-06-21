@@ -2286,6 +2286,12 @@
 <td><em>none</em> (constant)</td>
 <td><code>"60s"</code></td>
 </tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/upstream-keepalive-timeout</code></td>
+<td>duration</td>
+<td><em>none</em> (LRU eviction)</td>
+<td><code>"60s"</code></td>
+</tr>
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -2662,7 +2668,7 @@
 <p><code>max-body-size</code> already rejects requests exceeding the cap with 413, so the mirror buffer is inherently bounded — no additional memory risk is introduced.</p>
 <div class="admonition note">
 <p class="admonition-title">Body-mirroring for large payloads</p>
-<p>Stream-concurrent mirroring (mirror body as it arrives, no buffering) is planned (#360). Until then, mirror with a body cap is the recommended pattern for production use.</p>
+<p>Stream-concurrent mirroring (mirror body as it arrives, no buffering) is planned. Until then, mirror with a body cap is the recommended pattern for production use.</p>
 </div>
 <h3 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h3>
 <p>Every mirror sub-request appears in the <strong>proxy access log</strong> as a separate row with <code>mirror = true</code>. The row carries the same fields as a primary row (<code>host</code>, <code>path</code>, <code>upstream</code>, <code>status</code>) so mirror traffic is visible in any log aggregation pipeline.</p>
@@ -2797,7 +2803,7 @@
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The Gateway API binding for session persistence is tracked in <a href="https://github.com/coxswain-labs/coxswain/issues/355">#355</a>. It is deferred because the only Gateway API surface for session persistence in our pinned crate is experimental-only (which Coxswain never compiles into release images), and the <code>BackendLBPolicy</code> resource originally proposed is not an upstream Gateway API type. Today the <code>session-*</code> annotations are the Ingress-only entry point.</p>
+<p>The Gateway API binding for session persistence is not yet implemented: the only Gateway API surface for session persistence in the pinned crate is experimental-only (which Coxswain never compiles into release images), and the <code>BackendLBPolicy</code> resource originally proposed is not an upstream Gateway API type. Today the <code>session-*</code> annotations are the Ingress-only entry point.</p>
 </div>
 <h2 id="circuit-breaker">Circuit breaker<a class="headerlink" href="#circuit-breaker" title="Permanent link">&para;</a></h2>
 <p>The per-upstream-endpoint circuit breaker trips when a backend pod's <strong>error rate</strong> exceeds a threshold, returning fail-fast <strong>503</strong> responses to clients until the pod shows signs of recovery. This is the Ingress equivalent of Envoy/Istio <strong>outlier detection</strong>: a single degraded pod trips only its own breaker; healthy pods serving the same Ingress keep accepting traffic.</p>

@@ -997,6 +997,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#annotation-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Annotation validation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-class-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Per-class configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#rbac" class="md-nav__link">
     <span class="md-ellipsis">
       RBAC
@@ -1404,8 +1422,21 @@
 <h2 id="tls">TLS<a class="headerlink" href="#tls" title="Permanent link">&para;</a></h2>
 <p>TLS Secrets must be in the correct namespace — for <code>Ingress</code>, the same namespace as the <code>Ingress</code> object; for <code>Gateway</code>, the same namespace as the <code>Gateway</code> unless a <code>ReferenceGrant</code> permits cross-namespace access. See the <a href="../tls/">TLS guide</a> for cert-manager setup.</p>
 <h2 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h2>
-<p>Configure a Prometheus scrape against the admin port (<code>8082</code>) — see the <a href="../../reference/observability/">Observability reference</a> for the ServiceMonitor and scrape_config examples. Alert on <code>/readyz</code> returning non-200 for more than one scrape interval.</p>
+<p>Configure a Prometheus scrape against the admin port (<code>8082</code>) — see the <a href="../../reference/observability/">Observability reference</a> for the PodMonitor and scrape_config examples. Alert on <code>/readyz</code> returning non-200 for more than one scrape interval.</p>
+<p>The controller emits Kubernetes <code>Warning</code> Events on <code>Ingress</code> objects when a route conflict is detected (<code>reason: RouteConflict</code>) or an annotation value is invalid (<code>reason: InvalidAnnotation</code>). Set up an alerting rule or regularly query these events:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>RouteConflict,type<span class="o">=</span>Warning<span class="w"> </span>-A
+kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>InvalidAnnotation,type<span class="o">=</span>Warning<span class="w"> </span>-A
+</code></pre></div>
+<p>See <a href="../troubleshooting/#ingress-route-is-shadowed-by-a-conflict">Troubleshooting — route conflicts</a> and <a href="../troubleshooting/#ingress-annotation-has-no-effect">annotation diagnostics</a> for remediation steps.</p>
 <p>Set <code>--log-format=json</code> for structured log ingestion and <code>--log=warn</code> in production to reduce noise.</p>
+<h2 id="annotation-validation">Annotation validation<a class="headerlink" href="#annotation-validation" title="Permanent link">&para;</a></h2>
+<p>On Kubernetes ≥ 1.30, the Helm chart installs a <code>ValidatingAdmissionPolicy</code> that rejects <code>Ingress</code> objects carrying malformed <code>ingress.coxswain-labs.dev/*</code> annotation values at apply time, surfacing errors immediately rather than silently falling back to defaults. It is enabled by default; disable with <code>--set vap.enabled=false</code> if your cluster does not support the <code>admissionregistration.k8s.io/v1</code> API. See <a href="../../installation/helm/#validatingadmissionpolicy">Helm install — ValidatingAdmissionPolicy</a>.</p>
+<h2 id="per-class-configuration">Per-class configuration<a class="headerlink" href="#per-class-configuration" title="Permanent link">&para;</a></h2>
+<p><code>CoxswainIngressClassParameters</code> lets you set class-level defaults that apply to every <code>Ingress</code> claiming the class. Useful for cluster-wide policies:</p>
+<ul>
+<li><strong><code>spec.defaultAnnotations</code></strong> — default <code>ingress.coxswain-labs.dev/*</code> values; per-Ingress annotations override these per key.</li>
+<li><strong><code>spec.accessLog</code></strong> — set <code>false</code> to suppress proxy access-log lines for all routes in the class (never force-enables — a <code>false</code> class setting cannot be overridden per Ingress). See the <a href="../../reference/observability/#access-logs">Observability reference</a> for the full access-log configuration model.</li>
+</ul>
 <h2 id="rbac">RBAC<a class="headerlink" href="#rbac" title="Permanent link">&para;</a></h2>
 <p>The default <code>ClusterRole</code> grants Coxswain cluster-wide:</p>
 <ul>
