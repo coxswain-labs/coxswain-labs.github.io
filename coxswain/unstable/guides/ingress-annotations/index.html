@@ -1504,6 +1504,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Class-level defaults">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#specaccesslog-per-class-access-log-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      spec.accessLog — per-class access-log control
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -3224,6 +3239,13 @@ sends both <code>br</code> and <code>gzip</code>, brotli always wins regardless 
 <li>The built-in Coxswain default.</li>
 </ol>
 <p>The merge is per-key: an Ingress that sets only <code>connect-timeout</code> still inherits the class's <code>retry-on</code> and <code>max-retries</code>. The keys and value formats in <code>defaultAnnotations</code> are exactly the per-Ingress ones; an invalid value emits a warning and falls back to the built-in default, the same as if it were set directly on an Ingress (an empty string <code>""</code> is <strong>not</strong> an "unset" override — it parses, warns, and falls back).</p>
+<h3 id="specaccesslog-per-class-access-log-control"><code>spec.accessLog</code> — per-class access-log control<a class="headerlink" href="#specaccesslog-per-class-access-log-control" title="Permanent link">&para;</a></h3>
+<p>In addition to <code>spec.defaultAnnotations</code>, <code>CoxswainIngressClassParameters</code> exposes a typed field for access-log control:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">accessLog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># suppress access-log lines for this class&#39;s routes</span>
+</code></pre></div>
+<p>Unlike <code>defaultAnnotations</code>, <code>accessLog</code> is <strong>not</strong> a per-Ingress override — it is class-scoped only. All Ingresses claiming the class share the same setting; individual Ingresses cannot override it per-resource. Set <code>accessLog: false</code> when you want to suppress noisy health-check or synthetic-monitor traffic without affecting the rest of the log stream.</p>
+<p>Error logs and Prometheus metrics are never suppressed by <code>accessLog: false</code>. <code>accessLog: false</code> is a downward-only override — it never force-enables logging when <code>--access-log</code> is already off globally. See <a href="../../reference/observability/#per-class-suppression">Observability → Per-class suppression</a> for the full usage example.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><code>CoxswainIngressClassParameters</code> is namespaced, so <code>spec.parameters</code> must set <code>scope: Namespace</code> and a <code>namespace</code>. A reference that is missing, names a different kind, or omits its namespace is logged as a warning and ignored — affected Ingresses still route with built-in defaults rather than being rejected. Because <code>IngressClass</code> has no status subresource, this condition is surfaced in the controller log, not on the object.</p>
