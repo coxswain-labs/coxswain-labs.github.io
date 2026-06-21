@@ -1204,6 +1204,57 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#kubernetes-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kubernetes Events
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#routeconflict" class="md-nav__link">
+    <span class="md-ellipsis">
+      RouteConflict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invalidannotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      InvalidAnnotation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deduplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deduplication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operator-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operator queries
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#logging" class="md-nav__link">
     <span class="md-ellipsis">
       Logging
@@ -1699,6 +1750,44 @@
 
 <span class="c1"># Or via environment variable</span>
 <span class="nv">COXSWAIN_LOG</span><span class="o">=</span>info,coxswain_proxy::access<span class="o">=</span>off
+</code></pre></div>
+<h2 id="kubernetes-events">Kubernetes Events<a class="headerlink" href="#kubernetes-events" title="Permanent link">&para;</a></h2>
+<p>The controller emits Kubernetes <code>Warning</code> Events on affected <code>Ingress</code> objects for two
+diagnostic conditions. Events appear in <code>kubectl describe ingress &lt;name&gt;</code> and
+<code>kubectl get events</code> — no log-aggregation pipeline needed.</p>
+<h3 id="routeconflict">RouteConflict<a class="headerlink" href="#routeconflict" title="Permanent link">&para;</a></h3>
+<p>Triggered when two or more Ingresses claim the same <code>(host, path)</code> combination. The
+earliest-applied rule wins; every losing Ingress receives one <code>Warning</code> Event:</p>
+<div class="highlight"><pre><span></span><code>Type     Reason         Age   From                 Message
+----     ------         ---   ----                 -------
+Warning  RouteConflict  12s   coxswain-controller  Route on host api.example.com path /v1 is shadowed by default/primary-ingress
+</code></pre></div>
+<p>The <code>Message</code> field names the winning Ingress as <code>&lt;namespace&gt;/&lt;name&gt;</code>. No Event is emitted
+on the winning Ingress. See <a href="../../guides/ingress-annotations/">Ingress annotation reference</a>
+for how to resolve conflicts (e.g. deduplicate rules or adjust <code>IngressClass</code> assignments).</p>
+<h3 id="invalidannotation">InvalidAnnotation<a class="headerlink" href="#invalidannotation" title="Permanent link">&para;</a></h3>
+<p>Triggered when an <code>ingress.coxswain-labs.dev/*</code> annotation value cannot be parsed. The
+affected feature is disabled or falls back to its default; the Ingress itself continues to
+serve traffic from its valid rules.</p>
+<div class="highlight"><pre><span></span><code>Type     Reason             Age   From                 Message
+----     ------             ---   ----                 -------
+Warning  InvalidAnnotation  5s    coxswain-controller  ingress.coxswain-labs.dev/connect-timeout: invalid duration — using default
+</code></pre></div>
+<h3 id="deduplication">Deduplication<a class="headerlink" href="#deduplication" title="Permanent link">&para;</a></h3>
+<p>Both event types are deduplicated by the kube <code>Recorder</code>'s built-in per-process cache. A
+resync storm does not produce duplicate Events in <code>kubectl describe</code> output — the
+controller updates the existing Event's count rather than creating a new one. If the
+condition is corrected and then reintroduced (e.g. the annotation is fixed and then broken
+again), the Event re-appears.</p>
+<h3 id="operator-queries">Operator queries<a class="headerlink" href="#operator-queries" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># All Warning events on Ingresses in the default namespace</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>default<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>RouteConflict,type<span class="o">=</span>Warning
+
+<span class="c1"># All Invalid annotation events cluster-wide (requires cluster-admin)</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-A<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>InvalidAnnotation,type<span class="o">=</span>Warning
+
+<span class="c1"># Describe a specific Ingress to see its Events inline</span>
+kubectl<span class="w"> </span>describe<span class="w"> </span>ingress<span class="w"> </span>&lt;name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
 </code></pre></div>
 <h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h2>
 <p>Coxswain uses structured logging via <code>tracing</code>. Configure the level with <code>--log</code> (or <code>COXSWAIN_LOG</code>):</p>
