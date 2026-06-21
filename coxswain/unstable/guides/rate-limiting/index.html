@@ -1388,6 +1388,10 @@
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5&quot;</span>
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-by</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;header:X-Api-Key&quot;</span>
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Header keying can be bypassed by rotating the header value. Pair it with <code>auth-url</code> or <code>auth-basic-secret</code> to ensure the header is authenticated before being trusted. See the <a href="../ingress-annotations/#rate-limit-by">rate-limit-by annotation reference</a> for details.</p>
+</div>
 <h2 id="gateway-api-extensionref">Gateway API ExtensionRef<a class="headerlink" href="#gateway-api-extensionref" title="Permanent link">&para;</a></h2>
 <p>Attach a rate limit to a single <code>HTTPRoute</code> rule by referencing a <code>RateLimit</code> custom resource from an <code>ExtensionRef</code> filter:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-labs.dev/v1alpha1</span>
