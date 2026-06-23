@@ -1084,9 +1084,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rbac-denials-in-dedicated-proxy-logs" class="md-nav__link">
+  <a href="#dedicated-proxy-stuck-notready-or-degraded" class="md-nav__link">
     <span class="md-ellipsis">
-      RBAC denials in dedicated proxy logs
+      Dedicated proxy stuck NotReady or Degraded
     </span>
   </a>
   
@@ -1314,15 +1314,15 @@
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-shared-proxy-internal<span class="w"> </span><span class="m">8082</span>:8082
 </code></pre></div>
 <h2 id="readyz-returns-503-on-startup"><code>/readyz</code> returns 503 on startup<a class="headerlink" href="#readyz-returns-503-on-startup" title="Permanent link">&para;</a></h2>
-<p>The readiness endpoint gates on every registered subsystem reaching <code>Ready</code> or <code>Degraded</code>. During startup it stays <code>503</code> until:</p>
-<ol>
-<li>All Kubernetes reflectors emit their first <code>InitDone</code> (requires CRDs to be installed and RBAC to be correct)</li>
-<li>The routing table is built at least once</li>
-</ol>
+<p>The readiness endpoint gates on every registered subsystem reaching <code>Ready</code> or <code>Degraded</code>. During startup it stays <code>503</code> until each subsystem reports at least one successful completion:</p>
+<ul>
+<li><strong>Controller</strong>: all Kubernetes reflectors emit their first <code>InitDone</code> (requires CRDs to be installed and controller RBAC to be correct), and the routing table is built at least once.</li>
+<li><strong>Proxy</strong>: the discovery client connects to the controller, bootstraps an SVID, and receives its first routing snapshot.</li>
+</ul>
 <p>Inspect which subsystem is blocking:</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/health<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.subsystems
 </code></pre></div>
-<p>A subsystem stuck in <code>Pending</code> looks like this — <code>httproute</code> hasn't seen its first list complete, typically because the CRD is missing:</p>
+<p>Controller subsystem stuck in <code>Pending</code> (CRD missing or controller RBAC wrong):</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;controller&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span><span class="p">,</span>
@@ -1332,7 +1332,11 @@
 <span class="w">      </span><span class="nt">&quot;gateway&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;routing_table_built&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Proxy subsystem stuck in <code>Pending</code> (discovery not yet connected or first snapshot not received):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;proxy&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;checks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -1341,9 +1345,14 @@
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Common causes:
+<p>Common causes for the <strong>controller</strong> being <code>Pending</code>:
 - Gateway API CRDs not installed — install with <code>kubectl apply -f .../standard-install.yaml</code>
-- RBAC is missing a permission — check <code>kubectl -n coxswain-system logs -l app.kubernetes.io/name=coxswain</code> for <code>forbidden</code> errors</p>
+- Controller RBAC missing a permission — check <code>kubectl -n coxswain-system logs -l app.kubernetes.io/name=coxswain</code> for <code>forbidden</code> errors</p>
+<p>Common causes for the <strong>proxy</strong> being <code>Pending</code>:
+- Discovery endpoint unreachable — verify <code>COXSWAIN_DISCOVERY_ENDPOINT</code> points at the controller's discovery <code>Service</code>
+- Trust bundle not yet published — <code>kubectl -n coxswain-system get configmap coxswain-discovery-trust</code> must exist; the controller publishes it at startup
+- Bootstrap rejected — check for <code>BootstrapRejected</code> events: <code>kubectl -n coxswain-system get events --field-selector reason=BootstrapRejected</code>
+- Wire-version mismatch — proxy logs <code>FAILED_PRECONDITION</code> and backs off permanently; see <a href="../control-plane-security/#wire-version-skew">Wire-version skew</a></p>
 <h2 id="routes-are-not-being-picked-up">Routes are not being picked up<a class="headerlink" href="#routes-are-not-being-picked-up" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># Check the routing table</span>
 curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
@@ -1406,19 +1415,24 @@ kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span cl
 <ul>
 <li><strong><code>Accepted=False, reason=InvalidParameters</code> on the Gateway</strong> — the <code>parametersRef</code> points at a <code>CoxswainGatewayParameters</code> object that doesn't exist or is in the wrong namespace. Create the object or fix the reference; the controller will reconcile and provision the pod.</li>
 <li><strong>Image pull error</strong> — the dedicated proxy uses the same image as the controller; verify <code>imagePullSecrets</code> and registry credentials in the Gateway's target namespace.</li>
-<li><strong>RBAC missing</strong> — the controller <code>ServiceAccount</code> needs permission to create <code>Deployment</code>, <code>Service</code>, <code>ServiceAccount</code>, and <code>RoleBinding</code> objects in the Gateway's namespace. If the Helm chart was upgraded without running <code>helm upgrade</code>, re-run it to restore the latest ClusterRole.</li>
+<li><strong>Controller RBAC missing</strong> — the controller <code>ServiceAccount</code> needs permission to create <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> objects in the Gateway's namespace. If the Helm chart was upgraded without running <code>helm upgrade</code>, re-run it to restore the latest ClusterRole.</li>
 </ul>
-<h2 id="rbac-denials-in-dedicated-proxy-logs">RBAC denials in dedicated proxy logs<a class="headerlink" href="#rbac-denials-in-dedicated-proxy-logs" title="Permanent link">&para;</a></h2>
-<p>The dedicated proxy runs with per-namespace narrowed RBAC: its <code>ServiceAccount</code> holds read permissions only in the namespaces the Gateway's HTTPRoutes route backends into. A <code>forbidden</code> error in the proxy logs means the proxy is trying to read a resource outside its provisioned namespace set.</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>logs<span class="w"> </span>deployment/&lt;gateway-name&gt;-coxswain<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>forbidden
+<h2 id="dedicated-proxy-stuck-notready-or-degraded">Dedicated proxy stuck <code>NotReady</code> or <code>Degraded</code><a class="headerlink" href="#dedicated-proxy-stuck-notready-or-degraded" title="Permanent link">&para;</a></h2>
+<p>The dedicated proxy is a discovery client: it bootstraps an SVID from the controller and then opens a mTLS stream to receive its Gateway's routing snapshot. The proxy stays <code>NotReady</code> until the first snapshot arrives; it transitions to <code>Degraded</code> on any subsequent reconnect window.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check proxy logs for discovery errors</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>logs<span class="w"> </span>deployment/&lt;gateway-name&gt;-coxswain<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-50
+
+<span class="c1"># Check for bootstrap rejections (controller is the sole event emitter)</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>BootstrapRejected
 </code></pre></div>
 <p>Common causes:</p>
 <ul>
-<li><strong>Route backend in a namespace not covered by a <code>RoleBinding</code></strong> — the controller derives <code>--proxy-watch-namespaces</code> from the same set of namespaces it has provisioned <code>RoleBinding</code>s for. If a route refers to a backend in namespace <code>B</code> and no <code>RoleBinding</code> exists there, the proxy can't read <code>Service</code>/<code>EndpointSlice</code> objects in <code>B</code>. Check whether a <code>ReferenceGrant</code> exists from <code>B</code> allowing the route's parent namespace to reference it; without the grant, the backend is rejected by the controller before the proxy sees it.</li>
-<li><strong>Cross-namespace route attachment</strong> — <code>allowedRoutes.namespaces.from: All</code> or <code>from: Selector</code> requires a <code>ClusterRoleBinding</code> for cluster-wide <code>HTTPRoute</code> reads. The controller creates these automatically when the listener mode is set. If the <code>ClusterRoleBinding</code> is missing, verify the controller is running and not in an error loop (<code>kubectl -n coxswain-system logs -l app.kubernetes.io/component=controller</code>).</li>
+<li><strong>Discovery endpoint unreachable</strong> — the dedicated proxy's <code>COXSWAIN_DISCOVERY_ENDPOINT</code> is rendered by the controller; verify the controller's discovery <code>Service</code> exists and the proxy pod can reach it.</li>
+<li><strong>SVID scope mismatch</strong> — the stream server logs <code>PERMISSION_DENIED</code> if the proxy's SVID does not match the expected ServiceAccount for the Gateway. Check that the SA name follows the GEP-1762 pattern (<code>{gateway-name}-{gatewayclass-name}</code>) and that the controller's registry entry is current. Reconciling the Gateway again (e.g. by adding/removing an annotation) forces a registry refresh.</li>
+<li><strong>Wire-version mismatch</strong> — proxy logs <code>FAILED_PRECONDITION</code>; see <a href="../control-plane-security/#wire-version-skew">Wire-version skew</a>.</li>
 </ul>
 <h2 id="provisioned-resources-not-garbage-collected-after-gateway-deletion">Provisioned resources not garbage-collected after Gateway deletion<a class="headerlink" href="#provisioned-resources-not-garbage-collected-after-gateway-deletion" title="Permanent link">&para;</a></h2>
-<p>When a <code>Gateway</code> is deleted, Kubernetes owner-reference GC removes the provisioned <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> (all owner-referenced to the Gateway). Cross-namespace <code>RoleBinding</code>s are not owner-referenced (Kubernetes does not support cross-namespace owner references for namespaced resources), so they are cleaned up by the controller via the <code>gateway.coxswain-labs.dev/dedicated-cleanup</code> finalizer.</p>
+<p>When a <code>Gateway</code> is deleted, Kubernetes owner-reference GC removes the provisioned <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> (all owner-referenced to the Gateway). The <code>gateway.coxswain-labs.dev/dedicated-cleanup</code> finalizer ensures the controller completes any remaining cleanup before Kubernetes finalizes the Gateway.</p>
 <p>If resources are not disappearing after a <code>kubectl delete gateway</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Check whether the finalizer is still present (it should be removed by the controller)</span>
 kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>&lt;name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;ns&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.finalizers}&#39;</span>
@@ -1426,11 +1440,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"
 <span class="c1"># Check controller logs for cleanup errors</span>
 kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>controller<span class="w"> </span>--tail<span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>dedicated-cleanup
 </code></pre></div>
-<p>Common causes:</p>
-<ul>
-<li><strong>Controller is not running or has lost the leader lease</strong> — the finalizer is processed only by the active controller replica. If the controller is down or failing to elect a leader, the Gateway will be stuck in a terminating state until the controller recovers.</li>
-<li><strong><code>RoleBinding</code> delete permission removed</strong> — if the controller's <code>ClusterRole</code> was modified to remove <code>rolebinding</code> delete permissions, cleanup stalls. Re-apply the Helm chart to restore the correct ClusterRole.</li>
-</ul>
+<p>Common cause: the controller is not running or has lost the leader lease — the finalizer is processed only by the active controller replica. If the controller is down or failing to elect a leader, the Gateway will be stuck in a terminating state until the controller recovers.</p>
 <h2 id="controller-stuck-in-ingress-only-mode">Controller stuck in Ingress-only mode<a class="headerlink" href="#controller-stuck-in-ingress-only-mode" title="Permanent link">&para;</a></h2>
 <p>At startup, the controller probes for Gateway API CRDs (<code>gatewayclass.gateway.networking.k8s.io</code>, <code>gateway.gateway.networking.k8s.io</code>, <code>httproute.gateway.networking.k8s.io</code>). If any are absent, it drops the Gateway API reconciliation pipelines and runs as a pure Ingress controller.</p>
 <p>Symptoms: no <code>GatewayClass</code>, <code>Gateway</code>, or <code>HTTPRoute</code> conditions are written; <code>kubectl get gatewayclass coxswain</code> returns nothing.</p>

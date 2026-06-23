@@ -1311,13 +1311,13 @@
 <h3 id="is-coxswain-production-ready">Is Coxswain production-ready?<a class="headerlink" href="#is-coxswain-production-ready" title="Permanent link">&para;</a></h3>
 <p>Not yet. Coxswain is pre-1.0: the API surface and configuration flags may change between minor releases. The core architecture — a leader-elected controller pod writing status, backed by one or more read-only Pingora proxy pods — is stable and well-tested.</p>
 <h3 id="why-another-ingress-controller">Why another Ingress controller?<a class="headerlink" href="#why-another-ingress-controller" title="Permanent link">&para;</a></h3>
-<p>Coxswain separates the controller (the sole Kubernetes writer) from the proxy (a read-only Pingora data plane). The routing table is built from Kubernetes watch events and exposed to the proxy as an immutable snapshot behind an atomic pointer; TLS certificates are loaded the same way. Proxies have no leader election and scale horizontally with no coordination.</p>
+<p>Coxswain separates the controller (the sole Kubernetes reader and writer) from the proxy (a read-only Pingora data plane). The controller compiles routing snapshots from Kubernetes watch events and pushes them to proxies over a mandatory-mTLS gRPC discovery stream; the proxy applies each snapshot via an atomic pointer swap — no locks, no restart. TLS certificates are delivered the same way. Proxies have no leader election, no Kubernetes API access, and scale horizontally with no coordination.</p>
 <p>See <a href="#comparison">Comparison</a> for specific differences against other controllers.</p>
 <h3 id="does-coxswain-support-ingress-and-gateway-api-at-the-same-time">Does Coxswain support Ingress and Gateway API at the same time?<a class="headerlink" href="#does-coxswain-support-ingress-and-gateway-api-at-the-same-time" title="Permanent link">&para;</a></h3>
 <p>Yes. Both <code>Ingress</code> and <code>HTTPRoute</code> objects contribute to the same routing table. You can migrate from Ingress to Gateway API incrementally — both can be active simultaneously.</p>
 <h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
 <h3 id="why-the-controllerproxy-split">Why the controller/proxy split?<a class="headerlink" href="#why-the-controllerproxy-split" title="Permanent link">&para;</a></h3>
-<p>Embedding status writes in the proxy would force leader election into the data plane: only one replica could write at a time, and horizontal scaling would require electing more leaders. Making the controller the sole Kubernetes writer keeps proxy pods stateless, eliminates inter-replica coordination, and shrinks the proxy's RBAC surface to zero write verbs — a compromised proxy pod cannot write to the API server at all. The read-only invariant is enforced by RBAC, not by convention.</p>
+<p>Embedding status writes in the proxy would force leader election into the data plane: only one replica could write at a time, and horizontal scaling would require electing more leaders. Making the controller the sole Kubernetes reader and writer keeps proxy pods stateless, eliminates inter-replica coordination, and gives the proxy <strong>zero Kubernetes API access</strong> — a compromised proxy pod cannot read from or write to the API server at all. The invariant is enforced by shipping no RBAC for the proxy SA, not by convention.</p>
 <p>See <a href="../architecture/#deployment-models">Architecture</a> for the two macro deployment models (Shared and Dedicated).</p>
 <h3 id="how-does-ingress-fit">How does Ingress fit?<a class="headerlink" href="#how-does-ingress-fit" title="Permanent link">&para;</a></h3>
 <p>Classic <code>Ingress</code> resources are always served by the shared proxy pool — <code>Ingress</code> has no equivalent of <code>parametersRef</code>. Gateway API users can opt a <code>Gateway</code> into a dedicated proxy (per Gateway) via <code>spec.infrastructure.parametersRef</code> on the <code>Gateway</code> or via <code>spec.parametersRef</code> on its <code>GatewayClass</code> (cluster-wide default); the controller provisions and manages that dedicated proxy automatically. See <a href="../guides/dedicated-mode/">Dedicated proxy pools</a> for the full walkthrough.</p>
@@ -1400,12 +1400,12 @@
 <tr>
 <td>Process model</td>
 <td>Control-plane Pod translates Gateway API to xDS; Envoy Pods consume xDS</td>
-<td>Split controller + read-only Pingora proxy pods; each proxy self-watches Kubernetes rather than consuming xDS</td>
+<td>Split controller + read-only Pingora proxy pods; controller compiles snapshots and pushes them over a mTLS gRPC discovery stream (conceptually similar to xDS)</td>
 </tr>
 <tr>
 <td>Data-plane configuration</td>
 <td>xDS over gRPC</td>
-<td>In-process atomic pointer swap</td>
+<td>Controller-pushed snapshot applied via in-process atomic pointer swap</td>
 </tr>
 <tr>
 <td>Proxy engine</td>
@@ -1423,7 +1423,7 @@
 <p>See <a href="../guides/troubleshooting/">Troubleshooting</a> for step-by-step diagnostic commands. Common dedicated-mode questions:</p>
 <ul>
 <li><strong>Dedicated proxy pod not starting</strong> — see <a href="../guides/troubleshooting/#dedicated-proxy-pod-never-becomes-ready">Dedicated proxy pod never becomes Ready</a>.</li>
-<li><strong><code>forbidden</code> errors in proxy logs</strong> — see <a href="../guides/troubleshooting/#rbac-denials-in-dedicated-proxy-logs">RBAC denials in dedicated proxy logs</a>.</li>
+<li><strong>Dedicated proxy stuck <code>NotReady</code> or <code>Degraded</code></strong> — see <a href="../guides/troubleshooting/#dedicated-proxy-stuck-notready-or-degraded">Dedicated proxy stuck <code>NotReady</code> or <code>Degraded</code></a>.</li>
 <li><strong>Provisioned resources left behind after Gateway deletion</strong> — see <a href="../guides/troubleshooting/#provisioned-resources-not-garbage-collected-after-gateway-deletion">Provisioned resources not garbage-collected after Gateway deletion</a>.</li>
 <li><strong>Controller not reconciling Gateway API resources</strong> — see <a href="../guides/troubleshooting/#controller-stuck-in-ingress-only-mode">Controller stuck in Ingress-only mode</a>.</li>
 </ul>

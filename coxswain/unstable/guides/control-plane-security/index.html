@@ -1048,6 +1048,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reconnect-and-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reconnect and failure modes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wire-version-skew" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wire-version skew
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       Troubleshooting
@@ -1527,6 +1545,42 @@ for the full flag/value list. The common knobs:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="reconnect-and-failure-modes">Reconnect and failure modes<a class="headerlink" href="#reconnect-and-failure-modes" title="Permanent link">&para;</a></h2>
+<p>The proxy runs a jittered-exponential-backoff reconnect supervisor (250 ms → 30 s):</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th><code>/readyz</code></th>
+<th>Traffic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Before first snapshot</td>
+<td><code>503 NotReady</code></td>
+<td>— (no routing yet)</td>
+</tr>
+<tr>
+<td>Disconnect after first snapshot</td>
+<td><code>200 Degraded</code></td>
+<td>Served from last-good snapshot</td>
+</tr>
+<tr>
+<td>Reconnect + new snapshot</td>
+<td><code>200 Ready</code></td>
+<td>Updated routing</td>
+</tr>
+<tr>
+<td>Controller down</td>
+<td><code>200 Degraded</code></td>
+<td>Last-good snapshot served indefinitely</td>
+</tr>
+</tbody>
+</table>
+<p>Routing tables are <strong>never cleared</strong> during a reconnect window. A controller outage does not disrupt traffic — proxies keep serving their last compiled snapshot until the controller comes back and pushes a new one.</p>
+<h2 id="wire-version-skew">Wire-version skew<a class="headerlink" href="#wire-version-skew" title="Permanent link">&para;</a></h2>
+<p><code>WIRE_VERSION = 1</code> (current). Every <code>Subscribe</code> message includes this version. The server rejects a client with a different version immediately with <code>FAILED_PRECONDITION</code>; the client backs off <strong>permanently</strong> on that status (it does not retry the stream). Recovery: roll back the mismatched component (controller or proxy) to a matching version. There is no runtime negotiation — both ends must agree.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <p><strong>Proxy stuck <code>NotReady</code>.</strong> The proxy reports <code>NotReady</code> until it has bootstrapped
 an SVID and received its first snapshot. Check, in order:</p>
@@ -1540,7 +1594,12 @@ an SVID and received its first snapshot. Check, in order:</p>
 <li><strong><code>external</code> Secret absent.</strong> In <code>external</code> mode the controller logs
   <code>CA Secret absent and mode=external</code> and does not serve discovery. Supply the
   Secret (cert-manager or <code>kubectl create secret tls</code>).</li>
+<li><strong>Wrong <code>--discovery-endpoint</code>.</strong> The proxy logs a connection error if it cannot
+  reach the controller's Stream listener. Verify the endpoint URI and that the
+  discovery <code>Service</code> exists in the controller namespace.</li>
 </ul>
+<p><strong>Proxy <code>Degraded</code> after restart.</strong> Normal — the proxy starts <code>NotReady</code> until it reconnects and receives its first snapshot from the new controller. If it stays <code>Degraded</code> indefinitely, check connectivity to the discovery endpoint.</p>
+<p><strong>Wire-version mismatch.</strong> The proxy logs <code>FAILED_PRECONDITION</code> and backs off permanently. Check that the controller and proxy images are from the same release. See <a href="#wire-version-skew">Wire-version skew</a>.</p>
 <p><strong><code>BootstrapRejected</code> events.</strong> When the controller rejects a bootstrap (invalid
 or wrong-audience token, malformed CSR), it emits a <code>BootstrapRejected</code> Warning
 Event in its namespace. The controller is the sole diagnostic emitter — the proxy

@@ -1182,8 +1182,26 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#serve-relay-v06-not-yet-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      serve relay (v0.6, not yet implemented)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scope-aware-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope-aware dispatch
+    </span>
+  </a>
   
 </li>
       
@@ -1221,11 +1239,35 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#state-transport" class="md-nav__link">
+  <a href="#discovery-control-plane" class="md-nav__link">
     <span class="md-ellipsis">
-      State transport
+      Discovery control plane
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Discovery control plane">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reconnect-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reconnect semantics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wire-version-skew" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wire-version skew
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1303,14 +1345,14 @@
 
 
 <h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
-<p>Coxswain runs as one or more pods, each invoked with a <code>serve &lt;role&gt;</code> subcommand. The controller is the sole Kubernetes writer; proxies are read-only data planes that build their routing table directly from Kubernetes watch events and scale horizontally with no coordination.</p>
+<p>Coxswain runs as one or more pods, each invoked with a <code>serve &lt;role&gt;</code> subcommand. The controller is the sole Kubernetes reader and writer; proxies are read-only data planes that receive compiled routing snapshots from the controller over a mandatory-mTLS gRPC discovery stream and hold zero Kubernetes API credentials.</p>
 <pre class="mermaid"><code>flowchart LR
     Clients([Clients])
     K8s[Kubernetes\nAPI Server]
 
     subgraph cs[coxswain-system]
+        C[Controller\nreflector · discovery server\nidentity server]
         SP["Proxy pool (shared)"]
-        C[Controller]
     end
 
     subgraph ns[gw-namespace-1]
@@ -1327,30 +1369,45 @@
     end
 
     Clients --&gt; SP &amp; GP
-    K8s --&gt;|watch, read-only| SP &amp; GP
     K8s --&gt;|watch| C
     C --&gt;|status writes\nleader only| K8s
+    C --&gt;|gRPC discovery\nmTLS| SP &amp; GP
     SP --&gt; A2 &amp; A3
     GP --&gt; A1
     GP -.-&gt;|cross-namespace\nvia ReferenceGrant| A2</code></pre>
 <h2 id="roles">Roles<a class="headerlink" href="#roles" title="Permanent link">&para;</a></h2>
 <h3 id="serve-controller"><code>serve controller</code><a class="headerlink" href="#serve-controller" title="Permanent link">&para;</a></h3>
 <p>Watches Ingress, GatewayClass, Gateway, HTTPRoute, and related resources cluster-wide; writes status conditions back to them; provisions per-Gateway proxy <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> objects when a Gateway opts into dedicated mode. Leader-elected via a Kubernetes <code>Lease</code> in <code>coxswain-system</code> — status writes pause for up to one Lease TTL during a leader transition; traffic is unaffected. Scales vertically (one active replica + optional warm standby).</p>
+<p>The controller also runs two gRPC listeners that proxies connect to:</p>
+<ul>
+<li><strong>Discovery (Stream) listener</strong> (port 50051, mTLS mandatory): compiles routing snapshots from K8s resources and pushes them to subscribed proxies. Each snapshot is scoped to the subscriber's declared <code>Scope</code> — see <a href="#scope-aware-dispatch">Scope-aware dispatch</a> below.</li>
+<li><strong>Bootstrap (Identity) listener</strong> (port 50052, server-auth-only TLS): acts as a certificate authority. A fresh proxy presents its ServiceAccount token and a CSR; the controller validates the token via <code>TokenReview</code>, signs a short-lived SPIFFE SVID, and returns it. See <a href="../guides/control-plane-security/">Control-plane security</a>.</li>
+</ul>
 <p>The provisioning operator runs as a kube-rs <code>Controller</code> alongside the status writer in the same pod. Its reconcile loop resolves each Gateway's effective <code>CoxswainGatewayParameters</code> (per-field overlay: Gateway's <code>parametersRef</code> wins per-field, GatewayClass's fills the rest; <code>podTemplate</code> strategic-merges across both layers) and renders the desired <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code>. The <code>podTemplate</code> escape hatch is merged onto the rendered Deployment with <code>kubectl apply</code> strategic-merge semantics — <code>containers</code> merges by <code>name</code>, <code>tolerations</code> by <code>(key, operator)</code>, container-level <code>env</code> by <code>name</code>, and so on — so sidecar injection and env overlays behave the way operators expect from native K8s tooling.</p>
 <p>The controller also watches <code>IngressClass</code> and its associated <code>CoxswainIngressClassParameters</code> objects (the <code>IngressClass.spec.parameters</code> reference target). These carry class-level defaults for Ingress routes: <code>spec.defaultAnnotations</code> (per-key annotation defaults that per-Ingress annotations can override) and <code>spec.accessLog</code> (per-class access-log suppression).</p>
-<p>The same reconcile loop also manages per-namespace <code>RoleBinding</code>s for the proxy's <code>ServiceAccount</code>: one binding per namespace the Gateway's HTTPRoutes route a backend into (gated by <code>ReferenceGrant</code> for cross-namespace refs), each binding the SA to the static <code>coxswain-gateway-proxy-reader</code> <code>ClusterRole</code>. A finalizer <code>gateway.coxswain-labs.dev/dedicated-cleanup</code> on every dedicated Gateway guarantees cross-namespace bindings are removed before K8s finalizes the Gateway deletion (cross-namespace owner references aren't supported by K8s GC for namespaced resources, so cleanup is reconcile-driven via a <code>managed-by</code> label selector).</p>
 <h3 id="serve-proxy-shared"><code>serve proxy --shared</code><a class="headerlink" href="#serve-proxy-shared" title="Permanent link">&para;</a></h3>
-<p>Stateless read-only Pingora data plane. Serves every <code>Ingress</code> and every <code>Gateway</code> not opted into dedicated mode. Scales horizontally with no leader election and no inter-replica coordination.</p>
+<p>Read-only Pingora data plane. Subscribes to the controller discovery stream with <code>Scope::SharedPool</code> and receives a compiled snapshot covering every <code>Ingress</code> and every <code>Gateway</code> not opted into dedicated mode. Scales horizontally with no leader election and no inter-replica coordination.</p>
+<p>Required args: <code>--discovery-endpoint</code> (comma-separated controller Stream endpoint(s), <code>https://</code> for mTLS). On first start the proxy bootstraps an SVID via <code>--discovery-bootstrap-endpoint</code> and then opens the mTLS stream. Routing tables are never cleared across reconnects.</p>
+<p>The shared proxy holds <strong>zero Kubernetes API credentials</strong>. Its ServiceAccount exists only as a pod identity; the only token mounted is an audience-scoped projected SA token (<code>coxswain-discovery</code> audience) used exclusively for SVID bootstrap. No ClusterRole or RoleBinding is bound to it.</p>
 <h3 id="serve-proxy-dedicated"><code>serve proxy --dedicated</code><a class="headerlink" href="#serve-proxy-dedicated" title="Permanent link">&para;</a></h3>
-<p>Read-only proxy scoped to a single Gateway (identified by <code>--gateway-name</code> and <code>--gateway-namespace</code>). Provisioned by the controller in the Gateway's own namespace. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
-<p>The dedicated proxy runs with <strong>per-namespace narrowed RBAC</strong>: the controller renders <code>--proxy-watch-namespaces=&lt;ns1&gt;,&lt;ns2&gt;,...</code> into the container args, and the proxy spawns one reflector per (resource, namespace) pair scoped to exactly the namespaces the controller has provisioned <code>RoleBinding</code>s for. The binding set and the watch set are derived from the same desired-namespace computation in the controller, so they can't drift. The <code>GatewayClass</code> watch is dropped on this path — the controller is the authority on "this Gateway is dedicated and mine".</p>
-<p>When any listener declares <code>allowedRoutes.namespaces.from: All</code> or <code>from: Selector</code>, the controller automatically grants the dedicated proxy cluster-wide <code>HTTPRoute</code> reads (and cluster-wide <code>Namespace</code> reads for <code>from: Selector</code>) by creating a <code>ClusterRoleBinding</code> to the matching static <code>ClusterRole</code>. No operator opt-in field is needed — the Gateway spec is the single source of truth. The controller passes <code>--allow-cluster-wide-route-read</code> / <code>--allow-cluster-wide-namespace-read</code> into the proxy's container args and the proxy spawns a single cluster-wide <code>HTTPRoute</code> reflector instead of the per-namespace one, making cross-namespace routes visible to the routing table builder.</p>
+<p>Read-only proxy scoped to a single Gateway (identified by <code>--dedicated --gateway-name=NAME --gateway-namespace=NS</code>). Provisioned by the controller in the Gateway's own namespace. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
+<p>The dedicated proxy subscribes with <code>Scope::Gateway { name, namespace }</code> and receives only its Gateway's routing snapshot. The controller stamps the expected proxy ServiceAccount name (<code>{gateway-name}-{gatewayclass-name}</code>, per GEP-1762) into the Gateway's registry entry at reconcile time. When the subscription arrives, the discovery server verifies that the peer's mTLS SVID matches that expected SA before sending any snapshot — a mismatch yields <code>PERMISSION_DENIED</code>.</p>
+<p>Like the shared proxy, the dedicated proxy holds <strong>zero Kubernetes API credentials</strong>. Cross-namespace route attachment (<code>allowedRoutes.namespaces.from: All</code>/<code>Selector</code>) is resolved by the controller at reconcile time — the controller's cluster-wide reflector compiles all cross-namespace routes into the per-Gateway snapshot before it is pushed. No proxy-side cluster-wide reflector and no proxy-side RBAC are required.</p>
 <h3 id="serve-dev"><code>serve dev</code><a class="headerlink" href="#serve-dev" title="Permanent link">&para;</a></h3>
-<p>Hidden single-process all-in-one combining controller and proxy in one binary, for local development and conformance against <code>kind</code> / OrbStack.</p>
+<p>Hidden single-process all-in-one combining controller and proxy in one binary, for local development and conformance against <code>kind</code> / OrbStack. The proxy pipeline reads routing snapshots from the in-process <code>Shared</code> handoff — no discovery gRPC wire, no <code>--discovery-endpoint</code> needed.</p>
 <div class="admonition warning">
 <p class="admonition-title">Never rendered by Helm</p>
 <p>Dev mode is a contributor convenience; do not run it in production.</p>
 </div>
+<h3 id="serve-relay-v06-not-yet-implemented"><code>serve relay</code> (v0.6, not yet implemented)<a class="headerlink" href="#serve-relay-v06-not-yet-implemented" title="Permanent link">&para;</a></h3>
+<p>Designed as a recursive discovery node — a relay that subscribes to an upstream discovery stream and re-publishes snapshots to downstream proxies across a network boundary. Deferred to v0.6.</p>
+<h2 id="scope-aware-dispatch">Scope-aware dispatch<a class="headerlink" href="#scope-aware-dispatch" title="Permanent link">&para;</a></h2>
+<p>The controller maintains two snapshot registries:</p>
+<ul>
+<li><strong><code>SharedPool</code></strong> — five shared routing cells (Ingress table, Gateway table, TLS store, client-cert store, listener health). The shared proxy pool subscribes with this scope and receives a snapshot covering all Ingress and non-dedicated Gateway routing.</li>
+<li><strong><code>Gateway { name, namespace }</code></strong> — one entry per opted-in Gateway in the <code>DedicatedRoutingRegistry</code>. Each dedicated proxy subscribes with its own Gateway identity and receives only that Gateway's slice. Cross-namespace routes (e.g. <code>from: All</code>) are resolved controller-side — the controller's cluster-wide reflector sees every namespace's routes and compiles them into the per-Gateway snapshot before pushing.</li>
+</ul>
+<p>A <code>Subscribe</code> message with no scope field is treated as <code>SharedPool</code>. A scope message with no kind discriminator is rejected as malformed to prevent a zero-value proto from silently escalating to <code>SharedPool</code>.</p>
 <h2 id="deployment-models">Deployment models<a class="headerlink" href="#deployment-models" title="Permanent link">&para;</a></h2>
 <p>Coxswain has two macro deployment models: <strong>Shared</strong> and <strong>Dedicated</strong>. They are not mutually exclusive — a production cluster typically runs a shared proxy pool alongside one or more dedicated proxies for Gateways that need isolation.</p>
 <h3 id="shared">Shared<a class="headerlink" href="#shared" title="Permanent link">&para;</a></h3>
@@ -1373,7 +1430,7 @@
 
     K8s --&gt;|watch| C
     C --&gt;|status writes| K8s
-    K8s --&gt;|watch| SP
+    C --&gt;|gRPC discovery| SP
 
     Clients([Clients]) --&gt;|Ingress +\nGateway traffic| SP
     SP --&gt; A1 &amp; A2</code></pre>
@@ -1396,12 +1453,12 @@
 
     K8s --&gt;|watch\nIngress only| C
     C --&gt;|status writes| K8s
-    K8s --&gt;|watch\nIngress only| SP
+    C --&gt;|gRPC discovery| SP
 
     Clients([Clients]) --&gt;|Ingress traffic| SP
     SP --&gt; A1 &amp; A2</code></pre>
 <h3 id="dedicated-per-gateway">Dedicated (per Gateway)<a class="headerlink" href="#dedicated-per-gateway" title="Permanent link">&para;</a></h3>
-<p>When a <code>Gateway</code> carries a <code>parametersRef</code> pointing at a <code>CoxswainGatewayParameters</code> object (either on the Gateway directly or inherited from its <code>GatewayClass</code>), the controller provisions a dedicated proxy — its own <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> — in the Gateway's namespace. Traffic for that Gateway is served exclusively by its dedicated proxy pool; the shared proxy pool continues to serve everything else.</p>
+<p>When a <code>Gateway</code> carries a <code>parametersRef</code> pointing at a <code>CoxswainGatewayParameters</code> object (either on the Gateway directly or inherited from its <code>GatewayClass</code>'s <code>spec.parametersRef</code>), the controller provisions a dedicated proxy — its own <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> — in the Gateway's namespace. Traffic for that Gateway is served exclusively by its dedicated proxy pool; the shared proxy pool continues to serve everything else.</p>
 <p>A cluster running some dedicated Gateways alongside the shared pool is the typical mixed arrangement:</p>
 <pre class="mermaid"><code>flowchart LR
     K8s[Kubernetes API]
@@ -1427,8 +1484,7 @@
     K8s --&gt;|watch| C
     C --&gt;|status writes| K8s
     C --&gt;|provisions| GP
-    K8s --&gt;|watch| SP
-    K8s --&gt;|watch| GP
+    C --&gt;|gRPC discovery| SP &amp; GP
 
     Clients([Clients]) --&gt;|Ingress +\nother Gateways| SP
     Clients --&gt;|gw-namespace-1 Gateway\ntraffic| GP
@@ -1454,22 +1510,24 @@
 
     K8s --&gt;|watch| C
     C --&gt;|status writes| K8s
-    C --&gt;|provisions| GPA
-    C --&gt;|provisions| GPB
-    K8s --&gt;|watch| GPA
-    K8s --&gt;|watch| GPB
+    C --&gt;|provisions + gRPC discovery| GPA &amp; GPB
 
     ClientsA([Clients]) --&gt; GPA
     ClientsB([Clients]) --&gt; GPB
     GPA --&gt; A1
     GPB --&gt; A2</code></pre>
-<h2 id="state-transport">State transport<a class="headerlink" href="#state-transport" title="Permanent link">&para;</a></h2>
-<p>Each proxy pod self-watches Kubernetes directly:</p>
+<h2 id="discovery-control-plane">Discovery control plane<a class="headerlink" href="#discovery-control-plane" title="Permanent link">&para;</a></h2>
+<p>The controller compiles K8s routing snapshots and pushes them to each subscribed proxy over a mandatory-mTLS gRPC stream. Proxies apply the snapshot to their in-process routing table via an atomic pointer swap — no locks, no channels, no restart. All routing data (routes, upstream addresses, TLS certificates) arrives via the discovery stream; the proxy never reads the Kubernetes API.</p>
+<h3 id="reconnect-semantics">Reconnect semantics<a class="headerlink" href="#reconnect-semantics" title="Permanent link">&para;</a></h3>
+<p>The discovery client runs a jittered-exponential-backoff reconnect supervisor (250 ms → 30 s):</p>
 <ul>
-<li>A <strong>shared proxy</strong> uses a broad cluster-wide filter covering all routing CRs (HTTPRoute, Ingress, Gateway, Service, EndpointSlice).</li>
-<li>A <strong>dedicated proxy</strong> (<code>--dedicated</code>) narrows its routing-table build to a single named Gateway; cross-namespace backends and TLS Secrets resolve via <code>ReferenceGrant</code> as usual. It also narrows its <strong>watches</strong> to the namespaces the controller has rendered into <code>--proxy-watch-namespaces</code>, matching the per-namespace <code>RoleBinding</code>s the same reconcile cycle provisioned for the proxy SA.</li>
+<li><strong>Before first snapshot</strong> — <code>/readyz</code> returns 503 (<code>NotReady</code>). The proxy starts serving only after the first snapshot arrives.</li>
+<li><strong>On disconnect after first snapshot</strong> — the proxy transitions to <code>Degraded</code> (not <code>NotReady</code>). The last-good snapshot is served indefinitely; traffic never gaps and routing tables are never cleared during a reconnect window.</li>
+<li><strong>On reconnect + new snapshot</strong> — the proxy returns to <code>Ready</code>.</li>
+<li><strong>Controller down</strong> — the proxy keeps serving its last-good snapshot. No data-plane impact.</li>
 </ul>
-<p>There is no xDS server and no IPC between the controller and any proxy — the controller never pushes data, and a controller crash never disrupts proxy traffic. This self-watch model may be revisited in the future for scenarios such as very large clusters, where having every proxy replica watch the full set of resources independently becomes expensive.</p>
+<h3 id="wire-version-skew">Wire-version skew<a class="headerlink" href="#wire-version-skew" title="Permanent link">&para;</a></h3>
+<p><code>WIRE_VERSION = 1</code> (current). The server rejects any client that presents a different version with <code>FAILED_PRECONDITION</code>; the client backs off permanently on that status. Recovery: roll back the mismatched component (controller or proxy) to a matching version. See <a href="../guides/control-plane-security/">Control-plane security</a> for the full protocol description.</p>
 <h2 id="rbac-by-mode">RBAC by mode<a class="headerlink" href="#rbac-by-mode" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1486,29 +1544,29 @@
 <td>HTTPRoute, Gateway, ReferenceGrant, BackendTLSPolicy</td>
 <td>list, watch, get</td>
 <td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (per-namespace, via <code>RoleBinding</code>)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 </tr>
 <tr>
 <td>GatewayClass, Ingress, IngressClass</td>
 <td>list, watch, get</td>
 <td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">— (dropped — Gateway carries its class name)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 </tr>
 <tr>
 <td>Service, EndpointSlice</td>
 <td>list, watch, get</td>
 <td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (per-namespace)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 </tr>
 <tr>
 <td>Secret (<code>kubernetes.io/tls</code>), ConfigMap</td>
 <td>list, watch, get</td>
 <td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (cluster)</td>
-<td style="text-align: center;">✓ (per-namespace)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 </tr>
 <tr>
 <td>HTTPRoute, Gateway, Ingress <code>/status</code></td>
@@ -1525,7 +1583,7 @@
 <td style="text-align: center;">—</td>
 </tr>
 <tr>
-<td>Deployment, Service, ServiceAccount, RoleBinding</td>
+<td>Deployment, Service, ServiceAccount</td>
 <td>create, update, delete</td>
 <td style="text-align: center;">✓ (cluster)</td>
 <td style="text-align: center;">—</td>
@@ -1538,9 +1596,16 @@
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 </tr>
+<tr>
+<td>TokenReview</td>
+<td>create</td>
+<td style="text-align: center;">✓ (cluster — SVID bootstrap)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
 </tbody>
 </table>
-<p>The dedicated-proxy permissions come from a single static <code>ClusterRole</code> <code>coxswain-gateway-proxy-reader</code> (shipped by the Helm chart and <code>deploy/manifests/dedicated-proxy-clusterrole.yaml</code>) bound via per-namespace <code>RoleBinding</code>s reconciled by the controller. A compromised dedicated-proxy <code>ServiceAccount</code> holds reads only in the namespaces its Gateway has routes into — not in any other namespace, and zero write verbs anywhere.</p>
+<p>Both proxy roles hold <strong>zero Kubernetes API credentials</strong>. All routing data arrives via the controller's gRPC discovery stream. Each proxy mounts only a projected ServiceAccount token (audience <code>coxswain-discovery</code>) for SVID bootstrap at <code>/var/run/secrets/coxswain/discovery-token/token</code> — this is mounted by the kubelet, not via RBAC — and the public trust-bundle ConfigMap at <code>/var/run/secrets/coxswain/trust-bundle/ca.crt</code>. Neither mount requires any K8s RBAC grant.</p>
 <h2 id="admin-endpoints-by-mode">Admin endpoints by mode<a class="headerlink" href="#admin-endpoints-by-mode" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1599,8 +1664,8 @@
     D --&gt;|no match| E([404 / 503])
     D --&gt;|match| F[Pick upstream]
     F --&gt; G([Forward])</code></pre>
-<p>The routing table is an immutable snapshot behind an atomic pointer; each request reads it with a single atomic load — no locks, no channels. Reconciles build a new snapshot and swap the pointer atomically; the next request sees the new routing, in-flight requests are unaffected.</p>
-<p>TLS works the same way: the TLS store is an atomic snapshot rebuilt on every <code>kubernetes.io/tls</code> Secret change. New connections use the new certificate; connections in progress complete with the old one.</p>
+<p>The routing table is an immutable snapshot behind an atomic pointer; each request reads it with a single atomic load — no locks, no channels. The discovery supervisor builds a new snapshot from the wire DTO and swaps the pointer atomically; in-flight requests complete against the old snapshot, the next request sees the new routing.</p>
+<p>TLS works the same way: the TLS store is an atomic snapshot rebuilt on every push. New connections use the new certificate; connections in progress complete with the old one.</p>
 
 
 

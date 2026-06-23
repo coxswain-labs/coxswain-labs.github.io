@@ -1202,7 +1202,7 @@
 <div class="admonition info">
 <p class="admonition-title">Pre-1.0 — early adopter release</p>
 <p>Coxswain's core proxy is functional and ships a complete <code>ingress.coxswain-labs.dev/*</code> annotation surface with admission-time validation.
-Active development continues toward v0.4 (discovery re-architecture) and v0.5 (Gateway API extended features). Feedback and contributions are welcome.</p>
+Active development continues toward v0.5 (Gateway API extended features). Feedback and contributions are welcome.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Production use</p>
@@ -1213,10 +1213,10 @@ Active development continues toward v0.4 (discovery re-architecture) and v0.5 (G
 <ul>
 <li>Bridges classic <code>Ingress</code> and Gateway API <code>HTTPRoute</code> in a single proxy fleet</li>
 <li>Routing changes and TLS certificate rotations take effect without restarting the proxy</li>
-<li>Controller/proxy split with a strict RBAC boundary — proxy pods hold zero write permissions</li>
+<li>Controller/proxy split with a strict security boundary — proxy pods hold zero Kubernetes API access</li>
 <li>Rich <code>ingress.coxswain-labs.dev/*</code> annotation surface with admission-time validation via <code>ValidatingAdmissionPolicy</code></li>
 </ul>
-<p>See <a href="architecture/">Architecture</a> for the deployment models and RBAC boundary.</p>
+<p>See <a href="architecture/">Architecture</a> for the deployment models and security boundary.</p>
 <h2 id="quick-install">Quick install<a class="headerlink" href="#quick-install" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># 1. Install Gateway API CRDs</span>
 kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
