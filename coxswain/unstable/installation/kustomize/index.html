@@ -630,6 +630,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#control-plane-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control-plane CA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#uninstall" class="md-nav__link">
     <span class="md-ellipsis">
       Uninstall
@@ -963,6 +972,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../guides/control-plane-security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control-plane security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../guides/tls/" class="md-nav__link">
         
   
@@ -1230,6 +1260,13 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> <
 <p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
 </code></pre></div>
+<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
+<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
+CA and works out of the box. To consume an external CA instead, apply
+<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
+the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
+the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
+<a href="../../guides/control-plane-security/">Control-plane security</a>.</p>
 <h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
 </code></pre></div>

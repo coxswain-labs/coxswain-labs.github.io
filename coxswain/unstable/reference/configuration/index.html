@@ -882,6 +882,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../guides/control-plane-security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control-plane security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../guides/tls/" class="md-nav__link">
         
   
@@ -1099,6 +1120,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#discovery-control-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovery control plane
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#leader-election" class="md-nav__link">
     <span class="md-ellipsis">
       Leader election
@@ -1307,6 +1337,66 @@
 <td>GatewayClass <code>spec.controllerName</code> to claim</td>
 </tr>
 <tr>
+<td><code>COXSWAIN_DISCOVERY_BOOTSTRAP_ENDPOINT</code></td>
+<td><code>--discovery-bootstrap-endpoint</code></td>
+<td><em>(none)</em></td>
+<td><em>(proxy)</em> <code>https://</code> URI of the controller bootstrap listener; where the proxy exchanges its SA token + CSR for an SVID. See <a href="../../guides/control-plane-security/">Control-plane security</a></td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISCOVERY_BOOTSTRAP_PORT</code></td>
+<td><code>--discovery-bootstrap-port</code></td>
+<td><code>50052</code></td>
+<td><em>(controller)</em> Port for the server-auth-only bootstrap gRPC listener</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISCOVERY_CA_BUNDLE_PATH</code></td>
+<td><code>--discovery-ca-bundle-path</code></td>
+<td><code>/var/run/secrets/coxswain/trust-bundle/ca.crt</code></td>
+<td><em>(proxy)</em> Path to the mounted trust-bundle ConfigMap used to verify the controller</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISCOVERY_CA_MODE</code></td>
+<td><code>--discovery-ca-mode</code></td>
+<td><code>auto</code></td>
+<td><em>(controller)</em> <code>auto</code> self-generates the CA Secret if absent; <code>external</code> requires a pre-existing Secret (fail closed)</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISCOVERY_CA_SECRET</code></td>
+<td><code>--discovery-ca-secret</code></td>
+<td><code>coxswain-discovery-ca</code></td>
+<td><em>(controller)</em> Name of the CA Secret (<code>tls.crt</code>/<code>tls.key</code>) in the controller namespace</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISCOVERY_ENDPOINT</code></td>
+<td><code>--discovery-endpoint</code></td>
+<td><em>(none; required for proxy)</em></td>
+<td><em>(proxy)</em> Comma-separated controller discovery (Stream) endpoints; <code>https://host:port</code> for mTLS</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISCOVERY_PORT</code></td>
+<td><code>--discovery-port</code></td>
+<td><code>50051</code></td>
+<td><em>(controller)</em> Port for the mTLS Stream gRPC listener (routing snapshots)</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISCOVERY_SA_TOKEN_PATH</code></td>
+<td><code>--discovery-sa-token-path</code></td>
+<td><code>/var/run/secrets/coxswain/discovery-token/token</code></td>
+<td><em>(proxy)</em> Path to the projected ServiceAccount token presented at bootstrap</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISCOVERY_SVID_TTL</code></td>
+<td><code>--discovery-svid-ttl</code></td>
+<td><code>24h</code></td>
+<td><em>(controller)</em> Lifetime of SVIDs issued to proxies; proxies refresh at ~50 %</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISCOVERY_TRUST_DOMAIN</code></td>
+<td><code>--discovery-trust-domain</code></td>
+<td><code>cluster.local</code></td>
+<td>SPIFFE trust domain; must match across the controller and all proxies</td>
+</tr>
+<tr>
 <td><code>COXSWAIN_HEALTH_PORT</code></td>
 <td><code>--health-port</code></td>
 <td><code>8081</code></td>
@@ -1473,9 +1563,28 @@
 <td><code>COXSWAIN_ADMIN_PORT</code></td>
 <td><code>/metrics</code>, <code>/api/v1/routes</code>, <code>/api/v1/health</code></td>
 </tr>
+<tr>
+<td>Discovery (Stream)</td>
+<td><code>50051</code></td>
+<td><code>COXSWAIN_DISCOVERY_PORT</code></td>
+<td><em>(controller)</em> mTLS gRPC routing-snapshot stream</td>
+</tr>
+<tr>
+<td>Bootstrap</td>
+<td><code>50052</code></td>
+<td><code>COXSWAIN_DISCOVERY_BOOTSTRAP_PORT</code></td>
+<td><em>(controller)</em> server-auth gRPC SVID issuance</td>
+</tr>
 </tbody>
 </table>
 <p>The proxy listeners are disabled unless their port is explicitly set. The Helm chart defaults <code>proxy.http.port</code> to <code>80</code> and <code>proxy.https.port</code> to <code>443</code>.</p>
+<h2 id="discovery-control-plane">Discovery control plane<a class="headerlink" href="#discovery-control-plane" title="Permanent link">&para;</a></h2>
+<p>The controller and proxy communicate over a secured gRPC discovery channel:
+the controller acts as a CA, proxies bootstrap an SVID with their ServiceAccount
+token, and routing snapshots flow over mandatory mTLS. The <code>COXSWAIN_DISCOVERY_*</code>
+settings above configure it; see <a href="../../guides/control-plane-security/">Control-plane security</a>
+for the model, CA provisioning modes (<code>auto</code> / <code>external</code> + cert-manager / BYO),
+SVID rotation, and troubleshooting.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The data plane and the management surface bind independently: <code>COXSWAIN_PROXY_BIND_ADDRESS</code> for the HTTP/HTTPS proxy listeners, and <code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code> for the health and admin servers. Both default to <code>0.0.0.0</code>; set the management address to a management-network IP to keep <code>/metrics</code>, <code>/api/v1/routes</code>, and the health endpoints off the data-plane interface.</p>

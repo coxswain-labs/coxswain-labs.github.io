@@ -636,6 +636,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#control-plane-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control-plane CA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#uninstall" class="md-nav__link">
     <span class="md-ellipsis">
       Uninstall
@@ -974,6 +983,27 @@
   
   <span class="md-ellipsis">
     Running in production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/control-plane-security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control-plane security
   </span>
   
 
@@ -1336,6 +1366,12 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 <span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span>--create-namespace<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--set<span class="w"> </span>vap.enabled<span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
+<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
+<p>The controller secures the controller↔proxy discovery channel with mandatory
+mTLS. By default (<code>discovery.ca.mode=auto</code>) it self-generates the CA and works
+out of the box — nothing to provision. To consume a cert-manager-managed or
+bring-your-own CA instead, set <code>discovery.ca.mode=external</code> and supply the
+Secret. See <a href="../../guides/control-plane-security/">Control-plane security</a>.</p>
 <h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>uninstall<span class="w"> </span>coxswain<span class="w"> </span>--namespace<span class="w"> </span>coxswain-system
 kubectl<span class="w"> </span>delete<span class="w"> </span>namespace<span class="w"> </span>coxswain-system

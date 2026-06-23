@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/guides/tls/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/guides/control-plane-security/">
       
       
-        <link rel="prev" href="../control-plane-security/">
+        <link rel="prev" href="../running-in-production/">
       
       
-        <link rel="next" href="../rate-limiting/">
+        <link rel="next" href="../tls/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>TLS - Coxswain</title>
+        <title>Control-plane security - Coxswain</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tls-guide" class="md-skip">
+        <a href="#control-plane-security" class="md-skip">
           Skip to content
         </a>
       
@@ -131,7 +131,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TLS
+              Control-plane security
             
           </span>
         </div>
@@ -897,27 +897,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../control-plane-security/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Control-plane security
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -934,7 +913,7 @@
           
   
   <span class="md-ellipsis">
-    TLS
+    Control-plane security
   </span>
   
 
@@ -945,7 +924,7 @@
         
   
   <span class="md-ellipsis">
-    TLS
+    Control-plane security
   </span>
   
 
@@ -967,56 +946,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#manual-tls-pre-provisioned-secret" class="md-nav__link">
+  <a href="#the-model" class="md-nav__link">
     <span class="md-ellipsis">
-      Manual TLS (pre-provisioned Secret)
+      The model
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#tls-with-cert-manager" class="md-nav__link">
+  <a href="#ca-provisioning-modes" class="md-nav__link">
     <span class="md-ellipsis">
-      TLS with cert-manager
+      CA provisioning modes
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="TLS with cert-manager">
+    <nav class="md-nav" aria-label="CA provisioning modes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#auto-default-self-managed" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequisites
+      auto (default) — self-managed
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#issuer-types" class="md-nav__link">
+  <a href="#external-cert-manager" class="md-nav__link">
     <span class="md-ellipsis">
-      Issuer types
+      external + cert-manager
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#ingress-with-cert-manager" class="md-nav__link">
+  <a href="#external-bring-your-own" class="md-nav__link">
     <span class="md-ellipsis">
-      Ingress with cert-manager
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Ingress with cert-manager">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#http-01-challenge-passthrough" class="md-nav__link">
-    <span class="md-ellipsis">
-      HTTP-01 challenge passthrough
+      external + bring-your-own
     </span>
   </a>
   
@@ -1026,49 +995,29 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#gateway-api-with-cert-manager" class="md-nav__link">
-    <span class="md-ellipsis">
-      Gateway API with cert-manager
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Gateway API with cert-manager">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#older-cert-manager-v116" class="md-nav__link">
-    <span class="md-ellipsis">
-      Older cert-manager (&lt; v1.16)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
       
         <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
+  <a href="#the-read-only-proxy-invariant" class="md-nav__link">
     <span class="md-ellipsis">
-      Verification
+      The read-only-proxy invariant
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#wildcard-tls" class="md-nav__link">
+  <a href="#svid-rotation" class="md-nav__link">
     <span class="md-ellipsis">
-      Wildcard TLS
+      SVID rotation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
     </span>
   </a>
   
@@ -1087,6 +1036,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLS
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1317,206 +1287,191 @@
   
 
 
-<h1 id="tls-guide">TLS guide<a class="headerlink" href="#tls-guide" title="Permanent link">&para;</a></h1>
-<p>Coxswain terminates TLS at the proxy layer using SNI. It watches all <code>kubernetes.io/tls</code> Secrets and hot-reloads TLS material whenever a Secret is created, updated, or deleted — no restart or config reload is required.</p>
-<h2 id="manual-tls-pre-provisioned-secret">Manual TLS (pre-provisioned Secret)<a class="headerlink" href="#manual-tls-pre-provisioned-secret" title="Permanent link">&para;</a></h2>
-<p>Create the TLS Secret manually and reference it from your <code>Ingress</code> or <code>Gateway</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>tls<span class="w"> </span>app-tls<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--cert<span class="o">=</span>path/to/cert.pem<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--key<span class="o">=</span>path/to/key.pem
+<h1 id="control-plane-security">Control-plane security<a class="headerlink" href="#control-plane-security" title="Permanent link">&para;</a></h1>
+<p>Coxswain's data plane (the proxy) never talks to the Kubernetes API. Instead the
+<strong>controller</strong> compiles routing snapshots and pushes them to proxies over a gRPC
+<strong>discovery</strong> channel. This page explains how that channel is secured: the
+controller acts as a certificate authority (CA), a fresh proxy bootstraps its
+identity with its Kubernetes ServiceAccount token, and the resulting short-lived
+SPIFFE certificate (SVID) authenticates every snapshot stream — with no plaintext
+fallback.</p>
+<h2 id="the-model">The model<a class="headerlink" href="#the-model" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+  subgraph Controller pod
+    CA[Controller-as-CA]
+    BS[Bootstrap listener&lt;br/&gt;:50052 server-auth TLS]
+    ST[Stream listener&lt;br/&gt;:50051 mTLS]
+    CA --- BS
+    CA --- ST
+  end
+  subgraph Proxy pod
+    P[Proxy]
+  end
+  P -- "1. SA token + CSR" --&gt; BS
+  BS -- "2. signed SVID + trust bundle" --&gt; P
+  P -- "3. mTLS stream (SVID)" --&gt; ST
+  ST -- "4. routing snapshots" --&gt; P</code></pre>
+<ol>
+<li><strong>Bootstrap.</strong> A fresh proxy has no certificate. It reads its projected
+   ServiceAccount token, generates a keypair locally, and sends the token plus a
+   Certificate Signing Request (CSR) to the controller's bootstrap listener over
+   server-authenticated TLS (the proxy verifies the controller; it presents no
+   client cert — it has none yet).</li>
+<li><strong>Issuance.</strong> The controller validates the token with the Kubernetes
+   <code>TokenReview</code> API (scoped to the <code>coxswain-discovery</code> audience), derives the
+   proxy's SPIFFE identity (<code>spiffe://&lt;trust-domain&gt;/ns/&lt;ns&gt;/sa/&lt;sa&gt;</code>), signs the
+   CSR, and returns the SVID plus the public trust bundle. <strong>The proxy's private
+   key never leaves the pod, never transits the wire, and never enters controller
+   memory.</strong></li>
+<li><strong>Stream.</strong> The proxy opens the mandatory-mTLS stream with its SVID and
+   receives routing snapshots. A proxy without a valid CA-signed SVID cannot
+   connect — there is no plaintext fallback.</li>
+<li><strong>Rotation.</strong> Before the SVID expires the proxy re-bootstraps and reconnects
+   with the fresh certificate. Routing never gaps (see
+   <a href="#svid-rotation">SVID rotation</a>).</li>
+</ol>
+<p>The trust bundle is a <strong>set</strong> of public CA roots, so CA rotation can trust the
+old and new roots during an overlap window.</p>
+<h2 id="ca-provisioning-modes">CA provisioning modes<a class="headerlink" href="#ca-provisioning-modes" title="Permanent link">&para;</a></h2>
+<p>The CA lives in a Kubernetes Secret (<code>type: kubernetes.io/tls</code> or <code>Opaque</code>, keys
+<code>tls.crt</code> / <code>tls.key</code>) in the controller's namespace. How that Secret is created
+is the single operator decision, controlled by <code>discovery.ca.mode</code>:</p>
+<h3 id="auto-default-self-managed"><code>auto</code> (default) — self-managed<a class="headerlink" href="#auto-default-self-managed" title="Permanent link">&para;</a></h3>
+<p>Nothing to provision. On first start the controller generates a CA and creates
+the Secret (race-free across replicas: the first to create wins; the others read
+it). It publishes the trust bundle and self-issues its own server certificate.
+Zero external tooling.</p>
+<p>Inspect the generated CA:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>coxswain-discovery-ca<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Ingress</label><label for="__tabbed_1_2">Gateway API</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
-<span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
-<span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app-tls</span>
-<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
-<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
-<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
-<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS</span>
-<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
-<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
-<span class="w">        </span><span class="nt">certificateRefs</span><span class="p">:</span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
-<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app-tls</span>
-</code></pre></div>
-</div>
-</div>
-</div>
-<h2 id="tls-with-cert-manager">TLS with cert-manager<a class="headerlink" href="#tls-with-cert-manager" title="Permanent link">&para;</a></h2>
-<p><a href="https://cert-manager.io">cert-manager</a> is the de facto standard for automated TLS in Kubernetes. Coxswain integrates transparently — cert-manager creates and renews the Secret; Coxswain picks it up automatically.</p>
-<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Component</th>
-<th>Minimum version</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>cert-manager</td>
-<td>v1.14</td>
-<td>For Ingress only</td>
-</tr>
-<tr>
-<td>cert-manager</td>
-<td>v1.16</td>
-<td>For Gateway API</td>
-</tr>
-<tr>
-<td>Gateway API CRDs</td>
-<td>v1.0</td>
-<td>For Gateway API usage</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/cert-manager/cert-manager/releases/download/v1.18.0/cert-manager.yaml
-kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Available<span class="w"> </span>--timeout<span class="o">=</span>120s<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>deploy/cert-manager<span class="w"> </span>deploy/cert-manager-webhook<span class="w"> </span>deploy/cert-manager-cainjector<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-n<span class="w"> </span>cert-manager
-</code></pre></div>
-<h3 id="issuer-types">Issuer types<a class="headerlink" href="#issuer-types" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Issuer</th>
-<th>When to use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>SelfSigned</code></td>
-<td>Local dev and demos only</td>
-</tr>
-<tr>
-<td><code>CA</code></td>
-<td>Internal PKI with your own root CA</td>
-</tr>
-<tr>
-<td><code>ACME (HTTP-01)</code></td>
-<td>Production with public domain; cert-manager uses Coxswain to serve the challenge</td>
-</tr>
-<tr>
-<td><code>ACME (DNS-01)</code></td>
-<td>Production; requires DNS provider integration</td>
-</tr>
-</tbody>
-</table>
-<h3 id="ingress-with-cert-manager">Ingress with cert-manager<a class="headerlink" href="#ingress-with-cert-manager" title="Permanent link">&para;</a></h3>
-<p>Add the <code>cert-manager.io/cluster-issuer</code> annotation and a <code>spec.tls</code> entry:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<h3 id="external-cert-manager"><code>external</code> + cert-manager<a class="headerlink" href="#external-cert-manager" title="Permanent link">&para;</a></h3>
+<p>Set <code>discovery.ca.mode=external</code> and let cert-manager author the CA. Coxswain
+only <strong>consumes</strong> the resulting Secret and hot-reloads when cert-manager rotates
+it — this mirrors how Envoy Gateway and kgateway integrate with cert-manager
+(the operator authors the cert; the control plane consumes the Secret). Coxswain
+does not render or own the <code>Certificate</code>. A copy-pasteable recipe ships at
+<code>deploy/manifests/cert-manager-example.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cert-manager.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Certificate</span>
 <span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-com</span>
-<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">cert-manager.io/cluster-issuer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">letsencrypt-prod</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-discovery-ca</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-system</span>
 <span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
-<span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example.com</span>
-<span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-com-tls</span><span class="w">   </span><span class="c1"># cert-manager creates and renews this</span>
-<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example.com</span>
-<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
-<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
-<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
-<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
-<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service</span>
-<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
-<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<span class="w">  </span><span class="nt">isCA</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">commonName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-discovery-ca</span>
+<span class="w">  </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-discovery-ca</span><span class="w">   </span><span class="c1"># what discovery.ca.secretName points at</span>
+<span class="w">  </span><span class="nt">duration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8760h</span>
+<span class="w">  </span><span class="nt">renewBefore</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">720h</span>
+<span class="w">  </span><span class="nt">issuerRef</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-discovery-selfsigned</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Issuer</span>
+<span class="w">    </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cert-manager.io</span>
 </code></pre></div>
-<p>A ready-to-apply example with a self-signed issuer lives in <a href="https://github.com/coxswain-labs/coxswain/blob/main/deploy/examples/tls-cert-manager-ingress.yaml"><code>deploy/examples/tls-cert-manager-ingress.yaml</code></a>.</p>
-<h4 id="http-01-challenge-passthrough">HTTP-01 challenge passthrough<a class="headerlink" href="#http-01-challenge-passthrough" title="Permanent link">&para;</a></h4>
-<p>When using an ACME HTTP-01 solver, cert-manager temporarily creates an <code>Ingress</code> with the challenge path <code>/.well-known/acme-challenge/&lt;token&gt;</code>, copying the <code>ingressClassName</code> from the parent <code>Ingress</code>. Coxswain picks up this <code>Ingress</code>, routes the challenge to cert-manager's solver pod, and removes the route once the challenge completes. No manual configuration is required beyond setting <code>--status-address</code>.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p><code>--status-address</code> must be set to the proxy's external IP or hostname. Without it, <code>Ingress.status</code> is empty and cert-manager cannot locate the challenge endpoint.</p>
-</div>
-<h3 id="gateway-api-with-cert-manager">Gateway API with cert-manager<a class="headerlink" href="#gateway-api-with-cert-manager" title="Permanent link">&para;</a></h3>
-<p>cert-manager v1.16+ supports the Gateway API natively. Add the annotation to the <code>Gateway</code>; cert-manager creates a <code>Certificate</code> for each HTTPS listener:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-com-gateway</span>
-<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">cert-manager.io/cluster-issuer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">letsencrypt-prod</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
-<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
-<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
-<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS</span>
-<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example.com&quot;</span>
-<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
-<span class="w">        </span><span class="nt">certificateRefs</span><span class="p">:</span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
-<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-com-gateway-tls</span><span class="w">   </span><span class="c1"># cert-manager creates and renews this</span>
-<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+<p>(The controller programmatically managing <code>Certificate</code> CRs itself — the
+istio-csr style — is tracked for a later release.)</p>
+<h3 id="external-bring-your-own"><code>external</code> + bring-your-own<a class="headerlink" href="#external-bring-your-own" title="Permanent link">&para;</a></h3>
+<p>Set <code>discovery.ca.mode=external</code> and supply the Secret yourself:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>tls<span class="w"> </span>coxswain-discovery-ca<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cert<span class="o">=</span>ca.crt<span class="w"> </span>--key<span class="o">=</span>ca.key
 </code></pre></div>
-<p>A ready-to-apply example lives in <a href="https://github.com/coxswain-labs/coxswain/blob/main/deploy/examples/tls-cert-manager-gateway.yaml"><code>deploy/examples/tls-cert-manager-gateway.yaml</code></a>.</p>
-<h4 id="older-cert-manager-v116">Older cert-manager (&lt; v1.16)<a class="headerlink" href="#older-cert-manager-v116" title="Permanent link">&para;</a></h4>
-<p>Enable the Gateway API feature gate on the cert-manager controller:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># In your cert-manager Deployment or Helm values:</span>
-<span class="nt">extraArgs</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--feature-gates=ExperimentalGatewayAPISupport=true</span>
-</code></pre></div>
-<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
-<p>After applying the manifest, wait for the Secret to appear:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Ingress</span>
-kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>secret<span class="w"> </span>example-com-tls<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--for<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.type}&#39;</span><span class="o">=</span>kubernetes.io/tls<span class="w"> </span>--timeout<span class="o">=</span>60s
-
-<span class="c1"># Gateway API</span>
-kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>secret<span class="w"> </span>example-com-gateway-tls<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--for<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.type}&#39;</span><span class="o">=</span>kubernetes.io/tls<span class="w"> </span>--timeout<span class="o">=</span>60s
-</code></pre></div>
-<p>Test the TLS endpoint:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Self-signed cert (-k ignores verification)</span>
-curl<span class="w"> </span>--resolve<span class="w"> </span>example.com:443:127.0.0.1<span class="w"> </span>-k<span class="w"> </span>https://example.com/
-
-<span class="c1"># Inspect the served certificate</span>
-openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span><span class="m">127</span>.0.0.1:443<span class="w"> </span>-servername<span class="w"> </span>example.com<span class="w"> </span>-brief
-</code></pre></div>
-<h2 id="wildcard-tls">Wildcard TLS<a class="headerlink" href="#wildcard-tls" title="Permanent link">&para;</a></h2>
-<p>For wildcard hostname TLS (e.g. <code>*.example.com</code>), the TLS Secret's <code>tls.crt</code> must include a wildcard SAN. Coxswain follows RFC 6125 for TLS matching: a single-label wildcard (<code>*.example.com</code>) matches <code>foo.example.com</code> but not <code>foo.bar.example.com</code>.</p>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<p><strong>Secret never appears</strong></p>
+<p>In <code>external</code> mode the controller <strong>fails closed</strong>: if the Secret is absent it
+logs an error and does not serve discovery (it never silently self-signs). With
+Helm, <code>external</code> mode also omits the namespace-scoped secrets-create Role, so the
+controller holds no secrets-write grant at all.</p>
+<h2 id="the-read-only-proxy-invariant">The read-only-proxy invariant<a class="headerlink" href="#the-read-only-proxy-invariant" title="Permanent link">&para;</a></h2>
+<p>The proxy mounts only <strong>public</strong> material and holds <strong>zero</strong> Kubernetes write
+verbs:</p>
 <ul>
-<li><code>kubectl describe clusterissuer &lt;name&gt;</code> — check issuer status</li>
-<li><code>kubectl get certificate -n &lt;namespace&gt;</code> — check cert-manager's Certificate object</li>
-<li><code>kubectl get certificaterequest -n &lt;namespace&gt;</code> — check for issuance errors</li>
+<li>A <strong>projected ServiceAccount token</strong> (audience <code>coxswain-discovery</code>,
+  auto-rotated by the kubelet) at
+  <code>/var/run/secrets/coxswain/discovery-token/token</code>.</li>
+<li>The controller-published <strong>trust-bundle ConfigMap</strong> (<code>coxswain-discovery-trust</code>,
+  public CA roots only) at <code>/var/run/secrets/coxswain/trust-bundle/ca.crt</code>.</li>
 </ul>
-<p><strong>Coxswain is not serving the new certificate</strong></p>
-<p>Verify the Secret exists and is a valid TLS type:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>example-com-tls<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.type}&#39;</span>
-kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>example-com-tls<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.tls\.crt}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-text<span class="w"> </span>-noout
+<p>Both are mounted by the kubelet — the proxy needs no API access to read them. The
+proxy never references the CA Secret (which holds the private key). This is the
+load-bearing security property of the controller/proxy split: a compromised proxy
+cannot write to Kubernetes and cannot read the CA key.</p>
+<h2 id="svid-rotation">SVID rotation<a class="headerlink" href="#svid-rotation" title="Permanent link">&para;</a></h2>
+<p>SVIDs are short-lived (<code>discovery.svidTtl</code>, default <code>24h</code>). The proxy refreshes at
+~50 % of the TTL: it re-bootstraps, caches the fresh SVID, and signals the stream
+supervisor to reconnect. The proxy's routing tables are <strong>never cleared</strong> across a
+reconnect — the last-good snapshot keeps serving traffic throughout — so rotation
+causes no routing gap and no dropped requests.</p>
+<p>The controller's own server certificate is long-lived and refreshed when the
+controller pod restarts.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>See <a href="../../reference/configuration/#discovery-control-plane">Configuration reference</a>
+for the full flag/value list. The common knobs:</p>
+<table>
+<thead>
+<tr>
+<th>Helm value</th>
+<th>Env var</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>discovery.ca.mode</code></td>
+<td><code>COXSWAIN_DISCOVERY_CA_MODE</code></td>
+<td><code>auto</code></td>
+<td><code>auto</code> self-generates; <code>external</code> consumes a pre-existing Secret (fail closed).</td>
+</tr>
+<tr>
+<td><code>discovery.ca.secretName</code></td>
+<td><code>COXSWAIN_DISCOVERY_CA_SECRET</code></td>
+<td><code>coxswain-discovery-ca</code></td>
+<td>CA Secret name (controller namespace).</td>
+</tr>
+<tr>
+<td><code>discovery.svidTtl</code></td>
+<td><code>COXSWAIN_DISCOVERY_SVID_TTL</code></td>
+<td><code>24h</code></td>
+<td>Proxy SVID lifetime; refresh fires at ~50 %.</td>
+</tr>
+<tr>
+<td><code>discovery.trustDomain</code></td>
+<td><code>COXSWAIN_DISCOVERY_TRUST_DOMAIN</code></td>
+<td><code>cluster.local</code></td>
+<td>SPIFFE trust domain; must match across controller and proxies.</td>
+</tr>
+<tr>
+<td><code>discovery.port</code></td>
+<td><code>COXSWAIN_DISCOVERY_PORT</code></td>
+<td><code>50051</code></td>
+<td>mTLS Stream listener port.</td>
+</tr>
+<tr>
+<td><code>discovery.bootstrapPort</code></td>
+<td><code>COXSWAIN_DISCOVERY_BOOTSTRAP_PORT</code></td>
+<td><code>50052</code></td>
+<td>Server-auth bootstrap listener port.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<p><strong>Proxy stuck <code>NotReady</code>.</strong> The proxy reports <code>NotReady</code> until it has bootstrapped
+an SVID and received its first snapshot. Check, in order:</p>
+<ul>
+<li><strong>Trust bundle missing.</strong> <code>kubectl -n coxswain-system get configmap
+  coxswain-discovery-trust</code> must exist. It is published by the controller on
+  startup; if the controller never became ready (e.g. <code>external</code> mode with no CA
+  Secret), the bundle is never written and proxies cannot verify the controller.</li>
+<li><strong>Wrong token audience.</strong> The projected token's audience must be
+  <code>coxswain-discovery</code>. A mismatch is rejected at <code>TokenReview</code>.</li>
+<li><strong><code>external</code> Secret absent.</strong> In <code>external</code> mode the controller logs
+  <code>CA Secret absent and mode=external</code> and does not serve discovery. Supply the
+  Secret (cert-manager or <code>kubectl create secret tls</code>).</li>
+</ul>
+<p><strong><code>BootstrapRejected</code> events.</strong> When the controller rejects a bootstrap (invalid
+or wrong-audience token, malformed CSR), it emits a <code>BootstrapRejected</code> Warning
+Event in its namespace. The controller is the sole diagnostic emitter — the proxy
+never writes events. List them with:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>BootstrapRejected
 </code></pre></div>
-<p>Check the routing table and logs:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://localhost:8082/api/v1/routes
-curl<span class="w"> </span>http://localhost:8082/api/v1/health
-</code></pre></div>
-<p>A missing or malformed Secret produces a warning log but does not affect HTTP routes.</p>
+<p>The event note carries the rejected principal and the reason.</p>
 
 
 

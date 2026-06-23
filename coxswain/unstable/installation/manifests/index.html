@@ -651,6 +651,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#control-plane-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control-plane CA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#uninstall" class="md-nav__link">
     <span class="md-ellipsis">
       Uninstall
@@ -963,6 +972,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../guides/control-plane-security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control-plane security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../guides/tls/" class="md-nav__link">
         
   
@@ -1226,6 +1256,12 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/vX.Y.Z/install.yaml
 </code></pre></div>
 <p>The rolling update strategy on each Deployment ensures zero-downtime upgrades when running ≥ 2 replicas.</p>
+<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
+<p><code>install.yaml</code> runs the controller in <code>auto</code> CA mode — it self-generates the
+discovery CA, so the controller↔proxy mTLS works with no extra steps. To consume
+an external CA, switch the controller to <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> and
+supply the <code>coxswain-discovery-ca</code> Secret. See
+<a href="../../guides/control-plane-security/">Control-plane security</a>.</p>
 <h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/vX.Y.Z/install.yaml
 </code></pre></div>
