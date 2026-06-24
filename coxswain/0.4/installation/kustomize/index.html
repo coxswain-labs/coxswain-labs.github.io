@@ -88,6 +88,11 @@
             
             
   
+    &#9888; You are viewing development docs built from the <code>main</code> branch.
+    Install and verification examples use placeholder versions &mdash; switch to the
+    <a href="https://docs.coxswain-labs.dev/coxswain/">stable docs</a>
+    for the current released instructions.
+  
 
           </div>
           
@@ -1243,11 +1248,11 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> <
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
 <span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=v0.4.0</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
 
 <span class="nt">images</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.4.0</span>
+<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
 </code></pre></div>

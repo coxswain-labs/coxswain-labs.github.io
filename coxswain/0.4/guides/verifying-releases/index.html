@@ -88,6 +88,11 @@
             
             
   
+    &#9888; You are viewing development docs built from the <code>main</code> branch.
+    Install and verification examples use placeholder versions &mdash; switch to the
+    <a href="https://docs.coxswain-labs.dev/coxswain/">stable docs</a>
+    for the current released instructions.
+  
 
           </div>
           
@@ -1262,7 +1267,7 @@ brew<span class="w"> </span>install<span class="w"> </span>cosign
 <span class="w">  </span>--certificate-identity-regexp<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="s2">&quot;https://github.com/coxswain-labs/coxswain/.github/workflows/release.yml&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--certificate-oidc-issuer<span class="w"> </span><span class="s2">&quot;https://token.actions.githubusercontent.com&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>ghcr.io/coxswain-labs/coxswain:v0.4.0
+<span class="w">  </span>ghcr.io/coxswain-labs/coxswain:vX.Y.Z
 </code></pre></div>
 <p>A successful verification prints the certificate claims and exits 0. A non-zero exit means the
 image is unsigned or the signature does not match the expected workflow identity.</p>
@@ -1273,7 +1278,7 @@ chart tag does not carry the <code>v</code> prefix that the image tag uses:</p>
 <span class="w">  </span>--certificate-identity-regexp<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="s2">&quot;https://github.com/coxswain-labs/coxswain/.github/workflows/release.yml&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--certificate-oidc-issuer<span class="w"> </span><span class="s2">&quot;https://token.actions.githubusercontent.com&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>ghcr.io/coxswain-labs/charts/coxswain:0.4.0
+<span class="w">  </span>ghcr.io/coxswain-labs/charts/coxswain:X.Y.Z
 </code></pre></div>
 <h2 id="what-the-signature-covers">What the signature covers<a class="headerlink" href="#what-the-signature-covers" title="Permanent link">&para;</a></h2>
 <p>The signature is attached to the content digest of the artifact, not just the tag. Tags are

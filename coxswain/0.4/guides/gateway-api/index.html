@@ -88,6 +88,11 @@
             
             
   
+    &#9888; You are viewing development docs built from the <code>main</code> branch.
+    Install and verification examples use placeholder versions &mdash; switch to the
+    <a href="https://docs.coxswain-labs.dev/coxswain/">stable docs</a>
+    for the current released instructions.
+  
 
           </div>
           
@@ -1494,7 +1499,7 @@
 </table>
 <div class="admonition warning">
 <p class="admonition-title">Not supported</p>
-<p><code>TCPRoute</code>, <code>TLSRoute</code>, <code>UDPRoute</code>, and <code>GRPCRoute</code> are not implemented. <code>tls.mode: Passthrough</code> on a listener is rejected. The <code>RequestMirror</code>, <code>ExtensionRef</code>, and <code>CORS</code> filters are skipped with a WARN log line.</p>
+<p><code>TCPRoute</code>, <code>TLSRoute</code>, <code>UDPRoute</code>, and <code>GRPCRoute</code> are not implemented. <code>tls.mode: Passthrough</code> on a listener is rejected. The <code>RequestMirror</code> and <code>CORS</code> filters are skipped with a WARN log line.</p>
 </div>
 <h2 id="gatewayclass">GatewayClass<a class="headerlink" href="#gatewayclass" title="Permanent link">&para;</a></h2>
 <p>A <code>GatewayClass</code> identifies a controller implementation. Coxswain claims the class whose <code>spec.controllerName</code> matches <code>coxswain-labs.dev/gateway-controller</code>.</p>
@@ -1792,7 +1797,7 @@
 </tr>
 <tr>
 <td><code>ExtensionRef</code></td>
-<td>Not supported — skipped with a WARN log line</td>
+<td>Supported (for <code>RateLimit</code> and <code>PathRewriteRegex</code> Coxswain extensions)</td>
 </tr>
 <tr>
 <td><code>CORS</code></td>

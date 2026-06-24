@@ -88,6 +88,11 @@
             
             
   
+    &#9888; You are viewing development docs built from the <code>main</code> branch.
+    Install and verification examples use placeholder versions &mdash; switch to the
+    <a href="https://docs.coxswain-labs.dev/coxswain/">stable docs</a>
+    for the current released instructions.
+  
 
           </div>
           
@@ -1245,10 +1250,10 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
 <p>The <code>releases/latest/download/install.yaml</code> URL resolves only after the first tagged release. It returns 404 if no <code>v*</code> tag has been published yet.</p>
 </div>
 <h2 id="pin-a-specific-version">Pin a specific version<a class="headerlink" href="#pin-a-specific-version" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/v0.4.0/install.yaml
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/vX.Y.Z/install.yaml
 </code></pre></div>
 <h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/v0.4.0/install.yaml
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/vX.Y.Z/install.yaml
 </code></pre></div>
 <p>The rolling update strategy on each Deployment ensures zero-downtime upgrades when running ≥ 2 replicas.</p>
 <h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
@@ -1258,7 +1263,7 @@ an external CA, switch the controller to <code>COXSWAIN_DISCOVERY_CA_MODE=extern
 supply the <code>coxswain-discovery-ca</code> Secret. See
 <a href="../../guides/control-plane-security/">Control-plane security</a>.</p>
 <h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/v0.4.0/install.yaml
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/download/vX.Y.Z/install.yaml
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
