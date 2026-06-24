@@ -1151,6 +1151,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cache-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cache metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#metric-labels-per-gateway" class="md-nav__link">
     <span class="md-ellipsis">
       Metric labels per Gateway
@@ -1633,8 +1642,76 @@
 <td>Gauge</td>
 <td>— (<code>0</code>=pending, <code>1</code>=ready, <code>2</code>=degraded; scalar mirror of the proxy health subsystem)</td>
 </tr>
+<tr>
+<td><code>coxswain_discovery_bootstrap_total</code></td>
+<td>Server</td>
+<td>Counter</td>
+<td><code>result</code> (<code>accepted</code>/<code>rejected</code>), <code>reason</code> (<code>ok</code> for accepts; <code>wire_version</code>/<code>sa_token</code>/<code>token_review_error</code>/<code>invalid_principal</code>/<code>ca_not_ready</code>/<code>malformed_csr</code>/<code>signing_error</code>/<code>internal</code> for rejects) — <code>sum(result="rejected")</code> answers "is the fleet failing to bootstrap"; the <code>reason</code> split separates a misconfigured client from a controller-side fault</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_svid_issued_total</code></td>
+<td>Server</td>
+<td>Counter</td>
+<td>— (SVIDs the CA signed on the Bootstrap path; a flat line while SVIDs expire flags a stuck issuance path)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_client_bootstrap_total</code></td>
+<td>Client</td>
+<td>Counter</td>
+<td><code>result</code> (<code>success</code>/<code>failure</code>) — proxy-side rotation outcome; sustained <code>failure</code> means the proxy is serving its last-good SVID toward expiry</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_client_svid_expiry_seconds</code></td>
+<td>Client</td>
+<td>Gauge</td>
+<td>— (seconds until the proxy's current SVID <code>notAfter</code>; approaching <code>0</code> means rotation is not keeping up with the TTL)</td>
+</tr>
 </tbody>
 </table>
+<h3 id="cache-metrics">Cache metrics<a class="headerlink" href="#cache-metrics" title="Permanent link">&para;</a></h3>
+<p>The response cache runs in the <strong>proxy</strong> process; all cache series are scraped from the proxy <code>/metrics</code>. The hit/miss counters predate the proxy subsystem-prefix convention and keep their bare <code>coxswain_cache_*</code> names; the depth series added later use the <code>coxswain_proxy_cache_*</code> prefix.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Type</th>
+<th>Labels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>coxswain_cache_hits_total</code></td>
+<td>Counter</td>
+<td><code>route</code></td>
+</tr>
+<tr>
+<td><code>coxswain_cache_misses_total</code></td>
+<td>Counter</td>
+<td><code>route</code></td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_cache_entries</code></td>
+<td>Gauge</td>
+<td>— (entries currently tracked by the cache)</td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_cache_bytes</code></td>
+<td>Gauge</td>
+<td>— (total body bytes currently held; compare against <code>--cache-max-size</code> to spot a cache at capacity)</td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_cache_evictions_total</code></td>
+<td>Counter</td>
+<td>— (entries evicted under capacity pressure; a climbing rate alongside a full <code>_bytes</code> gauge means the cache is thrashing)</td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_cache_purges_total</code></td>
+<td>Counter</td>
+<td><code>result</code> (<code>hit</code> — an entry was removed; <code>miss</code> — no matching entry)</td>
+</tr>
+</tbody>
+</table>
+<p>The depth gauges (<code>entries</code>, <code>bytes</code>, <code>evictions_total</code>) are read from the LRU eviction manager at scrape time, so they always reflect live state with no sampling lag.</p>
 <h3 id="metric-labels-per-gateway">Metric labels per Gateway<a class="headerlink" href="#metric-labels-per-gateway" title="Permanent link">&para;</a></h3>
 <p>When you run a <a href="../../guides/dedicated-mode/">dedicated proxy pool</a>, you usually want to slice its metrics by Gateway. Coxswain does <strong>not</strong> bake the Gateway identity into the emitted series — a <code>gateway_name</code> / <code>gateway_namespace</code> label on every counter would multiply request-counter cardinality across every dedicated Gateway, and the shared pool has no single Gateway to name.</p>
 <p>Instead the identity rides in as a <strong>scrape-time target label</strong>. Each proxy pod the controller provisions carries the Gateway it serves as two pod labels:</p>
