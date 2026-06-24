@@ -1142,6 +1142,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#discovery-channel-metrics-coxswain_discovery_" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovery channel metrics (coxswain_discovery_*)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#metric-labels-per-gateway" class="md-nav__link">
     <span class="md-ellipsis">
       Metric labels per Gateway
@@ -1393,10 +1402,11 @@
 
 <h1 id="observability-reference">Observability reference<a class="headerlink" href="#observability-reference" title="Permanent link">&para;</a></h1>
 <h2 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">&para;</a></h2>
-<p>Coxswain exposes the Prometheus endpoint at <code>http://&lt;admin-address&gt;:&lt;admin-port&gt;/metrics</code> (default port <code>8082</code>). Series are emitted under one of two prefixes that identify the pod role:</p>
+<p>Coxswain exposes the Prometheus endpoint at <code>http://&lt;admin-address&gt;:&lt;admin-port&gt;/metrics</code> (default port <code>8082</code>). Series are emitted under one of three prefixes:</p>
 <ul>
 <li><code>coxswain_proxy_*</code> — emitted by <code>serve proxy --shared</code>, <code>serve proxy --dedicated</code>, and the proxy half of <code>serve dev</code>.</li>
 <li><code>coxswain_controller_*</code> — emitted by <code>serve controller</code> and the controller half of <code>serve dev</code>.</li>
+<li><code>coxswain_discovery_*</code> — the control-plane gRPC channel. Server-side series appear on the <strong>controller</strong> <code>/metrics</code> (it serves the stream); client-side series appear on each <strong>proxy</strong> <code>/metrics</code> (it consumes the stream). In <code>serve dev</code> both halves run in one process, so both appear together.</li>
 </ul>
 <p>The <code>route</code> Prometheus label is a <strong>stable rule identifier</strong>, not a request path. Operators reading <code>coxswain_proxy_requests_total{route="httproute/checkout/api:0"}</code> see the same label value on the matching access-log line's <code>route_id</code> field, so a Grafana → Loki/Tempo pivot is an exact join (no fuzzy host/path matching). Path patterns stay on the access log for human-readable display.</p>
 <p>Route id formats:</p>
@@ -1578,6 +1588,50 @@
 <td><code>coxswain_controller_tls_certs_loaded</code></td>
 <td>Gauge</td>
 <td><code>bucket</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="discovery-channel-metrics-coxswain_discovery_">Discovery channel metrics (<code>coxswain_discovery_*</code>)<a class="headerlink" href="#discovery-channel-metrics-coxswain_discovery_" title="Permanent link">&para;</a></h3>
+<p>The control-plane gRPC channel between controller (server) and proxies (clients). Server-side series are scraped from the controller <code>/metrics</code>; client-side series from each proxy <code>/metrics</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Side</th>
+<th>Type</th>
+<th>Labels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>coxswain_discovery_connected_proxies</code></td>
+<td>Server</td>
+<td>Gauge</td>
+<td>— (proxy streams live now; a drop to <code>0</code> means the fleet lost its control-plane link)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_streams_total</code></td>
+<td>Server</td>
+<td>Counter</td>
+<td><code>result</code> (<code>accepted</code>/<code>rejected</code>) — <code>rejected</code> covers wire-version mismatch, malformed scope, and SVID/scope-binding denial</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_acks_total</code></td>
+<td>Server</td>
+<td>Counter</td>
+<td>— (snapshot Acks received; tracks fleet convergence throughput)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_client_reconnects_total</code></td>
+<td>Client</td>
+<td>Counter</td>
+<td>— (reconnect attempts; excludes the first connect — a climbing rate flags an unstable link)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_client_state</code></td>
+<td>Client</td>
+<td>Gauge</td>
+<td>— (<code>0</code>=pending, <code>1</code>=ready, <code>2</code>=degraded; scalar mirror of the proxy health subsystem)</td>
 </tr>
 </tbody>
 </table>
