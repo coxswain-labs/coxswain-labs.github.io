@@ -523,45 +523,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-create-a-gateway" class="md-nav__link">
+  <a href="#step-3-deploy-a-test-backend" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 3 — Create a Gateway
+      Step 3 — Deploy a test backend
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-deploy-a-test-backend" class="md-nav__link">
+  <a href="#step-4-route-traffic" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 4 — Deploy a test backend
+      Step 4 — Route traffic
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-5-create-an-httproute" class="md-nav__link">
+  <a href="#step-5-verify-traffic" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 5 — Create an HTTPRoute
+      Step 5 — Verify traffic
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-6-verify-traffic" class="md-nav__link">
+  <a href="#step-6-open-the-operator-console" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 6 — Verify traffic
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-7-open-the-operator-console" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 7 — Open the operator console
+      Step 6 — Open the operator console
     </span>
   </a>
   
@@ -1264,16 +1255,18 @@
 
 
 <h1 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
-<p>This guide installs Coxswain into an existing cluster, creates a <code>GatewayClass</code>, deploys a test <code>HTTPRoute</code>, and verifies traffic flows end-to-end. It takes about 10 minutes.</p>
+<p>This guide installs Coxswain into an existing cluster, deploys a test backend, routes traffic using either Gateway API or classic Ingress, and verifies the flow end-to-end. It takes about 10 minutes.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Kubernetes 1.30 or later</li>
-<li>Gateway API CRDs v1.5.x or later (installed in Step 1)</li>
 <li><code>kubectl</code> configured against your target cluster</li>
 <li><code>helm</code> 3.x installed</li>
 </ul>
 <h2 id="step-1-install-the-gateway-api-crds">Step 1 — Install the Gateway API CRDs<a class="headerlink" href="#step-1-install-the-gateway-api-crds" title="Permanent link">&para;</a></h2>
-<p>Coxswain supports both Gateway API and classic Ingress. The Gateway API CRDs are not bundled with Kubernetes and must be installed once per cluster:</p>
+<blockquote>
+<p><strong>Ingress-only?</strong> Skip this step. The Gateway API CRDs are only required if you plan to use <code>Gateway</code> and <code>HTTPRoute</code> resources in Step 4.</p>
+</blockquote>
+<p>The Gateway API CRDs are not bundled with Kubernetes and must be installed once per cluster:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
 </code></pre></div>
 <h2 id="step-2-install-coxswain">Step 2 — Install Coxswain<a class="headerlink" href="#step-2-install-coxswain" title="Permanent link">&para;</a></h2>
@@ -1299,27 +1292,7 @@
 <span class="c1"># NAME       CONTROLLER                              ACCEPTED   AGE</span>
 <span class="c1"># coxswain   coxswain-labs.dev/gateway-controller    True       ...</span>
 </code></pre></div>
-<h2 id="step-3-create-a-gateway">Step 3 — Create a Gateway<a class="headerlink" href="#step-3-create-a-gateway" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># gateway.yaml</span>
-<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-gateway</span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
-<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
-<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
-<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>gateway.yaml
-kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>gateway/example-gateway<span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Programmed<span class="w"> </span>--timeout<span class="o">=</span>30s
-</code></pre></div>
-<h2 id="step-4-deploy-a-test-backend">Step 4 — Deploy a test backend<a class="headerlink" href="#step-4-deploy-a-test-backend" title="Permanent link">&para;</a></h2>
+<h2 id="step-3-deploy-a-test-backend">Step 3 — Deploy a test backend<a class="headerlink" href="#step-3-deploy-a-test-backend" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># echo-backend.yaml</span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
@@ -1354,7 +1327,30 @@ kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </sp
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>echo-backend.yaml
 </code></pre></div>
-<h2 id="step-5-create-an-httproute">Step 5 — Create an HTTPRoute<a class="headerlink" href="#step-5-create-an-httproute" title="Permanent link">&para;</a></h2>
+<h2 id="step-4-route-traffic">Step 4 — Route traffic<a class="headerlink" href="#step-4-route-traffic" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Gateway API</label><label for="__tabbed_2_2">Ingress</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Create a <code>Gateway</code> and an <code>HTTPRoute</code> that forwards traffic to the echo backend.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># gateway.yaml</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>gateway.yaml
+kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>gateway/example-gateway<span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Programmed<span class="w"> </span>--timeout<span class="o">=</span>30s
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># route.yaml</span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
@@ -1376,10 +1372,40 @@ kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </sp
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>route.yaml
 kubectl<span class="w"> </span>get<span class="w"> </span>httproute<span class="w"> </span>echo-route
-<span class="c1"># NAME         HOSTNAMES            AGE</span>
+<span class="c1"># NAME         HOSTNAMES              AGE</span>
 <span class="c1"># echo-route   [&quot;echo.example.com&quot;]   5s</span>
 </code></pre></div>
-<h2 id="step-6-verify-traffic">Step 6 — Verify traffic<a class="headerlink" href="#step-6-verify-traffic" title="Permanent link">&para;</a></h2>
+</div>
+<div class="tabbed-block">
+<p>Create an <code>Ingress</code> using the <code>coxswain</code> class that Coxswain registers at install time.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ingress.yaml</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-ingress</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>ingress.yaml
+kubectl<span class="w"> </span>get<span class="w"> </span>ingress<span class="w"> </span>echo-ingress
+<span class="c1"># NAME           CLASS      HOSTS              ADDRESS   PORTS   AGE</span>
+<span class="c1"># echo-ingress   coxswain   echo.example.com             80      5s</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="step-5-verify-traffic">Step 5 — Verify traffic<a class="headerlink" href="#step-5-verify-traffic" title="Permanent link">&para;</a></h2>
 <p>The proxy port depends on your cluster and install method. For a local cluster with a <code>NodePort</code> or port-forwarded service:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Find the proxy service address</span>
 kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>coxswain-shared-proxy
@@ -1388,7 +1414,7 @@ kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span cl
 curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: echo.example.com&quot;</span><span class="w"> </span>http://&lt;proxy-address&gt;/
 <span class="c1"># {&quot;host&quot;:&quot;echo.example.com&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/&quot;, ...}</span>
 </code></pre></div>
-<h2 id="step-7-open-the-operator-console">Step 7 — Open the operator console<a class="headerlink" href="#step-7-open-the-operator-console" title="Permanent link">&para;</a></h2>
+<h2 id="step-6-open-the-operator-console">Step 6 — Open the operator console<a class="headerlink" href="#step-6-open-the-operator-console" title="Permanent link">&para;</a></h2>
 <p>The controller exposes a built-in web UI on its admin port. Forward it locally:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-controller<span class="w"> </span><span class="m">8082</span>:8082
 </code></pre></div>

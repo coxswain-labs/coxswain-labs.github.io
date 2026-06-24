@@ -1325,7 +1325,7 @@
 </tbody>
 </table>
 <h2 id="automatic-provisioning-by-the-controller">Automatic provisioning by the controller<a class="headerlink" href="#automatic-provisioning-by-the-controller" title="Permanent link">&para;</a></h2>
-<p><code>serve controller</code> (and <code>serve dev</code>) runs a provisioning operator that watches every <code>Gateway</code>. For any Gateway whose <code>parametersRef</code> (or whose <code>GatewayClass</code>'s <code>parametersRef</code>) resolves to a <code>CoxswainGatewayParameters</code> object, the operator applies a dedicated-proxy <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code> to the cluster via server-side-apply under field manager <code>coxswain-controller</code>, owner-referenced to the parent Gateway so deletion cascades.</p>
+<p><code>serve controller</code> (and <code>serve dev</code>) runs a provisioning operator that watches every <code>Gateway</code>. For any Gateway whose <code>parametersRef</code> (or whose <code>GatewayClass</code>'s <code>parametersRef</code>) resolves to a <code>CoxswainGatewayParameters</code> object, the operator applies a dedicated proxy <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code> to the cluster via server-side-apply under field manager <code>coxswain-controller</code>, owner-referenced to the parent Gateway so deletion cascades.</p>
 <p>Apply the dev fixture set and verify the resources land:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/dev/dedicated-gateway/
 
@@ -1346,7 +1346,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>deploy,svc,sa<span cla
 <h3 id="cross-namespace-route-attachment-from-all-from-selector">Cross-namespace route attachment (<code>from: All</code> / <code>from: Selector</code>)<a class="headerlink" href="#cross-namespace-route-attachment-from-all-from-selector" title="Permanent link">&para;</a></h3>
 <p>When a listener declares <code>allowedRoutes.namespaces.from: All</code> or <code>from: Selector</code>, no additional
 operator action is needed. The controller's cluster-wide reflector already watches routes across all
-namespaces; cross-namespace HTTPRoutes are resolved at reconcile time and compiled into the per-Gateway
+namespaces; cross-namespace HTTPRoutes are resolved at reconcile time and compiled into the dedicated
 snapshot before it is pushed to the dedicated proxy. The dedicated proxy receives the complete,
 pre-scoped routing world from the controller — it has no cluster-wide reflector and no K8s RBAC of
 its own.</p>
