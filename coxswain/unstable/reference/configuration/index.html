@@ -1120,6 +1120,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#http2-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP/2 support
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#discovery-control-plane" class="md-nav__link">
     <span class="md-ellipsis">
       Discovery control plane
@@ -1442,7 +1451,7 @@
 <td><code>COXSWAIN_PROXY_ACCEPT_PROXY_PROTOCOL</code></td>
 <td><code>--proxy-accept-proxy-protocol</code></td>
 <td><code>false</code></td>
-<td>Require HAProxy PROXY v1/v2 on inbound connections; must be combined with <code>--proxy-trusted-sources</code></td>
+<td>Require HAProxy PROXY v1/v2 on inbound connections; must be combined with <code>--proxy-trusted-sources</code>. Note: h2c prior-knowledge and h2 ALPN are not available on PROXY-wrapped connections (h1-only on that path).</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_PROXY_BIND_ADDRESS</code></td>
@@ -1578,6 +1587,14 @@
 </tbody>
 </table>
 <p>The proxy listeners are disabled unless their port is explicitly set. The Helm chart defaults <code>proxy.http.port</code> to <code>80</code> and <code>proxy.https.port</code> to <code>443</code>.</p>
+<h2 id="http2-support">HTTP/2 support<a class="headerlink" href="#http2-support" title="Permanent link">&para;</a></h2>
+<p>Coxswain supports HTTP/2 on both the downstream (client → proxy) and upstream (proxy → backend) legs:</p>
+<ul>
+<li><strong>h2 over TLS (HTTPS)</strong> — automatic. The TLS acceptor advertises <code>h2</code> and <code>http/1.1</code> via ALPN; clients that don't offer <code>h2</code> fall back to HTTP/1.1 transparently.</li>
+<li><strong>h2c (cleartext HTTP/2, prior-knowledge)</strong> — automatic on plain-TCP listeners. The h2c preface is detected non-destructively; HTTP/1.1 clients on the same port are unaffected.</li>
+<li><strong>Upstream h2c</strong> — enabled per-route via <code>appProtocol: kubernetes.io/h2c</code> on the backend <code>Service</code> port (Gateway API GEP-1911 <code>HTTPRouteBackendProtocolH2C</code>).</li>
+</ul>
+<p><strong>PROXY-protocol restriction:</strong> when <code>--proxy-accept-proxy-protocol</code> is set, inbound connections are h1-only. h2c prior-knowledge and h2 ALPN are disabled on PROXY-wrapped connections.</p>
 <h2 id="discovery-control-plane">Discovery control plane<a class="headerlink" href="#discovery-control-plane" title="Permanent link">&para;</a></h2>
 <p>The controller and proxy communicate over a secured gRPC discovery channel:
 the controller acts as a CA, proxies bootstrap an SVID with their ServiceAccount
