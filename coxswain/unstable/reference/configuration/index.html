@@ -1165,6 +1165,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#proxy-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      PROXY protocol
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PROXY protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listeners-clienttrafficpolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listeners — ClientTrafficPolicy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-listeners-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress listeners — flags
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#discovery-control-plane" class="md-nav__link">
     <span class="md-ellipsis">
       Discovery control plane
@@ -1511,10 +1544,10 @@
 <td>IP the health (<code>/healthz</code>, <code>/readyz</code>) and admin (<code>/metrics</code>, <code>/api/v1/routes</code>) servers bind to</td>
 </tr>
 <tr>
-<td><code>COXSWAIN_PROXY_ACCEPT_PROXY_PROTOCOL</code></td>
-<td><code>--proxy-accept-proxy-protocol</code></td>
+<td><code>COXSWAIN_INGRESS_ACCEPT_PROXY_PROTOCOL</code></td>
+<td><code>--ingress-accept-proxy-protocol</code></td>
 <td><code>false</code></td>
-<td>Require HAProxy PROXY v1/v2 on inbound connections; must be combined with <code>--proxy-trusted-sources</code>. Note: h2c prior-knowledge and h2 ALPN are not available on PROXY-wrapped connections (h1-only on that path).</td>
+<td>Require HAProxy PROXY v1/v2 on <strong>Ingress</strong> inbound connections; must be combined with <code>--ingress-proxy-trusted-sources</code>. Note: h2c prior-knowledge and h2 ALPN are not available on PROXY-wrapped connections (h1-only on that path). Gateway listeners use <code>ClientTrafficPolicy</code> instead (see below).</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_PROXY_BIND_ADDRESS</code></td>
@@ -1565,10 +1598,10 @@
 <td>Maximum idle upstream connections in Pingora's keepalive pool; connections beyond the limit are evicted LRU</td>
 </tr>
 <tr>
-<td><code>COXSWAIN_PROXY_TRUSTED_SOURCES</code></td>
-<td><code>--proxy-trusted-sources</code></td>
+<td><code>COXSWAIN_INGRESS_PROXY_TRUSTED_SOURCES</code></td>
+<td><code>--ingress-proxy-trusted-sources</code></td>
 <td><em>(none)</em></td>
-<td>Comma-separated CIDRs allowed to send PROXY-protocol headers; only meaningful with <code>--proxy-accept-proxy-protocol</code></td>
+<td>Comma-separated CIDRs allowed to send PROXY-protocol headers on Ingress listeners; only meaningful with <code>--ingress-accept-proxy-protocol</code></td>
 </tr>
 <tr>
 <td><code>COXSWAIN_STATUS_ADDRESS</code></td>
@@ -1665,7 +1698,58 @@
 <li><strong>h2c (cleartext HTTP/2, prior-knowledge)</strong> — automatic on plain-TCP listeners. The h2c preface is detected non-destructively; HTTP/1.1 clients on the same port are unaffected.</li>
 <li><strong>Upstream h2c</strong> — enabled per-route via <code>appProtocol: kubernetes.io/h2c</code> on the backend <code>Service</code> port (Gateway API GEP-1911 <code>HTTPRouteBackendProtocolH2C</code>).</li>
 </ul>
-<p><strong>PROXY-protocol restriction:</strong> when <code>--proxy-accept-proxy-protocol</code> is set, inbound connections are h1-only. h2c prior-knowledge and h2 ALPN are disabled on PROXY-wrapped connections.</p>
+<p><strong>PROXY-protocol restriction:</strong> when <code>--ingress-accept-proxy-protocol</code> is set, Ingress inbound connections are h1-only. h2c prior-knowledge and h2 ALPN are disabled on PROXY-wrapped connections.</p>
+<h2 id="proxy-protocol">PROXY protocol<a class="headerlink" href="#proxy-protocol" title="Permanent link">&para;</a></h2>
+<p>Coxswain supports HAProxy PROXY protocol v1 and v2 for real client-IP propagation behind L4 load balancers. The mechanism differs by listener origin:</p>
+<h3 id="gateway-listeners-clienttrafficpolicy">Gateway listeners — <code>ClientTrafficPolicy</code><a class="headerlink" href="#gateway-listeners-clienttrafficpolicy" title="Permanent link">&para;</a></h3>
+<p>Gateway listeners (including TLS passthrough/hybrid) are configured per-listener through the <code>ClientTrafficPolicy</code> CRD. This is dynamic: the controller reconciles policies at runtime with no proxy restart.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClientTrafficPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ctp</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">targetRefs</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">    </span><span class="c1"># Optional: scope to one listener. Omit to apply to all listeners on the Gateway.</span>
+<span class="w">    </span><span class="nt">sectionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
+<span class="w">  </span><span class="nt">proxyProtocol</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">trustedSources</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0.0.0/8</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.0.0/16</span>
+</code></pre></div>
+<p><strong>Precedence (GEP-713):</strong> a section-scoped policy (with <code>sectionName</code>) beats a gateway-scoped one for the targeted listener. When two policies at the same scope target the same listener, the older <code>creationTimestamp</code> wins; the loser receives <code>Accepted=False / Conflicted=True</code> in <code>status.ancestors[]</code>.</p>
+<p><strong>TLS passthrough:</strong> PROXY headers are stripped before SNI detection, so passthrough routes work correctly whether or not PROXY headers are present. Without a <code>ClientTrafficPolicy</code>, PROXY headers on passthrough listeners are treated as raw connection bytes and cause the SNI lookup to fail.</p>
+<h3 id="ingress-listeners-flags">Ingress listeners — flags<a class="headerlink" href="#ingress-listeners-flags" title="Permanent link">&para;</a></h3>
+<p>Ingress listeners are configured globally via two flags (or the equivalent Helm values). This applies to the entire Ingress plane; per-listener granularity is not available for Ingress because both <code>:80</code> and <code>:443</code> share a single L4 front load balancer.</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Helm value</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--ingress-accept-proxy-protocol</code></td>
+<td><code>proxy.shared.acceptProxyProtocol</code></td>
+<td><code>false</code></td>
+<td>Enable PROXY v1/v2 on Ingress listeners</td>
+</tr>
+<tr>
+<td><code>--ingress-proxy-trusted-sources</code></td>
+<td><code>proxy.shared.trustedSources</code></td>
+<td><em>(none)</em></td>
+<td>CIDRs whose connections carry PROXY headers</td>
+</tr>
+</tbody>
+</table>
+<p>These flags do not affect Gateway listeners. Gateway listeners are always governed by <code>ClientTrafficPolicy</code>.</p>
 <h2 id="discovery-control-plane">Discovery control plane<a class="headerlink" href="#discovery-control-plane" title="Permanent link">&para;</a></h2>
 <p>The controller and proxy communicate over a secured gRPC discovery channel:
 the controller acts as a CA, proxies bootstrap an SVID with their ServiceAccount

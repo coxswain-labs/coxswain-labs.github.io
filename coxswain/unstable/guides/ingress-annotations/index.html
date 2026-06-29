@@ -2294,7 +2294,7 @@
 </tr>
 <tr>
 <td><code>ingress.coxswain-labs.dev/path-normalize</code></td>
-<td><code>none</code>, <code>base</code>, <code>merge-slashes</code>, <code>decode-and-merge-slashes</code></td>
+<td><code>base</code>, <code>merge-slashes</code>, <code>decode-and-merge-slashes</code></td>
 <td><code>base</code></td>
 <td><code>"merge-slashes"</code></td>
 </tr>
@@ -2450,7 +2450,7 @@
 <p><strong>Invalid patterns.</strong> A path whose value is not a valid regular expression is skipped with a controller <code>WARN</code>; the rest of the Ingress (and the routing table) is unaffected.</p>
 <p><strong>Migrating from nginx-ingress.</strong> The canonical nginx pairing — <code>nginx.ingress.kubernetes.io/use-regex</code> + <code>nginx.ingress.kubernetes.io/rewrite-target: /$2</code> with <code>pathType: ImplementationSpecific</code> — maps directly onto the Coxswain annotations of the same names. See <a href="#capture-group-substitution">capture-group substitution</a>.</p>
 <h2 id="path-normalize"><code>path-normalize</code><a class="headerlink" href="#path-normalize" title="Permanent link">&para;</a></h2>
-<p>Controls how request paths are normalised before routing and before being forwarded upstream. Coxswain mirrors <a href="https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-ProxyPathNormalization">Envoy/Istio's <code>pathNormalization</code></a> — the same four-level enum with <code>base</code> as the cluster-wide default.</p>
+<p>Controls how request paths are normalised before routing and before being forwarded upstream. Coxswain mirrors <a href="https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-ProxyPathNormalization">Envoy/Istio's <code>pathNormalization</code></a> — with <code>base</code> as the secure default. Normalisation cannot be disabled: <code>base</code> is the floor.</p>
 <p>Normalisation runs <strong>before</strong> the routing lookup; the canonical path is used for the path match <em>and</em> is sent to the upstream unchanged by a <code>rewrite-target</code> (if one is configured, it is applied on top of the normalised path).</p>
 <p><strong>Gateway API <code>HTTPRoute</code> resources always use <code>base</code> normalization.</strong> There is no per-<code>HTTPRoute</code> override annotation; the behaviour is controlled at the infrastructure level, matching Istio's model.</p>
 <table>
@@ -2461,10 +2461,6 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>none</code></td>
-<td>No-op — raw request path is routed and forwarded as-is.</td>
-</tr>
 <tr>
 <td><code>base</code> <em>(default)</em></td>
 <td>Percent-decode unreserved characters (<code>%2e</code>→<code>.</code>, <code>%2d</code>→<code>-</code>, etc.); convert <code>\</code> to <code>/</code>; remove dot segments (<code>.</code> and <code>..</code>, RFC 3986 §5.2.4). <code>%2f</code> and <code>%5c</code> are <strong>not</strong> decoded — they remain encoded to prevent path-traversal bypasses.</td>
@@ -2480,6 +2476,10 @@
 </tbody>
 </table>
 <p>Each level includes all transformations of the levels before it.</p>
+<div class="admonition warning">
+<p class="admonition-title">Migration: <code>none</code> was removed</p>
+<p>The <code>none</code> value (which disabled normalization entirely) was dropped because it re-opened route-match bypass and path-traversal attacks — a request could dodge a path-based route or <code>allow-source-range</code> rule with <code>..</code>, <code>%2e%2e</code>, or duplicate slashes. An Ingress that still sets <code>path-normalize: none</code> is <strong>not rejected</strong>: the controller logs a <code>WARN</code>, emits a <code>Warning</code> Event, and silently upgrades the level to <code>base</code>. If you previously relied on raw-path passthrough, expect normalized paths upstream now and remove any dependency on the un-normalized form.</p>
+</div>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># Collapse // produced by client-side path joining.</span>
