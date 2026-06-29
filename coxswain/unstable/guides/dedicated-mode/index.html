@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/guides/dedicated-mode/">
       
       
-        <link rel="prev" href="../gateway-api/">
+        <link rel="prev" href="../listener-sets/">
       
       
         <link rel="next" href="../running-in-production/">
@@ -804,6 +804,27 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../listener-sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1186,6 +1207,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/conformance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conformance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1325,7 +1367,7 @@
 </tbody>
 </table>
 <h2 id="automatic-provisioning-by-the-controller">Automatic provisioning by the controller<a class="headerlink" href="#automatic-provisioning-by-the-controller" title="Permanent link">&para;</a></h2>
-<p><code>serve controller</code> (and <code>serve dev</code>) runs a provisioning operator that watches every <code>Gateway</code>. For any Gateway whose <code>parametersRef</code> (or whose <code>GatewayClass</code>'s <code>parametersRef</code>) resolves to a <code>CoxswainGatewayParameters</code> object, the operator applies a dedicated proxy <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code> to the cluster via server-side-apply under field manager <code>coxswain-controller</code>, owner-referenced to the parent Gateway so deletion cascades.</p>
+<p><code>serve controller</code> runs a provisioning operator that watches every <code>Gateway</code>. For any Gateway whose <code>parametersRef</code> (or whose <code>GatewayClass</code>'s <code>parametersRef</code>) resolves to a <code>CoxswainGatewayParameters</code> object, the operator applies a dedicated proxy <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code> to the cluster via server-side-apply under field manager <code>coxswain-controller</code>, owner-referenced to the parent Gateway so deletion cascades.</p>
 <p>Apply the dev fixture set and verify the resources land:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deploy/dev/dedicated-gateway/
 
@@ -1363,7 +1405,7 @@ deletion.</p>
 instead of having the controller provision it. The proxy subscribes to the controller with
 <code>Scope::Gateway</code> and receives only its Gateway's compiled snapshot — no <code>parametersRef</code> is required
 for the manual path.</p>
-<p>Start the controller first (in a separate terminal or <code>serve dev</code>), then start the dedicated proxy
+<p>Start the controller first (in a separate terminal), then start the dedicated proxy
 alongside it:</p>
 <div class="highlight"><pre><span></span><code>cargo<span class="w"> </span>run<span class="w"> </span>--bin<span class="w"> </span>coxswain<span class="w"> </span>--<span class="w"> </span>serve<span class="w"> </span>proxy<span class="w"> </span>--dedicated<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--gateway-name<span class="w"> </span>coxswain-test<span class="w"> </span><span class="se">\</span>

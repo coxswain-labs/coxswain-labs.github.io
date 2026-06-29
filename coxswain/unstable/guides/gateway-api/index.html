@@ -16,7 +16,7 @@
         <link rel="prev" href="../ingress-annotations/">
       
       
-        <link rel="next" href="../dedicated-mode/">
+        <link rel="next" href="../listener-sets/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -953,6 +953,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#requesting-a-static-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requesting a static address
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#status-conditions" class="md-nav__link">
     <span class="md-ellipsis">
       Status conditions
@@ -1076,6 +1085,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#request-mirroring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request mirroring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#status-conditions_1" class="md-nav__link">
     <span class="md-ellipsis">
       Status conditions
@@ -1089,10 +1107,217 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#grpcroute" class="md-nav__link">
+    <span class="md-ellipsis">
+      GRPCRoute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GRPCRoute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backend-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend requirements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-matching_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method matching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-fields_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-conditions_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status conditions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tlsroute" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLSRoute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TLSRoute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listener-passthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listener (Passthrough)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sni-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      SNI matching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-fields_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-conditions_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminate-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Terminate mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Terminate mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listener
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mixed-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mixed mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mixed mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listener_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listener
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../listener-sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1393,6 +1618,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/conformance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conformance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1459,7 +1705,7 @@
 
 
 <h1 id="gateway-api-guide">Gateway API guide<a class="headerlink" href="#gateway-api-guide" title="Permanent link">&para;</a></h1>
-<p>Coxswain implements the <a href="https://gateway-api.sigs.k8s.io/">Kubernetes Gateway API</a> standard channel. It supports <code>GatewayClass</code>, <code>Gateway</code>, and <code>HTTPRoute</code> resources.</p>
+<p>Coxswain implements the <a href="https://gateway-api.sigs.k8s.io/">Kubernetes Gateway API</a> standard channel. It supports <code>GatewayClass</code>, <code>Gateway</code>, <code>ListenerSet</code>, <code>HTTPRoute</code>, <code>GRPCRoute</code>, and <code>TLSRoute</code> resources.</p>
 <h2 id="supported-resources">Supported resources<a class="headerlink" href="#supported-resources" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1478,12 +1724,27 @@
 <tr>
 <td><code>Gateway</code></td>
 <td><code>gateway.networking.k8s.io/v1</code></td>
-<td>HTTP and HTTPS listeners only</td>
+<td>HTTP, HTTPS, and TLS passthrough listeners</td>
+</tr>
+<tr>
+<td><code>ListenerSet</code></td>
+<td><code>gateway.networking.k8s.io/v1</code></td>
+<td>Attach listeners to a Gateway across namespaces — see the <a href="../listener-sets/">ListenerSet guide</a></td>
 </tr>
 <tr>
 <td><code>HTTPRoute</code></td>
 <td><code>gateway.networking.k8s.io/v1</code></td>
 <td>Path, header, method, and query matching; weighted traffic split</td>
+</tr>
+<tr>
+<td><code>GRPCRoute</code></td>
+<td><code>gateway.networking.k8s.io/v1</code></td>
+<td>Service and method matching; cleartext h2c backends</td>
+</tr>
+<tr>
+<td><code>TLSRoute</code></td>
+<td><code>gateway.networking.k8s.io/v1alpha2</code></td>
+<td>SNI-keyed L4 passthrough; no TLS termination at proxy</td>
 </tr>
 <tr>
 <td><code>ReferenceGrant</code></td>
@@ -1499,7 +1760,7 @@
 </table>
 <div class="admonition warning">
 <p class="admonition-title">Not supported</p>
-<p><code>TCPRoute</code>, <code>TLSRoute</code>, <code>UDPRoute</code>, and <code>GRPCRoute</code> are not implemented. <code>tls.mode: Passthrough</code> on a listener is rejected. The <code>RequestMirror</code> and <code>CORS</code> filters are skipped with a WARN log line.</p>
+<p><code>TCPRoute</code> and <code>UDPRoute</code> are not implemented.</p>
 </div>
 <h2 id="gatewayclass">GatewayClass<a class="headerlink" href="#gatewayclass" title="Permanent link">&para;</a></h2>
 <p>A <code>GatewayClass</code> identifies a controller implementation. Coxswain claims the class whose <code>spec.controllerName</code> matches <code>coxswain-labs.dev/gateway-controller</code>.</p>
@@ -1523,10 +1784,14 @@
 </code></pre></div>
 <p>Implementation-specific capabilities — such as <code>RegularExpression</code> path, header, and query matching — are not listed in <code>supportedFeatures</code>. The Gateway API spec does not define conformance flags for them; they are supported under Coxswain's own dialect. See <a href="#implementation-specific-matching">Implementation-specific matching</a>.</p>
 <h2 id="gateway">Gateway<a class="headerlink" href="#gateway" title="Permanent link">&para;</a></h2>
-<p>A <code>Gateway</code> object defines one or more listeners, each binding a port and protocol to a set of allowed routes. Only <code>HTTP</code> and <code>HTTPS</code> listeners are processed; other protocol values are ignored.</p>
+<p>A <code>Gateway</code> object defines one or more listeners, each binding a port and protocol to a set of allowed routes. <code>HTTP</code>, <code>HTTPS</code>, and <code>TLS</code> listeners are processed; other protocol values are ignored.</p>
 <div class="admonition tip">
 <p class="admonition-title">Dedicated proxy per Gateway</p>
 <p>A <code>Gateway</code> can be opted into its own isolated proxy pool via <code>spec.infrastructure.parametersRef</code>. See <a href="../dedicated-mode/">Dedicated proxy pools</a> for the full walkthrough.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Infrastructure metadata propagation (GEP-1867)</p>
+<p><code>spec.infrastructure.labels</code> and <code>spec.infrastructure.annotations</code> propagate onto the resources Coxswain provisions for the Gateway, in <strong>both</strong> deployment models. In dedicated mode they land on the per-Gateway <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code>; in shared mode they land on the per-Gateway VIP <code>Service</code> (e.g. cloud load-balancer annotations) and on a per-Gateway identity <code>ServiceAccount</code> provisioned in the Gateway's namespace. The four reserved GEP-1762 label keys (<code>app.kubernetes.io/{name,instance,managed-by,component}</code> and <code>gateway.networking.k8s.io/gateway-name</code>) cannot be overridden — a collision is dropped with a warning, since the Service/Deployment selectors depend on them.</p>
 </div>
 <h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
@@ -1592,7 +1857,7 @@
 </tr>
 <tr>
 <td><code>spec.listeners[].protocol</code></td>
-<td><code>HTTP</code>, <code>HTTPS</code> only</td>
+<td><code>HTTP</code>, <code>HTTPS</code>, <code>TLS</code></td>
 </tr>
 <tr>
 <td><code>spec.listeners[].hostname</code></td>
@@ -1604,12 +1869,12 @@
 </tr>
 <tr>
 <td><code>spec.listeners[].tls</code></td>
-<td><code>mode: Terminate</code> only; <code>Passthrough</code> rejected</td>
+<td><code>mode: Terminate</code> (HTTPS) and <code>mode: Passthrough</code> (TLS)</td>
 </tr>
 </tbody>
 </table>
 <h3 id="tls">TLS<a class="headerlink" href="#tls" title="Permanent link">&para;</a></h3>
-<p>Add an <code>HTTPS</code> listener and reference a <code>kubernetes.io/tls</code> Secret in the same namespace. Coxswain only supports <code>tls.mode: Terminate</code> — <code>Passthrough</code> is rejected with a status condition. Coxswain reloads the certificate automatically when the Secret changes. See the <a href="../tls/">TLS guide</a> for cert-manager integration.</p>
+<p>Add an <code>HTTPS</code> listener and reference a <code>kubernetes.io/tls</code> Secret in the same namespace. Coxswain reloads the certificate automatically when the Secret changes. See the <a href="../tls/">TLS guide</a> for cert-manager integration. For TLS passthrough (no termination at the proxy), see <a href="#tlsroute">TLSRoute</a> below.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
 <span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
@@ -1617,7 +1882,7 @@
 <span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
 <span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS</span>
 <span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span><span class="w">     </span><span class="c1"># Passthrough is not supported</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
 <span class="w">        </span><span class="nt">certificateRefs</span><span class="p">:</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
 <span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway-tls</span><span class="w">   </span><span class="c1"># must exist in the same namespace</span>
@@ -1664,6 +1929,44 @@
 <span class="c1"># NAME         CLASS      ADDRESS         PROGRAMMED</span>
 <span class="c1"># my-gateway   coxswain   203.0.113.10    True</span>
 </code></pre></div>
+<h3 id="requesting-a-static-address">Requesting a static address<a class="headerlink" href="#requesting-a-static-address" title="Permanent link">&para;</a></h3>
+<p>Set <code>spec.addresses</code> to ask coxswain to bind a specific address rather than letting the cluster auto-assign one (Gateway API <code>GatewayStaticAddresses</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">addresses</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IPAddress</span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.96.0.42</span>
+</code></pre></div>
+<p>Coxswain honors a requested <code>IPAddress</code> by provisioning that Gateway's VIP <code>Service</code> as a <strong><code>ClusterIP</code></strong> pinned to the requested address (overriding the default VIP type for that one Gateway). The apiserver assigns the address exactly when it is a free IP inside the cluster's Service CIDR, and rejects it otherwise — giving a deterministic accept/reject on every cluster. The outcome is reflected in the conditions:</p>
+<table>
+<thead>
+<tr>
+<th>Requested address</th>
+<th><code>Accepted</code></th>
+<th><code>Programmed</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Supported type, bindable value</td>
+<td><code>True</code></td>
+<td><code>True</code> — the address appears in <code>status.addresses</code></td>
+</tr>
+<tr>
+<td>Supported type, value coxswain cannot bind (out of range / in use)</td>
+<td><code>True</code></td>
+<td><code>False</code>, reason <code>AddressNotUsable</code> — the value is <strong>not</strong> published</td>
+</tr>
+<tr>
+<td>Unsupported <code>type</code> (anything but <code>IPAddress</code>/<code>Hostname</code>)</td>
+<td><code>False</code>, reason <code>UnsupportedAddress</code></td>
+<td><code>False</code>, reason <code>Invalid</code></td>
+</tr>
+</tbody>
+</table>
+<p>A request for two distinct IPs is always <code>AddressNotUsable</code> — one <code>Service</code> binds a single <code>clusterIP</code>. Leaving <code>value</code> empty keeps the auto-assign behaviour (<code>GatewayAddressEmpty</code>).</p>
+<blockquote>
+<p>Because a static-IP Gateway is bound to a <code>ClusterIP</code>, its address is <strong>cluster-internal</strong> — coxswain cannot guarantee an arbitrary externally-routable IP across load-balancer providers. Use a static address when you need a stable, predictable in-cluster address; for external exposure, leave <code>spec.addresses</code> empty and let the cluster's load balancer assign one.</p>
+</blockquote>
 <h3 id="status-conditions">Status conditions<a class="headerlink" href="#status-conditions" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1793,7 +2096,7 @@
 </tr>
 <tr>
 <td><code>RequestMirror</code></td>
-<td>Not supported — skipped with a WARN log line</td>
+<td>Supported — GEP-3171 fire-and-forget shadow traffic with optional <code>percent</code> or <code>fraction</code> sampling; multiple filters per rule for multiple mirrors</td>
 </tr>
 <tr>
 <td><code>ExtensionRef</code></td>
@@ -1801,7 +2104,7 @@
 </tr>
 <tr>
 <td><code>CORS</code></td>
-<td>Not supported — skipped with a WARN log line</td>
+<td>Supported — GEP-1767 preflight short-circuit and response-header injection</td>
 </tr>
 </tbody>
 </table>
@@ -1945,6 +2248,41 @@
 <span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
 </code></pre></div>
 <p>Routes that reference a backend without a matching <code>ReferenceGrant</code> are rejected with a <code>ResolvedRefs: False</code> condition.</p>
+<h3 id="request-mirroring">Request mirroring<a class="headerlink" href="#request-mirroring" title="Permanent link">&para;</a></h3>
+<p>The <code>RequestMirror</code> filter (GEP-3171) sends a fire-and-forget copy of every matched request to a secondary backend while the primary response is returned normally to the client. The mirror response is discarded — mirror failures (connect error, timeout, bad response) are logged at <code>WARN</code> level and do not affect the primary.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">rules</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RequestMirror</span>
+<span class="w">        </span><span class="nt">requestMirror</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">backendRef</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-mirror</span>
+<span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span>
+<span class="w">    </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-primary</span>
+<span class="w">        </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span>
+</code></pre></div>
+<p><strong>Multiple mirrors per rule</strong> — add one <code>RequestMirror</code> filter per shadow backend; each fires independently:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">filters</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RequestMirror</span>
+<span class="w">    </span><span class="nt">requestMirror</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">shadow-a</span><span class="p p-Indicator">,</span><span class="nt"> port</span><span class="p">:</span><span class="w"> </span><span class="nv">3000</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RequestMirror</span>
+<span class="w">    </span><span class="nt">requestMirror</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">shadow-b</span><span class="p p-Indicator">,</span><span class="nt"> port</span><span class="p">:</span><span class="w"> </span><span class="nv">3000</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<p><strong>Sampling</strong> — use <code>percent</code> (integer, 0–100) or <code>fraction</code> (<code>numerator</code> / <code>denominator</code>) to mirror only a subset of requests:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">requestMirror</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">echo-mirror</span><span class="p p-Indicator">,</span><span class="nt"> port</span><span class="p">:</span><span class="w"> </span><span class="nv">3000</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">percent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">          </span><span class="c1"># mirror 20% of requests</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nt">requestMirror</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backendRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">echo-mirror</span><span class="p p-Indicator">,</span><span class="nt"> port</span><span class="p">:</span><span class="w"> </span><span class="nv">3000</span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">fraction</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">numerator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w">     </span><span class="c1"># equivalent to 20%</span>
+</code></pre></div>
+<p><strong>Cross-namespace mirror backends</strong> require a <code>ReferenceGrant</code> in the target namespace, just like primary backends (see <a href="#cross-namespace-backends">Cross-namespace backends</a>).</p>
+<p>Mirror traffic is visible in the proxy access log (<code>mirror: true</code> field) and counted by the <code>coxswain_proxy_mirror_requests_total{route, upstream}</code> Prometheus counter.</p>
 <h3 id="status-conditions_1">Status conditions<a class="headerlink" href="#status-conditions_1" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1971,6 +2309,376 @@
 <p>Inspect conditions when traffic is not flowing:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>httproute<span class="w"> </span>my-route
 </code></pre></div>
+<h2 id="grpcroute">GRPCRoute<a class="headerlink" href="#grpcroute" title="Permanent link">&para;</a></h2>
+<p>A <code>GRPCRoute</code> routes gRPC traffic attached to a <code>Gateway</code> listener. gRPC is HTTP/2 <code>POST /{ServiceName}/{MethodName}</code>, so no special listener protocol is required — an ordinary <code>HTTP</code> listener on the Gateway accepts gRPC connections.</p>
+<h3 id="backend-requirements">Backend requirements<a class="headerlink" href="#backend-requirements" title="Permanent link">&para;</a></h3>
+<p>gRPC backends must advertise cleartext HTTP/2 (h2c) by setting <code>appProtocol: kubernetes.io/h2c</code> on the Service port. Coxswain uses prior-knowledge h2c to connect to the backend, which preserves gRPC trailers (<code>grpc-status</code>, <code>grpc-message</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-grpc-service</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-grpc-app</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50051</span>
+<span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50051</span>
+<span class="w">      </span><span class="nt">appProtocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/h2c</span><span class="w">   </span><span class="c1"># required for gRPC backends</span>
+</code></pre></div>
+<h3 id="example_3">Example<a class="headerlink" href="#example_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GRPCRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-grpc-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grpc.example.com</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matches</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">method</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exact</span>
+<span class="w">            </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">com.example.MyService</span>
+<span class="w">            </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SayHello</span>
+<span class="w">      </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-grpc-service</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50051</span>
+</code></pre></div>
+<h3 id="method-matching_1">Method matching<a class="headerlink" href="#method-matching_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Spec</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No <code>matches</code> (or empty <code>matches</code>)</td>
+<td>Routes all gRPC traffic on attached listeners</td>
+</tr>
+<tr>
+<td><code>method.type: Exact</code>, service + method</td>
+<td>Routes <code>/{service}/{method}</code> exactly</td>
+</tr>
+<tr>
+<td><code>method.type: Exact</code>, service only</td>
+<td>Routes any method under <code>/{service}/</code></td>
+</tr>
+<tr>
+<td><code>method.type: Exact</code>, method only</td>
+<td>Routes the method name on any service</td>
+</tr>
+<tr>
+<td><code>method.type: RegularExpression</code></td>
+<td><code>service</code> and <code>method</code> are RE2 patterns</td>
+</tr>
+</tbody>
+</table>
+<p>Header matching uses the same <code>Exact</code> and <code>RegularExpression</code> semantics as <code>HTTPRoute</code>.</p>
+<h3 id="supported-fields_2">Supported fields<a class="headerlink" href="#supported-fields_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec.parentRefs</code></td>
+<td>Full (including <code>sectionName</code> and <code>port</code>)</td>
+</tr>
+<tr>
+<td><code>spec.hostnames</code></td>
+<td>Full (including wildcards)</td>
+</tr>
+<tr>
+<td><code>spec.rules[].matches[].method</code></td>
+<td><code>Exact</code> and <code>RegularExpression</code></td>
+</tr>
+<tr>
+<td><code>spec.rules[].matches[].headers</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.rules[].filters</code></td>
+<td><code>RequestHeaderModifier</code>, <code>ResponseHeaderModifier</code></td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs</code></td>
+<td>Service backends only</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs[].weight</code></td>
+<td>Full</td>
+</tr>
+</tbody>
+</table>
+<p><code>ExtensionRef</code> filters not matching the <code>RateLimit</code> or <code>PathRewriteRegex</code> Coxswain resources are skipped with a WARN log line.</p>
+<h3 id="status-conditions_2">Status conditions<a class="headerlink" href="#status-conditions_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>True when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accepted</code></td>
+<td>The route is attached to a Gateway listener</td>
+</tr>
+<tr>
+<td><code>Programmed</code></td>
+<td>The route is active in the data plane</td>
+</tr>
+<tr>
+<td><code>ResolvedRefs</code></td>
+<td>All <code>backendRefs</code> resolve to a reachable Service</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>grpcroute<span class="w"> </span>my-grpc-route
+</code></pre></div>
+<h2 id="tlsroute">TLSRoute<a class="headerlink" href="#tlsroute" title="Permanent link">&para;</a></h2>
+<p>A <code>TLSRoute</code> routes raw TLS connections by SNI. Coxswain supports three modes, configured via <code>tls.mode</code> on the Gateway listener:</p>
+<ul>
+<li><strong>Passthrough</strong> — the proxy peeks the ClientHello SNI and splices the still-encrypted byte stream directly to the backend. TLS is terminated at the backend pod (GEP-2643).</li>
+<li><strong>Terminate</strong> — the proxy terminates TLS using the listener certificate, then L4-splices the decrypted stream to a plaintext TCP backend.</li>
+<li><strong>Mixed</strong> — a single Gateway port carries both Passthrough and Terminate listeners, disambiguated by SNI hostname.</li>
+</ul>
+<h3 id="gateway-listener-passthrough">Gateway listener (Passthrough)<a class="headerlink" href="#gateway-listener-passthrough" title="Permanent link">&para;</a></h3>
+<p>Use <code>protocol: TLS</code> with <code>tls.mode: Passthrough</code> on the listener. No <code>certificateRefs</code> are needed — the proxy never holds or inspects a certificate on this path.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLS</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Passthrough</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+</code></pre></div>
+<h3 id="example_4">Example<a class="headerlink" href="#example_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tls-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">      </span><span class="nt">sectionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span><span class="w">       </span><span class="c1"># matched against the TLS ClientHello SNI</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tls-service</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+</code></pre></div>
+<p>The backend Service receives the unmodified TLS stream; its pod terminates TLS and sees the client's original handshake.</p>
+<h3 id="sni-matching">SNI matching<a class="headerlink" href="#sni-matching" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Hostname format</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app.example.com</code></td>
+<td>Exact SNI match</td>
+</tr>
+<tr>
+<td><code>*.example.com</code></td>
+<td>Wildcard: matches any number of labels (<code>foo.example.com</code>, <code>a.b.example.com</code>)</td>
+</tr>
+<tr>
+<td><em>(omitted)</em></td>
+<td>Catch-all: matches any SNI that no other rule handles</td>
+</tr>
+</tbody>
+</table>
+<p>Matching follows Gateway API hostname precedence: exact before wildcard before catch-all.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Wildcard hostname semantics here are routing-only (not RFC 6125 cert validation — no cert is involved at the proxy). Any number of DNS labels are matched by <code>*</code>, consistent with Gateway API's HTTPRoute wildcard semantics.</p>
+</div>
+<h3 id="supported-fields_3">Supported fields<a class="headerlink" href="#supported-fields_3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec.parentRefs</code></td>
+<td>Full (including <code>sectionName</code> and <code>port</code>)</td>
+</tr>
+<tr>
+<td><code>spec.hostnames</code></td>
+<td>Full (exact, wildcard, omitted catch-all)</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs</code></td>
+<td>Service backends only</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs[].weight</code></td>
+<td>Full</td>
+</tr>
+</tbody>
+</table>
+<h3 id="status-conditions_3">Status conditions<a class="headerlink" href="#status-conditions_3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>True when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accepted</code></td>
+<td>The route is attached to a <code>TLS/Passthrough</code> or <code>TLS/Terminate</code> listener</td>
+</tr>
+<tr>
+<td><code>ResolvedRefs</code></td>
+<td>All <code>backendRefs</code> resolve to a reachable Service</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>tlsroute<span class="w"> </span>my-tls-route
+</code></pre></div>
+<hr />
+<h3 id="terminate-mode">Terminate mode<a class="headerlink" href="#terminate-mode" title="Permanent link">&para;</a></h3>
+<p>In terminate mode the proxy holds the TLS session. The listener must carry a <code>certificateRefs</code> entry pointing to a <code>kubernetes.io/tls</code> Secret. Coxswain selects the certificate by SNI using the same mechanism as HTTPS listeners. The TLSRoute backend receives a <strong>plaintext</strong> TCP stream; no TLS certificate is needed at the backend.</p>
+<h4 id="gateway-listener">Gateway listener<a class="headerlink" href="#gateway-listener" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLS</span>
+<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
+<span class="w">        </span><span class="nt">certificateRefs</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tls-cert</span><span class="w">   </span><span class="c1"># must exist in the same namespace</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+</code></pre></div>
+<h4 id="example_5">Example<a class="headerlink" href="#example_5" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-terminate-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">      </span><span class="nt">sectionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-plaintext-service</span><span class="w">  </span><span class="c1"># backend receives decrypted TCP, no TLS required</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p>The proxy performs an SNI peek on accept, looks up the certificate, completes the TLS handshake, then L4-splices the decrypted byte stream to the backend. HTTP-layer parsing does not occur — this is a raw TCP splice post-decryption, not an HTTPS proxy.</p>
+<hr />
+<h3 id="mixed-mode">Mixed mode<a class="headerlink" href="#mixed-mode" title="Permanent link">&para;</a></h3>
+<p>A single Gateway port can carry both a Terminate and a Passthrough TLS listener simultaneously. The proxy disambiguates by SNI hostname: traffic whose SNI matches the Terminate listener's hostname is decrypted at the proxy; traffic whose SNI matches the Passthrough listener's hostname is forwarded encrypted to the backend. The two routing tables are isolated — a miss in one never leaks into the other.</p>
+<h4 id="gateway-listener_1">Gateway listener<a class="headerlink" href="#gateway-listener_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-mixed-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-terminate</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLS</span>
+<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate.example.com</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
+<span class="w">        </span><span class="nt">certificateRefs</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tls-cert</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-passthrough</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLS</span>
+<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough.example.com</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Passthrough</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+</code></pre></div>
+<h4 id="example_6">Example<a class="headerlink" href="#example_6" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># Terminate route — backend is a plaintext TCP service</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-mixed-gateway</span>
+<span class="w">      </span><span class="nt">sectionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-terminate</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate.example.com</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plaintext-service</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<span class="nn">---</span>
+<span class="c1"># Passthrough route — backend terminates TLS itself</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-mixed-gateway</span>
+<span class="w">      </span><span class="nt">sectionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-passthrough</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough.example.com</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-backend</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8443</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both listeners must use distinct hostnames on the shared port. An SNI that matches neither listener is dropped — the proxy never falls through from one table to the other.</p>
+</div>
 
 
 

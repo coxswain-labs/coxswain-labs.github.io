@@ -792,6 +792,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../guides/listener-sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../guides/dedicated-mode/" class="md-nav__link">
         
   
@@ -1117,6 +1138,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Ports summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-healing-gateway-api-crd-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Self-healing Gateway API CRD detection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1185,6 +1221,27 @@
   
   <span class="md-ellipsis">
     Observability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conformance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conformance
   </span>
   
 
@@ -1268,8 +1325,8 @@
 <p>Pass values at install or upgrade time:</p>
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>upgrade<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span>proxy.http.port<span class="o">=</span><span class="m">80</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span>proxy.https.port<span class="o">=</span><span class="m">443</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.ingress.http.port<span class="o">=</span><span class="m">80</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.ingress.https.port<span class="o">=</span><span class="m">443</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--set<span class="w"> </span><span class="nv">watchNamespace</span><span class="o">=</span>my-namespace
 </code></pre></div>
 <p>Or via a <code>values.yaml</code> file:</p>
@@ -1320,12 +1377,6 @@
 <td><code>--admin-port</code></td>
 <td><code>8082</code></td>
 <td>Port for admin, metrics, and diagnostics endpoints</td>
-</tr>
-<tr>
-<td><code>COXSWAIN_CACHE_MAX_SIZE</code></td>
-<td><code>--cache-max-size</code></td>
-<td><code>100m</code></td>
-<td>Maximum total size of the in-memory response cache shared by routes with <code>ingress.coxswain-labs.dev/cache-enabled</code>; bare byte count or binary suffix (<code>k</code>/<code>m</code>/<code>g</code>); <code>0</code> disables caching. See <a href="../../guides/ingress-annotations/#cache-enabled">Ingress annotations</a></td>
 </tr>
 <tr>
 <td><code>COXSWAIN_CONTROLLER_LEASE_RENEW_INTERVAL</code></td>
@@ -1410,6 +1461,18 @@
 <td><code>--health-port</code></td>
 <td><code>8081</code></td>
 <td>Port for liveness and readiness health endpoints</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISABLE_GATEWAY_API</code></td>
+<td><code>--disable-gateway-api</code></td>
+<td><code>false</code></td>
+<td>Disable the Gateway API surface entirely; no <code>HTTPRoute</code>/<code>GatewayClass</code> reflectors are started and the <code>gateway_api_crds</code> health check is not registered</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_DISABLE_INGRESS</code></td>
+<td><code>--disable-ingress</code></td>
+<td><code>false</code></td>
+<td>Disable the Ingress surface entirely; no Ingress reflectors are started and no Ingress listener ports are bound</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_INGRESS_DEFAULT_BACKEND</code></td>
@@ -1586,7 +1649,15 @@
 </tr>
 </tbody>
 </table>
-<p>The proxy listeners are disabled unless their port is explicitly set. The Helm chart defaults <code>proxy.http.port</code> to <code>80</code> and <code>proxy.https.port</code> to <code>443</code>.</p>
+<p>Both API surfaces are enabled by default. Use <code>controller.gatewayApi.enabled=false</code> for Ingress-only installs and <code>controller.ingress.enabled=false</code> for Gateway-API-only installs. Port numbers are configured via <code>proxy.ingress.http.port</code> (default <code>80</code>) and <code>proxy.ingress.https.port</code> (default <code>443</code>).</p>
+<h3 id="self-healing-gateway-api-crd-detection">Self-healing Gateway API CRD detection<a class="headerlink" href="#self-healing-gateway-api-crd-detection" title="Permanent link">&para;</a></h3>
+<p>When the Gateway API surface is enabled (<code>--disable-gateway-api</code> absent) but the Gateway API CRDs are not installed yet, Coxswain does not crash. Instead:</p>
+<ol>
+<li>A <code>gateway_api_crds</code> health check is registered but stays <code>Pending</code>, blocking <code>/readyz</code> until resolved.</li>
+<li>A background re-probe task polls every 30 seconds.</li>
+<li>Once the CRDs appear, the Gateway API reflectors are started in-process and <code>gateway_api_crds</code> becomes <code>Ready</code> — no pod restart required.</li>
+</ol>
+<p>The active API surfaces are visible in every pod's <code>/api/v1/health</code> response under <code>api_surfaces.gateway_api</code> and <code>api_surfaces.ingress</code>.</p>
 <h2 id="http2-support">HTTP/2 support<a class="headerlink" href="#http2-support" title="Permanent link">&para;</a></h2>
 <p>Coxswain supports HTTP/2 on both the downstream (client → proxy) and upstream (proxy → backend) legs:</p>
 <ul>

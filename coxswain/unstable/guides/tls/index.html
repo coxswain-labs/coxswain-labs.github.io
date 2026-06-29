@@ -805,6 +805,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../listener-sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../dedicated-mode/" class="md-nav__link">
         
   
@@ -1066,6 +1087,150 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#gateway-frontend-client-certificate-validation-gep-91" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway frontend client certificate validation (GEP-91)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gateway frontend client certificate validation (GEP-91)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ca-bundle" class="md-nav__link">
+    <span class="md-ellipsis">
+      CA bundle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation modes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insecurefrontendvalidationmode-condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      InsecureFrontendValidationMode condition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#out-of-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Out of scope
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gateway-backend-client-certificate-gep-3155" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway backend client certificate (GEP-3155)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gateway backend client certificate (GEP-3155)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hot-reload" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hot-reload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#out-of-scope_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Out of scope
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backendtlspolicy-subjectaltnames-gep-1897-extended" class="md-nav__link">
+    <span class="md-ellipsis">
+      BackendTLSPolicy subjectAltNames (GEP-1897 Extended)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BackendTLSPolicy subjectAltNames (GEP-1897 Extended)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fail-closed-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fail-closed behaviour
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#wildcard-tls" class="md-nav__link">
     <span class="md-ellipsis">
       Wildcard TLS
@@ -1243,6 +1408,27 @@
   
   <span class="md-ellipsis">
     Observability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/conformance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conformance
   </span>
   
 
@@ -1498,6 +1684,275 @@ curl<span class="w"> </span>--resolve<span class="w"> </span>example.com:443:127
 <span class="c1"># Inspect the served certificate</span>
 openssl<span class="w"> </span>s_client<span class="w"> </span>-connect<span class="w"> </span><span class="m">127</span>.0.0.1:443<span class="w"> </span>-servername<span class="w"> </span>example.com<span class="w"> </span>-brief
 </code></pre></div>
+<h2 id="gateway-frontend-client-certificate-validation-gep-91">Gateway frontend client certificate validation (GEP-91)<a class="headerlink" href="#gateway-frontend-client-certificate-validation-gep-91" title="Permanent link">&para;</a></h2>
+<p>Coxswain implements <strong>GEP-91</strong> (Standard channel, Gateway API v1.5): gateway-wide TLS client certificate validation configured via <code>spec.tls.frontend.default.validation</code> on an HTTPS listener.</p>
+<h3 id="ca-bundle">CA bundle<a class="headerlink" href="#ca-bundle" title="Permanent link">&para;</a></h3>
+<p>The CA bundle is loaded from a <code>ConfigMap</code> in the <strong>same namespace</strong> as the Gateway, under the key <code>ca.crt</code> (Core support). The ConfigMap is referenced by name:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS</span>
+<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
+<span class="w">        </span><span class="nt">certificateRefs</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app-tls</span>
+<span class="w">        </span><span class="nt">frontend</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">default</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">validation</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">caCertificateRefs</span><span class="p">:</span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">                  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ca-bundle</span><span class="w">   </span><span class="c1"># must have key ca.crt</span>
+</code></pre></div>
+<p>The ConfigMap:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ca-bundle</span>
+<span class="nt">data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ca.crt</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">-----BEGIN CERTIFICATE-----</span>
+<span class="w">    </span><span class="no">...</span>
+<span class="w">    </span><span class="no">-----END CERTIFICATE-----</span>
+</code></pre></div>
+<p>The CA bundle is <strong>hot-reloaded</strong> when the ConfigMap changes — no Gateway or proxy restart required.</p>
+<p>If the referenced ConfigMap is missing, does not contain a <code>ca.crt</code> key, or is not PEM-encoded, Coxswain falls back to <code>Unavailable</code> and <strong>fails closed</strong>: every TLS handshake to that hostname is rejected until the ConfigMap is corrected.</p>
+<p>Because frontend validation is gateway-wide, an unresolvable CA ref impacts <strong>every HTTPS listener</strong> on the Gateway, which surfaces it in listener status (HTTP listeners are unaffected and keep serving):</p>
+<div class="highlight"><pre><span></span><code>ResolvedRefs: False  reason: InvalidCACertificateRef
+Accepted:     False  reason: NoValidCACertificate
+Programmed:   False
+</code></pre></div>
+<h3 id="validation-modes">Validation modes<a class="headerlink" href="#validation-modes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AllowValidOnly</code> (default)</td>
+<td>Client cert is required and must be signed by the configured CA. Missing or invalid cert → TLS handshake aborted (Istio MUTUAL semantics).</td>
+</tr>
+<tr>
+<td><code>AllowInsecureFallback</code></td>
+<td>Client cert is requested and validated if present, but the handshake is never aborted. Missing or invalid cert → request passes through; authorization is delegated to the backend.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="c1"># AllowInsecureFallback (GEP-91)</span>
+<span class="nt">frontend</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">default</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">validation</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AllowInsecureFallback</span>
+<span class="w">      </span><span class="nt">caCertificateRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">          </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ca-bundle</span>
+</code></pre></div>
+<h3 id="insecurefrontendvalidationmode-condition">InsecureFrontendValidationMode condition<a class="headerlink" href="#insecurefrontendvalidationmode-condition" title="Permanent link">&para;</a></h3>
+<p>When <code>AllowInsecureFallback</code> is active, the Gateway emits a top-level status condition:</p>
+<div class="highlight"><pre><span></span><code>type:   InsecureFrontendValidationMode
+status: True
+reason: ConfigurationChanged
+</code></pre></div>
+<p>This condition is <strong>absent</strong> when the mode is <code>AllowValidOnly</code>. Operators can use it to audit cluster state:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>&lt;name&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.conditions[?(@.type==&quot;InsecureFrontendValidationMode&quot;)]}&#39;</span>
+</code></pre></div>
+<h3 id="out-of-scope">Out of scope<a class="headerlink" href="#out-of-scope" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>perPort</code> validation overrides</td>
+<td><strong>Supported</strong> — <code>spec.tls.frontend.perPort[].tls.validation</code> overrides the gateway <code>default</code> for listeners on that port; resolution is keyed by the listener's hostname</td>
+</tr>
+<tr>
+<td>Cross-namespace CA refs</td>
+<td><strong>Supported</strong> — a CA <code>ConfigMap</code> in another namespace requires a <code>Gateway → ConfigMap</code> <code>ReferenceGrant</code>; without one the listener surfaces <code>ResolvedRefs=False/RefNotPermitted</code></td>
+</tr>
+<tr>
+<td>Secret-backed CA refs</td>
+<td>Not yet — only <code>ConfigMap</code>/<code>ca.crt</code> is Core-certified</td>
+</tr>
+<tr>
+<td>Multiple <code>caCertificateRefs</code></td>
+<td>Planned (Extended support); currently only the first ref is used</td>
+</tr>
+</tbody>
+</table>
+<p>A listener whose effective CA ref cannot be resolved fails closed and surfaces the GEP-91 reason on its <code>ResolvedRefs</code> condition: <code>InvalidCACertificateRef</code> (missing ConfigMap / no <code>ca.crt</code> / not PEM), <code>InvalidCACertificateKind</code> (ref kind is not <code>ConfigMap</code>), or <code>RefNotPermitted</code> (cross-namespace without a <code>ReferenceGrant</code>).</p>
+<h2 id="gateway-backend-client-certificate-gep-3155">Gateway backend client certificate (GEP-3155)<a class="headerlink" href="#gateway-backend-client-certificate-gep-3155" title="Permanent link">&para;</a></h2>
+<p>Coxswain implements <strong>GEP-3155</strong>: when a Gateway carries <code>spec.tls.backend.clientCertificateRef</code>, the proxy presents that certificate as its client identity when opening TLS connections to upstream pods. This enables backend mutual TLS — the upstream can verify the proxy's identity in addition to the proxy verifying the upstream's certificate.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The backend client cert is <strong>only applied on connections driven by a <code>BackendTLSPolicy</code></strong>. <code>BackendTLSPolicy</code> is the sole Gateway API mechanism for originating upstream TLS; without it the connection to the backend is cleartext, and <code>clientCertificateRef</code> has no effect.</p>
+</div>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<p>Store the client certificate in a <code>kubernetes.io/tls</code> Secret in the <strong>same namespace</strong> as the Gateway, then reference it from <code>spec.tls.backend.clientCertificateRef</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">clientCertificateRef</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">        </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">proxy-client-cert</span><span class="w">    </span><span class="c1"># kubernetes.io/tls; same namespace as Gateway</span>
+</code></pre></div>
+<p>The Secret must be type <code>kubernetes.io/tls</code> with both <code>tls.crt</code> (PEM certificate chain) and <code>tls.key</code> (PEM private key):</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>tls<span class="w"> </span>proxy-client-cert<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cert<span class="o">=</span>path/to/client.pem<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--key<span class="o">=</span>path/to/client.key
+</code></pre></div>
+<p>Pair with a <code>BackendTLSPolicy</code> that selects the upstream pods — the policy establishes the upstream TLS context in which the client cert is presented:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BackendTLSPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service-tls</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">targetRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service</span>
+<span class="w">  </span><span class="nt">validation</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">caCertificateRefs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">        </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service-ca</span>
+<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service.internal</span>
+</code></pre></div>
+<h3 id="status-conditions">Status conditions<a class="headerlink" href="#status-conditions" title="Permanent link">&para;</a></h3>
+<p>The controller reflects resolution on a gateway-level <code>ResolvedRefs</code> condition:</p>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th><code>ResolvedRefs</code></th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Secret found with valid <code>tls.crt</code>/<code>tls.key</code></td>
+<td><code>True</code></td>
+<td><code>ResolvedRefs</code></td>
+</tr>
+<tr>
+<td><code>clientCertificateRef</code> not set</td>
+<td>condition absent</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Secret missing</td>
+<td><code>False</code></td>
+<td><code>InvalidClientCertificateRef</code></td>
+</tr>
+<tr>
+<td>Secret is not type <code>kubernetes.io/tls</code></td>
+<td><code>False</code></td>
+<td><code>InvalidClientCertificateRef</code></td>
+</tr>
+<tr>
+<td>Unsupported group or kind in the ref</td>
+<td><code>False</code></td>
+<td><code>InvalidClientCertificateRef</code></td>
+</tr>
+<tr>
+<td>Cross-namespace ref without a <code>ReferenceGrant</code></td>
+<td><code>False</code></td>
+<td><code>RefNotPermitted</code></td>
+</tr>
+</tbody>
+</table>
+<p>When the ref fails to resolve, the proxy <strong>fails closed on that upstream</strong>: any connection to a BackendTLSPolicy-selected backend via this Gateway returns <code>502</code>. Connections to non-TLS backends are unaffected.</p>
+<h3 id="hot-reload">Hot-reload<a class="headerlink" href="#hot-reload" title="Permanent link">&para;</a></h3>
+<p>The controller resolves the Secret and pushes the cert bytes to the proxy via the discovery snapshot. When the Secret is updated (e.g. certificate rotation), the controller re-resolves and publishes the new bytes; the proxy picks them up on the next connection without any restart.</p>
+<p>Connections already in flight use the cert that was in effect when the connection was opened. New connections after the rotation use the new cert.</p>
+<h3 id="out-of-scope_1">Out of scope<a class="headerlink" href="#out-of-scope_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cross-namespace <code>clientCertificateRef</code></td>
+<td>Planned — requires a <code>ReferenceGrant</code>; without one the Gateway surfaces <code>ResolvedRefs=False/RefNotPermitted</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="backendtlspolicy-subjectaltnames-gep-1897-extended">BackendTLSPolicy subjectAltNames (GEP-1897 Extended)<a class="headerlink" href="#backendtlspolicy-subjectaltnames-gep-1897-extended" title="Permanent link">&para;</a></h2>
+<p><code>BackendTLSPolicy.spec.validation.subjectAltNames</code> pins the identity the upstream's leaf
+certificate must present, independent of the <code>hostname</code> used for SNI and certificate
+selection.  This satisfies the GEP-1897 Extended-conformance feature
+<code>BackendTLSPolicySANValidation</code>.</p>
+<h3 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<p>When <code>subjectAltNames</code> is set:</p>
+<ul>
+<li><code>hostname</code> is used <strong>only</strong> for SNI and cert selection — not for authentication.</li>
+<li>The proxy verifies the leaf cert's SAN extension against every entry in the list.</li>
+<li>A request is forwarded if <strong>at least one</strong> listed SAN matches a SAN in the presented
+  cert (any-of semantics, matching the Gateway API spec).</li>
+<li>If no entry matches, the connection is rejected with <strong>502</strong> and the TLS connection
+  is discarded before any HTTP bytes are sent to the backend.</li>
+<li>Chain validation (<code>verify_cert</code>) still runs — the cert must chain to the configured CA.</li>
+</ul>
+<h3 id="configuration_1">Configuration<a class="headerlink" href="#configuration_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BackendTLSPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-policy</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">targetRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service</span>
+<span class="w">  </span><span class="nt">validation</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service.internal</span><span class="w">        </span><span class="c1"># used for SNI, not for auth</span>
+<span class="w">    </span><span class="nt">caCertificateRefs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">        </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ca</span>
+<span class="w">    </span><span class="nt">subjectAltNames</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># Match a SPIFFE workload identity (URI SAN)</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">URI</span>
+<span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spiffe://cluster.local/ns/my-ns/sa/my-service</span>
+<span class="w">      </span><span class="c1"># Optionally also accept a DNS SAN</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hostname</span>
+<span class="w">        </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service.internal</span>
+</code></pre></div>
+<p>Supported <code>type</code> values are <code>Hostname</code> (matched against DNS SANs in the leaf cert) and
+<code>URI</code> (matched byte-for-byte against URI SANs).  DNS matching follows RFC 6125: a
+single-label wildcard in the <strong>certificate</strong> (<code>*.example.com</code>) matches one non-empty
+left-most label of the expected name (<code>my-service.example.com</code>).</p>
+<h3 id="fail-closed-behaviour">Fail-closed behaviour<a class="headerlink" href="#fail-closed-behaviour" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>All entries invalid</strong> at reconcile time (empty <code>subjectAltNames</code> block that cannot be
+  parsed) → the policy is marked <code>Accepted=False/InvalidSubjectAltNames</code>; the route
+  falls back to cleartext (same behaviour as a missing CA).</li>
+<li><strong>SAN mismatch at runtime</strong> → 502; the connection is never pooled.</li>
+<li><strong>No leaf cert or no SANs in cert</strong> → same as a mismatch; the request is rejected.</li>
+</ul>
 <h2 id="wildcard-tls">Wildcard TLS<a class="headerlink" href="#wildcard-tls" title="Permanent link">&para;</a></h2>
 <p>For wildcard hostname TLS (e.g. <code>*.example.com</code>), the TLS Secret's <code>tls.crt</code> must include a wildcard SAN. Coxswain follows RFC 6125 for TLS matching: a single-label wildcard (<code>*.example.com</code>) matches <code>foo.example.com</code> but not <code>foo.bar.example.com</code>.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>

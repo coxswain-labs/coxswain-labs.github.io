@@ -16,7 +16,7 @@
         <link rel="prev" href="../configuration/">
       
       
-        <link rel="next" href="../../architecture/">
+        <link rel="next" href="../conformance/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -792,6 +792,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../guides/listener-sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../guides/dedicated-mode/" class="md-nav__link">
         
   
@@ -1151,15 +1172,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cache-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      Cache metrics
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#metric-labels-per-gateway" class="md-nav__link">
     <span class="md-ellipsis">
       Metric labels per Gateway
@@ -1344,6 +1356,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conformance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conformance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1413,9 +1446,9 @@
 <h2 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">&para;</a></h2>
 <p>Coxswain exposes the Prometheus endpoint at <code>http://&lt;admin-address&gt;:&lt;admin-port&gt;/metrics</code> (default port <code>8082</code>). Series are emitted under one of three prefixes:</p>
 <ul>
-<li><code>coxswain_proxy_*</code> — emitted by <code>serve proxy --shared</code>, <code>serve proxy --dedicated</code>, and the proxy half of <code>serve dev</code>.</li>
-<li><code>coxswain_controller_*</code> — emitted by <code>serve controller</code> and the controller half of <code>serve dev</code>.</li>
-<li><code>coxswain_discovery_*</code> — the control-plane gRPC channel. Server-side series appear on the <strong>controller</strong> <code>/metrics</code> (it serves the stream); client-side series appear on each <strong>proxy</strong> <code>/metrics</code> (it consumes the stream). In <code>serve dev</code> both halves run in one process, so both appear together.</li>
+<li><code>coxswain_proxy_*</code> — emitted by <code>serve proxy --shared</code> and <code>serve proxy --dedicated</code>.</li>
+<li><code>coxswain_controller_*</code> — emitted by <code>serve controller</code>.</li>
+<li><code>coxswain_discovery_*</code> — the control-plane gRPC channel. Server-side series appear on the <strong>controller</strong> <code>/metrics</code> (it serves the stream); client-side series appear on each <strong>proxy</strong> <code>/metrics</code> (it consumes the stream).</li>
 </ul>
 <p>The <code>route</code> Prometheus label is a <strong>stable rule identifier</strong>, not a request path. Operators reading <code>coxswain_proxy_requests_total{route="httproute/checkout/api:0"}</code> see the same label value on the matching access-log line's <code>route_id</code> field, so a Grafana → Loki/Tempo pivot is an exact join (no fuzzy host/path matching). Path patterns stay on the access log for human-readable display.</p>
 <p>Route id formats:</p>
@@ -1459,6 +1492,11 @@
 <td><code>coxswain_proxy_upstream_connections_total</code></td>
 <td>Counter</td>
 <td><code>state</code> (<code>new</code>/<code>reused</code>) — incremented once per request; <code>reused</code> climbs when upstream keepalive is effective</td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_mirror_requests_total</code></td>
+<td>Counter</td>
+<td><code>route</code>, <code>upstream</code> — incremented once per mirror dispatch (fire-and-forget shadow requests from <code>RequestMirror</code> filters); counts attempts, not successes</td>
 </tr>
 <tr>
 <td><code>coxswain_proxy_active_upstreams</code></td>
@@ -1518,6 +1556,7 @@
 </tbody>
 </table>
 <p>The following listener-lifecycle metrics are also exposed: <code>coxswain_proxy_listeners_active</code>, <code>coxswain_proxy_listener_lifecycle_total</code>, <code>coxswain_proxy_listener_drain_duration_seconds</code>, <code>coxswain_proxy_requests_force_closed_total</code>.</p>
+<p>The <code>listener</code> label is the <strong>local port the proxy accepted the connection on</strong>. For Ingress and dedicated-mode Gateway traffic this is the advertised port (e.g. <code>80</code>/<code>443</code>). For shared-mode Gateway listeners it is the <strong>internal accept port</strong> the controller allocates per Gateway (in the <code>30000–32767</code> range), <em>not</em> the advertised port: a per-Gateway VIP Service maps the advertised port onto that internal port, and the proxy keys routing, TLS, and metrics on the port it accepts on so cross-Gateway hostname namespaces stay isolated (see <a href="../../architecture/">Architecture → per-Gateway addressing</a>). To slice a shared-mode Gateway's series by its advertised port, join on the VIP Service rather than reading it from the <code>listener</code> label.</p>
 <h3 id="controller-pod-metrics-coxswain_controller_">Controller-pod metrics (<code>coxswain_controller_*</code>)<a class="headerlink" href="#controller-pod-metrics-coxswain_controller_" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1668,50 +1707,6 @@
 </tr>
 </tbody>
 </table>
-<h3 id="cache-metrics">Cache metrics<a class="headerlink" href="#cache-metrics" title="Permanent link">&para;</a></h3>
-<p>The response cache runs in the <strong>proxy</strong> process; all cache series are scraped from the proxy <code>/metrics</code>. The hit/miss counters predate the proxy subsystem-prefix convention and keep their bare <code>coxswain_cache_*</code> names; the depth series added later use the <code>coxswain_proxy_cache_*</code> prefix.</p>
-<table>
-<thead>
-<tr>
-<th>Metric</th>
-<th>Type</th>
-<th>Labels</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>coxswain_cache_hits_total</code></td>
-<td>Counter</td>
-<td><code>route</code></td>
-</tr>
-<tr>
-<td><code>coxswain_cache_misses_total</code></td>
-<td>Counter</td>
-<td><code>route</code></td>
-</tr>
-<tr>
-<td><code>coxswain_proxy_cache_entries</code></td>
-<td>Gauge</td>
-<td>— (entries currently tracked by the cache)</td>
-</tr>
-<tr>
-<td><code>coxswain_proxy_cache_bytes</code></td>
-<td>Gauge</td>
-<td>— (total body bytes currently held; compare against <code>--cache-max-size</code> to spot a cache at capacity)</td>
-</tr>
-<tr>
-<td><code>coxswain_proxy_cache_evictions_total</code></td>
-<td>Counter</td>
-<td>— (entries evicted under capacity pressure; a climbing rate alongside a full <code>_bytes</code> gauge means the cache is thrashing)</td>
-</tr>
-<tr>
-<td><code>coxswain_proxy_cache_purges_total</code></td>
-<td>Counter</td>
-<td><code>result</code> (<code>hit</code> — an entry was removed; <code>miss</code> — no matching entry)</td>
-</tr>
-</tbody>
-</table>
-<p>The depth gauges (<code>entries</code>, <code>bytes</code>, <code>evictions_total</code>) are read from the LRU eviction manager at scrape time, so they always reflect live state with no sampling lag.</p>
 <h3 id="metric-labels-per-gateway">Metric labels per Gateway<a class="headerlink" href="#metric-labels-per-gateway" title="Permanent link">&para;</a></h3>
 <p>When you run a <a href="../../guides/dedicated-mode/">dedicated proxy pool</a>, you usually want to slice its metrics by Gateway. Coxswain does <strong>not</strong> bake the Gateway identity into the emitted series — a <code>gateway_name</code> / <code>gateway_namespace</code> label on every counter would multiply request-counter cardinality across every dedicated Gateway, and the shared pool has no single Gateway to name.</p>
 <p>Instead the identity rides in as a <strong>scrape-time target label</strong>. Each proxy pod the controller provisions carries the Gateway it serves as two pod labels:</p>

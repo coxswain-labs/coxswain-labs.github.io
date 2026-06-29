@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/architecture/">
       
       
-        <link rel="prev" href="../reference/observability/">
+        <link rel="prev" href="../reference/conformance/">
       
       
         <link rel="next" href="../faq/">
@@ -792,6 +792,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../guides/listener-sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../guides/dedicated-mode/" class="md-nav__link">
         
   
@@ -1077,6 +1098,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/conformance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conformance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1168,15 +1210,6 @@
   <a href="#serve-proxy-dedicated" class="md-nav__link">
     <span class="md-ellipsis">
       serve proxy --dedicated
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#serve-dev" class="md-nav__link">
-    <span class="md-ellipsis">
-      serve dev
     </span>
   </a>
   
@@ -1393,12 +1426,6 @@
 <p>Read-only proxy scoped to a single Gateway (identified by <code>--dedicated --gateway-name=NAME --gateway-namespace=NS</code>). Provisioned by the controller in the Gateway's own namespace. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
 <p>The dedicated proxy subscribes with <code>Scope::Gateway { name, namespace }</code> and receives only its Gateway's routing snapshot. The controller stamps the expected proxy ServiceAccount name (<code>{gateway-name}-{gatewayclass-name}</code>, per GEP-1762) into the Gateway's registry entry at reconcile time. When the subscription arrives, the discovery server verifies that the peer's mTLS SVID matches that expected SA before sending any snapshot — a mismatch yields <code>PERMISSION_DENIED</code>.</p>
 <p>Like the shared proxy, the dedicated proxy holds <strong>zero Kubernetes API credentials</strong>. Cross-namespace route attachment (<code>allowedRoutes.namespaces.from: All</code>/<code>Selector</code>) is resolved by the controller at reconcile time — the controller's cluster-wide reflector compiles all cross-namespace routes into the dedicated snapshot before it is pushed. No proxy-side cluster-wide reflector and no proxy-side RBAC are required.</p>
-<h3 id="serve-dev"><code>serve dev</code><a class="headerlink" href="#serve-dev" title="Permanent link">&para;</a></h3>
-<p>Hidden single-process all-in-one combining controller and proxy in one binary, for local development and conformance against <code>kind</code> / OrbStack. The proxy pipeline reads routing snapshots from the in-process <code>Shared</code> handoff — no discovery gRPC wire, no <code>--discovery-endpoint</code> needed.</p>
-<div class="admonition warning">
-<p class="admonition-title">Never rendered by Helm</p>
-<p>Dev mode is a contributor convenience; do not run it in production.</p>
-</div>
 <h3 id="serve-relay-v06-not-yet-implemented"><code>serve relay</code> (v0.6, not yet implemented)<a class="headerlink" href="#serve-relay-v06-not-yet-implemented" title="Permanent link">&para;</a></h3>
 <p>Designed as a recursive discovery node — a relay that subscribes to an upstream discovery stream and re-publishes snapshots to downstream proxies across a network boundary. Deferred to v0.6.</p>
 <h2 id="scope-aware-dispatch">Scope-aware dispatch<a class="headerlink" href="#scope-aware-dispatch" title="Permanent link">&para;</a></h2>
@@ -1412,6 +1439,10 @@
 <p>Coxswain has two macro deployment models: <strong>Shared</strong> and <strong>Dedicated</strong>. They are not mutually exclusive — a production cluster typically runs a shared proxy pool alongside one or more dedicated proxies for Gateways that need isolation.</p>
 <h3 id="shared">Shared<a class="headerlink" href="#shared" title="Permanent link">&para;</a></h3>
 <p>One cluster-wide proxy pool serves every <code>Ingress</code> and every <code>Gateway</code> that has not opted into dedicated mode. This is the Helm chart default: one controller <code>Deployment</code> and one shared proxy <code>Deployment</code> in <code>coxswain-system</code>.</p>
+<p><strong>Shared compute, per-Gateway addressing.</strong> The shared model shares the proxy <em>pod</em> (compute), but each owned <code>Gateway</code> gets its <strong>own <code>Service</code>/VIP</strong>, not a shared address. The controller provisions a per-Gateway <code>Service</code> that selects the shared proxy pod and maps each advertised listener port (e.g. <code>:443</code>) to a <strong>distinct internal <code>targetPort</code></strong> on the pod. The proxy keys its routing, TLS-passthrough, and TLS-terminate cert tables by the <strong>local port it accepted on</strong>, so the internal port is a per-Gateway discriminator and cross-Gateway hostname namespaces are isolated by address — two Gateways with overlapping hostnames (<code>*.example.com</code> on each) never leak into one another. Each Gateway reports its own VIP in <code>status.addresses</code>. This relies only on standard Kubernetes <code>Service</code> <code>port → targetPort</code> mapping (no <code>SO_ORIGINAL_DST</code>, no conntrack assumptions), so it is environment-independent across iptables, IPVS, eBPF, and cloud load balancers (#472).</p>
+<p><strong>Per-Gateway infrastructure identity (GEP-1867).</strong> Because the shared model's compute lives in <code>coxswain-system</code>, the controller also provisions a per-Gateway identity <code>ServiceAccount</code> in each owned Gateway's <em>own</em> namespace. It holds <strong>zero RBAC</strong> — the shared proxy runs as its own ServiceAccount; this object is the Gateway's infrastructure identity and the carrier for the propagated <code>spec.infrastructure.{labels,annotations}</code> (GEP-1867 metadata that, in a single-pod data plane, has no per-Gateway proxy in the namespace to land on). It is owner-referenced to the Gateway, so a plain delete reclaims it via GC; a migration into dedicated mode prunes it explicitly. Infrastructure annotations also propagate onto each Gateway's VIP <code>Service</code> (e.g. cloud load-balancer annotations).</p>
+<p>The fixed shared <code>80</code>/<code>443</code> listeners on the proxy pod are <strong>Ingress-only</strong>: Ingresses legitimately share one address because they merge by host/path and have no per-Ingress isolation. The cost of per-Gateway addressing is <strong>one load-balancer IP per Gateway</strong> in cloud environments — the "one IP for everything" property is intentionally given up; only the proxy compute stays shared. The shared-proxy selector the controller stamps on each VIP <code>Service</code> is supplied by the Helm chart via <code>--shared-proxy-selector</code> (the chart knows the release name; the controller cannot derive <code>app.kubernetes.io/instance</code> itself).</p>
+<p>The VIP <code>Service</code> type is set by <code>proxy.shared.vipServiceType</code> (default <code>LoadBalancer</code>), independent of the shared-proxy <code>Service</code> itself. <code>LoadBalancer</code> gives each Gateway an external address and works on cloud LBs and MetalLB, which assign a distinct IP per <code>Service</code> and route <code>IP:port</code> independently. It does <strong>not</strong> work on host-port-binding LBs such as k3s/OrbStack <code>klipper-lb</code>, where multiple <code>LoadBalancer</code> Services advertising the same port (e.g. <code>:443</code>) collide on the host and stay <code>&lt;pending&gt;</code> — set <code>vipServiceType: ClusterIP</code> there to give each Gateway a stable in-cluster VIP (typically fronted by an external ingress/LB). <code>NodePort</code> is rejected: it cannot preserve the advertised listener port.</p>
 <pre class="mermaid"><code>flowchart LR
     K8s[Kubernetes API]
 

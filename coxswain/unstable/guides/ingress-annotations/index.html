@@ -1012,9 +1012,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#backend-protocol" class="md-nav__link">
+  <a href="#backend-wire-protocol-appprotocol" class="md-nav__link">
     <span class="md-ellipsis">
-      backend-protocol
+      Backend wire protocol (appProtocol)
     </span>
   </a>
   
@@ -1119,15 +1119,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cache-enabled" class="md-nav__link">
-    <span class="md-ellipsis">
-      cache-enabled
-    </span>
-  </a>
   
 </li>
       
@@ -1609,6 +1600,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../listener-sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../dedicated-mode/" class="md-nav__link">
         
   
@@ -1897,6 +1909,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/conformance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conformance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2098,12 +2131,6 @@
 <td><code>"301"</code></td>
 </tr>
 <tr>
-<td><code>ingress.coxswain-labs.dev/backend-protocol</code></td>
-<td>string</td>
-<td><code>HTTP</code></td>
-<td><code>"GRPC"</code></td>
-</tr>
-<tr>
 <td><code>ingress.coxswain-labs.dev/max-body-size</code></td>
 <td>size</td>
 <td><em>none</em></td>
@@ -2144,12 +2171,6 @@
 <td>cidr-list</td>
 <td><em>none</em> (unconditional)</td>
 <td><code>"10.0.0.0/8"</code></td>
-</tr>
-<tr>
-<td><code>ingress.coxswain-labs.dev/cache-enabled</code></td>
-<td>boolean</td>
-<td><code>false</code></td>
-<td><code>"true"</code></td>
 </tr>
 <tr>
 <td><code>ingress.coxswain-labs.dev/session-affinity</code></td>
@@ -2322,7 +2343,6 @@
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/max-retries</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2&quot;</span>
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry-on</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;connect-failure,timeout&quot;</span>
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/v2&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/backend-protocol</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;GRPC&quot;</span>
 </code></pre></div>
 <h2 id="timeouts">Timeouts<a class="headerlink" href="#timeouts" title="Permanent link">&para;</a></h2>
 <p><strong>Duration format</strong> — All timeout annotations accept Go <code>time.ParseDuration</code> strings: one or more <code>&lt;number&gt;&lt;unit&gt;</code> pairs without spaces. Supported units: <code>ns</code>, <code>us</code> (<code>µs</code>), <code>ms</code>, <code>s</code>, <code>m</code>, <code>h</code>. Examples: <code>"5s"</code>, <code>"500ms"</code>, <code>"1m30s"</code>. Zero values (<code>"0"</code>, <code>"0s"</code>) are treated as absent.</p>
@@ -2579,33 +2599,41 @@
 <p class="admonition-title">Note</p>
 <p><code>ssl-redirect</code> is a shortcut for a scheme-only <code>RequestRedirect</code> filter scoped to the HTTP listener port. It is equivalent to setting <code>redirect-scheme: https</code> with <code>redirect-status-code: 308</code>, but only fires on port 80 (or whichever HTTP port the controller is configured with). Requests already arriving on the TLS listener are not redirected, regardless of the annotation.</p>
 </div>
-<h2 id="backend-protocol"><code>backend-protocol</code><a class="headerlink" href="#backend-protocol" title="Permanent link">&para;</a></h2>
-<p>Overrides the upstream wire protocol derived from the Service <code>appProtocol</code> field. Explicit operator intent always wins over <code>appProtocol</code> inference.</p>
+<h2 id="backend-wire-protocol-appprotocol">Backend wire protocol (<code>appProtocol</code>)<a class="headerlink" href="#backend-wire-protocol-appprotocol" title="Permanent link">&para;</a></h2>
+<p>Coxswain has no <code>backend-protocol</code> annotation. The upstream wire protocol is taken
+from the backend <strong>Service port <code>appProtocol</code></strong> field — the Gateway API mechanism
+(<a href="https://gateway-api.sigs.k8s.io/geps/gep-1911/">GEP-1911</a>), which applies to both
+Ingress and Gateway API backends:</p>
 <table>
 <thead>
 <tr>
-<th>Value</th>
+<th><code>appProtocol</code></th>
 <th>Behaviour</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>HTTP</code></td>
+<td><em>absent</em></td>
 <td>Cleartext HTTP/1.1 (the default)</td>
 </tr>
 <tr>
-<td><code>HTTPS</code></td>
-<td>TLS to the upstream pod; reuses the same SNI and CA-bundle lookup path as <code>BackendTLSPolicy</code></td>
-</tr>
-<tr>
-<td><code>GRPC</code></td>
+<td><code>kubernetes.io/h2c</code></td>
 <td>Cleartext HTTP/2 prior-knowledge (<code>h2c</code>); suitable for gRPC without TLS</td>
 </tr>
 </tbody>
 </table>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grpc-backend</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50051</span>
+<span class="w">      </span><span class="nt">appProtocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/h2c</span><span class="w">   </span><span class="c1"># cleartext HTTP/2 for gRPC backends</span>
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code>GRPC</code> maps to cleartext HTTP/2 (<code>h2c</code>). For gRPC over TLS, use <code>backend-protocol: HTTPS</code> — gRPC-over-TLS support via a single annotation value is tracked separately.</p>
+<p><strong>Upstream TLS</strong> is configured with a <code>BackendTLSPolicy</code> (<a href="../gateway-api/">GEP-1897</a>), the sole Gateway API mechanism for originating TLS to a backend. There is no protocol-hint shortcut for upstream TLS.</p>
 </div>
 <h2 id="max-body-size"><code>max-body-size</code><a class="headerlink" href="#max-body-size" title="Permanent link">&para;</a></h2>
 <p>Caps the request body size. A request whose body exceeds the limit is rejected with <strong>413 Payload Too Large</strong> and never reaches the upstream.</p>
@@ -2766,30 +2794,6 @@
 <li>An invalid CIDR token emits a controller warning and is skipped.</li>
 <li>If every token is invalid, the CIDR list is treated as absent (unconditional trust) and a controller warning is emitted.</li>
 </ul>
-<h2 id="cache-enabled"><code>cache-enabled</code><a class="headerlink" href="#cache-enabled" title="Permanent link">&para;</a></h2>
-<p>Opts the Ingress into RFC 7234 HTTP response caching. When <code>"true"</code>, the proxy serves cacheable responses from an in-memory cache instead of contacting the upstream on every request — cutting upstream load and client latency for static assets and public API responses.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/cache-enabled</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
-</code></pre></div>
-<p><strong>What gets cached.</strong> Caching is conservative by design — only responses the upstream explicitly marks fresh are stored:</p>
-<ul>
-<li>Only <code>GET</code> and <code>HEAD</code> responses are eligible.</li>
-<li>The response must carry explicit freshness: <code>Cache-Control: max-age=…</code> or <code>Expires</code>. A response with neither is <strong>not</strong> cached (there is no implicit TTL).</li>
-<li><code>Cache-Control: no-store</code> and <code>no-cache</code> on the response are honoured — such responses are never stored.</li>
-<li><code>Vary</code> is respected: responses are keyed by the request values of the listed headers, so content negotiation stays correct.</li>
-</ul>
-<p><strong>Bypass.</strong> Requests carrying an <code>Authorization</code> or <code>Cookie</code> header bypass the cache entirely — per-user responses must never be served to another client.</p>
-<p><strong>Served-from-cache responses</strong> carry an <code>Age</code> header (seconds since the entry was stored), per RFC 7234.</p>
-<p><strong>Cache size.</strong> The cache is shared across all cache-enabled routes in a proxy and bounded by <code>--cache-max-size</code> (default <code>100m</code>, binary units; <code>0</code> disables caching). When full, least-recently-used entries are evicted. See the <a href="../../reference/configuration/">configuration reference</a>.</p>
-<p><strong>Purging.</strong> A cached entry can be evicted on demand via the proxy admin port:</p>
-<div class="highlight"><pre><span></span><code>DELETE /cache/{host}/{path}
-</code></pre></div>
-<p>For example <code>DELETE /cache/cache.example.com/assets/app.js</code> purges the <code>GET cache.example.com/assets/app.js</code> entry. The response reports whether an entry was removed (<code>{"purged": true}</code>).</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The Gateway API binding for caching (an <code>HTTPRoute</code> <code>ExtensionRef</code> filter pointing at a <code>CoxswainCachePolicy</code>) is tracked separately; today <code>cache-enabled</code> is the Ingress-only entry point.</p>
-</div>
 <h2 id="session-affinity-sticky-sessions">Session affinity (sticky sessions)<a class="headerlink" href="#session-affinity-sticky-sessions" title="Permanent link">&para;</a></h2>
 <p>Pins each client to the same backend pod, so stateful workloads (in-memory sessions, WebSocket connections) keep reaching the endpoint that holds their state. A backend without these annotations stays on the default weighted round-robin.</p>
 <p>Affinity is <strong>stateless</strong> — there is no server-side session table. The pin is carried entirely in the request, so it works the same across proxy replicas and needs no coordination. Two modes:</p>
