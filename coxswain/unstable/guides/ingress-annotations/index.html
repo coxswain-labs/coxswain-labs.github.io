@@ -2708,17 +2708,13 @@ Ingress and Gateway API backends:</p>
 <p>The mirror target is resolved to pod endpoints at reconcile time (not per-request). If the Service does not exist or has no ready endpoints, a controller warning is emitted and the mirror is <strong>silently disabled</strong> — the primary route still serves. The Ingress is never rejected.</p>
 <p><strong>The target namespace must match the Ingress namespace.</strong> Cross-namespace references are rejected at reconcile time (controller warning + mirror disabled). An Ingress author can only shadow traffic to Services they own — they must not be able to send mirrored requests (which include request headers) to Services in other namespaces.</p>
 <h3 id="body-mirroring">Body mirroring<a class="headerlink" href="#body-mirroring" title="Permanent link">&para;</a></h3>
-<p>By default (without <code>max-body-size</code>) the mirror receives the request headers and an empty body. To mirror the full request body, set <code>max-body-size</code> on the same Ingress — the proxy buffers each request body up to the cap and includes it verbatim in the mirror sub-request:</p>
+<p>The proxy streams the full request body to the mirror backend <strong>as chunks arrive</strong>, concurrent with primary forwarding — no intermediate buffering and no dependency on <code>max-body-size</code>. A minimal annotation is all that is needed:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/mirror-target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shadow-svc.my-namespace.svc:8080&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/max-body-size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1m&quot;</span>
 </code></pre></div>
-<p><code>max-body-size</code> already rejects requests exceeding the cap with 413, so the mirror buffer is inherently bounded — no additional memory risk is introduced.</p>
-<div class="admonition note">
-<p class="admonition-title">Body-mirroring for large payloads</p>
-<p>Stream-concurrent mirroring (mirror body as it arrives, no buffering) is planned. Until then, mirror with a body cap is the recommended pattern for production use.</p>
-</div>
+<p><strong>Backpressure:</strong> each mirror task receives body chunks via a bounded internal channel. If the mirror upstream falls behind, the current chunk is dropped rather than stalling the primary path. The mirror body may be truncated for slow mirror backends, which is expected and acceptable for a fire-and-forget shadow.</p>
+<p><code>max-body-size</code> can still be set independently to cap and reject oversized primary request bodies with 413 — but it is not required for body mirroring.</p>
 <h3 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h3>
 <p>Every mirror sub-request appears in the <strong>proxy access log</strong> as a separate row with <code>mirror = true</code>. The row carries the same fields as a primary row (<code>host</code>, <code>path</code>, <code>upstream</code>, <code>status</code>) so mirror traffic is visible in any log aggregation pipeline.</p>
 <p>A mirror timeout of 5 s is applied per sub-request; the primary never waits for the mirror to finish.</p>
