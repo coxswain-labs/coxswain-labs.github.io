@@ -1283,6 +1283,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#internalportremapped-shared-mode-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      InternalPortRemapped (shared-mode Gateway)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internalportrangeexhausted-shared-mode-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      InternalPortRangeExhausted (shared-mode Gateway)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#deduplication" class="md-nav__link">
     <span class="md-ellipsis">
       Deduplication
@@ -1556,6 +1574,7 @@
 </tbody>
 </table>
 <p>The following listener-lifecycle metrics are also exposed: <code>coxswain_proxy_listeners_active</code>, <code>coxswain_proxy_listener_lifecycle_total</code>, <code>coxswain_proxy_listener_drain_duration_seconds</code>, <code>coxswain_proxy_requests_force_closed_total</code>.</p>
+<p><code>coxswain_proxy_listener_lifecycle_total</code> carries an <code>event</code> label ∈ <code>{added, removed, drain_completed, drain_exceeded, bind_failed}</code>. <strong><code>bind_failed</code></strong> counts a listener whose socket <code>bind()</code> failed — that local port serves no traffic until a later reconcile retries the bind. A sustained non-zero rate is a data-plane outage signal worth alerting on (a port conflict, or a stale process still holding the port); it should otherwise stay flat at zero.</p>
 <p>The <code>listener</code> label is the <strong>local port the proxy accepted the connection on</strong>. For Ingress and dedicated-mode Gateway traffic this is the advertised port (e.g. <code>80</code>/<code>443</code>). For shared-mode Gateway listeners it is the <strong>internal accept port</strong> the controller allocates per Gateway (in the <code>30000–32767</code> range), <em>not</em> the advertised port: a per-Gateway VIP Service maps the advertised port onto that internal port, and the proxy keys routing, TLS, and metrics on the port it accepts on so cross-Gateway hostname namespaces stay isolated (see <a href="../../architecture/">Architecture → per-Gateway addressing</a>). To slice a shared-mode Gateway's series by its advertised port, join on the VIP Service rather than reading it from the <code>listener</code> label.</p>
 <h3 id="controller-pod-metrics-coxswain_controller_">Controller-pod metrics (<code>coxswain_controller_*</code>)<a class="headerlink" href="#controller-pod-metrics-coxswain_controller_" title="Permanent link">&para;</a></h3>
 <table>
@@ -1904,9 +1923,11 @@
 <span class="nv">COXSWAIN_LOG</span><span class="o">=</span>info,coxswain_proxy::access<span class="o">=</span>off
 </code></pre></div>
 <h2 id="kubernetes-events">Kubernetes Events<a class="headerlink" href="#kubernetes-events" title="Permanent link">&para;</a></h2>
-<p>The controller emits Kubernetes <code>Warning</code> Events on affected <code>Ingress</code> objects for two
-diagnostic conditions. Events appear in <code>kubectl describe ingress &lt;name&gt;</code> and
-<code>kubectl get events</code> — no log-aggregation pipeline needed.</p>
+<p>The controller emits Kubernetes <code>Warning</code> Events for diagnostic conditions — on the
+affected <code>Ingress</code> object for the Ingress-routing conditions below, and on the affected
+<code>Gateway</code> object for the shared-mode addressing conditions. Events appear in
+<code>kubectl describe &lt;kind&gt; &lt;name&gt;</code> and <code>kubectl get events</code> — no log-aggregation pipeline
+needed.</p>
 <h3 id="routeconflict">RouteConflict<a class="headerlink" href="#routeconflict" title="Permanent link">&para;</a></h3>
 <p>Triggered when two or more Ingresses claim the same <code>(host, path)</code> combination. The
 earliest-applied rule wins; every losing Ingress receives one <code>Warning</code> Event:</p>
@@ -1925,6 +1946,21 @@ serve traffic from its valid rules.</p>
 ----     ------             ---   ----                 -------
 Warning  InvalidAnnotation  5s    coxswain-controller  ingress.coxswain-labs.dev/connect-timeout: invalid duration — using default
 </code></pre></div>
+<h3 id="internalportremapped-shared-mode-gateway">InternalPortRemapped (shared-mode Gateway)<a class="headerlink" href="#internalportremapped-shared-mode-gateway" title="Permanent link">&para;</a></h3>
+<p>Emitted on a shared-mode <code>Gateway</code> if the controller ever reallocates a <strong>live</strong> listener's
+internal accept port (the <code>30000–32767</code> port its VIP Service maps the advertised port onto).
+The controller reads existing allocations authoritatively from the apiserver each pass and
+keeps every in-range assignment, so this is expected to <strong>never fire</strong>; if it does, it means
+kube-proxy's NAT was remapped while the proxy may still be bound to the old port (a brief
+data-plane blip for that Gateway) and points at a genuine anomaly — a persisted <code>targetPort</code>
+outside the range, or a duplicate.</p>
+<div class="highlight"><pre><span></span><code>Type     Reason                Age   From                 Message
+----     ------                ---   ----                 -------
+Warning  InternalPortRemapped  3s    coxswain-controller  listener 443 internal port moved 30001 -&gt; 30004 while the Gateway is live
+</code></pre></div>
+<h3 id="internalportrangeexhausted-shared-mode-gateway">InternalPortRangeExhausted (shared-mode Gateway)<a class="headerlink" href="#internalportrangeexhausted-shared-mode-gateway" title="Permanent link">&para;</a></h3>
+<p>Emitted on a shared-mode <code>Gateway</code> when the <code>30000–32767</code> internal-port band is exhausted;
+the un-allocated listeners get no VIP port and are not addressed until capacity frees up.</p>
 <h3 id="deduplication">Deduplication<a class="headerlink" href="#deduplication" title="Permanent link">&para;</a></h3>
 <p>Both event types are deduplicated by the kube <code>Recorder</code>'s built-in per-process cache. A
 resync storm does not produce duplicate Events in <code>kubectl describe</code> output — the

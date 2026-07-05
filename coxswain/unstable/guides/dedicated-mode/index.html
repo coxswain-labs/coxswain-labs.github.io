@@ -1341,7 +1341,7 @@
 <tbody>
 <tr>
 <td><code>replicas</code></td>
-<td>Replica count for the provisioned proxy Deployment</td>
+<td>Static replica count (ignored when <code>autoscaling.enabled</code>)</td>
 <td><code>1</code></td>
 </tr>
 <tr>
@@ -1364,8 +1364,36 @@
 <td>Partial <code>PodTemplateSpec</code> merged over the rendered template (nodeSelector, tolerations, env, sidecars, …)</td>
 <td>—</td>
 </tr>
+<tr>
+<td><code>autoscaling.enabled</code></td>
+<td>Provision an HPA for the dedicated proxy Deployment</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>autoscaling.minReplicas</code></td>
+<td>HPA lower bound; must be <code>≥ 2</code> for the PDB to be provisioned</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>autoscaling.maxReplicas</code></td>
+<td>HPA upper bound</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>autoscaling.targetCPUUtilizationPercentage</code></td>
+<td>HPA CPU utilization target</td>
+<td>—</td>
+</tr>
 </tbody>
 </table>
+<p>When <code>autoscaling.enabled: true</code>, the controller provisions an <code>HorizontalPodAutoscaler</code> and, when <code>minReplicas ≥ 2</code>, a <code>PodDisruptionBudget</code> alongside the Deployment. The Deployment's <code>spec.replicas</code> is left unset so the HPA is the sole replica authority. All three objects carry the same GEP-1762 name (<code>&lt;gateway-name&gt;-&lt;gateway-class-name&gt;</code>), the same owner reference, and the <code>coxswain-controller</code> field manager.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">autoscaling</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">minReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">maxReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">    </span><span class="nt">targetCPUUtilizationPercentage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
 <h2 id="automatic-provisioning-by-the-controller">Automatic provisioning by the controller<a class="headerlink" href="#automatic-provisioning-by-the-controller" title="Permanent link">&para;</a></h2>
 <p><code>serve controller</code> runs a provisioning operator that watches every <code>Gateway</code>. For any Gateway whose <code>parametersRef</code> (or whose <code>GatewayClass</code>'s <code>parametersRef</code>) resolves to a <code>CoxswainGatewayParameters</code> object, the operator applies a dedicated proxy <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code> to the cluster via server-side-apply under field manager <code>coxswain-controller</code>, owner-referenced to the parent Gateway so deletion cascades.</p>
 <p>Apply the dev fixture set and verify the resources land:</p>

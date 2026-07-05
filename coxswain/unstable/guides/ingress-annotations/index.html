@@ -2671,8 +2671,8 @@ Ingress and Gateway API backends:</p>
 <p>Units are <strong>binary</strong> (<code>k</code> = 1024, <code>m</code> = 1024², <code>g</code> = 1024³), matching nginx-ingress's <code>proxy-body-size</code>.</p>
 <p>Enforcement is two-layered and never buffers the whole body:</p>
 <ul>
-<li>When the request declares a <code>Content-Length</code> larger than the limit, it is rejected up front — before any upstream connection is opened.</li>
-<li>For chunked or streaming uploads (no <code>Content-Length</code>), the proxy counts bytes as they arrive and aborts with 413 the moment the running total crosses the limit.</li>
+<li>When the request declares a <code>Content-Length</code> larger than the limit, it is rejected up front — before any upstream connection is opened. This applies to both HTTP/1.x and HTTP/2.</li>
+<li>For chunked or streaming uploads with no <code>Content-Length</code>, the proxy counts bytes as they arrive and aborts with 413 the moment the running total crosses the limit <strong>on HTTP/1.x only</strong>. A streaming <strong>HTTP/2</strong> upload without <code>Content-Length</code> is not capped mid-stream (it fails open) — returning a rejection mid-body over HTTP/2 deadlocks the client under <code>pingora-proxy</code> (<a href="https://github.com/coxswain-labs/coxswain/issues/509">#509</a>); faithful HTTP/2 enforcement awaits pingora request-body buffering.</li>
 </ul>
 <p>Omitting the annotation imposes no limit. An unparseable value (e.g. <code>"8mb"</code>, <code>"lots"</code>) emits a controller warning and is treated as absent — the route serves with no body cap rather than being rejected (<strong>fail-open</strong>).</p>
 <h2 id="mirror-target"><code>mirror-target</code><a class="headerlink" href="#mirror-target" title="Permanent link">&para;</a></h2>
@@ -2763,9 +2763,10 @@ Ingress and Gateway API backends:</p>
 <ol>
 <li><strong>L4 base IP</strong> — real client addr from PROXY protocol if present, otherwise the TCP peer addr.</li>
 <li><strong>No config</strong> — if the Ingress has no <code>trust-forwarded-for</code>, use the L4 base IP (current behavior unchanged).</li>
-<li><strong>CIDR gate</strong> — if <code>forwarded-for-trusted-cidrs</code> is non-empty AND the L4 base IP is <strong>not</strong> in any listed CIDR, the forwarded header is ignored (anti-spoofing) and the L4 base IP is used.</li>
-<li><strong>Header parse</strong> — parse the configured header (default <code>X-Forwarded-For</code>), scan the comma-separated IP list left-to-right, and use the <strong>first non-private IP</strong> found. If no non-private IP is found, fall back to the L4 base IP.</li>
+<li><strong>CIDR gate (fail-closed)</strong> — the forwarded header is honored <strong>only</strong> when the L4 base IP is inside one of the <code>forwarded-for-trusted-cidrs</code>. If the list is empty, or the L4 peer is not in it, the header is ignored (anti-spoofing) and the L4 base IP is used. An empty list trusts <strong>no</strong> peer — you must configure your load balancer's CIDR to enable header trust.</li>
+<li><strong>Rightmost-untrusted parse</strong> — parse the configured header (default <code>X-Forwarded-For</code>) and scan the comma-separated list <strong>right-to-left</strong>, skipping addresses that are themselves trusted-proxy hops (in <code>forwarded-for-trusted-cidrs</code>) or private/reserved. The first address that is neither is the effective client IP. Everything to its left is client-controlled and ignored, so a forged leftmost token cannot spoof the client IP. If no untrusted address is found, fall back to the L4 base IP.</li>
 </ol>
+<p>All addresses are canonicalized before matching, so an IPv4-mapped IPv6 form (<code>::ffff:a.b.c.d</code>) is treated as its IPv4 address — it cannot slip past an IPv4 <code>allow-</code>/<code>deny-source-range</code>.</p>
 <p>"Private/reserved" means RFC 1918 (<code>10/8</code>, <code>172.16/12</code>, <code>192.168/16</code>), loopback (<code>127/8</code>, <code>::1</code>), link-local (<code>169.254/16</code>, <code>fe80::/10</code>), ULA (<code>fc00::/7</code>), and unspecified.</p>
 <h3 id="forwarded-for-header"><code>forwarded-for-header</code><a class="headerlink" href="#forwarded-for-header" title="Permanent link">&para;</a></h3>
 <p>Which header to read the forwarded IP from. Defaults to <code>X-Forwarded-For</code>. Override for CDNs that use a proprietary header:</p>

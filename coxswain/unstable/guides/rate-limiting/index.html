@@ -1457,7 +1457,7 @@
 </div>
 <h2 id="gateway-api-extensionref">Gateway API ExtensionRef<a class="headerlink" href="#gateway-api-extensionref" title="Permanent link">&para;</a></h2>
 <p>Attach a rate limit to a single <code>HTTPRoute</code> rule by referencing a <code>RateLimit</code> custom resource from an <code>ExtensionRef</code> filter:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-labs.dev/v1alpha1</span>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
 <span class="nt">metadata</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-limit</span>
@@ -1482,7 +1482,7 @@
 <span class="w">      </span><span class="nt">filters</span><span class="p">:</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExtensionRef</span>
 <span class="w">          </span><span class="nt">extensionRef</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-labs.dev</span>
+<span class="w">            </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
 <span class="w">            </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
 <span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-limit</span>
 <span class="w">      </span><span class="nt">backendRefs</span><span class="p">:</span>
@@ -1520,7 +1520,7 @@
 </tr>
 </tbody>
 </table>
-<p>The <code>RateLimit</code> CR must be in the same namespace as the <code>HTTPRoute</code>. A rule can reference at most one <code>RateLimit</code> (the first <code>ExtensionRef</code> with <code>group: coxswain-labs.dev</code> and <code>kind: RateLimit</code> wins).</p>
+<p>The <code>RateLimit</code> CR must be in the same namespace as the <code>HTTPRoute</code>. A rule can reference at most one <code>RateLimit</code> (the first <code>ExtensionRef</code> with <code>group: gateway.coxswain-labs.dev</code> and <code>kind: RateLimit</code> wins).</p>
 <p><strong>Fail-open</strong>: a dangling reference to a non-existent <code>RateLimit</code> CR emits a controller warning and installs the route with no rate limiting — traffic is never blocked by a missing CR.</p>
 <h2 id="429-response-format">429 response format<a class="headerlink" href="#429-response-format" title="Permanent link">&para;</a></h2>
 <p>A rate-limited request receives:</p>

@@ -1335,8 +1335,13 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 <tbody>
 <tr>
 <td><code>controller.replicas</code></td>
-<td><code>1</code></td>
-<td>Number of controller replicas (run <code>≥ 2</code> in production)</td>
+<td><code>2</code></td>
+<td>Controller replica count; PDB is only provisioned when <code>≥ 2</code></td>
+</tr>
+<tr>
+<td><code>controller.podDisruptionBudget.enabled</code></td>
+<td><code>true</code></td>
+<td>Provision a PDB for the controller (effective when <code>replicas ≥ 2</code>)</td>
 </tr>
 <tr>
 <td><code>image.tag</code></td>
@@ -1362,6 +1367,36 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 <td><code>proxy.ingress.https.port</code></td>
 <td><code>443</code></td>
 <td>Ingress HTTPS listener port</td>
+</tr>
+<tr>
+<td><code>proxy.shared.replicas</code></td>
+<td><code>1</code></td>
+<td>Static replica count (ignored when <code>autoscaling.enabled</code>)</td>
+</tr>
+<tr>
+<td><code>proxy.shared.autoscaling.enabled</code></td>
+<td><code>false</code></td>
+<td>Enable HPA for the shared proxy</td>
+</tr>
+<tr>
+<td><code>proxy.shared.autoscaling.minReplicas</code></td>
+<td><code>2</code></td>
+<td>HPA lower bound; must be <code>≥ 2</code> for the PDB to be active</td>
+</tr>
+<tr>
+<td><code>proxy.shared.autoscaling.maxReplicas</code></td>
+<td><code>10</code></td>
+<td>HPA upper bound</td>
+</tr>
+<tr>
+<td><code>proxy.shared.autoscaling.targetCPUUtilizationPercentage</code></td>
+<td><code>80</code></td>
+<td>HPA CPU utilization target</td>
+</tr>
+<tr>
+<td><code>proxy.shared.podDisruptionBudget.enabled</code></td>
+<td><code>true</code></td>
+<td>Provision a PDB for the shared proxy (effective when floor <code>≥ 2</code>)</td>
 </tr>
 <tr>
 <td><code>proxy.shared.threads</code></td>

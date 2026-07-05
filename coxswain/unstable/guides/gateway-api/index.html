@@ -1094,6 +1094,57 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ip-access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      IP access control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic authentication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-size-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request size limit
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Request size limit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-size-limit-is-not-enforced-on-grpcroute" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request size limit is not enforced on GRPCRoute
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response compression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#status-conditions_1" class="md-nav__link">
     <span class="md-ellipsis">
       Status conditions
@@ -1168,6 +1219,57 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#coxswainbackendpolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      CoxswainBackendPolicy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CoxswainBackendPolicy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behaviour
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tlsroute" class="md-nav__link">
     <span class="md-ellipsis">
       TLSRoute
@@ -1187,7 +1289,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#example_4" class="md-nav__link">
+  <a href="#example_5" class="md-nav__link">
     <span class="md-ellipsis">
       Example
     </span>
@@ -1242,7 +1344,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#example_5" class="md-nav__link">
+  <a href="#example_6" class="md-nav__link">
     <span class="md-ellipsis">
       Example
     </span>
@@ -1275,7 +1377,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#example_6" class="md-nav__link">
+  <a href="#example_7" class="md-nav__link">
     <span class="md-ellipsis">
       Example
     </span>
@@ -1756,6 +1858,11 @@
 <td><code>gateway.networking.k8s.io/v1</code></td>
 <td>Upstream TLS configuration referencing a CA <code>ConfigMap</code> or <code>Secret</code></td>
 </tr>
+<tr>
+<td><code>CoxswainBackendPolicy</code></td>
+<td><code>gateway.coxswain-labs.dev/v1alpha1</code></td>
+<td>Coxswain-native per-<code>Service</code> connection policy: connect/idle timeouts, load-balancing algorithm, circuit breaker — see <a href="#coxswainbackendpolicy">below</a></td>
+</tr>
 </tbody>
 </table>
 <div class="admonition warning">
@@ -1784,10 +1891,10 @@
 </code></pre></div>
 <p>Implementation-specific capabilities — such as <code>RegularExpression</code> path, header, and query matching — are not listed in <code>supportedFeatures</code>. The Gateway API spec does not define conformance flags for them; they are supported under Coxswain's own dialect. See <a href="#implementation-specific-matching">Implementation-specific matching</a>.</p>
 <h2 id="gateway">Gateway<a class="headerlink" href="#gateway" title="Permanent link">&para;</a></h2>
-<p>A <code>Gateway</code> object defines one or more listeners, each binding a port and protocol to a set of allowed routes. <code>HTTP</code>, <code>HTTPS</code>, and <code>TLS</code> listeners are processed; other protocol values are ignored.</p>
+<p>A <code>Gateway</code> object defines one or more listeners, each binding a port and protocol to a set of allowed routes. Coxswain routes the <code>HTTP</code>, <code>HTTPS</code>, and <code>TLS</code> protocols. A listener declaring any other protocol is rejected: it gets <code>Accepted=False, reason=UnsupportedProtocol</code> with an empty <code>supportedKinds</code>, and the Gateway's own <code>Accepted</code> condition rolls up to <code>reason=ListenersNotValid</code> (status <code>False</code> when <em>every</em> listener is unsupported, <code>True</code> when at least one listener is still valid).</p>
 <div class="admonition tip">
 <p class="admonition-title">Dedicated proxy per Gateway</p>
-<p>A <code>Gateway</code> can be opted into its own isolated proxy pool via <code>spec.infrastructure.parametersRef</code>. See <a href="../dedicated-mode/">Dedicated proxy pools</a> for the full walkthrough.</p>
+<p>A <code>Gateway</code> can be opted into its own isolated proxy pool via <code>spec.infrastructure.parametersRef</code> pointing at a <code>CoxswainGatewayParameters</code>. See <a href="../dedicated-mode/">Dedicated proxy pools</a> for the full walkthrough. A <code>parametersRef</code> targeting any other (unrecognized) kind is rejected with <code>Accepted=False, reason=InvalidParameters</code>.</p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">Infrastructure metadata propagation (GEP-1867)</p>
@@ -2100,7 +2207,7 @@
 </tr>
 <tr>
 <td><code>ExtensionRef</code></td>
-<td>Supported (for <code>RateLimit</code> and <code>PathRewriteRegex</code> Coxswain extensions)</td>
+<td>Supported (for <code>RateLimit</code>, <code>PathRewriteRegex</code>, <code>IpAccessControl</code>, <code>BasicAuth</code>, <code>RequestSizeLimit</code>, and <code>Compression</code> Coxswain extensions)</td>
 </tr>
 <tr>
 <td><code>CORS</code></td>
@@ -2283,6 +2390,144 @@
 </code></pre></div>
 <p><strong>Cross-namespace mirror backends</strong> require a <code>ReferenceGrant</code> in the target namespace, just like primary backends (see <a href="#cross-namespace-backends">Cross-namespace backends</a>).</p>
 <p>Mirror traffic is visible in the proxy access log (<code>mirror: true</code> field) and counted by the <code>coxswain_proxy_mirror_requests_total{route, upstream}</code> Prometheus counter.</p>
+<h3 id="ip-access-control">IP access control<a class="headerlink" href="#ip-access-control" title="Permanent link">&para;</a></h3>
+<p><code>IpAccessControl</code> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) restricts a route to a set of source-IP CIDR ranges. Attach it to an <code>HTTPRouteRule</code> with an <code>ExtensionRef</code> filter — the Gateway API surface for the Ingress <code>allow-source-range</code> / <code>deny-source-range</code> annotations. It has no Gateway API standard equivalent; its merit anchor is Envoy's <code>rbac</code> CIDR-principal filter / Istio <code>AuthorizationPolicy</code> <code>ipBlocks</code>/<code>notIpBlocks</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IpAccessControl</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">office-only</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">deny</span><span class="p">:</span><span class="w">                       </span><span class="c1"># evaluated FIRST</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">203.0.113.5/32</span>
+<span class="w">  </span><span class="nt">allow</span><span class="p">:</span><span class="w">                      </span><span class="c1"># then the allow-list</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">203.0.113.0/24</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2001:db8::/32</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+<span class="c1"># ...</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExtensionRef</span>
+<span class="w">        </span><span class="nt">extensionRef</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
+<span class="w">          </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IpAccessControl</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">office-only</span>
+</code></pre></div>
+<p>Semantics:</p>
+<ul>
+<li><strong><code>deny</code> is evaluated before <code>allow</code>.</strong> A client inside any <code>deny</code> range gets <code>403</code> even when <code>allow</code> would admit it.</li>
+<li><strong><code>allow</code> restricts to the listed ranges</strong> — a client outside every <code>allow</code> range gets <code>403</code>. An empty <code>allow</code> list imposes no allow-list restriction (only <code>deny</code> applies); empty <code>allow</code> <strong>and</strong> empty <code>deny</code> performs no filtering.</li>
+<li><strong>IPv4 and IPv6</strong> CIDRs are both accepted; a bare address (<code>203.0.113.5</code>) is treated as a host route (<code>/32</code> / <code>/128</code>). Invalid CIDR tokens are logged and skipped rather than rejecting the whole policy.</li>
+<li>A <strong>missing</strong> <code>IpAccessControl</code> CR fails open (a WARN is logged; the route is not filtered).</li>
+</ul>
+<p>The client IP is resolved through the same path as the rest of the data plane: the PROXY-protocol peer when a <code>ClientTrafficPolicy</code> enables PROXY protocol on the listener, otherwise the L4 downstream peer. There is no Gateway-side trusted-forwarded-header surface yet, so behind an L7 load balancer that terminates the connection, enable PROXY protocol so the real client IP reaches the filter.</p>
+<h3 id="basic-authentication">Basic authentication<a class="headerlink" href="#basic-authentication" title="Permanent link">&para;</a></h3>
+<p><code>BasicAuth</code> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) validates <code>Authorization: Basic</code> credentials against an htpasswd <code>Secret</code>. Attach it to an <code>HTTPRouteRule</code> with an <code>ExtensionRef</code> filter — the Gateway API surface for the Ingress <code>auth-basic-secret</code> annotation. HTTP Basic auth is a browser/HTTP idiom, so this filter is <strong>not</strong> supported on <code>GRPCRoute</code> (gRPC clients authenticate with bearer tokens or mTLS instead).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BasicAuth</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">office-only</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secretRef</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">office-htpasswd</span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+<span class="c1"># ...</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExtensionRef</span>
+<span class="w">        </span><span class="nt">extensionRef</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
+<span class="w">          </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BasicAuth</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">office-only</span>
+</code></pre></div>
+<p>Semantics:</p>
+<ul>
+<li>The referenced <code>Secret</code> <strong>must</strong> carry the label <code>ingress.coxswain-labs.dev/auth-basic: "true"</code> and store the htpasswd file under the key <code>auth</code> (nginx convention) — the same requirements as the Ingress annotation, so one Secret can back both surfaces.</li>
+<li>Supported hash formats: bcrypt (<code>$2a$</code>/<code>$2b$</code>/<code>$2y$</code>) and Apache SHA1 (<code>{SHA}</code>, accepted but logged as weak).</li>
+<li>Valid credentials are forwarded; missing/invalid credentials get <code>401</code> with <code>WWW-Authenticate</code>.</li>
+<li>A missing, unlabeled, or unparseable Secret — or a missing <code>BasicAuth</code> CR's <code>secretRef</code> — fails <strong>closed</strong> with <code>503</code>, distinct from a missing <code>BasicAuth</code> CR itself (which fails open: no auth enforced).</li>
+<li>A <code>secretRef</code> whose <code>namespace</code> differs from the <code>BasicAuth</code> CR's namespace requires a matching <code>ReferenceGrant</code> in the Secret's namespace — <code>from</code> a <code>BasicAuth</code> (<code>gateway.coxswain-labs.dev</code>) in the CR's namespace, <code>to</code> a core <code>Secret</code>. Without the grant the reference fails <strong>closed</strong> (<code>503</code>); a tenant cannot bind another namespace's auth Secret. Same-namespace refs need no grant.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># In the Secret&#39;s namespace, to permit a BasicAuth in namespace `apps`:</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReferenceGrant</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">allow-basicauth-from-apps</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">from</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BasicAuth</span>
+<span class="w">      </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps</span>
+<span class="w">  </span><span class="nt">to</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+</code></pre></div>
+<h3 id="request-size-limit">Request size limit<a class="headerlink" href="#request-size-limit" title="Permanent link">&para;</a></h3>
+<p><code>RequestSizeLimit</code> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) caps the request body size for a route. Attach it to an <code>HTTPRouteRule</code> with an <code>ExtensionRef</code> filter — the Gateway API surface for the Ingress <code>max-body-size</code> annotation. Like <code>BasicAuth</code>/<code>Compression</code>, this filter is <strong>HTTPRoute-only</strong> and is not enforced on <code>GRPCRoute</code> (see <a href="#request-size-limit-is-not-enforced-on-grpcroute">below</a>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RequestSizeLimit</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">small-uploads</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8m&quot;</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+<span class="c1"># ...</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExtensionRef</span>
+<span class="w">        </span><span class="nt">extensionRef</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
+<span class="w">          </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RequestSizeLimit</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">small-uploads</span>
+</code></pre></div>
+<p>Semantics:</p>
+<ul>
+<li><code>maxSize</code> accepts a bare byte count or a <code>k</code>/<code>m</code>/<code>g</code>-suffixed size (binary multipliers, case-insensitive) — the same parser as the Ingress <code>max-body-size</code> annotation.</li>
+<li>On HTTP/1.x, requests exceeding the limit are rejected with <code>413 Payload Too Large</code>, checked up front against <code>Content-Length</code> when present and mid-stream for chunked/streaming bodies.</li>
+<li>On <strong>HTTP/2</strong>, only the up-front <code>Content-Length</code> check applies. A streaming HTTP/2 upload that omits <code>Content-Length</code> is <strong>not</strong> capped — it fails open (see the note below on why mid-stream HTTP/2 enforcement is deferred).</li>
+<li>A missing <code>RequestSizeLimit</code> CR or an unparseable <code>maxSize</code> fails open (no limit enforced).</li>
+</ul>
+<h4 id="request-size-limit-is-not-enforced-on-grpcroute">Request size limit is not enforced on GRPCRoute<a class="headerlink" href="#request-size-limit-is-not-enforced-on-grpcroute" title="Permanent link">&para;</a></h4>
+<p><code>RequestSizeLimit</code> attached to a <code>GRPCRoute</code> is accepted but <strong>not enforced</strong> — the reconciler skips it and logs a WARN line (as it does for <code>BasicAuth</code>/<code>Compression</code>). gRPC message sizes are instead governed by the backend's own <code>max_recv_msg_size</code> (gRPC servers reject oversized messages with <code>RESOURCE_EXHAUSTED</code>; the default receive cap is ~4 MB).</p>
+<p>The reason is a <code>pingora-proxy</code> limitation: a <code>request_body_filter</code> rejection over HTTP/2 is swallowed by pingora's h2 proxy loop and never delivered to the client, deadlocking the request (<a href="https://github.com/coxswain-labs/coxswain/issues/509">#509</a>). gRPC never sends <code>Content-Length</code>, so the up-front check that guards HTTP/2 elsewhere cannot apply. Faithful edge enforcement for gRPC/HTTP/2 needs buffer-first rejection (as Envoy's <code>buffer</code> filter does) and is deferred until pingora ships request-body buffering (pingora <a href="https://github.com/cloudflare/pingora/issues/816">#816</a>/<a href="https://github.com/cloudflare/pingora/issues/780">#780</a>).</p>
+<h3 id="response-compression">Response compression<a class="headerlink" href="#response-compression" title="Permanent link">&para;</a></h3>
+<p><code>Compression</code> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) enables gzip/brotli response compression for a route. Attach it to an <code>HTTPRouteRule</code> with an <code>ExtensionRef</code> filter — the Gateway API surface for the Ingress <code>compression-*</code> annotations. gRPC compresses per-message at the gRPC framing layer (<code>grpc-encoding</code>), not via HTTP <code>Content-Encoding</code>, so this filter is <strong>not</strong> supported on <code>GRPCRoute</code>; the proxy also refuses to compress any response whose <code>Content-Type</code> starts with <code>application/grpc</code>, even on an HTTPRoute (a gRPC-over-HTTPRoute edge case), regardless of the CR's <code>types</code> allow-list.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Compression</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default-compression</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gzip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">brotli</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+<span class="w">  </span><span class="nt">minSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">  </span><span class="nt">types</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text/html</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text/plain</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text/css</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application/json</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application/javascript</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+<span class="c1"># ...</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExtensionRef</span>
+<span class="w">        </span><span class="nt">extensionRef</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
+<span class="w">          </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Compression</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default-compression</span>
+</code></pre></div>
+<p>Semantics:</p>
+<ul>
+<li>At least one of <code>gzip</code> / <code>brotli</code> must be <code>true</code> for the CR to have any effect; when both are <code>false</code> (the default) it is a no-op.</li>
+<li>Brotli is preferred over gzip when both are enabled and the client advertises <code>br</code> in <code>Accept-Encoding</code>.</li>
+<li><code>level</code> (1–9, default <code>6</code>), <code>minSize</code> (bytes, default <code>1024</code>), and <code>types</code> (default: <code>text/html</code>, <code>text/plain</code>, <code>text/css</code>, <code>application/json</code>, <code>application/javascript</code>) mirror the Ingress <code>compression-*</code> annotation defaults.</li>
+<li>A missing <code>Compression</code> CR fails open (no compression).</li>
+</ul>
 <h3 id="status-conditions_1">Status conditions<a class="headerlink" href="#status-conditions_1" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2405,7 +2650,7 @@
 </tr>
 <tr>
 <td><code>spec.rules[].filters</code></td>
-<td><code>RequestHeaderModifier</code>, <code>ResponseHeaderModifier</code></td>
+<td><code>RequestHeaderModifier</code>, <code>ResponseHeaderModifier</code>, <code>ExtensionRef</code> (<code>RateLimit</code>, <code>IpAccessControl</code>)</td>
 </tr>
 <tr>
 <td><code>spec.rules[].backendRefs</code></td>
@@ -2417,7 +2662,7 @@
 </tr>
 </tbody>
 </table>
-<p><code>ExtensionRef</code> filters not matching the <code>RateLimit</code> or <code>PathRewriteRegex</code> Coxswain resources are skipped with a WARN log line.</p>
+<p>GRPCRoute supports the protocol-agnostic <code>ExtensionRef</code> filters — <a href="../rate-limiting/"><code>RateLimit</code></a> and <a href="#ip-access-control"><code>IpAccessControl</code></a> — which apply identically to gRPC (HTTP/2) traffic. <code>PathRewriteRegex</code> is not supported: for gRPC the request path <em>is</em> the <code>/{service}/{method}</code> RPC address, so rewriting it is meaningless. <code>BasicAuth</code> and <code>Compression</code> are HTTP-only idioms and are not supported either — gRPC clients authenticate with bearer tokens or mTLS, and gRPC compresses per-message at the framing layer rather than via HTTP <code>Content-Encoding</code>. <code>RequestSizeLimit</code> is also not enforced on gRPC — a mid-stream body cap over HTTP/2 deadlocks the client under pingora (<a href="https://github.com/coxswain-labs/coxswain/issues/509">#509</a>), so gRPC message sizes are left to the backend's <code>max_recv_msg_size</code> (<a href="#request-size-limit-is-not-enforced-on-grpcroute">details</a>). Any other <code>ExtensionRef</code> (and <code>RequestMirror</code>) is skipped with a WARN log line.</p>
 <h3 id="status-conditions_2">Status conditions<a class="headerlink" href="#status-conditions_2" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2442,6 +2687,90 @@
 </tbody>
 </table>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>grpcroute<span class="w"> </span>my-grpc-route
+</code></pre></div>
+<h2 id="coxswainbackendpolicy">CoxswainBackendPolicy<a class="headerlink" href="#coxswainbackendpolicy" title="Permanent link">&para;</a></h2>
+<p><code>CoxswainBackendPolicy</code> is a Coxswain-native <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/">direct policy attachment</a> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) that sets per-backend upstream connection policy: connect/idle timeouts, the load-balancing algorithm, and a circuit breaker. It attaches to a <code>Service</code>; its settings apply to every Gateway API route (<code>HTTPRoute</code> or <code>GRPCRoute</code>) whose backend resolves to that Service.</p>
+<p>It is the Gateway API counterpart to a family of Ingress annotations — <code>connect-timeout</code> / <code>upstream-keepalive-timeout</code>, <code>load-balance</code>, and <code>circuit-breaker-*</code> — none of which has a Gateway API standard equivalent. Each field group is <strong>deliberately proprietary</strong>: it is anchored to a first-class Envoy/Istio concept (LB policies, outlier detection), not an nginx-ism, and there is no upstream Gateway API convergence to await.</p>
+<h3 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>targetRefs[]</code></td>
+<td>The <code>Service</code> objects this policy applies to (same namespace). <code>group: ""</code>, <code>kind: Service</code>.</td>
+</tr>
+<tr>
+<td><code>timeouts.connect</code></td>
+<td>Upstream TCP-connect timeout (<a href="https://gateway-api.sigs.k8s.io/geps/gep-2257/">GEP-2257</a> duration, e.g. <code>500ms</code>, <code>5s</code>). Bounds how long the proxy waits to establish a connection before failing the request with <code>502</code>.</td>
+</tr>
+<tr>
+<td><code>timeouts.idle</code></td>
+<td>Upstream keepalive idle timeout — how long an idle pooled connection is retained before eviction.</td>
+</tr>
+<tr>
+<td><code>loadBalancer.algorithm</code></td>
+<td>Upstream load-balancing algorithm. One of <code>round_robin</code> (default), <code>least_conn</code>, <code>ewma</code>, <code>ip_hash</code>, <code>hash:uri</code>, <code>hash:source-ip</code>, <code>hash:header=&lt;name&gt;</code>, <code>hash:cookie=&lt;name&gt;</code>. Mirrors the Ingress <code>load-balance</code> annotation.</td>
+</tr>
+<tr>
+<td><code>circuitBreaker.threshold</code></td>
+<td>Error rate (%) that trips the breaker (<code>1</code>–<code>100</code>). The gate: absent or out of range disables the breaker.</td>
+</tr>
+<tr>
+<td><code>circuitBreaker.window</code></td>
+<td>Rolling window over which the EWMA error rate is computed (GEP-2257 duration). Default <code>10s</code>.</td>
+</tr>
+<tr>
+<td><code>circuitBreaker.openDuration</code></td>
+<td>How long the breaker stays open before allowing a probe. Default <code>5s</code>. Starting duration when <code>maxOpenDuration</code> enables exponential backoff.</td>
+</tr>
+<tr>
+<td><code>circuitBreaker.minRequests</code></td>
+<td>Minimum requests in the window before the breaker can trip. Default <code>10</code>.</td>
+</tr>
+<tr>
+<td><code>circuitBreaker.maxOpenDuration</code></td>
+<td>Optional cap that enables exponential backoff from <code>openDuration</code> up to this value. Unset → constant open duration.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example_4">Example<a class="headerlink" href="#example_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainBackendPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-backend-policy</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">targetRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+<span class="w">  </span><span class="nt">timeouts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">connect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500ms</span>
+<span class="w">    </span><span class="nt">idle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60s</span>
+<span class="w">  </span><span class="nt">loadBalancer</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">algorithm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">least_conn</span>
+<span class="w">  </span><span class="nt">circuitBreaker</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
+<span class="w">    </span><span class="nt">window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+<span class="w">    </span><span class="nt">openDuration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="w">    </span><span class="nt">minRequests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</code></pre></div>
+<h3 id="behaviour">Behaviour<a class="headerlink" href="#behaviour" title="Permanent link">&para;</a></h3>
+<ul>
+<li>A backend <code>Service</code> with no attached policy keeps the default connection behaviour (weighted round-robin, breaker disabled).</li>
+<li>The per-backend <code>connect</code> timeout takes precedence over the Gateway API <code>HTTPRoute.timeouts.backendRequest</code> fallback, but an Ingress route's explicit <code>connect-timeout</code> annotation still wins for that route.</li>
+<li><strong><code>loadBalancer.algorithm</code></strong> applies the same upstream selection the Ingress <code>load-balance</code> annotation drives; <code>round_robin</code> is a no-op (the default). The <code>hash:*</code> forms select an endpoint by a consistent hash of the named request attribute.</li>
+<li><strong><code>circuitBreaker</code></strong> drives the same per-endpoint outlier detection as the Ingress <code>circuit-breaker-*</code> annotations: once the EWMA error rate over <code>window</code> meets <code>threshold</code> (after at least <code>minRequests</code>), the breaker opens and requests fail fast with <code>503</code> until a probe after <code>openDuration</code> succeeds.</li>
+<li><strong>Invalid values fail open.</strong> An unparseable duration, an unrecognised <code>loadBalancer.algorithm</code>, or an out-of-range <code>circuitBreaker.threshold</code> is logged as a warning and ignored — the backend falls back to the default (round-robin / breaker disabled), never a connection-level error or a rejected resource. These fields are deliberately not schema-validated so the policy is accepted and the warning surfaces at reconcile time.</li>
+<li><strong>Conflicts.</strong> If two policies target the same <code>Service</code>, the older one (by <code>creationTimestamp</code>, ties broken by name) wins; the loser receives <code>Accepted=False, reason=Conflicted</code> in its <code>status.ancestors[]</code>.</li>
+</ul>
+<h3 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h3>
+<p>The controller writes one <code>status.ancestors[]</code> entry per targeted <code>Service</code> with an <code>Accepted</code> condition:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>coxswainbackendpolicy<span class="w"> </span>api-backend-timeouts
 </code></pre></div>
 <h2 id="tlsroute">TLSRoute<a class="headerlink" href="#tlsroute" title="Permanent link">&para;</a></h2>
 <p>A <code>TLSRoute</code> routes raw TLS connections by SNI. Coxswain supports three modes, configured via <code>tls.mode</code> on the Gateway listener:</p>
@@ -2469,7 +2798,7 @@
 <span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<h3 id="example_4">Example<a class="headerlink" href="#example_4" title="Permanent link">&para;</a></h3>
+<h3 id="example_5">Example<a class="headerlink" href="#example_5" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -2588,7 +2917,7 @@
 <span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<h4 id="example_5">Example<a class="headerlink" href="#example_5" title="Permanent link">&para;</a></h4>
+<h4 id="example_6">Example<a class="headerlink" href="#example_6" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -2640,7 +2969,7 @@
 <span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<h4 id="example_6">Example<a class="headerlink" href="#example_6" title="Permanent link">&para;</a></h4>
+<h4 id="example_7">Example<a class="headerlink" href="#example_7" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="c1"># Terminate route — backend is a plaintext TCP service</span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
