@@ -877,6 +877,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Attaching routes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#route-namespace-scoping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Route namespace scoping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#route-kind-restriction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Route kind restriction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1423,6 +1447,20 @@ Gateway's own listeners — only <code>kind: ListenerSet</code> targets the List
 <p><code>HTTPRoute</code>, <code>GRPCRoute</code>, and <code>TLSRoute</code> can all attach to a ListenerSet listener:
 <code>HTTPRoute</code>/<code>GRPCRoute</code> to its <code>HTTP</code>/<code>HTTPS</code> listeners, <code>TLSRoute</code> to its
 <code>TLS</code>/<code>Passthrough</code> listeners.</p>
+<h3 id="route-namespace-scoping">Route namespace scoping<a class="headerlink" href="#route-namespace-scoping" title="Permanent link">&para;</a></h3>
+<p>Each ListenerSet listener's own <code>allowedRoutes.namespaces</code> governs which
+namespaces its routes may come from — same as a Gateway listener, with one
+distinction: <code>Same</code> (the default) means the <strong>ListenerSet's own namespace</strong>, not
+the parent Gateway's. A route in a third namespace (neither the Gateway's nor
+the ListenerSet's) is rejected — <code>Accepted: False</code>, reason <code>NotAllowedByListeners</code>
+— unless the listener widens to <code>All</code> or <code>Selector</code>.</p>
+<h3 id="route-kind-restriction">Route kind restriction<a class="headerlink" href="#route-kind-restriction" title="Permanent link">&para;</a></h3>
+<p><code>allowedRoutes.kinds</code> restricts which route kinds may attach, same as a Gateway
+listener. The kind must match the listener's protocol family (<code>HTTPRoute</code>/
+<code>GRPCRoute</code> for <code>HTTP</code>/<code>HTTPS</code>, <code>TLSRoute</code> for <code>TLS</code>/<code>Passthrough</code>) — a mismatched
+kind (e.g. <code>HTTPRoute</code> on a <code>TLS</code> listener) marks the listener itself
+<code>ResolvedRefs: False</code> with reason <code>InvalidRouteKinds</code>, independent of whether any
+route actually attempts to attach.</p>
 <h2 id="precedence-and-duplicate-names">Precedence and duplicate names<a class="headerlink" href="#precedence-and-duplicate-names" title="Permanent link">&para;</a></h2>
 <p>The parent's effective listener set is ordered:</p>
 <ol>
