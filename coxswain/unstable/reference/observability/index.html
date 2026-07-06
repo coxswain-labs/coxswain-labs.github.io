@@ -1471,7 +1471,7 @@
 <p>The <code>route</code> Prometheus label is a <strong>stable rule identifier</strong>, not a request path. Operators reading <code>coxswain_proxy_requests_total{route="httproute/checkout/api:0"}</code> see the same label value on the matching access-log line's <code>route_id</code> field, so a Grafana → Loki/Tempo pivot is an exact join (no fuzzy host/path matching). Path patterns stay on the access log for human-readable display.</p>
 <p>Route id formats:</p>
 <ul>
-<li>HTTPRoute: <code>httproute/&lt;namespace&gt;/&lt;name&gt;:&lt;rule_index&gt;</code> — <code>rule_index</code> is the position in <code>spec.rules[]</code>.</li>
+<li>HTTPRoute / GRPCRoute: <code>httproute/&lt;namespace&gt;/&lt;name&gt;:&lt;rule-id&gt;</code> / <code>grpcroute/&lt;namespace&gt;/&lt;name&gt;:&lt;rule-id&gt;</code> — <code>rule-id</code> is the rule's <code>.name</code> (<code>HTTPRouteNamedRouteRule</code> / <code>GRPCRouteNamedRouteRule</code>, GEP-995) when the operator sets one; otherwise the position in <code>spec.rules[]</code>. A rule's id is stable across reorders only when named — an unnamed rule's index-based id shifts if a preceding rule is added or removed.</li>
 <li>Ingress per-rule: <code>ingress/&lt;namespace&gt;/&lt;name&gt;:&lt;r&gt;.&lt;p&gt;</code> — nested <code>(rules, paths)</code> index, mirroring the YAML structure.</li>
 <li>Ingress <code>spec.defaultBackend</code>: <code>ingress/&lt;namespace&gt;/&lt;name&gt;:default</code>.</li>
 <li>The controller-wide <code>--ingress-default-backend</code> fallback: <code>ingress-default-backend/&lt;service-namespace&gt;/&lt;service-name&gt;</code>.</li>

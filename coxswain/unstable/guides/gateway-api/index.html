@@ -2089,10 +2089,11 @@
 </tr>
 <tr>
 <td><code>Programmed</code></td>
-<td>All listeners are configured and ready</td>
+<td>All listeners are configured and the Gateway's address has resolved</td>
 </tr>
 </tbody>
 </table>
+<p>The controller does not stamp <code>Programmed</code> as processed for the current <code>metadata.generation</code> until the Gateway's own address has resolved into <code>status.addresses</code>. Until then <code>Programmed</code> stays <code>False</code>/<code>Pending</code> and its <code>observedGeneration</code> trails <code>metadata.generation</code>, so a client that waits for the latest conditions never observes <code>Programmed</code> claiming a generation while <code>status.addresses</code> is still empty — the same reconcile that flips <code>Programmed=True</code> also publishes the address. <code>Accepted</code> advances immediately. (A <em>settled</em> negative such as <code>AddressNotUsable</code> is not held back — it is a final answer for the current generation.)</p>
 <p>Per-listener conditions are also written: <code>Accepted</code>, <code>ResolvedRefs</code>, and <code>Programmed</code>. Inspect them when a listener is not serving traffic:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>gateway<span class="w"> </span>my-gateway
 </code></pre></div>
