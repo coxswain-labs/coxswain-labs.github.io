@@ -1286,36 +1286,54 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#auth-url" class="md-nav__link">
+  <a href="#ext-auth-backend" class="md-nav__link">
     <span class="md-ellipsis">
-      auth-url
+      ext-auth-backend
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#auth-timeout" class="md-nav__link">
+  <a href="#ext-auth-protocol" class="md-nav__link">
     <span class="md-ellipsis">
-      auth-timeout
+      ext-auth-protocol
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#auth-response-headers" class="md-nav__link">
+  <a href="#ext-auth-timeout" class="md-nav__link">
     <span class="md-ellipsis">
-      auth-response-headers
+      ext-auth-timeout
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#auth-always-set-cookie" class="md-nav__link">
+  <a href="#ext-auth-fail-closed" class="md-nav__link">
     <span class="md-ellipsis">
-      auth-always-set-cookie
+      ext-auth-fail-closed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ext-auth-response-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      ext-auth-response-headers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ext-auth-always-set-cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      ext-auth-always-set-cookie
     </span>
   </a>
   
@@ -2209,25 +2227,37 @@
 <td><code>"header:X-Api-Key"</code></td>
 </tr>
 <tr>
-<td><code>ingress.coxswain-labs.dev/auth-url</code></td>
-<td>URL</td>
+<td><code>ingress.coxswain-labs.dev/ext-auth-backend</code></td>
+<td><code>[ns/]service:port</code></td>
 <td><em>none</em></td>
-<td><code>"http://auth.ns.svc/auth"</code></td>
+<td><code>"oauth2-proxy:4180"</code></td>
 </tr>
 <tr>
-<td><code>ingress.coxswain-labs.dev/auth-timeout</code></td>
+<td><code>ingress.coxswain-labs.dev/ext-auth-protocol</code></td>
+<td><code>http</code> or <code>grpc</code></td>
+<td><code>"http"</code></td>
+<td><code>"grpc"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/ext-auth-timeout</code></td>
 <td>duration</td>
 <td><code>"2s"</code></td>
 <td><code>"500ms"</code></td>
 </tr>
 <tr>
-<td><code>ingress.coxswain-labs.dev/auth-response-headers</code></td>
+<td><code>ingress.coxswain-labs.dev/ext-auth-fail-closed</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td><code>"false"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/ext-auth-response-headers</code></td>
 <td>csv</td>
 <td><em>none</em></td>
 <td><code>"X-Auth-User"</code></td>
 </tr>
 <tr>
-<td><code>ingress.coxswain-labs.dev/auth-always-set-cookie</code></td>
+<td><code>ingress.coxswain-labs.dev/ext-auth-always-set-cookie</code></td>
 <td>boolean</td>
 <td><code>false</code></td>
 <td><code>"true"</code></td>
@@ -2923,24 +2953,62 @@ Ingress and Gateway API backends:</p>
 <p>The controller emits a <code>Warning</code> Event on the Ingress when <code>header:*</code> keying is configured without an auth annotation, so operators are notified at reconcile time.</p>
 </div>
 <h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
-<p>Coxswain supports two authentication modes on Ingresses: <strong>external auth</strong> (HTTP sub-request) and <strong>basic auth</strong> (htpasswd Secret). Both are enforced at the proxy before any upstream connection; a failure never reaches the backend.</p>
-<p><code>auth-url</code> and <code>auth-basic-secret</code> are mutually exclusive. If both are present, <code>auth-url</code> wins and a controller warning is emitted.</p>
-<h3 id="auth-url"><code>auth-url</code><a class="headerlink" href="#auth-url" title="Permanent link">&para;</a></h3>
-<p>Forwards a sub-request to an external authorization service before proxying. If the service returns <strong>2xx</strong> the original request is forwarded; any other status code is returned to the client as-is (body + headers), and the upstream is never hit.</p>
-<p>The sub-request is sent to the configured URL using the <strong>original request method and Host header</strong>, carrying the client's headers (<code>Authorization</code>, <code>Cookie</code>, etc.) — the auth service sees the genuine request context. No body is forwarded. On a network error or timeout (configurable via <code>auth-timeout</code>), the proxy returns <strong>503</strong> and blocks the request (fail-closed).</p>
+<p>Coxswain supports two authentication modes on Ingresses: <strong>external authorization</strong> (<code>ext_authz</code>, delegated to an auth service) and <strong>basic auth</strong> (htpasswd Secret). Both are enforced at the proxy before any upstream connection; a failure never reaches the backend.</p>
+<p><code>ext-auth-backend</code> and <code>auth-basic-secret</code> are mutually exclusive. If both are present, <code>ext-auth-backend</code> wins and a controller warning is emitted.</p>
+<blockquote>
+<p><strong>Migration from <code>auth-url</code> (breaking).</strong> Earlier releases used a single <code>auth-url: "http://svc/path"</code> string (an nginx-ism). External auth is now modelled the Gateway-API / Envoy way — a <strong><code>backendRef</code></strong> (Service + port) resolved to pod endpoints — so it gains endpoint load-balancing, in-cluster addressing (no DNS), and a choice of transport. Replace:</p>
+<table>
+<thead>
+<tr>
+<th>Old</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth-url: "http://oauth2-proxy.oauth.svc:4180/auth"</code></td>
+<td><code>ext-auth-backend: "oauth/oauth2-proxy:4180"</code></td>
+</tr>
+<tr>
+<td><code>auth-timeout: "500ms"</code></td>
+<td><code>ext-auth-timeout: "500ms"</code></td>
+</tr>
+<tr>
+<td><code>auth-response-headers: "X-Auth-User"</code></td>
+<td><code>ext-auth-response-headers: "X-Auth-User"</code></td>
+</tr>
+<tr>
+<td><code>auth-always-set-cookie: "true"</code></td>
+<td><code>ext-auth-always-set-cookie: "true"</code></td>
+</tr>
+</tbody>
+</table>
+<p>There is <strong>no</strong> URL-based transport any more; <code>auth-url</code> is silently ignored.</p>
+</blockquote>
+<h3 id="ext-auth-backend"><code>ext-auth-backend</code><a class="headerlink" href="#ext-auth-backend" title="Permanent link">&para;</a></h3>
+<p>The auth service, as <code>[namespace/]service:port</code>. The namespace defaults to the Ingress's own namespace; a cross-namespace reference is resolved directly (Ingress is single-tenant by namespace, so no ReferenceGrant is required — unlike the Gateway API surface). The Service is resolved to its ready pod endpoints and the check is load-balanced across them, exactly like any other backend.</p>
+<p>The transport is chosen by <a href="#ext-auth-protocol"><code>ext-auth-protocol</code></a>. On a network error or timeout (see <a href="#ext-auth-timeout"><code>ext-auth-timeout</code></a>) the proxy returns <strong>503</strong> and blocks the request unless <a href="#ext-auth-fail-closed"><code>ext-auth-fail-closed</code></a> is <code>"false"</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://oauth2-proxy.oauth.svc.cluster.local/oauth2/auth&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2s&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-response-headers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Auth-User,X-Auth-Groups&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-always-set-cookie</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/ext-auth-backend</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;oauth/oauth2-proxy:4180&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/ext-auth-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2s&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/ext-auth-response-headers</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Auth-User,X-Auth-Groups&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/ext-auth-always-set-cookie</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
 </code></pre></div>
-<h3 id="auth-timeout"><code>auth-timeout</code><a class="headerlink" href="#auth-timeout" title="Permanent link">&para;</a></h3>
-<p>Maximum time to wait for the auth sub-request to respond. Accepts any duration string (e.g. <code>"500ms"</code>, <code>"5s"</code>). Default: <code>2s</code>. On timeout the proxy returns <strong>503</strong> (fail-closed).</p>
-<h3 id="auth-response-headers"><code>auth-response-headers</code><a class="headerlink" href="#auth-response-headers" title="Permanent link">&para;</a></h3>
-<p>Comma-separated list of header names to copy from a <strong>2xx auth response</strong> onto the <strong>upstream request</strong> (so the backend sees e.g. <code>X-Auth-User</code>). The echo backend reflects them back in its JSON body, making this assertion testable end-to-end.</p>
-<h3 id="auth-always-set-cookie"><code>auth-always-set-cookie</code><a class="headerlink" href="#auth-always-set-cookie" title="Permanent link">&para;</a></h3>
-<p>When <code>"true"</code>, any <code>Set-Cookie</code> header present in the auth <strong>deny response</strong> is forwarded to the client. This enables login-redirect flows where the IdP sets a session cookie on the 302 response. Default: <code>false</code>.</p>
+<h3 id="ext-auth-protocol"><code>ext-auth-protocol</code><a class="headerlink" href="#ext-auth-protocol" title="Permanent link">&para;</a></h3>
+<p>Selects the transport spoken to the auth service:</p>
+<ul>
+<li><strong><code>http</code></strong> (default) — forward-auth (Envoy <code>ext_authz</code>-HTTP semantics). The proxy replays the original method, Host, and path to the auth service with the client's headers (no body). <strong>2xx</strong> allows; any other status is returned to the client verbatim (body + controlled headers) and the upstream is never hit.</li>
+<li><strong><code>grpc</code></strong> — the Envoy <code>envoy.service.auth.v3.Authorization/Check</code> proto. The proxy sends the request context (method, path, host, headers) and maps the <code>CheckResponse</code>: an <code>OK</code> status allows (copying the OK response's <code>allowed_upstream_headers</code> — see <a href="#ext-auth-response-headers"><code>ext-auth-response-headers</code></a> — onto the upstream request); any other status denies with the response's HTTP status (default <strong>403</strong>), headers, and body.</li>
+</ul>
+<h3 id="ext-auth-timeout"><code>ext-auth-timeout</code><a class="headerlink" href="#ext-auth-timeout" title="Permanent link">&para;</a></h3>
+<p>Maximum time to wait for the auth check to respond. Accepts any duration string (e.g. <code>"500ms"</code>, <code>"5s"</code>). Default: <code>2s</code>. On timeout the proxy fails closed (<strong>503</strong>) unless <code>ext-auth-fail-closed: "false"</code>.</p>
+<h3 id="ext-auth-fail-closed"><code>ext-auth-fail-closed</code><a class="headerlink" href="#ext-auth-fail-closed" title="Permanent link">&para;</a></h3>
+<p>When the auth service is unreachable, errors, or times out: <code>"true"</code> (the default and only safe posture) <strong>denies</strong> the request with <strong>503</strong>; <code>"false"</code> <strong>fails open</strong>, letting the request proceed to the upstream unauthorized. Only set this to <code>"false"</code> when the auth service is advisory.</p>
+<h3 id="ext-auth-response-headers"><code>ext-auth-response-headers</code><a class="headerlink" href="#ext-auth-response-headers" title="Permanent link">&para;</a></h3>
+<p>Comma-separated list of header names to copy from an <strong>allow</strong> response onto the <strong>upstream request</strong> (so the backend sees e.g. <code>X-Auth-User</code>). For the HTTP transport these come from the 2xx response headers; for gRPC, from the <code>OkHttpResponse</code> headers. The echo backend reflects them back in its JSON body, making this assertion testable end-to-end.</p>
+<h3 id="ext-auth-always-set-cookie"><code>ext-auth-always-set-cookie</code><a class="headerlink" href="#ext-auth-always-set-cookie" title="Permanent link">&para;</a></h3>
+<p><em>(HTTP transport only.)</em> When <code>"true"</code>, any <code>Set-Cookie</code> header present in the auth <strong>deny response</strong> is forwarded to the client. This enables login-redirect flows where the IdP sets a session cookie on the 302 response. Default: <code>false</code>.</p>
 <h3 id="auth-basic-secret"><code>auth-basic-secret</code><a class="headerlink" href="#auth-basic-secret" title="Permanent link">&para;</a></h3>
 <p>Enables <strong>HTTP Basic Authentication</strong> backed by an htpasswd Secret. Value is <code>namespace/name</code> of a <code>Secret</code> resource with:</p>
 <ul>

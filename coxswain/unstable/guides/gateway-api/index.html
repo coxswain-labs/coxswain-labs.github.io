@@ -1112,6 +1112,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#external-authorization-ext_authz" class="md-nav__link">
+    <span class="md-ellipsis">
+      External authorization (ext_authz)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#request-size-limit" class="md-nav__link">
     <span class="md-ellipsis">
       Request size limit
@@ -1863,6 +1872,11 @@
 <td><code>gateway.coxswain-labs.dev/v1alpha1</code></td>
 <td>Coxswain-native per-<code>Service</code> connection policy: connect/idle timeouts, load-balancing algorithm, circuit breaker — see <a href="#coxswainbackendpolicy">below</a></td>
 </tr>
+<tr>
+<td><code>CoxswainExternalAuth</code></td>
+<td><code>gateway.coxswain-labs.dev/v1alpha1</code></td>
+<td>External authorization (<code>ext_authz</code>, HTTP or gRPC) as an HTTPRoute <code>ExtensionRef</code> filter or a Gateway-attached <code>targetRefs</code> policy — see <a href="#external-authorization-ext_authz">below</a></td>
+</tr>
 </tbody>
 </table>
 <div class="admonition warning">
@@ -2208,7 +2222,7 @@
 </tr>
 <tr>
 <td><code>ExtensionRef</code></td>
-<td>Supported (for <code>RateLimit</code>, <code>PathRewriteRegex</code>, <code>IpAccessControl</code>, <code>BasicAuth</code>, <code>RequestSizeLimit</code>, and <code>Compression</code> Coxswain extensions)</td>
+<td>Supported (for <code>RateLimit</code>, <code>PathRewriteRegex</code>, <code>IpAccessControl</code>, <code>BasicAuth</code>, <code>ExternalAuth</code>, <code>RequestSizeLimit</code>, and <code>Compression</code> Coxswain extensions)</td>
 </tr>
 <tr>
 <td><code>CORS</code></td>
@@ -2465,6 +2479,64 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
 <span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
 </code></pre></div>
+<h3 id="external-authorization-ext_authz">External authorization (ext_authz)<a class="headerlink" href="#external-authorization-ext_authz" title="Permanent link">&para;</a></h3>
+<p><code>CoxswainExternalAuth</code> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) delegates an allow/deny decision to an external authorization service before a request reaches its upstream — the Coxswain implementation of <a href="https://gateway-api.sigs.k8s.io/geps/gep-1494/">GEP-1494</a> and the Envoy / Istio / kgateway <code>ext_authz</code> model. The auth service is named by a <strong><code>backendRef</code></strong> (a <code>Service</code> + port), resolved to pod endpoints and load-balanced like any other backend; there is no URL form.</p>
+<p>It is <strong>dual-surface</strong>:</p>
+<ul>
+<li><strong>Route filter</strong> — reference it from an <code>HTTPRouteRule</code> via an <code>ExtensionRef</code> filter (like <code>BasicAuth</code>).</li>
+<li><strong>Gateway policy</strong> — attach it to a <code>Gateway</code> via <code>spec.targetRefs</code> (like <code>ClientTrafficPolicy</code>), making it a default applied to <strong>every</strong> HTTPRoute on that Gateway.</li>
+</ul>
+<p>Precedence is <strong>additive</strong> (GEP-713 override posture): when both a Gateway-attached policy and a route filter apply, the request must pass <strong>both</strong> checks, and the first hard-deny wins. A route filter can add checks but <strong>cannot</strong> remove a Gateway-level mandate — a platform-admin requirement is not weakenable by a tenant. Two policies targeting the same Gateway conflict: the older (by <code>creationTimestamp</code>, ties by name) wins and the loser gets <code>Accepted=False, reason=Conflicted</code> in its <code>status.ancestors[]</code>.</p>
+<p>Two transports, selected by <code>spec.protocol</code>:</p>
+<ul>
+<li><strong><code>HTTP</code></strong> — forward-auth: the original method, Host, path, and client headers are replayed to the service (no body); <strong>2xx</strong> allows, any other status is returned to the client.</li>
+<li><strong><code>GRPC</code></strong> — the Envoy <code>envoy.service.auth.v3.Authorization/Check</code> proto: the request context is sent as a <code>CheckRequest</code>; an <code>OK</code> status allows (copying <code>allowedResponseHeaders</code> from the OK response onto the upstream request), any other status denies with the denied response's HTTP status (default <code>403</code>), headers, and body.</li>
+</ul>
+<p><code>CoxswainExternalAuth</code> is <strong>HTTPRoute-only</strong> (a Gateway-attached policy covers the HTTPRoutes on the Gateway); <code>GRPCRoute</code> is not yet supported.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainExternalAuth</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oauth2</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span><span class="w">          </span><span class="c1"># or GRPC</span>
+<span class="w">  </span><span class="nt">backendRef</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oauth2-proxy</span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4180</span>
+<span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">250ms</span>
+<span class="w">  </span><span class="nt">failClosed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">        </span><span class="c1"># deny (503) on auth-service error/timeout (default)</span>
+<span class="w">  </span><span class="nt">allowedResponseHeaders</span><span class="p">:</span><span class="w"> </span><span class="c1"># copied onto the upstream request on allow</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x-auth-user</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+<span class="c1"># ...</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExtensionRef</span>
+<span class="w">        </span><span class="nt">extensionRef</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
+<span class="w">          </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExternalAuth</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oauth2</span>
+</code></pre></div>
+<p>To make the check a Gateway-wide mandate instead, add <code>targetRefs</code> and omit the route filter:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainExternalAuth</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway-authn</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GRPC</span>
+<span class="w">  </span><span class="nt">backendRef</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ext-authz</span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9000</span>
+<span class="w">  </span><span class="nt">targetRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+</code></pre></div>
+<p>Fail-closed and cross-namespace rules:</p>
+<ul>
+<li><code>failClosed: true</code> (the default) denies with <strong>503</strong> when the auth service is unreachable, errors, or times out; <code>failClosed: false</code> fails <strong>open</strong> (request proceeds unauthorized). A <code>backendRef</code> that resolves to no ready endpoints — or an unsupported protocol — always fails <strong>closed</strong>, regardless of <code>failClosed</code>.</li>
+<li>A <code>backendRef</code> whose <code>namespace</code> differs from the policy's namespace requires a matching <code>ReferenceGrant</code> — <code>from</code> a <code>CoxswainExternalAuth</code> (<code>gateway.coxswain-labs.dev</code>) <code>to</code> a core <code>Service</code>. Without it the reference fails <strong>closed</strong> (503). Same-namespace refs need no grant.</li>
+</ul>
 <h3 id="request-size-limit">Request size limit<a class="headerlink" href="#request-size-limit" title="Permanent link">&para;</a></h3>
 <p><code>RequestSizeLimit</code> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) caps the request body size for a route. Attach it to an <code>HTTPRouteRule</code> with an <code>ExtensionRef</code> filter — the Gateway API surface for the Ingress <code>max-body-size</code> annotation. Like <code>BasicAuth</code>/<code>Compression</code>, this filter is <strong>HTTPRoute-only</strong> and is not enforced on <code>GRPCRoute</code> (see <a href="#request-size-limit-is-not-enforced-on-grpcroute">below</a>).</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
