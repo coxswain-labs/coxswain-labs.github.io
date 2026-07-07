@@ -1670,14 +1670,8 @@
 <td style="text-align: center;">✓</td>
 </tr>
 <tr>
-<td><code>/api/v1/routes</code></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">✓</td>
-<td style="text-align: center;">✓</td>
-</tr>
-<tr>
 <td><code>GET /</code> (operator UI) + <code>/api/v1/{fleet,routing}/*</code></td>
-<td style="text-align: center;">✓ (cluster-wide aggregate + summaries)</td>
+<td style="text-align: center;">✓ (cluster-wide aggregate + summaries, incl. each proxy's compiled routing table at <code>fleet/proxies/{name}/routes</code>)</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 </tr>
@@ -1689,6 +1683,10 @@
 </tr>
 </tbody>
 </table>
+<p>Proxy pods carry no admin query surface beyond <code>/healthz</code>/<code>/readyz</code>/<code>/metrics</code>/<code>/api/v1/health</code> — the
+controller is the sole reader of Kubernetes state and pushes routing to proxies over the discovery
+stream, so it already holds what each proxy serves and answers <code>fleet/proxies/{name}/routes</code> from its
+own local snapshot rather than fanning out to the pod.</p>
 <h2 id="request-path">Request path<a class="headerlink" href="#request-path" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
     A([TCP connection]) --&gt; B{TLS?}

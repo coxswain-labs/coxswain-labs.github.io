@@ -1442,8 +1442,9 @@ alongside it:</p>
 <span class="w">  </span>--discovery-bootstrap-endpoint<span class="w"> </span>https://localhost:50052<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--log-format<span class="w"> </span>console
 </code></pre></div>
-<p>Verify only that Gateway's routes are loaded:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+<p>Verify only that Gateway's routes are loaded — via the controller's admin port, naming this
+dedicated proxy's pod (the proxy itself carries no routes query surface, #537):</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://&lt;controller-admin-address&gt;:8082/api/v1/fleet/proxies/&lt;pod-name&gt;/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 </code></pre></div>
 <p>The output lists exactly the hosts the target Gateway's HTTPRoutes serve; Ingress routes and routes
 attached to other Gateways do not appear. Cross-namespace routes are included automatically — the

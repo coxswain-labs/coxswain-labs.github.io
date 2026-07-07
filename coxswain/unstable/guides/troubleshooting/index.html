@@ -1396,8 +1396,8 @@
 - Bootstrap rejected — check for <code>BootstrapRejected</code> events: <code>kubectl -n coxswain-system get events --field-selector reason=BootstrapRejected</code>
 - Wire-version mismatch — proxy logs <code>FAILED_PRECONDITION</code> and backs off permanently; see <a href="../control-plane-security/#wire-version-skew">Wire-version skew</a></p>
 <h2 id="routes-are-not-being-picked-up">Routes are not being picked up<a class="headerlink" href="#routes-are-not-being-picked-up" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Check the routing table</span>
-curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+<div class="highlight"><pre><span></span><code><span class="c1"># Check the routing table — served from the controller&#39;s admin port, not the proxy&#39;s</span>
+curl<span class="w"> </span>-s<span class="w"> </span>http://&lt;controller-admin-address&gt;:8082/api/v1/fleet/proxies/&lt;pod-name&gt;/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 
 <span class="c1"># Check HTTPRoute status</span>
 kubectl<span class="w"> </span>describe<span class="w"> </span>httproute<span class="w"> </span>my-route
@@ -1414,7 +1414,7 @@ kubectl<span class="w"> </span>describe<span class="w"> </span>gateway<span clas
       Status:                False
       Type:                  ResolvedRefs
 </code></pre></div>
-<p>And in <code>curl -s http://localhost:8082/api/v1/routes | jq .</code> the host entry will either be absent or show no upstream addresses.</p>
+<p>And in the routes query above, the host entry will either be absent or show no upstream addresses.</p>
 <h2 id="tls-certificate-is-not-being-served">TLS certificate is not being served<a class="headerlink" href="#tls-certificate-is-not-being-served" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Verify the Secret exists and has the correct type:</li>

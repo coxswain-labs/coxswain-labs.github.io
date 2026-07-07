@@ -1541,7 +1541,7 @@
 <td><code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code></td>
 <td><code>--management-bind-address</code></td>
 <td><code>0.0.0.0</code></td>
-<td>IP the health (<code>/healthz</code>, <code>/readyz</code>) and admin (<code>/metrics</code>, <code>/api/v1/routes</code>) servers bind to</td>
+<td>IP the health (<code>/healthz</code>, <code>/readyz</code>) and admin (<code>/metrics</code>, <code>/api/v1/health</code>) servers bind to</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_INGRESS_ACCEPT_PROXY_PROTOCOL</code></td>
@@ -1666,7 +1666,7 @@
 <td>Admin</td>
 <td><code>8082</code></td>
 <td><code>COXSWAIN_ADMIN_PORT</code></td>
-<td><code>/metrics</code>, <code>/api/v1/routes</code>, <code>/api/v1/health</code></td>
+<td><code>/metrics</code>, <code>/api/v1/health</code> (controller role also serves <code>/api/v1/{fleet,routing,problems,...}</code>)</td>
 </tr>
 <tr>
 <td>Discovery (Stream)</td>
@@ -1759,7 +1759,7 @@ for the model, CA provisioning modes (<code>auto</code> / <code>external</code> 
 SVID rotation, and troubleshooting.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The data plane and the management surface bind independently: <code>COXSWAIN_PROXY_BIND_ADDRESS</code> for the HTTP/HTTPS proxy listeners, and <code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code> for the health and admin servers. Both default to <code>0.0.0.0</code>; set the management address to a management-network IP to keep <code>/metrics</code>, <code>/api/v1/routes</code>, and the health endpoints off the data-plane interface.</p>
+<p>The data plane and the management surface bind independently: <code>COXSWAIN_PROXY_BIND_ADDRESS</code> for the HTTP/HTTPS proxy listeners, and <code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code> for the health and admin servers. Both default to <code>0.0.0.0</code>; set the management address to a management-network IP to keep <code>/metrics</code>, <code>/api/v1/health</code>, and the health endpoints off the data-plane interface.</p>
 </div>
 <h2 id="leader-election">Leader election<a class="headerlink" href="#leader-election" title="Permanent link">&para;</a></h2>
 <p>All replicas maintain a current routing table and serve traffic; only the leader writes status back to <code>Ingress</code>, <code>Gateway</code>, and <code>HTTPRoute</code> objects. The lease parameters must satisfy <code>lease-ttl ≥ 3 × lease-renew-interval</code>.</p>

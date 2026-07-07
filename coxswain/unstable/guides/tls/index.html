@@ -1967,8 +1967,9 @@ left-most label of the expected name (<code>my-service.example.com</code>).</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>example-com-tls<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.type}&#39;</span>
 kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>example-com-tls<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.tls\.crt}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span><span class="p">|</span><span class="w"> </span>openssl<span class="w"> </span>x509<span class="w"> </span>-text<span class="w"> </span>-noout
 </code></pre></div>
-<p>Check the routing table and logs:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://localhost:8082/api/v1/routes
+<p>Check the routing table (from the controller's admin port — see
+<a href="../../reference/observability/#routes-endpoint">Observability reference</a>) and logs:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://&lt;controller-admin-address&gt;:8082/api/v1/fleet/proxies/&lt;pod-name&gt;/routes
 curl<span class="w"> </span>http://localhost:8082/api/v1/health
 </code></pre></div>
 <p>A missing or malformed Secret produces a warning log but does not affect HTTP routes.</p>
