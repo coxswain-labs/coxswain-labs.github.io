@@ -1774,7 +1774,7 @@ reason: ConfigurationChanged
 <tbody>
 <tr>
 <td><code>perPort</code> validation overrides</td>
-<td><strong>Supported</strong> — <code>spec.tls.frontend.perPort[].tls.validation</code> overrides the gateway <code>default</code> for listeners on that port; resolution is keyed by the listener's hostname</td>
+<td><strong>Supported</strong> — <code>spec.tls.frontend.perPort[].tls.validation</code> overrides the gateway <code>default</code> for listeners on that port; the resolved config is keyed by the listener's bind port + hostname, so two Gateways sharing a hostname keep independent validation policies</td>
 </tr>
 <tr>
 <td>Cross-namespace CA refs</td>
