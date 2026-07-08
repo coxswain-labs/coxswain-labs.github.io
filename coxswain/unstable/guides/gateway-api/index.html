@@ -1112,6 +1112,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#jwt-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      JWT authentication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#external-authorization-ext_authz" class="md-nav__link">
     <span class="md-ellipsis">
       External authorization (ext_authz)
@@ -2243,7 +2252,7 @@
 </tr>
 <tr>
 <td><code>ExtensionRef</code></td>
-<td>Supported (for <code>RateLimit</code>, <code>PathRewriteRegex</code>, <code>IpAccessControl</code>, <code>BasicAuth</code>, <code>ExternalAuth</code>, <code>RequestSizeLimit</code>, and <code>Compression</code> Coxswain extensions)</td>
+<td>Supported (for <code>RateLimit</code>, <code>PathRewriteRegex</code>, <code>IpAccessControl</code>, <code>BasicAuth</code>, <code>ExternalAuth</code>, <code>RequestSizeLimit</code>, <code>Compression</code>, and <code>JwtAuth</code> Coxswain extensions)</td>
 </tr>
 <tr>
 <td><code>CORS</code></td>
@@ -2500,6 +2509,47 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
 <span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
 </code></pre></div>
+<h3 id="jwt-authentication">JWT authentication<a class="headerlink" href="#jwt-authentication" title="Permanent link">&para;</a></h3>
+<p><code>JwtAuth</code> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) validates a bearer token's signature against a JSON Web Key Set (JWKS) — the Coxswain implementation of Envoy's <code>envoy.filters.http.jwt_authn</code> <code>JwtProvider</code> / Istio's <code>RequestAuthentication.jwtRules</code>. Attach it to an <code>HTTPRouteRule</code> or <code>GRPCRouteRule</code> with an <code>ExtensionRef</code> filter — the Gateway API surface for the <a href="../ingress-annotations/">Ingress <code>auth-jwt</code> annotation</a>. No Gateway API standard exists for in-proxy JWT validation (GEP-1494 covers <em>delegated</em> ext_authz, a different model). Unlike <code>BasicAuth</code> (an HTTP/browser idiom), bearer/JWT auth is a common gRPC pattern, so <code>JwtAuth</code> is supported on both route kinds.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JwtAuth</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">issuer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://issuer.example.com</span>
+<span class="w">  </span><span class="nt">audiences</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">  </span><span class="nt">jwks</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">remote</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://issuer.example.com/.well-known/jwks.json</span>
+<span class="w">      </span><span class="nt">refreshInterval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+<span class="w">  </span><span class="nt">claimToHeaders</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">claim</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub</span>
+<span class="w">      </span><span class="nt">header</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x-user-id</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+<span class="c1"># ...</span>
+<span class="w">    </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExtensionRef</span>
+<span class="w">        </span><span class="nt">extensionRef</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
+<span class="w">          </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JwtAuth</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+</code></pre></div>
+<p>Semantics:</p>
+<ul>
+<li><code>spec.jwks</code> is exactly one of:</li>
+<li><code>remote.uri</code> — a JWKS endpoint. <strong>Resolved by the controller, never the proxy</strong> (the Istio model, not Envoy's default proxy-side fetch): the read-only data plane never egresses to an identity provider. <code>remote.refreshInterval</code> (default <code>5m</code>) bounds the refetch cadence; a shorter upstream <code>Cache-Control: max-age</code> is honored instead.</li>
+<li><code>inline.jwks</code> — a JWKS object given directly in the spec (no controller fetch).</li>
+<li>The bearer token is read from <code>Authorization: Bearer &lt;token&gt;</code> by default, or from <code>fromHeaders</code> when set.</li>
+<li>Signature verification uses <strong>the key's own declared <code>alg</code></strong>, never the token header's <code>alg</code> (prevents algorithm-confusion attacks). Only asymmetric algorithms are supported (RS/PS/ES/EdDSA) — JWKS is inherently asymmetric.</li>
+<li><code>iss</code> must match <code>spec.issuer</code>. <code>aud</code> is checked against <code>spec.audiences</code> only when <code>audiences</code> is non-empty.</li>
+<li>On success, <code>claimToHeaders</code> copies named claims onto upstream request headers, and <code>forwardPayloadHeader</code> (if set) carries the base64url-encoded full claims payload. The original token is stripped from the upstream request unless <code>forward: true</code>.</li>
+<li>Missing/invalid/expired/wrong-issuer/wrong-audience tokens get <code>401</code> with <code>WWW-Authenticate: Bearer</code>.</li>
+<li>An unresolved JWKS (fetch not yet complete, fetch failing, or unparseable/empty) fails <strong>closed</strong> with <code>503</code> — an operator who attached this filter expects enforcement.</li>
+<li>A missing <code>JwtAuth</code> CR fails <strong>open</strong> (no auth enforced), matching the other <code>ExtensionRef</code> auth resolvers.</li>
+</ul>
 <h3 id="external-authorization-ext_authz">External authorization (ext_authz)<a class="headerlink" href="#external-authorization-ext_authz" title="Permanent link">&para;</a></h3>
 <p><code>CoxswainExternalAuth</code> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) delegates an allow/deny decision to an external authorization service before a request reaches its upstream — the Coxswain implementation of <a href="https://gateway-api.sigs.k8s.io/geps/gep-1494/">GEP-1494</a> and the Envoy / Istio / kgateway <code>ext_authz</code> model. The auth service is named by a <strong><code>backendRef</code></strong> (a <code>Service</code> + port), resolved to pod endpoints and load-balanced like any other backend; there is no URL form.</p>
 <p>It is <strong>dual-surface</strong>:</p>
@@ -2744,7 +2794,7 @@
 </tr>
 <tr>
 <td><code>spec.rules[].filters</code></td>
-<td><code>RequestHeaderModifier</code>, <code>ResponseHeaderModifier</code>, <code>ExtensionRef</code> (<code>RateLimit</code>, <code>IpAccessControl</code>)</td>
+<td><code>RequestHeaderModifier</code>, <code>ResponseHeaderModifier</code>, <code>ExtensionRef</code> (<code>RateLimit</code>, <code>IpAccessControl</code>, <code>JwtAuth</code>)</td>
 </tr>
 <tr>
 <td><code>spec.rules[].backendRefs</code></td>
@@ -2756,7 +2806,7 @@
 </tr>
 </tbody>
 </table>
-<p>GRPCRoute supports the protocol-agnostic <code>ExtensionRef</code> filters — <a href="../rate-limiting/"><code>RateLimit</code></a> and <a href="#ip-access-control"><code>IpAccessControl</code></a> — which apply identically to gRPC (HTTP/2) traffic. <code>PathRewriteRegex</code> is not supported: for gRPC the request path <em>is</em> the <code>/{service}/{method}</code> RPC address, so rewriting it is meaningless. <code>BasicAuth</code> and <code>Compression</code> are HTTP-only idioms and are not supported either — gRPC clients authenticate with bearer tokens or mTLS, and gRPC compresses per-message at the framing layer rather than via HTTP <code>Content-Encoding</code>. <code>RequestSizeLimit</code> is also not enforced on gRPC — a mid-stream body cap over HTTP/2 deadlocks the client under pingora (<a href="https://github.com/coxswain-labs/coxswain/issues/509">#509</a>), so gRPC message sizes are left to the backend's <code>max_recv_msg_size</code> (<a href="#request-size-limit-is-not-enforced-on-grpcroute">details</a>). Any other <code>ExtensionRef</code> (and <code>RequestMirror</code>) is skipped with a WARN log line.</p>
+<p>GRPCRoute supports the protocol-agnostic <code>ExtensionRef</code> filters — <a href="../rate-limiting/"><code>RateLimit</code></a>, <a href="#ip-access-control"><code>IpAccessControl</code></a>, and <a href="#jwt-authentication"><code>JwtAuth</code></a> (bearer/JWT auth is a common gRPC pattern, unlike <code>BasicAuth</code>) — which apply identically to gRPC (HTTP/2) traffic. <code>PathRewriteRegex</code> is not supported: for gRPC the request path <em>is</em> the <code>/{service}/{method}</code> RPC address, so rewriting it is meaningless. <code>BasicAuth</code> and <code>Compression</code> are HTTP-only idioms and are not supported either — gRPC clients authenticate with bearer tokens or mTLS, and gRPC compresses per-message at the framing layer rather than via HTTP <code>Content-Encoding</code>. <code>RequestSizeLimit</code> is also not enforced on gRPC — a mid-stream body cap over HTTP/2 deadlocks the client under pingora (<a href="https://github.com/coxswain-labs/coxswain/issues/509">#509</a>), so gRPC message sizes are left to the backend's <code>max_recv_msg_size</code> (<a href="#request-size-limit-is-not-enforced-on-grpcroute">details</a>). Any other <code>ExtensionRef</code> (and <code>RequestMirror</code>) is skipped with a WARN log line.</p>
 <h3 id="status-conditions_2">Status conditions<a class="headerlink" href="#status-conditions_2" title="Permanent link">&para;</a></h3>
 <table>
 <thead>

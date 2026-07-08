@@ -1357,6 +1357,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#auth-jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-jwt
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2305,6 +2314,12 @@
 <td><code>"my-ns/my-htpasswd"</code></td>
 </tr>
 <tr>
+<td><code>ingress.coxswain-labs.dev/auth-jwt</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-jwt"</code></td>
+</tr>
+<tr>
 <td><code>ingress.coxswain-labs.dev/compression-gzip</code></td>
 <td>boolean</td>
 <td><code>false</code></td>
@@ -3075,6 +3090,46 @@ Ingress and Gateway API backends:</p>
 <p>Always generate credentials with <code>htpasswd -B</code> (bcrypt). Avoid <code>htpasswd -s</code> (<code>{SHA}</code>) — SHA1 is unsalted and can be cracked offline in seconds with commodity hardware.</p>
 <p>Credential hashes are zeroed from memory when the credential list is replaced at reconcile time (<code>zeroize</code>). The Helm chart already ships <code>seccompProfile: RuntimeDefault</code>, <code>readOnlyRootFilesystem: true</code>, and <code>capabilities.drop: ALL</code> by default. For the remaining defense-in-depth, configure nodes with <code>vm.swappiness=0</code> so hashes can't be paged to disk — this is a node-level kernel parameter that Kubernetes cannot enforce per-pod.</p>
 </div>
+<h3 id="auth-jwt"><code>auth-jwt</code><a class="headerlink" href="#auth-jwt" title="Permanent link">&para;</a></h3>
+<p>Enables <strong>JWT (JWKS bearer-token) validation</strong> — the Ingress surface for the <a href="../gateway-api/#jwt-authentication"><code>JwtAuth</code> CRD</a>, same idiom as <code>auth-basic-secret</code>. Value is <code>namespace/name</code> of a <code>JwtAuth</code> resource; both surfaces resolve the same CR to the same runtime config, so one <code>JwtAuth</code> can back an Ingress and an HTTPRoute identically.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JwtAuth</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-jwt</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">issuer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://issuer.example.com</span>
+<span class="w">  </span><span class="nt">audiences</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">  </span><span class="nt">jwks</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">remote</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://issuer.example.com/.well-known/jwks.json</span>
+<span class="w">  </span><span class="nt">claimToHeaders</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">claim</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub</span>
+<span class="w">      </span><span class="nt">header</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x-user-id</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-jwt</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/my-jwt&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p>A valid, signed, unexpired, correct-issuer bearer token is admitted; the verified <code>sub</code> claim is forwarded as <code>x-user-id</code>. A missing/invalid/expired/wrong-issuer/wrong-audience token receives <strong>401</strong> with <code>WWW-Authenticate: Bearer</code>. A missing <code>JwtAuth</code> CR fails <strong>closed</strong> (<strong>503</strong>) — matching <code>auth-basic-secret</code>/<code>auth-url</code>: an operator who set <code>auth-jwt</code> intends the route to require a bearer token, so a stale or typo'd reference must not silently disable authentication. An unresolved JWKS also fails <strong>closed</strong> (<strong>503</strong>). See the <a href="../gateway-api/#jwt-authentication"><code>JwtAuth</code> CRD reference</a> for the full spec (remote vs. inline JWKS, <code>fromHeaders</code>, <code>forwardPayloadHeader</code>, <code>forward</code>).</p>
 <h2 id="client-certificate-mtls">Client certificate mTLS<a class="headerlink" href="#client-certificate-mtls" title="Permanent link">&para;</a></h2>
 <p>Requires clients to present a valid TLS certificate during the handshake — <strong>mutual TLS (mTLS)</strong>. When enabled, the proxy aborts the handshake if the client presents no certificate or one not signed by the configured CA. This matches the semantics of Istio's <code>tls.mode: MUTUAL</code>: enforcement is at the TLS layer, not HTTP, so there is no 400/403 response — the connection simply does not complete.</p>
 <p><strong>Enforcement model.</strong> The proxy aborts the TLS handshake (BoringSSL <code>FAIL_IF_NO_PEER_CERT</code>). Clients that present no cert or a cert from an unknown CA receive a TLS alert; HTTP never starts. The backend pod is never reached.</p>
