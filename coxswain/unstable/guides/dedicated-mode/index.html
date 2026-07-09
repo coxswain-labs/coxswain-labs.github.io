@@ -342,16 +342,17 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="../../architecture/" class="md-tabs__link">
-        
-  
     
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/" class="md-tabs__link">
+          
   
   Architecture
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -1262,16 +1263,106 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../architecture/" class="md-nav__link">
+    
+    
+    
+      
+      
         
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     Architecture
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/deployment-models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/discovery-protocol/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Discovery protocol
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1316,7 +1407,7 @@
 
 <h1 id="dedicated-proxy-pools">Dedicated proxy pools<a class="headerlink" href="#dedicated-proxy-pools" title="Permanent link">&para;</a></h1>
 <p>A <strong>dedicated proxy (per Gateway)</strong> is a proxy <code>Deployment</code> the controller provisions for a single named <code>Gateway</code>, serving only that Gateway's routes in isolation from the shared pool. It is a pool in its own right — a <code>Deployment</code> scaled by <code>CoxswainGatewayParameters.spec.replicas</code> (default <code>1</code>), not a single pod — with its own <code>Service</code> and <code>ServiceAccount</code>.</p>
-<p>This is a Gateway API feature. A <code>Gateway</code> opts in through <code>spec.infrastructure.parametersRef</code> (GEP-1762), or inherits the choice from its <code>GatewayClass</code>'s <code>spec.parametersRef</code>, pointing at a <code>CoxswainGatewayParameters</code> object. Classic <code>Ingress</code> has no equivalent of <code>parametersRef</code> and is always served by the <a href="../../architecture/#shared">shared pool</a> — as is every Gateway that doesn't opt in.</p>
+<p>This is a Gateway API feature. A <code>Gateway</code> opts in through <code>spec.infrastructure.parametersRef</code> (GEP-1762), or inherits the choice from its <code>GatewayClass</code>'s <code>spec.parametersRef</code>, pointing at a <code>CoxswainGatewayParameters</code> object. Classic <code>Ingress</code> has no equivalent of <code>parametersRef</code> and is always served by the <a href="../../architecture/deployment-models/#shared">shared pool</a> — as is every Gateway that doesn't opt in.</p>
 <h2 id="opt-a-gateway-into-a-dedicated-pool">Opt a Gateway into a dedicated pool<a class="headerlink" href="#opt-a-gateway-into-a-dedicated-pool" title="Permanent link">&para;</a></h2>
 <p>Create a <code>CoxswainGatewayParameters</code> object and point the <code>Gateway</code> at it via <code>spec.infrastructure.parametersRef</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
@@ -1464,7 +1555,7 @@ alongside it:</p>
 <span class="w">  </span>--log-format<span class="w"> </span>console
 </code></pre></div>
 <p>Verify only that Gateway's routes are loaded — via the controller's admin port, naming this
-dedicated proxy's pod (the proxy itself carries no routes query surface, #537):</p>
+dedicated proxy's pod (the proxy itself carries no routes query surface):</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://&lt;controller-admin-address&gt;:8082/api/v1/fleet/proxies/&lt;pod-name&gt;/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 </code></pre></div>
 <p>The output lists exactly the hosts the target Gateway's HTTPRoutes serve; Ingress routes and routes

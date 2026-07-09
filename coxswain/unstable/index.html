@@ -338,16 +338,17 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="architecture/" class="md-tabs__link">
-        
-  
     
+    
+      <li class="md-tabs__item">
+        <a href="architecture/" class="md-tabs__link">
+          
   
   Architecture
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -1209,16 +1210,106 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="architecture/" class="md-nav__link">
+    
+    
+    
+      
+      
         
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     Architecture
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture/deployment-models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture/discovery-protocol/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Discovery protocol
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1279,7 +1370,7 @@ Active development is getting ready for v0.5 (Gateway API extended features). Fe
 <li>Controller/proxy split with a strict security boundary — proxy pods hold zero Kubernetes API access</li>
 <li>Rich <code>ingress.coxswain-labs.dev/*</code> annotation surface with admission-time validation via <code>ValidatingAdmissionPolicy</code></li>
 </ul>
-<p>See <a href="architecture/">Architecture</a> for the deployment models and security boundary.</p>
+<p>See <a href="architecture/">Architecture</a> for how the controller and proxy roles fit together, and <a href="architecture/deployment-models/">Deployment models</a> for Shared vs Dedicated.</p>
 <h2 id="quick-install">Quick install<a class="headerlink" href="#quick-install" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># 1. Install Gateway API CRDs</span>
 kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml

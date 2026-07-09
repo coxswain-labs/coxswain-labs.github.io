@@ -342,16 +342,17 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="../../architecture/" class="md-tabs__link">
-        
-  
     
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/" class="md-tabs__link">
+          
   
   Architecture
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -1256,9 +1257,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#example_4" class="md-nav__link">
+  <a href="#full-example" class="md-nav__link">
     <span class="md-ellipsis">
-      Example
+      Full example
     </span>
   </a>
   
@@ -1268,6 +1269,33 @@
   <a href="#behaviour" class="md-nav__link">
     <span class="md-ellipsis">
       Behaviour
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancing-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load-balancing algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Circuit breaker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Session persistence
     </span>
   </a>
   
@@ -1307,7 +1335,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#example_5" class="md-nav__link">
+  <a href="#example_4" class="md-nav__link">
     <span class="md-ellipsis">
       Example
     </span>
@@ -1362,7 +1390,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#example_6" class="md-nav__link">
+  <a href="#example_5" class="md-nav__link">
     <span class="md-ellipsis">
       Example
     </span>
@@ -1395,7 +1423,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#example_7" class="md-nav__link">
+  <a href="#example_6" class="md-nav__link">
     <span class="md-ellipsis">
       Example
     </span>
@@ -1793,16 +1821,106 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../architecture/" class="md-nav__link">
+    
+    
+    
+      
+      
         
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
   
   <span class="md-ellipsis">
     Architecture
   </span>
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/deployment-models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/discovery-protocol/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Discovery protocol
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2636,7 +2754,7 @@
 </ul>
 <h4 id="request-size-limit-is-not-enforced-on-grpcroute">Request size limit is not enforced on GRPCRoute<a class="headerlink" href="#request-size-limit-is-not-enforced-on-grpcroute" title="Permanent link">&para;</a></h4>
 <p><code>RequestSizeLimit</code> attached to a <code>GRPCRoute</code> is accepted but <strong>not enforced</strong> — the reconciler skips it and logs a WARN line (as it does for <code>BasicAuth</code>/<code>Compression</code>). gRPC message sizes are instead governed by the backend's own <code>max_recv_msg_size</code> (gRPC servers reject oversized messages with <code>RESOURCE_EXHAUSTED</code>; the default receive cap is ~4 MB).</p>
-<p>The reason is a <code>pingora-proxy</code> limitation: a <code>request_body_filter</code> rejection over HTTP/2 is swallowed by pingora's h2 proxy loop and never delivered to the client, deadlocking the request (<a href="https://github.com/coxswain-labs/coxswain/issues/509">#509</a>). gRPC never sends <code>Content-Length</code>, so the up-front check that guards HTTP/2 elsewhere cannot apply. Faithful edge enforcement for gRPC/HTTP/2 needs buffer-first rejection (as Envoy's <code>buffer</code> filter does) and is deferred until pingora ships request-body buffering (pingora <a href="https://github.com/cloudflare/pingora/issues/816">#816</a>/<a href="https://github.com/cloudflare/pingora/issues/780">#780</a>).</p>
+<p>The reason is a <code>pingora-proxy</code> limitation: a <code>request_body_filter</code> rejection over HTTP/2 is swallowed by pingora's h2 proxy loop and never delivered to the client, deadlocking the request. gRPC never sends <code>Content-Length</code>, so the up-front check that guards HTTP/2 elsewhere cannot apply. Faithful edge enforcement for gRPC/HTTP/2 needs buffer-first rejection (as Envoy's <code>buffer</code> filter does) and is deferred until pingora ships request-body buffering.</p>
 <h3 id="response-compression">Response compression<a class="headerlink" href="#response-compression" title="Permanent link">&para;</a></h3>
 <p><code>Compression</code> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) enables gzip/brotli response compression for a route. Attach it to an <code>HTTPRouteRule</code> with an <code>ExtensionRef</code> filter — the same CRD the Ingress <code>compression</code> annotation references (see <a href="../ingress-annotations/#compression">Ingress annotations</a>). gRPC compresses per-message at the gRPC framing layer (<code>grpc-encoding</code>), not via HTTP <code>Content-Encoding</code>, so this filter is <strong>not</strong> supported on <code>GRPCRoute</code>; the proxy also refuses to compress any response whose <code>Content-Type</code> starts with <code>application/grpc</code>, even on an HTTPRoute (a gRPC-over-HTTPRoute edge case), regardless of the CR's <code>types</code> allow-list.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
@@ -2806,7 +2924,7 @@
 </tr>
 </tbody>
 </table>
-<p>GRPCRoute supports the protocol-agnostic <code>ExtensionRef</code> filters — <a href="../rate-limiting/"><code>RateLimit</code></a>, <a href="#ip-access-control"><code>IpAccessControl</code></a>, and <a href="#jwt-authentication"><code>JwtAuth</code></a> (bearer/JWT auth is a common gRPC pattern, unlike <code>BasicAuth</code>) — which apply identically to gRPC (HTTP/2) traffic. <code>PathRewriteRegex</code> is not supported: for gRPC the request path <em>is</em> the <code>/{service}/{method}</code> RPC address, so rewriting it is meaningless. <code>BasicAuth</code> and <code>Compression</code> are HTTP-only idioms and are not supported either — gRPC clients authenticate with bearer tokens or mTLS, and gRPC compresses per-message at the framing layer rather than via HTTP <code>Content-Encoding</code>. <code>RequestSizeLimit</code> is also not enforced on gRPC — a mid-stream body cap over HTTP/2 deadlocks the client under pingora (<a href="https://github.com/coxswain-labs/coxswain/issues/509">#509</a>), so gRPC message sizes are left to the backend's <code>max_recv_msg_size</code> (<a href="#request-size-limit-is-not-enforced-on-grpcroute">details</a>). Any other <code>ExtensionRef</code> (and <code>RequestMirror</code>) is skipped with a WARN log line.</p>
+<p>GRPCRoute supports the protocol-agnostic <code>ExtensionRef</code> filters — <a href="../rate-limiting/"><code>RateLimit</code></a>, <a href="#ip-access-control"><code>IpAccessControl</code></a>, and <a href="#jwt-authentication"><code>JwtAuth</code></a> (bearer/JWT auth is a common gRPC pattern, unlike <code>BasicAuth</code>) — which apply identically to gRPC (HTTP/2) traffic. <code>PathRewriteRegex</code> is not supported: for gRPC the request path <em>is</em> the <code>/{service}/{method}</code> RPC address, so rewriting it is meaningless. <code>BasicAuth</code> and <code>Compression</code> are HTTP-only idioms and are not supported either — gRPC clients authenticate with bearer tokens or mTLS, and gRPC compresses per-message at the framing layer rather than via HTTP <code>Content-Encoding</code>. <code>RequestSizeLimit</code> is also not enforced on gRPC — a mid-stream body cap over HTTP/2 deadlocks the client under pingora, so gRPC message sizes are left to the backend's <code>max_recv_msg_size</code> (<a href="#request-size-limit-is-not-enforced-on-grpcroute">details</a>). Any other <code>ExtensionRef</code> (and <code>RequestMirror</code>) is skipped with a WARN log line.</p>
 <h3 id="status-conditions_2">Status conditions<a class="headerlink" href="#status-conditions_2" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2833,56 +2951,92 @@
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>grpcroute<span class="w"> </span>my-grpc-route
 </code></pre></div>
 <h2 id="coxswainbackendpolicy">CoxswainBackendPolicy<a class="headerlink" href="#coxswainbackendpolicy" title="Permanent link">&para;</a></h2>
-<p><code>CoxswainBackendPolicy</code> is a Coxswain-native <a href="https://gateway-api.sigs.k8s.io/geps/gep-713/">direct policy attachment</a> (<code>gateway.coxswain-labs.dev/v1alpha1</code>) that sets per-backend upstream connection policy: connect/idle timeouts, the load-balancing algorithm, and a circuit breaker. It attaches to a <code>Service</code>; its settings apply to every Gateway API route (<code>HTTPRoute</code> or <code>GRPCRoute</code>) whose backend resolves to that Service.</p>
-<p>It is the Gateway API counterpart to a family of Ingress annotations — <code>connect-timeout</code> / <code>upstream-keepalive-timeout</code>, <code>load-balance</code>, and <code>circuit-breaker-*</code> — none of which has a Gateway API standard equivalent. Each field group is <strong>deliberately proprietary</strong>: it is anchored to a first-class Envoy/Istio concept (LB policies, outlier detection), not an nginx-ism, and there is no upstream Gateway API convergence to await.</p>
+<p><code>CoxswainBackendPolicy</code> configures how the proxy talks to the pods behind a <code>Service</code> — connection timeouts, the load-balancing algorithm, a circuit breaker, and sticky sessions. Create one, point it at a <code>Service</code> by name, and every route that sends traffic to that Service picks up the settings — whether that route is an <code>HTTPRoute</code>, a <code>GRPCRoute</code>, or a classic <code>Ingress</code>. You do not add anything to the route itself; the policy attaches to the Service and takes effect automatically.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainBackendPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-backend-policy</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">targetRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span><span class="w">          </span><span class="c1"># &lt;- must be a Service in this same namespace</span>
+<span class="w">  </span><span class="nt">timeouts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">connect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500ms</span>
+</code></pre></div>
+<p><code>targetRefs</code> is the only required field. <code>timeouts</code>, <code>loadBalancer</code>, <code>circuitBreaker</code>, and <code>sessionPersistence</code> are all independent and optional — set only the ones you need; anything you omit keeps the default connection behavior (immediate connect with no timeout override, weighted round-robin, no circuit breaker, no sticky sessions).</p>
+<div class="admonition note">
+<p class="admonition-title">Why a separate resource, not a route annotation or filter?</p>
+<p>These four settings all describe the <em>connection to the upstream Service</em>, not anything about how a request is routed there — so unlike filters (retry, rate limiting, compression), which attach per-route, <code>CoxswainBackendPolicy</code> attaches per-Service (<a href="https://gateway-api.sigs.k8s.io/geps/gep-713/">GEP-713</a> direct policy attachment). Two consequences follow: (1) if two routes (say an Ingress and an HTTPRoute) both send traffic to the same Service, they share one connection policy — that's intentional, since connection pooling and circuit breaking are properties of the upstream, not the route; (2) none of <code>loadBalancer</code>/<code>circuitBreaker</code> has a stable Gateway API standard to converge toward — Gateway API v1.6.0 covers neither (its closest concept, <code>BackendLBPolicy</code>, was replaced by an experimental type that only handles retry budgets and session persistence) — so those two fields are intentionally modeled after Envoy's native load-balancing policies and outlier detection instead. <code>sessionPersistence</code> does mirror Gateway API's own (experimental) <code>SessionPersistence</code> shape, as closely as Coxswain's persistence mechanism supports (see below).</p>
+</div>
 <h3 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
 <th>Field</th>
+<th>Required?</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>targetRefs[]</code></td>
-<td>The <code>Service</code> objects this policy applies to (same namespace). <code>group: ""</code>, <code>kind: Service</code>.</td>
+<td><strong>Yes</strong></td>
+<td>The <code>Service</code> objects this policy applies to, in the <em>same namespace</em> as the policy. Each entry: <code>{ group: "", kind: Service, name: &lt;service-name&gt; }</code>.</td>
 </tr>
 <tr>
 <td><code>timeouts.connect</code></td>
-<td>Upstream TCP-connect timeout (<a href="https://gateway-api.sigs.k8s.io/geps/gep-2257/">GEP-2257</a> duration, e.g. <code>500ms</code>, <code>5s</code>). Bounds how long the proxy waits to establish a connection before failing the request with <code>502</code>.</td>
+<td>optional</td>
+<td>Upstream TCP-connect timeout (<a href="https://gateway-api.sigs.k8s.io/geps/gep-2257/">GEP-2257</a> duration, e.g. <code>500ms</code>, <code>5s</code>). If the proxy can't establish a connection to a pod within this time, it fails the request with <code>502</code> instead of waiting indefinitely.</td>
 </tr>
 <tr>
 <td><code>timeouts.idle</code></td>
-<td>Upstream keepalive idle timeout — how long an idle pooled connection is retained before eviction.</td>
+<td>optional</td>
+<td>How long an idle, already-established connection to a pod is kept open in the connection pool before being closed.</td>
 </tr>
 <tr>
 <td><code>loadBalancer.algorithm</code></td>
-<td>Upstream load-balancing algorithm. One of <code>round_robin</code> (default), <code>least_conn</code>, <code>ewma</code>, <code>ip_hash</code>, <code>hash:uri</code>, <code>hash:source-ip</code>, <code>hash:header=&lt;name&gt;</code>, <code>hash:cookie=&lt;name&gt;</code>. Mirrors the Ingress <code>load-balance</code> annotation.</td>
+<td>optional</td>
+<td>Which algorithm picks a pod for each request. See <a href="#load-balancing-algorithm">Load-balancing algorithm</a> below for the full list of values.</td>
 </tr>
 <tr>
 <td><code>circuitBreaker.threshold</code></td>
-<td>Error rate (%) that trips the breaker (<code>1</code>–<code>100</code>). The gate: absent or out of range disables the breaker.</td>
+<td>optional</td>
+<td>Error rate (%, <code>1</code>–<code>100</code>) that trips the breaker. This is the on/off switch: omit it (or set it out of range) and the circuit breaker is disabled entirely — the other <code>circuitBreaker.*</code> fields have no effect on their own. See <a href="#circuit-breaker">Circuit breaker</a> below.</td>
 </tr>
 <tr>
 <td><code>circuitBreaker.window</code></td>
-<td>Rolling window over which the EWMA error rate is computed (GEP-2257 duration). Default <code>10s</code>.</td>
+<td>optional</td>
+<td>How far back the proxy looks when computing the error rate. Default <code>10s</code>.</td>
 </tr>
 <tr>
 <td><code>circuitBreaker.openDuration</code></td>
-<td>How long the breaker stays open before allowing a probe. Default <code>5s</code>. Starting duration when <code>maxOpenDuration</code> enables exponential backoff.</td>
+<td>optional</td>
+<td>Once tripped, how long the breaker stays open before it lets a test request through. Default <code>5s</code>.</td>
 </tr>
 <tr>
 <td><code>circuitBreaker.minRequests</code></td>
-<td>Minimum requests in the window before the breaker can trip. Default <code>10</code>.</td>
+<td>optional</td>
+<td>Don't trip the breaker until at least this many requests have been observed in the window — protects low-traffic routes from tripping on one unlucky failure. Default <code>10</code>.</td>
 </tr>
 <tr>
 <td><code>circuitBreaker.maxOpenDuration</code></td>
-<td>Optional cap that enables exponential backoff from <code>openDuration</code> up to this value. Unset → constant open duration.</td>
+<td>optional</td>
+<td>If a pod keeps failing its recovery checks, each re-trip doubles the open duration up to this cap, instead of always waiting the same <code>openDuration</code>. Omit for a constant (non-growing) open duration.</td>
+</tr>
+<tr>
+<td><code>sessionPersistence.type</code></td>
+<td>optional</td>
+<td>How to pin a client to one pod: <code>Cookie</code> or <code>Header</code>. See <a href="#session-persistence">Session persistence</a> below for guidance on which to pick.</td>
+</tr>
+<tr>
+<td><code>sessionPersistence.sessionName</code></td>
+<td>conditionally required</td>
+<td>The cookie name (<code>Cookie</code> mode — optional, defaults to <code>__coxswain_session</code>) or the request header to key on (<code>Header</code> mode — <strong>required</strong>, no default).</td>
 </tr>
 </tbody>
 </table>
-<h3 id="example_4">Example<a class="headerlink" href="#example_4" title="Permanent link">&para;</a></h3>
+<h3 id="full-example">Full example<a class="headerlink" href="#full-example" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainBackendPolicy</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -2902,16 +3056,127 @@
 <span class="w">    </span><span class="nt">window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
 <span class="w">    </span><span class="nt">openDuration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
 <span class="w">    </span><span class="nt">minRequests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">  </span><span class="nt">sessionPersistence</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cookie</span>
+<span class="w">    </span><span class="nt">sessionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-session</span>
 </code></pre></div>
 <h3 id="behaviour">Behaviour<a class="headerlink" href="#behaviour" title="Permanent link">&para;</a></h3>
 <ul>
-<li>A backend <code>Service</code> with no attached policy keeps the default connection behaviour (weighted round-robin, breaker disabled).</li>
-<li>The per-backend <code>connect</code> timeout takes precedence over the Gateway API <code>HTTPRoute.timeouts.backendRequest</code> fallback, but an Ingress route's explicit <code>connect-timeout</code> annotation still wins for that route.</li>
-<li><strong><code>loadBalancer.algorithm</code></strong> applies the same upstream selection the Ingress <code>load-balance</code> annotation drives; <code>round_robin</code> is a no-op (the default). The <code>hash:*</code> forms select an endpoint by a consistent hash of the named request attribute.</li>
-<li><strong><code>circuitBreaker</code></strong> drives the same per-endpoint outlier detection as the Ingress <code>circuit-breaker-*</code> annotations: once the EWMA error rate over <code>window</code> meets <code>threshold</code> (after at least <code>minRequests</code>), the breaker opens and requests fail fast with <code>503</code> until a probe after <code>openDuration</code> succeeds.</li>
-<li><strong>Invalid values fail open.</strong> An unparseable duration, an unrecognised <code>loadBalancer.algorithm</code>, or an out-of-range <code>circuitBreaker.threshold</code> is logged as a warning and ignored — the backend falls back to the default (round-robin / breaker disabled), never a connection-level error or a rejected resource. These fields are deliberately not schema-validated so the policy is accepted and the warning surfaces at reconcile time.</li>
+<li>A backend <code>Service</code> with no attached policy keeps the default connection behaviour (weighted round-robin, breaker disabled, no session persistence).</li>
+<li>The per-backend <code>timeouts.connect</code> takes precedence over the Gateway API <code>HTTPRoute.timeouts.backendRequest</code> fallback.</li>
+<li><strong>Invalid values fail open.</strong> An unparseable duration, an unrecognised <code>loadBalancer.algorithm</code>, an out-of-range <code>circuitBreaker.threshold</code>, or an unrecognised <code>sessionPersistence.type</code> is logged as a warning and ignored — the backend falls back to the default (round-robin / breaker disabled / no persistence), never a connection-level error or a rejected resource. These fields are deliberately not schema-validated so the policy is accepted and the warning surfaces at reconcile time.</li>
 <li><strong>Conflicts.</strong> If two policies target the same <code>Service</code>, the older one (by <code>creationTimestamp</code>, ties broken by name) wins; the loser receives <code>Accepted=False, reason=Conflicted</code> in its <code>status.ancestors[]</code>.</li>
 </ul>
+<h3 id="load-balancing-algorithm">Load-balancing algorithm<a class="headerlink" href="#load-balancing-algorithm" title="Permanent link">&para;</a></h3>
+<p><code>loadBalancer.algorithm</code> selects the algorithm used to pick an upstream endpoint for each request within the backend group of a route:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>round_robin</code></td>
+<td><em>(default)</em> Weighted round-robin using the GCD-reduced slot array. Zero per-request overhead.</td>
+</tr>
+<tr>
+<td><code>least_conn</code></td>
+<td>Routes to the endpoint with the fewest in-flight requests. Maintains an atomic in-flight counter per endpoint; the counter is incremented on selection and decremented when the response completes (or when a retry selects a different endpoint).</td>
+</tr>
+<tr>
+<td><code>ewma</code></td>
+<td>Routes to the endpoint with the lowest exponentially-weighted moving-average response latency (α = 1/8). Unsampled endpoints (active=0) are probed first. Latency is folded in at end-of-request.</td>
+</tr>
+<tr>
+<td><code>ip_hash</code></td>
+<td>Alias for <code>hash:source-ip</code> (backward-compatible).</td>
+</tr>
+<tr>
+<td><code>hash:uri</code></td>
+<td>Consistent hash on the full request URI (path + query string). Requests to the same URI always land on the same endpoint. Falls back to round-robin if the path is empty.</td>
+</tr>
+<tr>
+<td><code>hash:source-ip</code></td>
+<td>Consistent hash on the resolved client IP (see <a href="../ingress-annotations/#trust-forwarded-for"><code>trust-forwarded-for</code></a> for Ingress, or the equivalent Gateway API resolution). Requests from the same IP always land on the same endpoint; unlike cookie affinity, no state is injected into the response. Falls back to round-robin if the client IP is unavailable.</td>
+</tr>
+<tr>
+<td><code>hash:header=&lt;name&gt;</code></td>
+<td>Consistent hash on the value of the named request header (e.g. <code>hash:header=x-user-id</code>). An empty or absent header falls back to round-robin.</td>
+</tr>
+<tr>
+<td><code>hash:cookie=&lt;name&gt;</code></td>
+<td>Consistent hash on the value of the named cookie (e.g. <code>hash:cookie=session</code>). An absent or empty cookie falls back to round-robin.</td>
+</tr>
+</tbody>
+</table>
+<p>All <code>hash:*</code> values (and <code>ip_hash</code>) use <strong>rendezvous (HRW) hashing</strong>: when an endpoint is removed, only its keys are redistributed; all other keys remain on their existing endpoints. This is strictly better than modulo hashing, which reshuffles nearly every key on a membership change. Unknown values warn and fall back to <code>round_robin</code>; routing is never interrupted.</p>
+<p><strong>Mapping to Istio/Envoy</strong> — <code>loadBalancer.algorithm</code> corresponds to <code>DestinationRule.trafficPolicy.loadBalancer</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Coxswain value</th>
+<th>Istio / Envoy equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>round_robin</code></td>
+<td><code>ROUND_ROBIN</code></td>
+</tr>
+<tr>
+<td><code>least_conn</code></td>
+<td><code>LEAST_REQUEST</code></td>
+</tr>
+<tr>
+<td><code>ewma</code></td>
+<td><code>LEAST_REQUEST</code> with latency-weighted selection</td>
+</tr>
+<tr>
+<td><code>ip_hash</code> / <code>hash:source-ip</code></td>
+<td><code>CONSISTENT_HASH</code> (<code>useSourceIp: true</code>)</td>
+</tr>
+<tr>
+<td><code>hash:uri</code></td>
+<td><code>CONSISTENT_HASH</code> (HTTP URI — closest analogue)</td>
+</tr>
+<tr>
+<td><code>hash:header=&lt;name&gt;</code></td>
+<td><code>CONSISTENT_HASH</code> (<code>httpHeaderName: &lt;name&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>hash:cookie=&lt;name&gt;</code></td>
+<td><code>CONSISTENT_HASH</code> (<code>httpCookie.name: &lt;name&gt;</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Performance</strong> — all algorithms run on the hot path without locks. <code>round_robin</code> allocates nothing per request. <code>least_conn</code> and <code>ewma</code> perform a linear scan over the endpoint list (typically 1–10 pods per Service) using relaxed atomics, which is negligible compared to I/O. <code>hash:*</code> values extract and hash the relevant request attribute with FNV-1a, then perform a linear rendezvous scan — negligible. The <code>hash:uri</code> path allocates a single joined <code>path?query</code> string only when a query string is present; all other hash sources are allocation-free on the hot path.</p>
+<h3 id="circuit-breaker">Circuit breaker<a class="headerlink" href="#circuit-breaker" title="Permanent link">&para;</a></h3>
+<p>The per-upstream-endpoint circuit breaker trips when a backend pod's <strong>error rate</strong> exceeds <code>threshold</code>, returning fail-fast <strong>503</strong> responses to clients until the pod shows signs of recovery. This is the Coxswain equivalent of Envoy/Istio <strong>outlier detection</strong>: a single degraded pod trips only its own breaker; healthy pods serving the same route keep accepting traffic.</p>
+<p>The breaker is implemented with <a href="https://docs.rs/failsafe">failsafe</a>'s EWMA (exponentially weighted moving average) success-rate policy. Breaker state is tracked per <code>(route, endpoint-IP:port)</code> pair — one state machine per upstream pod, per route.</p>
+<p><strong>State machine:</strong></p>
+<ol>
+<li><strong>Closed</strong> (initial) — requests flow normally; errors accumulate against the EWMA window.</li>
+<li><strong>Open</strong> — error rate exceeded <code>threshold</code> after <code>minRequests</code> samples; requests fail-fast 503 without reaching the upstream. The breaker stays Open for <code>openDuration</code> (or exponentially longer, up to <code>maxOpenDuration</code>, on repeated trips).</li>
+<li><strong>HalfOpen</strong> — after <code>openDuration</code> one probe request is let through. If it succeeds, the breaker closes; if it fails, it re-opens for another <code>openDuration</code>.</li>
+</ol>
+<p><strong>Observability</strong> — three Prometheus series on the proxy admin <code>/metrics</code> endpoint:</p>
+<ul>
+<li><code>coxswain_proxy_circuit_breaker_state{route, upstream}</code> — <code>0</code> = closed, <code>1</code> = open, <code>2</code> = half-open.</li>
+<li><code>coxswain_proxy_circuit_breaker_rejected_total{route, upstream}</code> — count of fail-fast 503s issued while the breaker was open.</li>
+<li><code>coxswain_proxy_circuit_breaker_transitions_total{route, upstream, to}</code> — cumulative state transitions; <code>to</code> is <code>"open"</code>, <code>"half_open"</code>, or <code>"closed"</code>.</li>
+</ul>
+<p><strong>Fail-fast behaviour:</strong> when the breaker is Open, the proxy returns 503 immediately without connecting to the upstream. The client sees 503; other healthy pods serving the same route continue accepting traffic via load-balancing.</p>
+<h3 id="session-persistence">Session persistence<a class="headerlink" href="#session-persistence" title="Permanent link">&para;</a></h3>
+<p>"Session persistence" (also called sticky sessions) means every request from the same client keeps landing on the same backend pod, instead of being spread across all of them by the load-balancing algorithm. Use it when a pod holds state a client needs to come back to — an in-memory session, a WebSocket connection, an in-progress upload. A backend with no <code>sessionPersistence</code> configured is unaffected: it uses <code>loadBalancer.algorithm</code> (or round-robin) as normal.</p>
+<p>There's no server-side table of "which client goes to which pod" — the pin is recomputed from the request itself every time, so it works identically across proxy replicas with no coordination between them needed. There are two ways the proxy identifies which client is which:</p>
+<ul>
+<li><strong><code>type: Cookie</code></strong> — pick this for browser clients (regular web traffic). On a client's first request, the proxy picks a pod as usual and sets a cookie identifying it (<code>Set-Cookie: &lt;sessionName&gt;=&lt;token&gt;; Path=/; HttpOnly</code>). Every later request that carries the cookie goes back to that same pod. You don't have to do anything client-side — the browser sends the cookie back automatically. <code>sessionName</code> is optional here (defaults to <code>__coxswain_session</code>); if you set one that isn't a valid cookie name, the proxy warns and falls back to the default rather than rejecting the policy.</li>
+<li><strong><code>type: Header</code></strong> — pick this for API/service clients that already send a stable identifier of their own (an API key, a tenant ID, a session token) as a request header. The proxy hashes that header's value to consistently pick one pod — no cookie is set. Unlike <code>Cookie</code> mode, <code>sessionName</code> is <strong>required</strong> here (it's the name of the header to key on); if you forget it, persistence is silently disabled for that policy (a warning is logged) and the route falls back to plain round-robin rather than breaking.</li>
+</ul>
+<p><strong>What happens when the pinned pod goes away:</strong> if the pod a client was pinned to gets scaled down or replaced, the next request from that client no longer finds it. Rather than failing, the proxy falls back to round-robin and (in <code>Cookie</code> mode) picks a new pod and re-pins with a fresh cookie.</p>
+<p><strong>What's intentionally not supported yet:</strong> Gateway API's own (experimental) <code>SessionPersistence</code> type also lets you set a timeout after which a session expires from inactivity (<code>idleTimeout</code>) or expires unconditionally (<code>absoluteTimeout</code>). Coxswain doesn't support either yet — since there's no server-side session table, there's nothing to time out. Adding real inactivity-based expiry would mean giving the proxy a way to track "when did I last see this client" per pinned session, which is real new work. Until then, a session stays pinned for as long as its pod keeps running.</p>
 <h3 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h3>
 <p>The controller writes one <code>status.ancestors[]</code> entry per targeted <code>Service</code> with an <code>Accepted</code> condition:</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>coxswainbackendpolicy<span class="w"> </span>api-backend-timeouts
@@ -2942,7 +3207,7 @@
 <span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<h3 id="example_5">Example<a class="headerlink" href="#example_5" title="Permanent link">&para;</a></h3>
+<h3 id="example_4">Example<a class="headerlink" href="#example_4" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -3061,7 +3326,7 @@
 <span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<h4 id="example_6">Example<a class="headerlink" href="#example_6" title="Permanent link">&para;</a></h4>
+<h4 id="example_5">Example<a class="headerlink" href="#example_5" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -3113,7 +3378,7 @@
 <span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<h4 id="example_7">Example<a class="headerlink" href="#example_7" title="Permanent link">&para;</a></h4>
+<h4 id="example_6">Example<a class="headerlink" href="#example_6" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><span class="c1"># Terminate route — backend is a plaintext TCP service</span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
