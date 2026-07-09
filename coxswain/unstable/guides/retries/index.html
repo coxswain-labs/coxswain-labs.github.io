@@ -1063,9 +1063,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ingress-annotations" class="md-nav__link">
+  <a href="#ingress-annotation" class="md-nav__link">
     <span class="md-ellipsis">
-      Ingress annotations
+      Ingress annotation
     </span>
   </a>
   
@@ -1316,7 +1316,7 @@
 
 <h1 id="retries">Retries<a class="headerlink" href="#retries" title="Permanent link">&para;</a></h1>
 <p>Coxswain retries failed upstream attempts against another endpoint in the same backend group. Retrying protects clients from transient upstream failures — a refused connection, a connect timeout, or a retriable response from one pod — without surfacing the error.</p>
-<p>Two bindings are supported:</p>
+<p>Both bindings reference the same <code>RetryPolicy</code> custom resource, resolved through the identical spec→config translation — parity between the two surfaces is guaranteed by construction, not by convention:</p>
 <table>
 <thead>
 <tr>
@@ -1326,12 +1326,12 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#ingress-annotations">Ingress annotations</a></td>
-<td>Per-Ingress (HTTP only), attached to existing annotation-based config</td>
+<td><a href="#ingress-annotation">Ingress annotation</a></td>
+<td>Per-Ingress (HTTP only): <code>ingress.coxswain-labs.dev/retry: "namespace/name"</code></td>
 </tr>
 <tr>
 <td><a href="#gateway-api-extensionref">Gateway API <code>ExtensionRef</code></a></td>
-<td>Per-<code>HTTPRoute</code> / <code>GRPCRoute</code> rule, via a <code>RetryPolicy</code> custom resource</td>
+<td>Per-<code>HTTPRoute</code> / <code>GRPCRoute</code> rule, via the same <code>RetryPolicy</code> custom resource</td>
 </tr>
 </tbody>
 </table>
@@ -1350,15 +1350,31 @@
 <h3 id="grpc-codes">gRPC codes<a class="headerlink" href="#grpc-codes" title="Permanent link">&para;</a></h3>
 <p><code>GRPCRoute</code> retries key on the <code>grpc-status</code> code, not the HTTP status (a gRPC response is HTTP <code>200</code> even on RPC failure). A gRPC response is <strong>only retriable when the status arrives trailers-only</strong> — i.e. the <code>grpc-status</code> rides in the response headers with nothing streamed yet. A <code>grpc-status</code> delivered as a trailer <em>after</em> a message is not retriable (the response is already in flight), matching Envoy's behaviour.</p>
 <p>When omitted, <code>grpcCodes</code> defaults to <strong><code>[14]</code></strong> (<code>UNAVAILABLE</code>). A trailers-only <code>UNAVAILABLE</code> implies the RPC never executed, so retrying is safe even without idempotency metadata. <code>DEADLINE_EXCEEDED</code> (4) and <code>RESOURCE_EXHAUSTED</code> (8) are excluded from the default — retrying them compounds latency or worsens overload. An explicit empty set opts out.</p>
-<h2 id="ingress-annotations">Ingress annotations<a class="headerlink" href="#ingress-annotations" title="Permanent link">&para;</a></h2>
-<p>Ingress is HTTP-only. Attach retries to every path rule of an Ingress:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<h2 id="ingress-annotation">Ingress annotation<a class="headerlink" href="#ingress-annotation" title="Permanent link">&para;</a></h2>
+<p>Ingress is HTTP-only. Reference a <code>RetryPolicy</code> CR — the same one an <code>HTTPRoute</code> <code>ExtensionRef</code> filter would point at — from the <code>retry</code> annotation:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RetryPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resilient</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">shop</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">attempts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">codes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">503</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">504</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># optional; default [502, 503, 504]</span>
+<span class="w">  </span><span class="nt">backoff</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100ms</span><span class="w">      </span><span class="c1"># optional</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">shop</span>
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry-attempts</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry-codes</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;503,504&quot;</span><span class="w">   </span><span class="c1"># optional; default 502,503,504</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry-backoff</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;100ms&quot;</span><span class="w">   </span><span class="c1"># optional</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shop/resilient&quot;</span>
 </code></pre></div>
-<p>See the <a href="../ingress-annotations/#retries">Ingress annotations reference</a> for the full annotation semantics.</p>
+<p><strong>Fail-open</strong>: if the referenced <code>RetryPolicy</code> CR is missing, the route serves with retrying disabled (a WARN is logged) rather than failing the route — the same posture as the Gateway API binding below.</p>
+<div class="admonition note">
+<p class="admonition-title">Migration from the inline retry-attempts/retry-codes/retry-backoff annotations (breaking)</p>
+<p>Earlier releases exposed three inline annotations — <code>retry-attempts</code>, <code>retry-codes</code>, <code>retry-backoff</code> — duplicating the <code>RetryPolicy</code> CRD schema. These are removed; move each Ingress's values into a <code>RetryPolicy</code> CR and point <code>retry</code> at it.</p>
+</div>
+<p>See the <a href="../ingress-annotations/#retry">Ingress annotations reference</a> for the full annotation semantics.</p>
 <h2 id="gateway-api-extensionref">Gateway API <code>ExtensionRef</code><a class="headerlink" href="#gateway-api-extensionref" title="Permanent link">&para;</a></h2>
 <p>Define a <code>RetryPolicy</code> custom resource and reference it from an <code>HTTPRoute</code> or <code>GRPCRoute</code> rule's <code>filters</code> with <code>type: ExtensionRef</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>

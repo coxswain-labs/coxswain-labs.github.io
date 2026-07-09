@@ -811,44 +811,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#retries" class="md-nav__link">
+  <a href="#retry" class="md-nav__link">
     <span class="md-ellipsis">
-      Retries
+      retry
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Retries">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#retry-attempts" class="md-nav__link">
-    <span class="md-ellipsis">
-      retry-attempts
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#retry-codes" class="md-nav__link">
-    <span class="md-ellipsis">
-      retry-codes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#retry-backoff" class="md-nav__link">
-    <span class="md-ellipsis">
-      retry-backoff
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2005,22 +1972,10 @@
 <td><code>"60s"</code></td>
 </tr>
 <tr>
-<td><code>ingress.coxswain-labs.dev/retry-attempts</code></td>
-<td>integer</td>
-<td><code>0</code></td>
-<td><code>"3"</code></td>
-</tr>
-<tr>
-<td><code>ingress.coxswain-labs.dev/retry-codes</code></td>
-<td>csv</td>
-<td><code>502,503,504</code></td>
-<td><code>"503,504"</code></td>
-</tr>
-<tr>
-<td><code>ingress.coxswain-labs.dev/retry-backoff</code></td>
-<td>duration</td>
+<td><code>ingress.coxswain-labs.dev/retry</code></td>
+<td><code>namespace/name</code></td>
 <td><em>none</em></td>
-<td><code>"100ms"</code></td>
+<td><code>"my-ns/my-retry"</code></td>
 </tr>
 <tr>
 <td><code>ingress.coxswain-labs.dev/rewrite-target</code></td>
@@ -2286,8 +2241,7 @@
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/connect-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5s&quot;</span>
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/read-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;60s&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry-attempts</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry-codes</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;503,504&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-ns/my-retry&quot;</span>
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/v2&quot;</span>
 </code></pre></div>
 <h2 id="timeouts">Timeouts<a class="headerlink" href="#timeouts" title="Permanent link">&para;</a></h2>
@@ -2298,20 +2252,50 @@
 <p>Maximum time for the upstream to send the first response byte after the full request has been sent. When an HTTPRoute <code>backendRequest</code> timeout is also configured, the more restrictive of the two applies.</p>
 <h3 id="send-timeout"><code>send-timeout</code><a class="headerlink" href="#send-timeout" title="Permanent link">&para;</a></h3>
 <p>Maximum time to write the full request to the upstream. Corresponds to Pingora's <code>write_timeout</code>.</p>
-<h2 id="retries">Retries<a class="headerlink" href="#retries" title="Permanent link">&para;</a></h2>
-<p>The retry annotations follow the Gateway API <a href="https://gateway-api.sigs.k8s.io/geps/gep-1731/">GEP-1731</a> shape (<code>attempts</code> / <code>codes</code> / <code>backoff</code>) so they match the <code>RetryPolicy</code> custom resource used on Gateway API routes. See the <a href="../retries/">Retries guide</a> for the full model, including gRPC. Ingress is HTTP-only.</p>
-<h3 id="retry-attempts"><code>retry-attempts</code><a class="headerlink" href="#retry-attempts" title="Permanent link">&para;</a></h3>
-<p>Maximum number of <em>additional</em> attempts after the first (not counting the initial attempt) — this is the gate. With <code>retry-attempts: 2</code>, Coxswain makes up to 3 total attempts. <strong>When absent (or <code>0</code>), retrying is disabled</strong> regardless of the other retry annotations. Retries are tried against randomly selected endpoints in the same backend group; there is no per-endpoint pinning.</p>
-<p>When <code>retry-attempts</code> is set, <strong>connection failures and connect-timeouts are always retried</strong> (they are safe — no request bytes were sent). <code>retry-codes</code> additionally selects which upstream <em>responses</em> trigger a retry.</p>
+<h2 id="retry"><code>retry</code><a class="headerlink" href="#retry" title="Permanent link">&para;</a></h2>
+<p>The Ingress surface for the <a href="../retries/"><code>RetryPolicy</code> CRD</a>, same idiom as <code>ext-auth</code>/<code>auth-jwt</code>/<code>compression</code>. Value is <code>namespace/name</code> of a <code>RetryPolicy</code> resource; both surfaces resolve the same CR to the same runtime policy, so one <code>RetryPolicy</code> can back an Ingress and an HTTPRoute/GRPCRoute <code>ExtensionRef</code> filter identically. The field shape follows the Gateway API <a href="https://gateway-api.sigs.k8s.io/geps/gep-1731/">GEP-1731</a> (<code>attempts</code> / <code>codes</code> / <code>backoff</code>). See the <a href="../retries/">Retries guide</a> for the full model, including gRPC. Ingress is HTTP-only, so a referenced CR's <code>grpcCodes</code> field is ignored.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RetryPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default-retry</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">attempts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">codes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">502</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">503</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">504</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">backoff</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100ms</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/default-retry&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p><code>attempts</code> is the gate: absent or <code>0</code> disables retrying entirely, regardless of <code>codes</code>/<code>backoff</code>. With <code>attempts: 2</code>, Coxswain makes up to 3 total attempts, tried against randomly selected endpoints in the same backend group (no per-endpoint pinning). When <code>attempts &gt;= 1</code>, <strong>connection failures and connect-timeouts are always retried</strong> (they are safe — no request bytes were sent); <code>codes</code> additionally selects which upstream <em>responses</em> trigger a retry — omitted defaults to <code>[502, 503, 504]</code> (<code>500</code> is excluded: the application ran, and a retry risks double execution), an explicit empty list opts out of response-code retries. <code>backoff</code> is a minimum delay before each retried attempt; absent means immediate retry.</p>
 <p>Each retry attempt (not counting the final failing attempt) increments <code>coxswain_proxy_upstream_retries_total{condition=...}</code>. Use this to confirm retries are firing and to alert on unexpectedly high retry rates that indicate a flapping backend.</p>
-<h3 id="retry-codes"><code>retry-codes</code><a class="headerlink" href="#retry-codes" title="Permanent link">&para;</a></h3>
-<p>Comma-separated list of HTTP status codes that trigger a retry (whitespace around commas is ignored). When <strong>absent</strong>, defaults to <code>502,503,504</code> — the "gateway could not obtain a processed response" codes, where the request almost certainly did not execute. <code>500</code> is excluded by default because the application ran and a retry risks double execution. An <strong>explicit empty value</strong> opts out of response-code retries entirely (connection/timeout retries still apply).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Response-code retries require the full request body to be buffered. Requests whose bodies are too large or were only partially received cannot be retried and pass through to the client as-is.</p>
 </div>
-<h3 id="retry-backoff"><code>retry-backoff</code><a class="headerlink" href="#retry-backoff" title="Permanent link">&para;</a></h3>
-<p>Minimum delay before each retried attempt, as a Go <code>time.ParseDuration</code> string (e.g. <code>"100ms"</code>). Absent means retries are attempted immediately. Coxswain applies this as a fixed minimum delay; exponential backoff and jitter are not yet applied.</p>
+<p>A missing <code>RetryPolicy</code> CR fails <strong>open</strong> (no retries) — unlike the auth annotations (<code>ext-auth</code>/<code>auth-basic-secret</code>/<code>auth-jwt</code>), which fail closed with <strong>503</strong>. A broken or stale <code>retry</code> reference degrades the route to no retries rather than blocking traffic.</p>
+<div class="admonition note">
+<p class="admonition-title">Migration from the inline retry-attempts/retry-codes/retry-backoff annotations (breaking)</p>
+<p>Earlier releases exposed three inline annotations — <code>retry-attempts</code>, <code>retry-codes</code>, <code>retry-backoff</code> — duplicating the <code>RetryPolicy</code> CRD schema. These are removed; move each Ingress's values into a <code>RetryPolicy</code> CR and point <code>retry</code> at it.</p>
+</div>
 <h2 id="rewrite-target"><code>rewrite-target</code><a class="headerlink" href="#rewrite-target" title="Permanent link">&para;</a></h2>
 <p>Replaces the upstream request path entirely with the given literal string. The rewrite applies before the request is forwarded; the original client-side path is not visible to the upstream pod.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
@@ -3232,8 +3216,7 @@ sends both <code>br</code> and <code>gzip</code>, brotli always wins regardless 
 <span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">defaultAnnotations</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/connect-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10s&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry-attempts</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry-codes</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;503,504&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;coxswain-system/default-retry&quot;</span>
 <span class="nn">---</span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IngressClass</span>
@@ -3254,7 +3237,7 @@ sends both <code>br</code> and <code>gzip</code>, brotli always wins regardless 
 <li>The class default from <code>spec.defaultAnnotations</code>.</li>
 <li>The built-in Coxswain default.</li>
 </ol>
-<p>The merge is per-key: an Ingress that sets only <code>connect-timeout</code> still inherits the class's <code>retry-attempts</code> and <code>retry-codes</code>. The keys and value formats in <code>defaultAnnotations</code> are exactly the per-Ingress ones; an invalid value emits a warning and falls back to the built-in default, the same as if it were set directly on an Ingress (an empty string <code>""</code> is <strong>not</strong> an "unset" override — it parses, warns, and falls back).</p>
+<p>The merge is per-key: an Ingress that sets only <code>connect-timeout</code> still inherits the class's <code>retry</code> reference. The keys and value formats in <code>defaultAnnotations</code> are exactly the per-Ingress ones — including <code>namespace/name</code> CR references like <code>retry</code>/<code>compression</code>, which resolve identically whether set directly on an Ingress or inherited from a class default; an invalid value emits a warning and falls back to the built-in default, the same as if it were set directly on an Ingress (an empty string <code>""</code> is <strong>not</strong> an "unset" override — it parses, warns, and falls back).</p>
 <h3 id="specaccesslog-per-class-access-log-control"><code>spec.accessLog</code> — per-class access-log control<a class="headerlink" href="#specaccesslog-per-class-access-log-control" title="Permanent link">&para;</a></h3>
 <p>In addition to <code>spec.defaultAnnotations</code>, <code>CoxswainIngressClassParameters</code> exposes a typed field for access-log control:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
