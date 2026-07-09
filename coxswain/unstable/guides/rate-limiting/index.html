@@ -1027,23 +1027,14 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ingress-annotations" class="md-nav__link">
+  <a href="#ingress-annotation" class="md-nav__link">
     <span class="md-ellipsis">
-      Ingress annotations
+      Ingress annotation
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Ingress annotations">
+    <nav class="md-nav" aria-label="Ingress annotation">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-100-reqs-per-ip-with-50-request-burst" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: 100 req/s per IP with 50-request burst
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#example-5-reqs-per-api-key-header" class="md-nav__link">
@@ -1358,7 +1349,7 @@
 
 <h1 id="rate-limiting">Rate limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h1>
 <p>Per-route, per-client rate limiting protects upstream services from traffic spikes and abuse. Over-limit requests are rejected immediately by the proxy with <strong>429 Too Many Requests</strong> and a <code>Retry-After</code> header; the upstream never sees them.</p>
-<p>Two bindings are supported:</p>
+<p>Both bindings reference the same <code>RateLimit</code> custom resource, resolved through the identical spec→config translation — parity between the two surfaces is guaranteed by construction, not by convention:</p>
 <table>
 <thead>
 <tr>
@@ -1368,12 +1359,12 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#ingress-annotations">Ingress annotations</a></td>
-<td>Per-Ingress, attached to existing annotation-based config</td>
+<td><a href="#ingress-annotation">Ingress annotation</a></td>
+<td>Per-Ingress: <code>ingress.coxswain-labs.dev/rate-limit: "namespace/name"</code></td>
 </tr>
 <tr>
 <td><a href="#gateway-api-extensionref">Gateway API <code>ExtensionRef</code></a></td>
-<td>Per-<code>HTTPRoute</code> rule, via a <code>RateLimit</code> custom resource</td>
+<td>Per-<code>HTTPRoute</code> rule, via the same <code>RateLimit</code> custom resource</td>
 </tr>
 </tbody>
 </table>
@@ -1405,53 +1396,24 @@
 </tbody>
 </table>
 <p><strong>Fail-open</strong>: when the keying dimension is unavailable — undeterminable IP, or an absent header on a header-keyed route — the request is <strong>admitted without counting</strong>. A missing key never blocks traffic.</p>
-<h2 id="ingress-annotations">Ingress annotations<a class="headerlink" href="#ingress-annotations" title="Permanent link">&para;</a></h2>
-<p>Attach a rate limit to every path rule of an Ingress:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;100&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-burst</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;50&quot;</span><span class="w">   </span><span class="c1"># optional</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-by</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ip&quot;</span><span class="w">      </span><span class="c1"># optional</span>
-</code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Annotation</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>rate-limit-rps</code></td>
-<td>integer ≥ 1</td>
-<td><em>none</em> (disabled)</td>
-<td>Sustained rate per client (req/s)</td>
-</tr>
-<tr>
-<td><code>rate-limit-burst</code></td>
-<td>integer ≥ 0</td>
-<td><code>0</code></td>
-<td>Extra burst capacity above sustained rate</td>
-</tr>
-<tr>
-<td><code>rate-limit-by</code></td>
-<td><code>ip</code> or <code>header:Name</code></td>
-<td><code>"ip"</code></td>
-<td>Client identity dimension</td>
-</tr>
-</tbody>
-</table>
-<p>An absent or invalid <code>rate-limit-rps</code> disables rate limiting for the route (warn + <strong>fail-open</strong>). Invalid <code>rate-limit-burst</code> and <code>rate-limit-by</code> values log a warning and use their defaults.</p>
-<h3 id="example-100-reqs-per-ip-with-50-request-burst">Example: 100 req/s per IP with 50-request burst<a class="headerlink" href="#example-100-reqs-per-ip-with-50-request-burst" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<h2 id="ingress-annotation">Ingress annotation<a class="headerlink" href="#ingress-annotation" title="Permanent link">&para;</a></h2>
+<p>Reference a <code>RateLimit</code> CR — the same one an <code>HTTPRoute</code> <code>ExtensionRef</code> filter would point at — from the <code>rate-limit</code> annotation:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-limit</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">requestsPerSecond</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">  </span><span class="nt">burst</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w">              </span><span class="c1"># optional, default 0</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
 <span class="nt">metadata</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;100&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-burst</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;50&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/api-limit&quot;</span>
 <span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
 <span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
@@ -1466,16 +1428,33 @@
 <span class="w">                </span><span class="nt">port</span><span class="p">:</span>
 <span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
 </code></pre></div>
+<p><strong>Fail-open</strong>: if the referenced <code>RateLimit</code> CR is missing, the route serves with rate limiting disabled (a WARN is logged) rather than failing the route — the same posture as the Gateway API binding below. See the <a href="#ratelimit-spec-fields"><code>RateLimit</code> spec fields</a> below for <code>requestsPerSecond</code>/<code>burst</code>/<code>byHeader</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Migration from the inline rate-limit-rps/rate-limit-burst/rate-limit-by annotations (breaking)</p>
+<p>Earlier releases exposed three inline annotations — <code>rate-limit-rps</code>, <code>rate-limit-burst</code>, <code>rate-limit-by</code> — duplicating the <code>RateLimit</code> CRD schema. These are removed; move each Ingress's values into a <code>RateLimit</code> CR and point <code>rate-limit</code> at it.</p>
+</div>
 <h3 id="example-5-reqs-per-api-key-header">Example: 5 req/s per API key header<a class="headerlink" href="#example-5-reqs-per-api-key-header" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">per-key-limit</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">requestsPerSecond</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="nt">byHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Api-Key&quot;</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-by</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;header:X-Api-Key&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/per-key-limit&quot;</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Header keying can be bypassed by rotating the header value. Pair it with <code>auth-url</code> or <code>auth-basic-secret</code> to ensure the header is authenticated before being trusted. See the <a href="../ingress-annotations/#rate-limit-by">rate-limit-by annotation reference</a> for details.</p>
+<p>Header keying can be bypassed by rotating the header value. Pair it with <code>ext-auth</code> or <code>auth-basic-secret</code> to ensure the header is authenticated before being trusted. The controller emits a <code>Warning</code> Event on the Ingress when <code>byHeader</code> keying is configured without an auth annotation, so operators are notified at reconcile time. See the <a href="../ingress-annotations/#rate-limiting">rate-limit annotation reference</a> for details.</p>
 </div>
+<p>See the <a href="../ingress-annotations/#rate-limiting">Ingress annotations reference</a> for the full annotation semantics.</p>
 <h2 id="gateway-api-extensionref">Gateway API ExtensionRef<a class="headerlink" href="#gateway-api-extensionref" title="Permanent link">&para;</a></h2>
 <p>Attach a rate limit to a single <code>HTTPRoute</code> rule by referencing a <code>RateLimit</code> custom resource from an <code>ExtensionRef</code> filter:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>

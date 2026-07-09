@@ -1216,39 +1216,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Rate limiting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#rate-limit-rps" class="md-nav__link">
-    <span class="md-ellipsis">
-      rate-limit-rps
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rate-limit-burst" class="md-nav__link">
-    <span class="md-ellipsis">
-      rate-limit-burst
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rate-limit-by" class="md-nav__link">
-    <span class="md-ellipsis">
-      rate-limit-by
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -2128,22 +2095,10 @@
 <td><code>"X-Session-Id"</code></td>
 </tr>
 <tr>
-<td><code>ingress.coxswain-labs.dev/rate-limit-rps</code></td>
-<td>integer</td>
-<td><em>none</em> (disabled)</td>
-<td><code>"100"</code></td>
-</tr>
-<tr>
-<td><code>ingress.coxswain-labs.dev/rate-limit-burst</code></td>
-<td>integer</td>
-<td><code>0</code></td>
-<td><code>"50"</code></td>
-</tr>
-<tr>
-<td><code>ingress.coxswain-labs.dev/rate-limit-by</code></td>
-<td><code>ip</code> or <code>header:Name</code></td>
-<td><code>"ip"</code></td>
-<td><code>"header:X-Api-Key"</code></td>
+<td><code>ingress.coxswain-labs.dev/rate-limit</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-limit"</code></td>
 </tr>
 <tr>
 <td><code>ingress.coxswain-labs.dev/ext-auth</code></td>
@@ -2663,7 +2618,7 @@ Ingress and Gateway API backends:</p>
 </ul>
 <h2 id="trust-forwarded-for"><code>trust-forwarded-for</code><a class="headerlink" href="#trust-forwarded-for" title="Permanent link">&para;</a></h2>
 <p>Lets the proxy extract the <strong>real client IP</strong> from a forwarded-for header — necessary when Coxswain sits behind a cloud LB or CDN that terminates the connection and puts the original client IP in a header like <code>X-Forwarded-For</code> or <code>CF-Connecting-IP</code>.</p>
-<p>Without this annotation, IP-based features (<code>allow-source-range</code>, <code>deny-source-range</code>, <code>rate-limit-by: ip</code>) always see the <strong>L4 peer address</strong> (the LB's IP), making per-client controls ineffective behind a proxy.</p>
+<p>Without this annotation, IP-based features (<code>allow-source-range</code>, <code>deny-source-range</code>, IP-keyed <code>rate-limit</code>) always see the <strong>L4 peer address</strong> (the LB's IP), making per-client controls ineffective behind a proxy.</p>
 <p><strong>Master switch — disabled by default</strong> to prevent header injection by untrusted peers:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
@@ -2782,56 +2737,53 @@ Ingress and Gateway API backends:</p>
 <p><strong>Invalid values</strong> (zero threshold, unparseable duration, non-integer min-requests) emit a controller warning and disable the breaker for that route (<strong>fail-open</strong>) — a misconfigured annotation never blocks all traffic.</p>
 <hr />
 <h2 id="rate-limiting">Rate limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h2>
-<p>Caps the request rate accepted from each client before forwarding to the upstream. Over-limit requests are rejected with <strong>429 Too Many Requests</strong> and a <code>Retry-After</code> header (in whole seconds) telling the client when to retry. See the <a href="../rate-limiting/">Rate limiting guide</a> for full semantics and Gateway API usage.</p>
-<h3 id="rate-limit-rps"><code>rate-limit-rps</code><a class="headerlink" href="#rate-limit-rps" title="Permanent link">&para;</a></h3>
-<p>Sustained request rate in requests per second, per client. Must be a positive integer &gt;= 1. Absent or invalid values disable rate limiting for the route (<strong>fail-open</strong>).</p>
-<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<p>The Ingress surface for the <a href="../rate-limiting/#ratelimit-spec-fields"><code>RateLimit</code> CRD</a>, same idiom as <code>ext-auth</code>/<code>auth-jwt</code>/<code>compression</code>/<code>retry</code>. Value is <code>namespace/name</code> of a <code>RateLimit</code> resource; both surfaces resolve the same CR to the same runtime config, so one <code>RateLimit</code> can back an Ingress and an HTTPRoute/GRPCRoute <code>ExtensionRef</code> filter identically. Over-limit requests are rejected with <strong>429 Too Many Requests</strong> and a <code>Retry-After</code> header (in whole seconds) telling the client when to retry. See the <a href="../rate-limiting/">Rate limiting guide</a> for the full model, including the GCRA algorithm and Gateway API usage.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default-limit</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">requestsPerSecond</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">  </span><span class="nt">burst</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w">              </span><span class="c1"># optional, default 0</span>
+<span class="w">  </span><span class="nt">byHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Api-Key&quot;</span><span class="w">  </span><span class="c1"># optional; absent = limit by client IP</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;100&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/default-limit&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
 </code></pre></div>
-<h3 id="rate-limit-burst"><code>rate-limit-burst</code><a class="headerlink" href="#rate-limit-burst" title="Permanent link">&para;</a></h3>
-<p>Number of requests above the sustained rate that a client may send in a short burst when it has been idle. The total burst capacity is <code>rps + burst</code> — a client that has accumulated headroom can send that many requests before being throttled. Defaults to <code>0</code> (no burst above sustained rate).</p>
-<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-burst</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;50&quot;</span>
-</code></pre></div>
-<h3 id="rate-limit-by"><code>rate-limit-by</code><a class="headerlink" href="#rate-limit-by" title="Permanent link">&para;</a></h3>
-<p>Selects the dimension used to identify each client for its own rate-limit bucket. Two modes:</p>
-<table>
-<thead>
-<tr>
-<th>Value</th>
-<th>Behaviour</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>"ip"</code> (default)</td>
-<td>One bucket per real client IP (or L4 peer when not behind a PROXY-protocol LB)</td>
-</tr>
-<tr>
-<td><code>"header:Name"</code></td>
-<td>One bucket per unique value of the named request header</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-rps</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5&quot;</span>
-<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit-by</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;header:X-Api-Key&quot;</span>
-</code></pre></div>
-<p>When the keying dimension is not available for a request (undeterminable IP, or absent header on a header-keyed route) the request is <strong>admitted without counting</strong> (<strong>fail-open</strong>) — a missing key never blocks traffic.</p>
-<p>An unrecognised <code>rate-limit-by</code> value emits a controller warning and falls back to <code>"ip"</code>.</p>
+<p><code>requestsPerSecond</code> is the sustained rate per client; <code>burst</code> (default <code>0</code>) is extra headroom above the sustained rate a client that has been idle may spend in a short spike — total burst capacity is <code>requestsPerSecond + burst</code>. <code>byHeader</code> selects the per-client key: absent (the default) keys by real client IP (or L4 peer when not behind a PROXY-protocol LB); a header name keys by that header's value instead. When the keying dimension is not available for a request (undeterminable IP, or an absent header on a header-keyed route) the request is <strong>admitted without counting</strong> (<strong>fail-open</strong>) — a missing key never blocks traffic.</p>
+<p>A missing <code>RateLimit</code> CR fails <strong>open</strong> (no rate limiting) — unlike the auth annotations (<code>ext-auth</code>/<code>auth-basic-secret</code>/<code>auth-jwt</code>), which fail closed with <strong>503</strong>. A broken or stale <code>rate-limit</code> reference degrades the route to unthrottled rather than blocking traffic.</p>
 <div class="admonition warning">
 <p class="admonition-title">Header keying allows rate-limit bypass</p>
-<p><code>header:Name</code> allocates one bucket per <strong>unique value</strong> of the named header. A client that rotates the header value (e.g. sends a different <code>X-Api-Key</code> on each request) starts with a full bucket every time, bypassing the per-key limit entirely.</p>
+<p><code>byHeader</code> allocates one bucket per <strong>unique value</strong> of the named header. A client that rotates the header value (e.g. sends a different <code>X-Api-Key</code> on each request) starts with a full bucket every time, bypassing the per-key limit entirely.</p>
 <p>Mitigate by:</p>
 <ul>
 <li>combining with <code>ext-auth</code> or <code>auth-basic-secret</code> so the header value is authenticated before being trusted as a rate-limit key, or</li>
-<li>using <code>rate-limit-by: ip</code> as the primary limit and treating header keying as an optional secondary signal only.</li>
+<li>omitting <code>byHeader</code> (IP-keyed) as the primary limit and treating header keying as an optional secondary signal only.</li>
 </ul>
-<p>The controller emits a <code>Warning</code> Event on the Ingress when <code>header:*</code> keying is configured without an auth annotation, so operators are notified at reconcile time.</p>
+<p>The controller emits a <code>Warning</code> Event on the Ingress when <code>byHeader</code> keying is configured without an auth annotation, so operators are notified at reconcile time.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Migration from the inline rate-limit-rps/rate-limit-burst/rate-limit-by annotations (breaking)</p>
+<p>Earlier releases exposed three inline annotations — <code>rate-limit-rps</code>, <code>rate-limit-burst</code>, <code>rate-limit-by</code> — duplicating the <code>RateLimit</code> CRD schema. These are removed; move each Ingress's values into a <code>RateLimit</code> CR and point <code>rate-limit</code> at it.</p>
 </div>
 <h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
 <p>Coxswain supports three independently additive authentication checks on Ingresses: <strong>external authorization</strong> (<code>ext_authz</code>, delegated to an auth service, <code>ext-auth</code>), <strong>basic auth</strong> (htpasswd Secret, <code>auth-basic-secret</code>), and <strong>JWT</strong> (JWKS bearer-token, <code>auth-jwt</code>). All are enforced at the proxy before any upstream connection; a failure never reaches the backend. A route can combine any subset of the three — every configured check must pass.</p>
