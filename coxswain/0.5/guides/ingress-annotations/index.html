@@ -1,0 +1,2985 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A pure-Rust Kubernetes Ingress & Gateway API controller backed by Pingora.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/guides/ingress-annotations/">
+      
+      
+        <link rel="prev" href="../ingress/">
+      
+      
+        <link rel="next" href="../gateway-api/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Annotations - Coxswain</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ingress-annotations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+  
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Coxswain" class="md-header__button md-logo" aria-label="Coxswain" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Coxswain
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Annotations
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/coxswain-labs/coxswain" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    coxswain-labs/coxswain
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+    
+  
+  Getting started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
+          
+  
+  Installation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../ingress/" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/configuration/" class="md-tabs__link">
+          
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/" class="md-tabs__link">
+          
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../faq/" class="md-tabs__link">
+        
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Coxswain" class="md-nav__button md-logo" aria-label="Coxswain" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Coxswain
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/coxswain-labs/coxswain" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    coxswain-labs/coxswain
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kustomize
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Raw manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Ingress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Annotations
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Annotations
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-connection-settings-are-not-annotations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend connection settings are not annotations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timeouts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Timeouts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#read-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      read-timeout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#send-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      send-timeout
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retry" class="md-nav__link">
+    <span class="md-ellipsis">
+      retry
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rewrite-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      rewrite-target
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="rewrite-target">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#capture-group-substitution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capture-group substitution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-regex" class="md-nav__link">
+    <span class="md-ellipsis">
+      use-regex
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-normalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      path-normalize
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#request-header-modification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request header modification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Request header modification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-header-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      request-header-set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-header-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      request-header-add
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-header-remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      request-header-remove
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response-header-modification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response header modification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Response header modification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#response-header-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      response-header-set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-header-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      response-header-add
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response-header-remove" class="md-nav__link">
+    <span class="md-ellipsis">
+      response-header-remove
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#request-redirect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request redirect
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force-https-redirect-ssl-redirect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Force-HTTPS redirect (ssl-redirect)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Force-HTTPS redirect (ssl-redirect)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ssl-redirect" class="md-nav__link">
+    <span class="md-ellipsis">
+      ssl-redirect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssl-redirect-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      ssl-redirect-code
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-wire-protocol-appprotocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend wire protocol (appProtocol)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#max-body-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      max-body-size
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mirror-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      mirror-target
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mirror-target">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#body-mirroring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Body mirroring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Observability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ip-access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      ip-access-control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trust-forwarded-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      trust-forwarded-for
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="trust-forwarded-for">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-resolution-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      IP resolution algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forwarded-for-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      forwarded-for-header
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forwarded-for-trusted-cidrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      forwarded-for-trusted-cidrs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#session-affinity-circuit-breaker-and-load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Session affinity, circuit breaker, and load balancing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rate-limiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rate limiting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ext-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      ext-auth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-basic-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-basic-secret
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-jwt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-certificate-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client certificate mTLS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Client certificate mTLS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-tls-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-tls-secret
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-tls-verify-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-tls-verify-depth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth-tls-pass-certificate-to-upstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      auth-tls-pass-certificate-to-upstream
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upstream-keepalive-idle-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upstream keepalive idle timeout
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      compression
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="compression">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behaviour
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-balancing-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load-balancing algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-level-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class-level defaults
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Class-level defaults">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#specaccesslog-per-class-access-log-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      spec.accessLog — per-class access-log control
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Gateway API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Gateway API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gateway-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../listener-sets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dedicated proxy pools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../running-in-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-plane-security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control-plane security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate limiting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../retries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Retries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../verifying-releases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Verifying releases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/conformance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conformance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/deployment-models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/discovery-protocol/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Discovery protocol
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="ingress-annotations">Ingress annotations<a class="headerlink" href="#ingress-annotations" title="Permanent link">&para;</a></h1>
+<p>Coxswain supports the <code>ingress.coxswain-labs.dev/*</code> annotation namespace for per-Ingress configuration. All annotations are optional and are set once per Ingress; most apply uniformly to every rule and path (<code>use-regex</code> additionally keys off each rule's <code>pathType</code>).</p>
+<p><strong>Admission-time validation.</strong> On Kubernetes ≥ 1.30, Coxswain installs a <code>ValidatingAdmissionPolicy</code> that rejects Ingresses with invalid annotation values at <code>kubectl apply</code> time, surfacing the error immediately. On older clusters, or when <code>vap.enabled=false</code> is set in the Helm values, invalid values are handled fail-open: the controller emits a warning and treats the annotation as absent, so traffic is never blocked. Disable the VAP only if your cluster does not support <code>admissionregistration.k8s.io/v1/ValidatingAdmissionPolicy</code>.</p>
+<p><strong>Runtime diagnostics.</strong> When the VAP is absent or an annotation slips through, the controller emits a Kubernetes <code>Warning</code> Event (<code>reason: InvalidAnnotation</code>) directly on the Ingress. Run <code>kubectl describe ingress &lt;name&gt;</code> to see it inline. See the <a href="../../reference/observability/#kubernetes-events">Observability reference — Kubernetes Events</a> for details on deduplication and querying.</p>
+<h2 id="quick-reference">Quick reference<a class="headerlink" href="#quick-reference" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Type</th>
+<th>Default</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ingress.coxswain-labs.dev/read-timeout</code></td>
+<td>duration</td>
+<td><em>none</em></td>
+<td><code>"60s"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/send-timeout</code></td>
+<td>duration</td>
+<td><em>none</em></td>
+<td><code>"60s"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/retry</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-retry"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/rewrite-target</code></td>
+<td>string</td>
+<td><em>none</em></td>
+<td><code>"/v2"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/use-regex</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/request-header-set</code></td>
+<td>newline-list</td>
+<td><em>none</em></td>
+<td><code>"X-Via: coxswain"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/request-header-add</code></td>
+<td>newline-list</td>
+<td><em>none</em></td>
+<td><code>"X-Tag: v2"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/request-header-remove</code></td>
+<td>csv</td>
+<td><em>none</em></td>
+<td><code>"X-Forwarded-For"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/response-header-set</code></td>
+<td>newline-list</td>
+<td><em>none</em></td>
+<td><code>"Cache-Control: no-store"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/response-header-add</code></td>
+<td>newline-list</td>
+<td><em>none</em></td>
+<td><code>"X-Frame-Options: DENY"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/response-header-remove</code></td>
+<td>csv</td>
+<td><em>none</em></td>
+<td><code>"Server"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-scheme</code></td>
+<td>string</td>
+<td><em>none</em></td>
+<td><code>"https"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-hostname</code></td>
+<td>string</td>
+<td><em>none</em></td>
+<td><code>"www.example.com"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-port</code></td>
+<td>integer</td>
+<td><em>none</em></td>
+<td><code>"443"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-path</code></td>
+<td>string</td>
+<td><em>none</em></td>
+<td><code>"/v2"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/redirect-status-code</code></td>
+<td>integer</td>
+<td><code>302</code></td>
+<td><code>"301"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/ssl-redirect</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/ssl-redirect-code</code></td>
+<td>integer</td>
+<td><code>308</code></td>
+<td><code>"301"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/max-body-size</code></td>
+<td>size</td>
+<td><em>none</em></td>
+<td><code>"8m"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/mirror-target</code></td>
+<td><code>svc.ns[:port]</code></td>
+<td><em>none</em></td>
+<td><code>"echo-b.default.svc:3000"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/ip-access-control</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-policy"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/trust-forwarded-for</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/forwarded-for-header</code></td>
+<td>string</td>
+<td><code>X-Forwarded-For</code></td>
+<td><code>"CF-Connecting-IP"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/forwarded-for-trusted-cidrs</code></td>
+<td>cidr-list</td>
+<td><em>none</em> (unconditional)</td>
+<td><code>"10.0.0.0/8"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/rate-limit</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-limit"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/ext-auth</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-extauth"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-basic-secret</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-htpasswd"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-jwt</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-jwt"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/compression</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-compression"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-tls-secret</code></td>
+<td><code>namespace/name</code></td>
+<td><em>none</em></td>
+<td><code>"my-ns/my-ca"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-tls-verify-depth</code></td>
+<td>integer</td>
+<td><code>1</code></td>
+<td><code>"2"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/auth-tls-pass-certificate-to-upstream</code></td>
+<td>boolean</td>
+<td><code>false</code></td>
+<td><code>"true"</code></td>
+</tr>
+<tr>
+<td><code>ingress.coxswain-labs.dev/path-normalize</code></td>
+<td><code>base</code>, <code>merge-slashes</code>, <code>decode-and-merge-slashes</code></td>
+<td><code>base</code></td>
+<td><code>"merge-slashes"</code></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/read-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;60s&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-ns/my-retry&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/v2&quot;</span>
+</code></pre></div>
+<h2 id="backend-connection-settings-are-not-annotations">Backend connection settings are not annotations<a class="headerlink" href="#backend-connection-settings-are-not-annotations" title="Permanent link">&para;</a></h2>
+<p>If you're looking for <code>connect-timeout</code>, <code>upstream-keepalive-timeout</code>, <code>load-balance</code>, <code>circuit-breaker-*</code>, or <code>session-affinity</code> and don't see them in the table above: these five settings moved out of the annotation namespace entirely. They now live on a separate Kubernetes resource, <a href="../gateway-api/#coxswainbackendpolicy"><code>CoxswainBackendPolicy</code></a>, which you attach to the <strong>backend <code>Service</code></strong> rather than the Ingress.</p>
+<p>Why the different shape? These five settings all describe the <em>connection to the upstream pod</em> — not anything about routing or the request itself — so they belong to the Service the Ingress points at, not to the Ingress. That also means:</p>
+<ul>
+<li>You write no annotation on the Ingress at all for these. You create a <code>CoxswainBackendPolicy</code> naming the Service, and it applies automatically.</li>
+<li>The same policy applies identically whether the Service is reached via an Ingress, an <code>HTTPRoute</code>, or a <code>GRPCRoute</code> — one place to configure it, no matter how traffic gets there.</li>
+<li>If two Ingresses (or an Ingress and an HTTPRoute) point at the same Service, they share the same connection policy. That's intentional — connection pooling, load-balancing, and circuit-breaking happen per-Service, not per-route.</li>
+</ul>
+<p>See the <a href="../gateway-api/#coxswainbackendpolicy">Gateway API guide's <code>CoxswainBackendPolicy</code> section</a> for the full field list, a copy-pasteable example, and how each setting behaves.</p>
+<h2 id="timeouts">Timeouts<a class="headerlink" href="#timeouts" title="Permanent link">&para;</a></h2>
+<p><strong>Duration format</strong> — All timeout annotations accept Go <code>time.ParseDuration</code> strings: one or more <code>&lt;number&gt;&lt;unit&gt;</code> pairs without spaces. Supported units: <code>ns</code>, <code>us</code> (<code>µs</code>), <code>ms</code>, <code>s</code>, <code>m</code>, <code>h</code>. Examples: <code>"5s"</code>, <code>"500ms"</code>, <code>"1m30s"</code>. Zero values (<code>"0"</code>, <code>"0s"</code>) are treated as absent.</p>
+<p>These are per-<em>request</em> timeouts. Upstream connect timeout is per-backend connection policy — see <a href="../gateway-api/#coxswainbackendpolicy"><code>CoxswainBackendPolicy</code></a>.</p>
+<h3 id="read-timeout"><code>read-timeout</code><a class="headerlink" href="#read-timeout" title="Permanent link">&para;</a></h3>
+<p>Maximum time for the upstream to send the first response byte after the full request has been sent. When an HTTPRoute <code>backendRequest</code> timeout is also configured, the more restrictive of the two applies.</p>
+<h3 id="send-timeout"><code>send-timeout</code><a class="headerlink" href="#send-timeout" title="Permanent link">&para;</a></h3>
+<p>Maximum time to write the full request to the upstream. Corresponds to Pingora's <code>write_timeout</code>.</p>
+<h2 id="retry"><code>retry</code><a class="headerlink" href="#retry" title="Permanent link">&para;</a></h2>
+<p>The Ingress surface for the <a href="../retries/"><code>RetryPolicy</code> CRD</a>, same idiom as <code>ext-auth</code>/<code>auth-jwt</code>/<code>compression</code>. Value is <code>namespace/name</code> of a <code>RetryPolicy</code> resource; both surfaces resolve the same CR to the same runtime policy, so one <code>RetryPolicy</code> can back an Ingress and an HTTPRoute/GRPCRoute <code>ExtensionRef</code> filter identically. The field shape follows the Gateway API <a href="https://gateway-api.sigs.k8s.io/geps/gep-1731/">GEP-1731</a> (<code>attempts</code> / <code>codes</code> / <code>backoff</code>). See the <a href="../retries/">Retries guide</a> for the full model, including gRPC. Ingress is HTTP-only, so a referenced CR's <code>grpcCodes</code> field is ignored.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RetryPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default-retry</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">attempts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">codes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">502</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">503</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">504</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">backoff</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100ms</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/default-retry&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p><code>attempts</code> is the gate: absent or <code>0</code> disables retrying entirely, regardless of <code>codes</code>/<code>backoff</code>. With <code>attempts: 2</code>, Coxswain makes up to 3 total attempts, tried against randomly selected endpoints in the same backend group (no per-endpoint pinning). When <code>attempts &gt;= 1</code>, <strong>connection failures and connect-timeouts are always retried</strong> (they are safe — no request bytes were sent); <code>codes</code> additionally selects which upstream <em>responses</em> trigger a retry — omitted defaults to <code>[502, 503, 504]</code> (<code>500</code> is excluded: the application ran, and a retry risks double execution), an explicit empty list opts out of response-code retries. <code>backoff</code> is a minimum delay before each retried attempt; absent means immediate retry.</p>
+<p>Each retry attempt (not counting the final failing attempt) increments <code>coxswain_proxy_upstream_retries_total{condition=...}</code>. Use this to confirm retries are firing and to alert on unexpectedly high retry rates that indicate a flapping backend.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Response-code retries require the full request body to be buffered. Requests whose bodies are too large or were only partially received cannot be retried and pass through to the client as-is.</p>
+</div>
+<p>A missing <code>RetryPolicy</code> CR fails <strong>open</strong> (no retries) — unlike the auth annotations (<code>ext-auth</code>/<code>auth-basic-secret</code>/<code>auth-jwt</code>), which fail closed with <strong>503</strong>. A broken or stale <code>retry</code> reference degrades the route to no retries rather than blocking traffic.</p>
+<div class="admonition note">
+<p class="admonition-title">Migration from the inline retry-attempts/retry-codes/retry-backoff annotations (breaking)</p>
+<p>Earlier releases exposed three inline annotations — <code>retry-attempts</code>, <code>retry-codes</code>, <code>retry-backoff</code> — duplicating the <code>RetryPolicy</code> CRD schema. These are removed; move each Ingress's values into a <code>RetryPolicy</code> CR and point <code>retry</code> at it.</p>
+</div>
+<h2 id="rewrite-target"><code>rewrite-target</code><a class="headerlink" href="#rewrite-target" title="Permanent link">&para;</a></h2>
+<p>Replaces the upstream request path entirely with the given literal string. The rewrite applies before the request is forwarded; the original client-side path is not visible to the upstream pod.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/v2</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/api</span><span class="w">        </span><span class="c1"># client sends GET /api/users</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-v2</span><span class="w">  </span><span class="c1"># upstream receives GET /v2</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<h3 id="capture-group-substitution">Capture-group substitution<a class="headerlink" href="#capture-group-substitution" title="Permanent link">&para;</a></h3>
+<p>On a <strong>regex path</strong> (<code>pathType: ImplementationSpecific</code> with <a href="#use-regex"><code>use-regex: "true"</code></a>), <code>rewrite-target</code> may reference capture groups from the path pattern with <code>$1</code>…<code>$n</code>. The groups are expanded against the matched request path:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/use-regex</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/$1</span><span class="w">        </span><span class="c1"># GET /svc/users/42 → upstream GET /users/42</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/svc/(.*)</span><span class="w">            </span><span class="c1"># paths must start with &quot;/&quot; (no leading ^)</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<p>A <code>$n</code> with no corresponding group expands to the empty string. On a non-regex path (<code>Prefix</code>/<code>Exact</code>) <code>rewrite-target</code> is always a literal replacement — <code>$1</code> is treated as the literal text <code>$1</code>, not a capture reference.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>rewrite-target</code> is a single per-Ingress value shared by every path in the Ingress. Two paths in one Ingress cannot have different rewrite templates — split them across Ingresses, or use a Gateway API <code>HTTPRoute</code> (which has per-rule filters), if you need that.</p>
+</div>
+<h2 id="use-regex"><code>use-regex</code><a class="headerlink" href="#use-regex" title="Permanent link">&para;</a></h2>
+<p>Opt in to <strong>regular-expression path matching</strong> for this Ingress's <code>pathType: ImplementationSpecific</code> rules. With <code>use-regex: "true"</code>, the <code>path</code> of each such rule is compiled and matched as a regular expression (the same engine as Gateway API <code>HTTPRoute</code> <code>RegularExpression</code> matches); without it (the default), <code>ImplementationSpecific</code> paths collapse to <code>Prefix</code> matching, so existing manifests are unchanged.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/use-regex</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/item/[0-9]+</span><span class="w">        </span><span class="c1"># regex: matches /item/42, not /item/abc</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImplementationSpecific</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<p><strong>Per-path, not per-host.</strong> <code>use-regex</code> is an Ingress-wide <em>enable</em>; the per-path lever is the standard <code>pathType</code> field. Only <code>ImplementationSpecific</code> rules become regex — <code>Prefix</code> and <code>Exact</code> rules in the same Ingress are unaffected. This differs from nginx-ingress, where <code>use-regex</code> (or <code>rewrite-target</code>) on any path forces regex matching across <strong>all</strong> paths of the host; Coxswain never does this.</p>
+<p><strong>Matching semantics.</strong> The pattern is matched unanchored and is evaluated <strong>after</strong> exact and prefix routes on the same host — a literal <code>Prefix</code>/<code>Exact</code> rule that also matches wins over a regex rule. The Kubernetes API server requires every Ingress path to start with <code>/</code>, so a regex path is always rooted there (<code>/svc/(.*)</code>, not <code>^/svc/(.*)</code>); use <code>$</code> to anchor the end.</p>
+<p><strong>Invalid patterns.</strong> A path whose value is not a valid regular expression is skipped with a controller <code>WARN</code>; the rest of the Ingress (and the routing table) is unaffected.</p>
+<p><strong>Migrating from nginx-ingress.</strong> The canonical nginx pairing — <code>nginx.ingress.kubernetes.io/use-regex</code> + <code>nginx.ingress.kubernetes.io/rewrite-target: /$2</code> with <code>pathType: ImplementationSpecific</code> — maps directly onto the Coxswain annotations of the same names. See <a href="#capture-group-substitution">capture-group substitution</a>.</p>
+<h2 id="path-normalize"><code>path-normalize</code><a class="headerlink" href="#path-normalize" title="Permanent link">&para;</a></h2>
+<p>Controls how request paths are normalised before routing and before being forwarded upstream. Coxswain mirrors <a href="https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-ProxyPathNormalization">Envoy/Istio's <code>pathNormalization</code></a> — with <code>base</code> as the secure default. Normalisation cannot be disabled: <code>base</code> is the floor.</p>
+<p>Normalisation runs <strong>before</strong> the routing lookup; the canonical path is used for the path match <em>and</em> is sent to the upstream unchanged by a <code>rewrite-target</code> (if one is configured, it is applied on top of the normalised path).</p>
+<p><strong>Gateway API <code>HTTPRoute</code> resources always use <code>base</code> normalization.</strong> There is no per-<code>HTTPRoute</code> override annotation; the behaviour is controlled at the infrastructure level, matching Istio's model.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Transformations applied</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base</code> <em>(default)</em></td>
+<td>Percent-decode unreserved characters (<code>%2e</code>→<code>.</code>, <code>%2d</code>→<code>-</code>, etc.); convert <code>\</code> to <code>/</code>; remove dot segments (<code>.</code> and <code>..</code>, RFC 3986 §5.2.4). <code>%2f</code> and <code>%5c</code> are <strong>not</strong> decoded — they remain encoded to prevent path-traversal bypasses.</td>
+</tr>
+<tr>
+<td><code>merge-slashes</code></td>
+<td>Everything in <code>base</code>, plus collapse consecutive slashes (<code>//</code> → <code>/</code>).</td>
+</tr>
+<tr>
+<td><code>decode-and-merge-slashes</code></td>
+<td>Everything in <code>merge-slashes</code>, plus decode <code>%2f</code>→<code>/</code> and <code>%5c</code>→<code>\</code> before the rest of the pipeline. Use only when your backend expects literal <code>/</code> from encoded segments and you understand the security trade-off.</td>
+</tr>
+</tbody>
+</table>
+<p>Each level includes all transformations of the levels before it.</p>
+<div class="admonition warning">
+<p class="admonition-title">Migration: <code>none</code> was removed</p>
+<p>The <code>none</code> value (which disabled normalization entirely) was dropped because it re-opened route-match bypass and path-traversal attacks — a request could dodge a path-based route or <code>ip-access-control</code> rule with <code>..</code>, <code>%2e%2e</code>, or duplicate slashes. An Ingress that still sets <code>path-normalize: none</code> is <strong>not rejected</strong>: the controller logs a <code>WARN</code>, emits a <code>Warning</code> Event, and silently upgrades the level to <code>base</code>. If you previously relied on raw-path passthrough, expect normalized paths upstream now and remove any dependency on the un-normalized form.</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Collapse // produced by client-side path joining.</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/path-normalize</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;merge-slashes&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/api/v1</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<p><strong>Conflict resolution.</strong> Multiple Ingresses can share the same host (using the standard Ingress host/path merging). When they set different <code>path-normalize</code> levels for the same host, the <strong>first Ingress</strong> (ordered by <code>creationTimestamp</code>, namespace/name for ties) wins; subsequent conflicting levels are ignored with a controller <code>WARN</code>. Setting the same level on two Ingresses sharing a host is not a conflict.</p>
+<p><strong>Performance.</strong> Paths that are already in canonical form take a single linear scan and allocate nothing; allocation only occurs when the path actually changes, and then it is bounded by the path length. The common case (clean paths through <code>base</code>) is effectively free.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>decode-and-merge-slashes</code> decodes <code>%2f</code>/<code>%5c</code> before routing, which allows a request for <code>/api%2fv1</code> to match the <code>/api/v1</code> prefix. Only enable this level if your backend requires it — it removes the URL-encoding layer that prevents path-traversal via encoded slashes.</p>
+</div>
+<h2 id="request-header-modification">Request header modification<a class="headerlink" href="#request-header-modification" title="Permanent link">&para;</a></h2>
+<p>Three annotations control the request headers forwarded to the upstream pod. All three are applied together in a single pass — order within a pass is: set, add, then remove.</p>
+<h3 id="request-header-set"><code>request-header-set</code><a class="headerlink" href="#request-header-set" title="Permanent link">&para;</a></h3>
+<p>Overwrites the named header(s) on the upstream request, regardless of what the client sent. The annotation value is a <strong>newline-separated</strong> list of <code>Name: Value</code> pairs (one per line). This format preserves comma-bearing values such as <code>Cache-Control: no-cache, no-store</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/request-header-set</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">X-Via: coxswain</span>
+<span class="w">  </span><span class="no">X-Forwarded-Proto: https</span>
+</code></pre></div>
+<h3 id="request-header-add"><code>request-header-add</code><a class="headerlink" href="#request-header-add" title="Permanent link">&para;</a></h3>
+<p>Appends the named header(s) on the upstream request without removing any existing value. Same newline-separated <code>Name: Value</code> format as <code>request-header-set</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/request-header-add</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Tag:</span><span class="nv"> </span><span class="s">v2&quot;</span>
+</code></pre></div>
+<h3 id="request-header-remove"><code>request-header-remove</code><a class="headerlink" href="#request-header-remove" title="Permanent link">&para;</a></h3>
+<p>Removes the named header(s) from the upstream request before forwarding. The annotation value is a <strong>comma-separated</strong> list of header names (names never contain commas).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/request-header-remove</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Real-IP,</span><span class="nv"> </span><span class="s">X-Forwarded-For&quot;</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An invalid header name or value in <code>request-header-set</code> / <code>request-header-add</code> causes the entire <code>RequestHeaderModifier</code> (all three keys combined) to be silently dropped with a controller warning; the Ingress itself is not rejected and still routes normally.</p>
+</div>
+<h2 id="response-header-modification">Response header modification<a class="headerlink" href="#response-header-modification" title="Permanent link">&para;</a></h2>
+<p>Mirror of the request header annotations, applied to the downstream response before delivery to the client. Apply order is the same: set, add, remove.</p>
+<h3 id="response-header-set"><code>response-header-set</code><a class="headerlink" href="#response-header-set" title="Permanent link">&para;</a></h3>
+<p>Overwrites the named header(s) on the downstream response. Newline-separated <code>Name: Value</code> pairs.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/response-header-set</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">Cache-Control: no-store</span>
+<span class="w">  </span><span class="no">X-Content-Type-Options: nosniff</span>
+</code></pre></div>
+<h3 id="response-header-add"><code>response-header-add</code><a class="headerlink" href="#response-header-add" title="Permanent link">&para;</a></h3>
+<p>Appends the named header(s) to the downstream response.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/response-header-add</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Frame-Options:</span><span class="nv"> </span><span class="s">DENY&quot;</span>
+</code></pre></div>
+<h3 id="response-header-remove"><code>response-header-remove</code><a class="headerlink" href="#response-header-remove" title="Permanent link">&para;</a></h3>
+<p>Removes the named header(s) from the downstream response. Comma-separated header names.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/response-header-remove</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Server,</span><span class="nv"> </span><span class="s">X-Powered-By&quot;</span>
+</code></pre></div>
+<h2 id="request-redirect">Request redirect<a class="headerlink" href="#request-redirect" title="Permanent link">&para;</a></h2>
+<p>Six annotations configure an HTTP redirect response. Any combination of the fields below may be omitted; omitted fields are inherited from the original request (hostname is preserved, path is preserved, etc.). The redirect fires at the proxy layer — the upstream backend is never reached.</p>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>redirect-scheme</code></td>
+<td><code>http</code> or <code>https</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>redirect-hostname</code></td>
+<td>hostname string</td>
+<td>replaces the Host header</td>
+</tr>
+<tr>
+<td><code>redirect-port</code></td>
+<td>port integer</td>
+<td>explicit port in the Location</td>
+</tr>
+<tr>
+<td><code>redirect-path</code></td>
+<td>absolute path</td>
+<td>full path replacement</td>
+</tr>
+<tr>
+<td><code>redirect-status-code</code></td>
+<td><code>301</code>, <code>302</code>, <code>307</code>, <code>308</code></td>
+<td>defaults to <code>302</code></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/redirect-scheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https&quot;</span>
+<span class="nt">ingress.coxswain-labs.dev/redirect-hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;www.example.com&quot;</span>
+<span class="nt">ingress.coxswain-labs.dev/redirect-status-code</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;301&quot;</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>redirect-*</code> annotations and <code>ssl-redirect</code> are mutually exclusive. If any <code>redirect-*</code> key is present, <code>ssl-redirect</code> is ignored. This avoids emitting two <code>RequestRedirect</code> filters on the same route.</p>
+</div>
+<h2 id="force-https-redirect-ssl-redirect">Force-HTTPS redirect (<code>ssl-redirect</code>)<a class="headerlink" href="#force-https-redirect-ssl-redirect" title="Permanent link">&para;</a></h2>
+<h3 id="ssl-redirect"><code>ssl-redirect</code><a class="headerlink" href="#ssl-redirect" title="Permanent link">&para;</a></h3>
+<p>When set to <code>"true"</code>, every request on the <strong>HTTP listener</strong> for this Ingress receives a redirect to the same URL rewritten to <code>https://</code>. The HTTPS listener entry is unaffected — requests already over TLS are served normally.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/ssl-redirect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<h3 id="ssl-redirect-code"><code>ssl-redirect-code</code><a class="headerlink" href="#ssl-redirect-code" title="Permanent link">&para;</a></h3>
+<p>Overrides the redirect status code issued by <code>ssl-redirect</code>. Accepted values: <code>301</code>, <code>302</code>, <code>307</code>, <code>308</code>. Defaults to <code>308</code> (Permanent Redirect, preserves the request method).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/ssl-redirect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="nt">ingress.coxswain-labs.dev/ssl-redirect-code</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;301&quot;</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>ssl-redirect</code> is a shortcut for a scheme-only <code>RequestRedirect</code> filter scoped to the HTTP listener port. It is equivalent to setting <code>redirect-scheme: https</code> with <code>redirect-status-code: 308</code>, but only fires on port 80 (or whichever HTTP port the controller is configured with). Requests already arriving on the TLS listener are not redirected, regardless of the annotation.</p>
+</div>
+<h2 id="backend-wire-protocol-appprotocol">Backend wire protocol (<code>appProtocol</code>)<a class="headerlink" href="#backend-wire-protocol-appprotocol" title="Permanent link">&para;</a></h2>
+<p>Coxswain has no <code>backend-protocol</code> annotation. The upstream wire protocol is taken
+from the backend <strong>Service port <code>appProtocol</code></strong> field — the Gateway API mechanism
+(<a href="https://gateway-api.sigs.k8s.io/geps/gep-1911/">GEP-1911</a>), which applies to both
+Ingress and Gateway API backends:</p>
+<table>
+<thead>
+<tr>
+<th><code>appProtocol</code></th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>absent</em></td>
+<td>Cleartext HTTP/1.1 (the default)</td>
+</tr>
+<tr>
+<td><code>kubernetes.io/h2c</code></td>
+<td>Cleartext HTTP/2 prior-knowledge (<code>h2c</code>); suitable for gRPC without TLS</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grpc-backend</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50051</span>
+<span class="w">      </span><span class="nt">appProtocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/h2c</span><span class="w">   </span><span class="c1"># cleartext HTTP/2 for gRPC backends</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Upstream TLS</strong> is configured with a <code>BackendTLSPolicy</code> (<a href="../gateway-api/">GEP-1897</a>), the sole Gateway API mechanism for originating TLS to a backend. There is no protocol-hint shortcut for upstream TLS.</p>
+</div>
+<h2 id="max-body-size"><code>max-body-size</code><a class="headerlink" href="#max-body-size" title="Permanent link">&para;</a></h2>
+<p>Caps the request body size. A request whose body exceeds the limit is rejected with <strong>413 Payload Too Large</strong> and never reaches the upstream.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/max-body-size</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8m&quot;</span>
+</code></pre></div>
+<p>The value is a byte count, optionally suffixed with a binary unit (case-insensitive):</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"10485760"</code></td>
+<td>10485760 (bare byte count)</td>
+</tr>
+<tr>
+<td><code>"512k"</code></td>
+<td>512 × 1024</td>
+</tr>
+<tr>
+<td><code>"8m"</code></td>
+<td>8 × 1024²</td>
+</tr>
+<tr>
+<td><code>"1g"</code></td>
+<td>1 × 1024³</td>
+</tr>
+</tbody>
+</table>
+<p>Units are <strong>binary</strong> (<code>k</code> = 1024, <code>m</code> = 1024², <code>g</code> = 1024³), matching nginx-ingress's <code>proxy-body-size</code>.</p>
+<p>Enforcement is two-layered and never buffers the whole body:</p>
+<ul>
+<li>When the request declares a <code>Content-Length</code> larger than the limit, it is rejected up front — before any upstream connection is opened. This applies to both HTTP/1.x and HTTP/2.</li>
+<li>For chunked or streaming uploads with no <code>Content-Length</code>, the proxy counts bytes as they arrive and aborts with 413 the moment the running total crosses the limit <strong>on HTTP/1.x only</strong>. A streaming <strong>HTTP/2</strong> upload without <code>Content-Length</code> is not capped mid-stream (it fails open) — returning a rejection mid-body over HTTP/2 deadlocks the client under <code>pingora-proxy</code>; faithful HTTP/2 enforcement awaits pingora request-body buffering.</li>
+</ul>
+<p>Omitting the annotation imposes no limit. An unparseable value (e.g. <code>"8mb"</code>, <code>"lots"</code>) emits a controller warning and is treated as absent — the route serves with no body cap rather than being rejected (<strong>fail-open</strong>).</p>
+<h2 id="mirror-target"><code>mirror-target</code><a class="headerlink" href="#mirror-target" title="Permanent link">&para;</a></h2>
+<p>Sends a <strong>fire-and-forget copy</strong> of every matched request to a secondary backend while the primary request completes normally. The mirror response is discarded entirely — the client only ever sees the primary backend's response. Mirror failures (connect error, timeout, bad response) are logged at <code>WARN</code> level and do not affect the primary.</p>
+<p><strong>Typical use cases</strong>: shadow-testing a new service version under live traffic, capturing request patterns for offline analysis, dark-launch evaluation.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/mirror-target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;echo-b.my-namespace.svc:3000&quot;</span>
+</code></pre></div>
+<p>The value is <code>&lt;service&gt;.&lt;namespace&gt;[.svc[.cluster.local]]:&lt;port&gt;</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Form</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Short</td>
+<td><code>echo-b.my-namespace:3000</code></td>
+</tr>
+<tr>
+<td><code>.svc</code> suffix</td>
+<td><code>echo-b.my-namespace.svc:3000</code></td>
+</tr>
+<tr>
+<td>FQDN</td>
+<td><code>echo-b.my-namespace.svc.cluster.local:3000</code></td>
+</tr>
+</tbody>
+</table>
+<p>The mirror target is resolved to pod endpoints at reconcile time (not per-request). If the Service does not exist or has no ready endpoints, a controller warning is emitted and the mirror is <strong>silently disabled</strong> — the primary route still serves. The Ingress is never rejected.</p>
+<p><strong>The target namespace must match the Ingress namespace.</strong> Cross-namespace references are rejected at reconcile time (controller warning + mirror disabled). An Ingress author can only shadow traffic to Services they own — they must not be able to send mirrored requests (which include request headers) to Services in other namespaces.</p>
+<h3 id="body-mirroring">Body mirroring<a class="headerlink" href="#body-mirroring" title="Permanent link">&para;</a></h3>
+<p>The proxy streams the full request body to the mirror backend <strong>as chunks arrive</strong>, concurrent with primary forwarding — no intermediate buffering and no dependency on <code>max-body-size</code>. A minimal annotation is all that is needed:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/mirror-target</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shadow-svc.my-namespace.svc:8080&quot;</span>
+</code></pre></div>
+<p><strong>Backpressure:</strong> each mirror task receives body chunks via a bounded internal channel. If the mirror upstream falls behind, the current chunk is dropped rather than stalling the primary path. The mirror body may be truncated for slow mirror backends, which is expected and acceptable for a fire-and-forget shadow.</p>
+<p><code>max-body-size</code> can still be set independently to cap and reject oversized primary request bodies with 413 — but it is not required for body mirroring.</p>
+<h3 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h3>
+<p>Every mirror sub-request appears in the <strong>proxy access log</strong> as a separate row with <code>mirror = true</code>. The row carries the same fields as a primary row (<code>host</code>, <code>path</code>, <code>upstream</code>, <code>status</code>) so mirror traffic is visible in any log aggregation pipeline.</p>
+<p>A mirror timeout of 5 s is applied per sub-request; the primary never waits for the mirror to finish.</p>
+<p><code>Authorization</code>, <code>Cookie</code>, and <code>Proxy-Authorization</code> headers are <strong>always stripped</strong> from mirror sub-requests. The mirror backend is a shadow endpoint whose trustworthiness is not guaranteed; forwarding user credentials to it would make it a credential-harvesting surface.</p>
+<h2 id="ip-access-control"><code>ip-access-control</code><a class="headerlink" href="#ip-access-control" title="Permanent link">&para;</a></h2>
+<p>The Ingress surface for the <a href="../gateway-api/#ip-access-control"><code>IpAccessControl</code> CRD</a>, same idiom as <code>ext-auth</code>/<code>auth-jwt</code>/<code>compression</code>/<code>retry</code>/<code>rate-limit</code>. Value is <code>namespace/name</code> of an <code>IpAccessControl</code> resource; both surfaces resolve the same CR to the same runtime config, so one <code>IpAccessControl</code> can back an Ingress and an HTTPRoute/GRPCRoute <code>ExtensionRef</code> filter identically. A request whose client IP falls inside <code>deny</code>, or outside every <code>allow</code> range when <code>allow</code> is non-empty, is rejected with <strong>403 Forbidden</strong> before any upstream connection is opened.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IpAccessControl</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">office-only</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">deny</span><span class="p">:</span><span class="w">                       </span><span class="c1"># evaluated FIRST</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">203.0.113.5/32</span>
+<span class="w">  </span><span class="nt">allow</span><span class="p">:</span><span class="w">                      </span><span class="c1"># then the allow-list</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">203.0.113.0/24</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2001:db8::/32</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/ip-access-control</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/office-only&quot;</span>
+</code></pre></div>
+<p>The <code>allow</code> / <code>deny</code> values are lists of IPv4/IPv6 CIDR blocks. A bare address without a prefix (<code>10.0.0.1</code>, <code>2001:db8::1</code>) is accepted as a host route (<code>/32</code> / <code>/128</code>).</p>
+<p><strong>Which IP is matched.</strong> When the proxy sits behind a load balancer speaking the <a href="../../reference/configuration/">PROXY protocol</a> (<code>--proxy-accept-proxy-protocol</code>), the match uses the <strong>real client IP</strong> carried in the PROXY header. Otherwise it uses the L4 peer address of the connection. Deploy behind a PROXY-protocol-aware load balancer (or set <code>externalTrafficPolicy: Local</code>) so the proxy observes real client IPs rather than the LB's address. When <code>trust-forwarded-for</code> is also set, see the <a href="#trust-forwarded-for">Trusted proxy headers</a> section — the effective client IP may come from a forwarded header instead.</p>
+<p><strong>Matching is strict.</strong> CIDR membership is exact per address family — an IPv4-mapped IPv6 client (<code>::ffff:10.0.0.1</code>) does <strong>not</strong> match an IPv4 CIDR. List both families if your clients can arrive over either.</p>
+<p><strong>Evaluation order.</strong> <code>deny</code> is evaluated <strong>before</strong> <code>allow</code>. A client IP that falls inside the deny list is rejected with 403 even if the allow-list would have admitted it. An empty <code>allow</code> list imposes no allow-list restriction (only <code>deny</code> applies); empty <code>allow</code> <strong>and</strong> empty <code>deny</code> performs no filtering.</p>
+<p><strong>Unattributable client IP.</strong> A client whose IP cannot be determined is <strong>denied</strong> against a non-empty <code>allow</code> list (<strong>fail-closed</strong> — an un-attributable client must not pass a security control), but is <strong>not</strong> blocked by <code>deny</code> alone (a block list only acts on IPs it can positively attribute to a listed range).</p>
+<p>A missing <code>IpAccessControl</code> CR fails <strong>open</strong> (no IP filtering) — unlike the auth annotations (<code>ext-auth</code>/<code>auth-basic-secret</code>/<code>auth-jwt</code>), which fail closed with <strong>503</strong>. A broken or stale <code>ip-access-control</code> reference degrades the route to unfiltered rather than blocking traffic. Invalid CIDR tokens are logged and skipped rather than rejecting the whole policy.</p>
+<div class="admonition note">
+<p class="admonition-title">Migration from the inline allow-source-range/deny-source-range annotations (breaking)</p>
+<p>Earlier releases exposed two inline annotations — <code>allow-source-range</code>, <code>deny-source-range</code> — duplicating the <code>IpAccessControl</code> CRD schema. These are removed; move each Ingress's values into an <code>IpAccessControl</code> CR and point <code>ip-access-control</code> at it.</p>
+</div>
+<h2 id="trust-forwarded-for"><code>trust-forwarded-for</code><a class="headerlink" href="#trust-forwarded-for" title="Permanent link">&para;</a></h2>
+<p>Lets the proxy extract the <strong>real client IP</strong> from a forwarded-for header — necessary when Coxswain sits behind a cloud LB or CDN that terminates the connection and puts the original client IP in a header like <code>X-Forwarded-For</code> or <code>CF-Connecting-IP</code>.</p>
+<p>Without this annotation, IP-based features (<code>ip-access-control</code>, IP-keyed <code>rate-limit</code>) always see the <strong>L4 peer address</strong> (the LB's IP), making per-client controls ineffective behind a proxy.</p>
+<p><strong>Master switch — disabled by default</strong> to prevent header injection by untrusted peers:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/trust-forwarded-for</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<h3 id="ip-resolution-algorithm">IP resolution algorithm<a class="headerlink" href="#ip-resolution-algorithm" title="Permanent link">&para;</a></h3>
+<p>When <code>trust-forwarded-for: "true"</code> is set, the proxy resolves the effective client IP once per request (after route matching) using this four-step algorithm:</p>
+<ol>
+<li><strong>L4 base IP</strong> — real client addr from PROXY protocol if present, otherwise the TCP peer addr.</li>
+<li><strong>No config</strong> — if the Ingress has no <code>trust-forwarded-for</code>, use the L4 base IP (current behavior unchanged).</li>
+<li><strong>CIDR gate (fail-closed)</strong> — the forwarded header is honored <strong>only</strong> when the L4 base IP is inside one of the <code>forwarded-for-trusted-cidrs</code>. If the list is empty, or the L4 peer is not in it, the header is ignored (anti-spoofing) and the L4 base IP is used. An empty list trusts <strong>no</strong> peer — you must configure your load balancer's CIDR to enable header trust.</li>
+<li><strong>Rightmost-untrusted parse</strong> — parse the configured header (default <code>X-Forwarded-For</code>) and scan the comma-separated list <strong>right-to-left</strong>, skipping addresses that are themselves trusted-proxy hops (in <code>forwarded-for-trusted-cidrs</code>) or private/reserved. The first address that is neither is the effective client IP. Everything to its left is client-controlled and ignored, so a forged leftmost token cannot spoof the client IP. If no untrusted address is found, fall back to the L4 base IP.</li>
+</ol>
+<p>All addresses are canonicalized before matching, so an IPv4-mapped IPv6 form (<code>::ffff:a.b.c.d</code>) is treated as its IPv4 address — it cannot slip past an IPv4 <code>ip-access-control</code> allow/deny CIDR.</p>
+<p>"Private/reserved" means RFC 1918 (<code>10/8</code>, <code>172.16/12</code>, <code>192.168/16</code>), loopback (<code>127/8</code>, <code>::1</code>), link-local (<code>169.254/16</code>, <code>fe80::/10</code>), ULA (<code>fc00::/7</code>), and unspecified.</p>
+<h3 id="forwarded-for-header"><code>forwarded-for-header</code><a class="headerlink" href="#forwarded-for-header" title="Permanent link">&para;</a></h3>
+<p>Which header to read the forwarded IP from. Defaults to <code>X-Forwarded-For</code>. Override for CDNs that use a proprietary header:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/trust-forwarded-for</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/forwarded-for-header</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CF-Connecting-IP&quot;</span>
+</code></pre></div>
+<p>Header lookup is case-insensitive. The value is trimmed of surrounding whitespace. If the annotation is absent or empty, <code>X-Forwarded-For</code> is used.</p>
+<h3 id="forwarded-for-trusted-cidrs"><code>forwarded-for-trusted-cidrs</code><a class="headerlink" href="#forwarded-for-trusted-cidrs" title="Permanent link">&para;</a></h3>
+<p>The anti-spoofing gate: only trust the forwarded header when the <strong>L4 peer address</strong> is inside one of the listed CIDRs. A request from a peer outside this list is treated as if <code>trust-forwarded-for</code> were off — the forwarded header is silently ignored and the L4 IP is used instead.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/trust-forwarded-for</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/forwarded-for-trusted-cidrs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10.0.0.0/8,172.16.0.0/12&quot;</span>
+</code></pre></div>
+<p>The value is a comma-separated list of IPv4/IPv6 CIDR blocks (same format as <code>forwarded-for-trusted-cidrs</code> itself — a bare address is accepted as a host route). Whitespace is trimmed.</p>
+<p><strong>When absent or empty</strong>, the forwarded header is trusted unconditionally for <strong>every</strong> L4 peer — only do this when the deployment topology guarantees that only a trusted proxy can reach Coxswain directly.</p>
+<p><strong>Security note.</strong> Always set <code>forwarded-for-trusted-cidrs</code> to the IP range of your load balancer or CDN edge nodes. Without it, any client that can reach the proxy port can forge the forwarded header and bypass IP-based controls.</p>
+<p><strong>Failure handling:</strong></p>
+<ul>
+<li>An invalid CIDR token emits a controller warning and is skipped.</li>
+<li>If every token is invalid, the CIDR list is treated as absent (unconditional trust) and a controller warning is emitted.</li>
+</ul>
+<h2 id="session-affinity-circuit-breaker-and-load-balancing">Session affinity, circuit breaker, and load balancing<a class="headerlink" href="#session-affinity-circuit-breaker-and-load-balancing" title="Permanent link">&para;</a></h2>
+<p>Session affinity (sticky sessions), the per-upstream-endpoint circuit breaker, and the load-balancing algorithm are <strong>not</strong> Ingress annotations — they are configured by attaching a <a href="../gateway-api/#coxswainbackendpolicy"><code>CoxswainBackendPolicy</code></a> to the backend <code>Service</code>, identically for Ingress and Gateway API routes. See the <a href="../gateway-api/#coxswainbackendpolicy">Gateway API guide</a> for the full field set, the circuit breaker's state machine and Prometheus series, and worked examples.</p>
+<hr />
+<h2 id="rate-limiting">Rate limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h2>
+<p>The Ingress surface for the <a href="../rate-limiting/#ratelimit-spec-fields"><code>RateLimit</code> CRD</a>, same idiom as <code>ext-auth</code>/<code>auth-jwt</code>/<code>compression</code>/<code>retry</code>. Value is <code>namespace/name</code> of a <code>RateLimit</code> resource; both surfaces resolve the same CR to the same runtime config, so one <code>RateLimit</code> can back an Ingress and an HTTPRoute/GRPCRoute <code>ExtensionRef</code> filter identically. Over-limit requests are rejected with <strong>429 Too Many Requests</strong> and a <code>Retry-After</code> header (in whole seconds) telling the client when to retry. See the <a href="../rate-limiting/">Rate limiting guide</a> for the full model, including the GCRA algorithm and Gateway API usage.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default-limit</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">requestsPerSecond</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">  </span><span class="nt">burst</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w">              </span><span class="c1"># optional, default 0</span>
+<span class="w">  </span><span class="nt">byHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Api-Key&quot;</span><span class="w">  </span><span class="c1"># optional; absent = limit by client IP</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/default-limit&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p><code>requestsPerSecond</code> is the sustained rate per client; <code>burst</code> (default <code>0</code>) is extra headroom above the sustained rate a client that has been idle may spend in a short spike — total burst capacity is <code>requestsPerSecond + burst</code>. <code>byHeader</code> selects the per-client key: absent (the default) keys by real client IP (or L4 peer when not behind a PROXY-protocol LB); a header name keys by that header's value instead. When the keying dimension is not available for a request (undeterminable IP, or an absent header on a header-keyed route) the request is <strong>admitted without counting</strong> (<strong>fail-open</strong>) — a missing key never blocks traffic.</p>
+<p>A missing <code>RateLimit</code> CR fails <strong>open</strong> (no rate limiting) — unlike the auth annotations (<code>ext-auth</code>/<code>auth-basic-secret</code>/<code>auth-jwt</code>), which fail closed with <strong>503</strong>. A broken or stale <code>rate-limit</code> reference degrades the route to unthrottled rather than blocking traffic.</p>
+<div class="admonition warning">
+<p class="admonition-title">Header keying allows rate-limit bypass</p>
+<p><code>byHeader</code> allocates one bucket per <strong>unique value</strong> of the named header. A client that rotates the header value (e.g. sends a different <code>X-Api-Key</code> on each request) starts with a full bucket every time, bypassing the per-key limit entirely.</p>
+<p>Mitigate by:</p>
+<ul>
+<li>combining with <code>ext-auth</code> or <code>auth-basic-secret</code> so the header value is authenticated before being trusted as a rate-limit key, or</li>
+<li>omitting <code>byHeader</code> (IP-keyed) as the primary limit and treating header keying as an optional secondary signal only.</li>
+</ul>
+<p>The controller emits a <code>Warning</code> Event on the Ingress when <code>byHeader</code> keying is configured without an auth annotation, so operators are notified at reconcile time.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Migration from the inline rate-limit-rps/rate-limit-burst/rate-limit-by annotations (breaking)</p>
+<p>Earlier releases exposed three inline annotations — <code>rate-limit-rps</code>, <code>rate-limit-burst</code>, <code>rate-limit-by</code> — duplicating the <code>RateLimit</code> CRD schema. These are removed; move each Ingress's values into a <code>RateLimit</code> CR and point <code>rate-limit</code> at it.</p>
+</div>
+<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
+<p>Coxswain supports three independently additive authentication checks on Ingresses: <strong>external authorization</strong> (<code>ext_authz</code>, delegated to an auth service, <code>ext-auth</code>), <strong>basic auth</strong> (htpasswd Secret, <code>auth-basic-secret</code>), and <strong>JWT</strong> (JWKS bearer-token, <code>auth-jwt</code>). All are enforced at the proxy before any upstream connection; a failure never reaches the backend. A route can combine any subset of the three — every configured check must pass.</p>
+<h3 id="ext-auth"><code>ext-auth</code><a class="headerlink" href="#ext-auth" title="Permanent link">&para;</a></h3>
+<p>Enables <strong>external authorization</strong> (<code>ext_authz</code>) — the Ingress surface for the <a href="../gateway-api/#external-authorization-ext_authz"><code>CoxswainExternalAuth</code> CRD</a>, same idiom as <code>auth-jwt</code>. Value is <code>namespace/name</code> of a <code>CoxswainExternalAuth</code> resource; both surfaces resolve the same CR to the same runtime config, so one <code>CoxswainExternalAuth</code> can back an Ingress and an HTTPRoute <code>ExtensionRef</code> filter identically.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainExternalAuth</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oauth2</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span><span class="w">          </span><span class="c1"># or GRPC</span>
+<span class="w">  </span><span class="nt">backendRef</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oauth2-proxy</span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4180</span>
+<span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">250ms</span>
+<span class="w">  </span><span class="nt">failClosed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">        </span><span class="c1"># deny (503) on auth-service error/timeout (default)</span>
+<span class="w">  </span><span class="nt">allowedResponseHeaders</span><span class="p">:</span><span class="w"> </span><span class="c1"># copied onto the upstream request on allow</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x-auth-user</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/ext-auth</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/oauth2&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p>A <strong>2xx</strong> (HTTP transport) or <code>OK</code> (gRPC transport) response from the auth service allows the request; any other status is returned to the client verbatim and the upstream is never hit. A missing <code>CoxswainExternalAuth</code> CR fails <strong>closed</strong> (<strong>503</strong>) — matching <code>auth-basic-secret</code>/<code>auth-jwt</code>: an operator who set <code>ext-auth</code> intends the route to require the check, so a stale or typo'd reference must not silently disable it. A present CR whose <code>backendRef</code> has no ready endpoints, whose cross-namespace <code>backendRef</code> lacks a <code>ReferenceGrant</code>, or whose protocol is unsupported also fails <strong>closed</strong>. See the <a href="../gateway-api/#external-authorization-ext_authz"><code>CoxswainExternalAuth</code> CRD reference</a> for the full spec (transport, timeout, fail-closed posture, response-header forwarding).</p>
+<h3 id="auth-basic-secret"><code>auth-basic-secret</code><a class="headerlink" href="#auth-basic-secret" title="Permanent link">&para;</a></h3>
+<p>Enables <strong>HTTP Basic Authentication</strong> backed by an htpasswd Secret. Value is <code>namespace/name</code> of a <code>Secret</code> resource with:</p>
+<ul>
+<li><strong>Type</strong>: <code>Opaque</code></li>
+<li><strong>Key</strong>: <code>auth</code></li>
+<li><strong>Value</strong>: standard htpasswd content (one <code>username:hash</code> line per credential)</li>
+<li><strong>Supported hash algorithms</strong>: <strong>bcrypt</strong> (<code>$2a$</code>, <code>$2b$</code>, <code>$2y$</code>) is the required minimum — use <code>htpasswd -B</code> to generate bcrypt hashes. <code>SHA1</code> (<code>{SHA}base64</code>) is accepted for compatibility with existing files but is <strong>not recommended</strong>: SHA1 is unsalted and trivially crackable offline. The controller emits a <code>Warning</code> Event naming each affected username. Lines using other schemes (MD5, crypt) are skipped with a controller warning.</li>
+</ul>
+<p><strong>The Secret must carry the <code>ingress.coxswain-labs.dev/auth-basic: "true"</code> label.</strong> The proxy watches only labeled Secrets (the data-plane read-only invariant — the proxy never holds cluster-wide Secret access). A referenced Secret that is absent or unlabeled causes the proxy to return <strong>503</strong> for every request to that Ingress (<strong>fail-closed</strong>). This is intentional: misconfigured auth silences traffic rather than silently bypassing it.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-htpasswd</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-basic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span>
+<span class="nt">data</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># alice:secret (bcrypt)  bob:secret (SHA1)</span>
+<span class="w">  </span><span class="nt">auth</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">YWxpY2U6JDJ5JDA0JHdyUkZRU0NCZXpZTFR5V1hKS1dldXVPaHRGdWtyQWo3UHpQWXRRc09ORWg4ck9PampJTGFLCmJvYjp7U0hBfTVlbjZHNk1lelJyb1QzWEtxa2RQT21ZL0JmUT0K</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-basic-secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/my-htpasswd&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p>Requests without credentials receive <strong>401</strong> with a <code>WWW-Authenticate: Basic realm="coxswain"</code> header. Invalid credentials also receive <strong>401</strong>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Hardening</p>
+<p>Always generate credentials with <code>htpasswd -B</code> (bcrypt). Avoid <code>htpasswd -s</code> (<code>{SHA}</code>) — SHA1 is unsalted and can be cracked offline in seconds with commodity hardware.</p>
+<p>Credential hashes are zeroed from memory when the credential list is replaced at reconcile time (<code>zeroize</code>). The Helm chart already ships <code>seccompProfile: RuntimeDefault</code>, <code>readOnlyRootFilesystem: true</code>, and <code>capabilities.drop: ALL</code> by default. For the remaining defense-in-depth, configure nodes with <code>vm.swappiness=0</code> so hashes can't be paged to disk — this is a node-level kernel parameter that Kubernetes cannot enforce per-pod.</p>
+</div>
+<h3 id="auth-jwt"><code>auth-jwt</code><a class="headerlink" href="#auth-jwt" title="Permanent link">&para;</a></h3>
+<p>Enables <strong>JWT (JWKS bearer-token) validation</strong> — the Ingress surface for the <a href="../gateway-api/#jwt-authentication"><code>JwtAuth</code> CRD</a>, same idiom as <code>auth-basic-secret</code>. Value is <code>namespace/name</code> of a <code>JwtAuth</code> resource; both surfaces resolve the same CR to the same runtime config, so one <code>JwtAuth</code> can back an Ingress and an HTTPRoute identically.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JwtAuth</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-jwt</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">issuer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://issuer.example.com</span>
+<span class="w">  </span><span class="nt">audiences</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">  </span><span class="nt">jwks</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">remote</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://issuer.example.com/.well-known/jwks.json</span>
+<span class="w">  </span><span class="nt">claimToHeaders</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">claim</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub</span>
+<span class="w">      </span><span class="nt">header</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x-user-id</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-jwt</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/my-jwt&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p>A valid, signed, unexpired, correct-issuer bearer token is admitted; the verified <code>sub</code> claim is forwarded as <code>x-user-id</code>. A missing/invalid/expired/wrong-issuer/wrong-audience token receives <strong>401</strong> with <code>WWW-Authenticate: Bearer</code>. A missing <code>JwtAuth</code> CR fails <strong>closed</strong> (<strong>503</strong>) — matching <code>auth-basic-secret</code>/<code>ext-auth</code>: an operator who set <code>auth-jwt</code> intends the route to require a bearer token, so a stale or typo'd reference must not silently disable authentication. An unresolved JWKS also fails <strong>closed</strong> (<strong>503</strong>). See the <a href="../gateway-api/#jwt-authentication"><code>JwtAuth</code> CRD reference</a> for the full spec (remote vs. inline JWKS, <code>fromHeaders</code>, <code>forwardPayloadHeader</code>, <code>forward</code>).</p>
+<h2 id="client-certificate-mtls">Client certificate mTLS<a class="headerlink" href="#client-certificate-mtls" title="Permanent link">&para;</a></h2>
+<p>Requires clients to present a valid TLS certificate during the handshake — <strong>mutual TLS (mTLS)</strong>. When enabled, the proxy aborts the handshake if the client presents no certificate or one not signed by the configured CA. This matches the semantics of Istio's <code>tls.mode: MUTUAL</code>: enforcement is at the TLS layer, not HTTP, so there is no 400/403 response — the connection simply does not complete.</p>
+<p><strong>Enforcement model.</strong> The proxy aborts the TLS handshake (BoringSSL <code>FAIL_IF_NO_PEER_CERT</code>). Clients that present no cert or a cert from an unknown CA receive a TLS alert; HTTP never starts. The backend pod is never reached.</p>
+<p><strong>HTTP listener.</strong> Plain-HTTP (port 80) requests to an mTLS host are not affected by these annotations. If you want to prevent clients from sending plain-HTTP requests at all, combine <code>auth-tls-secret</code> with <code>ssl-redirect: "true"</code> on the same Ingress.</p>
+<p><strong>Cross-SNI guard.</strong> On a shared TLS connection whose SNI selected a different (non-mTLS) host, a <code>Host:</code> header naming an mTLS host returns <code>421 Misdirected Request</code> — the connection never verified a client cert and cannot be reused to access the mTLS resource.</p>
+<p><strong>Fail-closed on bad CA.</strong> If the referenced Secret is absent, unlabeled, missing the <code>ca.crt</code> key, or its PEM is unparseable, the proxy installs an empty verify store for that host. Every TLS handshake to that host is aborted until the Secret is corrected. This matches the <code>auth-basic-secret</code> fail-closed policy.</p>
+<h3 id="auth-tls-secret"><code>auth-tls-secret</code><a class="headerlink" href="#auth-tls-secret" title="Permanent link">&para;</a></h3>
+<p>Reference to a Kubernetes <code>Opaque</code> Secret in <code>namespace/name</code> form whose <code>ca.crt</code> key holds one or more PEM-encoded CA certificates used to verify the client certificate chain.</p>
+<p><strong>The Secret must carry the <code>ingress.coxswain-labs.dev/auth-tls: "true"</code> label.</strong> The data-plane proxy watches only labeled Secrets (the read-only-proxy invariant — the proxy never holds cluster-wide Secret access). An unlabeled or missing Secret causes every TLS handshake to the Ingress host to be aborted (<strong>fail-closed</strong>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-client-ca</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-tls</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span>
+<span class="nt">data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ca.crt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;base64-encoded PEM CA cert(s)&gt;</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/auth-tls-secret</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/my-client-ca&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-server-cert</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<h3 id="auth-tls-verify-depth"><code>auth-tls-verify-depth</code><a class="headerlink" href="#auth-tls-verify-depth" title="Permanent link">&para;</a></h3>
+<p>Maximum TLS certificate chain verification depth. With depth <code>1</code> (the default) only a direct CA-signed leaf is accepted — no intermediate CAs. With depth <code>2</code>, one intermediate CA is allowed. Must be a positive integer &gt;= 1. Absent or invalid values warn and fall back to <code>1</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/auth-tls-verify-depth</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2&quot;</span>
+</code></pre></div>
+<h3 id="auth-tls-pass-certificate-to-upstream"><code>auth-tls-pass-certificate-to-upstream</code><a class="headerlink" href="#auth-tls-pass-certificate-to-upstream" title="Permanent link">&para;</a></h3>
+<p>When <code>"true"</code>, the verified client certificate PEM is URL-encoded and injected on the upstream request as the <code>X-SSL-Client-Cert</code> header. The backend can decode it for audit logging, identity extraction, or further authorization. Default: <code>false</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">ingress.coxswain-labs.dev/auth-tls-pass-certificate-to-upstream</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<p>The header value is the raw PEM of the client leaf certificate, percent-encoded (all non-alphanumeric characters encoded). Backends decode it with a standard URL-decode.</p>
+<div class="admonition note">
+<p class="admonition-title">v1 limitation</p>
+<p><code>auth-tls-*</code> annotations are read directly off <code>Ingress.metadata.annotations</code>. They do not inherit class-level defaults from a <code>CoxswainIngressClassParameters</code> resource. Per-class mTLS defaults are tracked for a future release.</p>
+</div>
+<h2 id="upstream-keepalive-idle-timeout">Upstream keepalive idle timeout<a class="headerlink" href="#upstream-keepalive-idle-timeout" title="Permanent link">&para;</a></h2>
+<p>How long Pingora keeps an idle upstream connection in its keepalive pool before evicting it is <strong>not</strong> an Ingress annotation — it is <code>timeouts.idle</code> on a <a href="../gateway-api/#coxswainbackendpolicy"><code>CoxswainBackendPolicy</code></a> attached to the backend <code>Service</code>. Absent or invalid values warn and fall back to Pingora's default (connections are evicted by LRU capacity pressure, not by age).</p>
+<p><strong>Observability</strong>: the <code>coxswain_proxy_upstream_connections_total{state="reused"}</code> counter increments every time a request reuses a pooled connection. Compare it with <code>{state="new"}</code> to gauge keepalive efficiency for a route.</p>
+<p><strong>Global pool size</strong>: the total number of idle upstream connections across all routes is bounded by <code>--proxy-upstream-keepalive-pool-size</code> (default: 128). Set it via the Helm value <code>proxy.shared.upstreamKeepalivePoolSize</code> or the env var <code>COXSWAIN_PROXY_UPSTREAM_KEEPALIVE_POOL_SIZE</code>. Raise it for deployments with many distinct upstream hosts/ports; lower it to reduce file-descriptor usage.</p>
+<h2 id="compression"><code>compression</code><a class="headerlink" href="#compression" title="Permanent link">&para;</a></h2>
+<p>Opt-in, per-Ingress on-the-fly response compression — the Ingress surface for the
+<a href="../gateway-api/#response-compression"><code>Compression</code> CRD</a>, same idiom as <code>ext-auth</code>/<code>auth-jwt</code>. Value
+is <code>namespace/name</code> of a <code>Compression</code> resource; both surfaces resolve the same CR to the same
+runtime config, so one <code>Compression</code> can back an Ingress and an HTTPRoute <code>ExtensionRef</code> filter
+identically.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Compression</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default-compression</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gzip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">brotli</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+<span class="w">  </span><span class="nt">minSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">  </span><span class="nt">types</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text/html</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text/plain</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text/css</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application/json</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application/javascript</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-ingress</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/compression</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/default-compression&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<p>At least one of <code>gzip</code> / <code>brotli</code> must be <code>true</code> for the CR to have any effect; when both are <code>false</code>
+(the default) it is a no-op. Brotli is preferred over gzip when both are enabled and the client
+advertises <code>br</code> in <code>Accept-Encoding</code>. <code>level</code> (1–9, default <code>6</code>), <code>minSize</code> (bytes, default <code>1024</code>),
+and <code>types</code> (default: <code>text/html</code>, <code>text/plain</code>, <code>text/css</code>, <code>application/json</code>,
+<code>application/javascript</code>) are documented on the <a href="../gateway-api/#response-compression"><code>Compression</code> CRD reference</a>.</p>
+<p>A missing <code>Compression</code> CR fails <strong>open</strong> (no compression) — unlike the auth annotations
+(<code>ext-auth</code>/<code>auth-basic-secret</code>/<code>auth-jwt</code>), which fail closed with <strong>503</strong>. A broken or stale
+<code>compression</code> reference degrades the route to uncompressed responses rather than blocking traffic.</p>
+<div class="admonition note">
+<p class="admonition-title">Migration from the inline <code>compression-*</code> annotations (breaking)</p>
+<p>Earlier releases exposed five inline annotations — <code>compression-gzip</code>, <code>compression-brotli</code>,
+<code>compression-level</code>, <code>compression-types</code>, <code>compression-min-size</code> — duplicating the <code>Compression</code>
+CRD schema. These are removed; move each Ingress's values into a <code>Compression</code> CR and point
+<code>compression</code> at it.</p>
+</div>
+<h3 id="behaviour">Behaviour<a class="headerlink" href="#behaviour" title="Permanent link">&para;</a></h3>
+<p>Compression is applied only when <strong>all</strong> of the following hold:</p>
+<ol>
+<li>At least one codec (<code>gzip</code> or <code>brotli</code>) is enabled on the referenced CR.</li>
+<li>The client advertises the codec in <code>Accept-Encoding</code>.</li>
+<li>The upstream response does not already have a <code>Content-Encoding</code> header — pre-compressed
+   responses (e.g. assets served pre-compressed by the upstream) are forwarded unchanged.</li>
+<li>The response <code>Content-Type</code> (before <code>;</code>) matches an entry in the CR's <code>types</code>.</li>
+<li>Either <code>Content-Length</code> is absent, or its value is ≥ the CR's <code>minSize</code>.</li>
+<li>The response status is a normal body-bearing code (1xx, 204, and 304 responses are passed through).</li>
+</ol>
+<p>When compression fires, the proxy:
+- Sets <code>Content-Encoding: gzip</code> or <code>Content-Encoding: br</code>.
+- Appends <code>Accept-Encoding</code> to the <code>Vary</code> header (or creates it), so downstream caches serve the
+  correct variant.
+- Removes <code>Content-Length</code> (the compressed size differs from the original) and <code>Accept-Ranges</code>
+  (byte-range requests are incompatible with on-the-fly compression).</p>
+<div class="admonition note">
+<p class="admonition-title">q-values</p>
+<p>q-values in <code>Accept-Encoding</code> are not arbitrated — presence of a codec token is sufficient to
+select it. This matches Pingora's own behaviour. When both codecs are enabled and the client
+sends both <code>br</code> and <code>gzip</code>, brotli always wins regardless of q-values.</p>
+</div>
+<h2 id="load-balancing-algorithm">Load-balancing algorithm<a class="headerlink" href="#load-balancing-algorithm" title="Permanent link">&para;</a></h2>
+<p>The algorithm used to pick an upstream endpoint for each request is <strong>not</strong> an Ingress annotation — it is <code>loadBalancer.algorithm</code> on a <a href="../gateway-api/#coxswainbackendpolicy"><code>CoxswainBackendPolicy</code></a> attached to the backend <code>Service</code>. See the Gateway API guide for the full value table (<code>round_robin</code>, <code>least_conn</code>, <code>ewma</code>, the <code>hash:*</code> consistent-hash forms), the Istio/Envoy equivalence mapping, and performance notes.</p>
+<p><code>hash:source-ip</code> (and its alias <code>ip_hash</code>) interacts with <a href="#trust-forwarded-for"><code>trust-forwarded-for</code></a>: when enabled, it hashes the resolved client IP (the first non-private address from the forwarded header, gated by <a href="#forwarded-for-trusted-cidrs"><code>forwarded-for-trusted-cidrs</code></a> if set) rather than the TCP peer address.</p>
+<h2 id="class-level-defaults">Class-level defaults<a class="headerlink" href="#class-level-defaults" title="Permanent link">&para;</a></h2>
+<p>Any of the annotations above can be defaulted for <strong>every Ingress claiming an IngressClass</strong> by pointing the class at a <code>CoxswainIngressClassParameters</code> resource via <code>IngressClass.spec.parameters</code>. This is the GitOps-friendly way to set a baseline policy (timeouts, retries, upstream protocol) once per class instead of repeating it on each Ingress.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainIngressClassParameters</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">public-defaults</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-system</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">defaultAnnotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/read-timeout</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10s&quot;</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;coxswain-system/default-retry&quot;</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IngressClass</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">controller</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-labs.dev/gateway-controller</span>
+<span class="w">  </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress.coxswain-labs.dev</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainIngressClassParameters</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">public-defaults</span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-system</span>
+<span class="w">    </span><span class="nt">scope</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span>
+</code></pre></div>
+<p><strong>Precedence</strong> (highest wins, per key):</p>
+<ol>
+<li>The annotation set on the Ingress itself.</li>
+<li>The class default from <code>spec.defaultAnnotations</code>.</li>
+<li>The built-in Coxswain default.</li>
+</ol>
+<p>The merge is per-key: an Ingress that sets only <code>read-timeout</code> still inherits the class's <code>retry</code> reference. The keys and value formats in <code>defaultAnnotations</code> are exactly the per-Ingress ones — including <code>namespace/name</code> CR references like <code>retry</code>/<code>compression</code>, which resolve identically whether set directly on an Ingress or inherited from a class default; an invalid value emits a warning and falls back to the built-in default, the same as if it were set directly on an Ingress (an empty string <code>""</code> is <strong>not</strong> an "unset" override — it parses, warns, and falls back).</p>
+<h3 id="specaccesslog-per-class-access-log-control"><code>spec.accessLog</code> — per-class access-log control<a class="headerlink" href="#specaccesslog-per-class-access-log-control" title="Permanent link">&para;</a></h3>
+<p>In addition to <code>spec.defaultAnnotations</code>, <code>CoxswainIngressClassParameters</code> exposes a typed field for access-log control:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">accessLog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">   </span><span class="c1"># suppress access-log lines for this class&#39;s routes</span>
+</code></pre></div>
+<p>Unlike <code>defaultAnnotations</code>, <code>accessLog</code> is <strong>not</strong> a per-Ingress override — it is class-scoped only. All Ingresses claiming the class share the same setting; individual Ingresses cannot override it per-resource. Set <code>accessLog: false</code> when you want to suppress noisy health-check or synthetic-monitor traffic without affecting the rest of the log stream.</p>
+<p>Error logs and Prometheus metrics are never suppressed by <code>accessLog: false</code>. <code>accessLog: false</code> is a downward-only override — it never force-enables logging when <code>--access-log</code> is already off globally. See <a href="../../reference/observability/#per-class-suppression">Observability → Per-class suppression</a> for the full usage example.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>CoxswainIngressClassParameters</code> is namespaced, so <code>spec.parameters</code> must set <code>scope: Namespace</code> and a <code>namespace</code>. A reference that is missing, names a different kind, or omits its namespace is logged as a warning and ignored — affected Ingresses still route with built-in defaults rather than being rejected. Because <code>IngressClass</code> has no status subresource, this condition is surfaced in the controller log, not on the object.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/coxswain-labs/coxswain" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.top", "toc.integrate", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>
