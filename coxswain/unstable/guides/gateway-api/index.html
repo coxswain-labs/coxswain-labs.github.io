@@ -1441,6 +1441,108 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#tcproute" class="md-nav__link">
+    <span class="md-ellipsis">
+      TCPRoute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TCPRoute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listener_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listener
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-fields_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-conditions_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status conditions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#udproute" class="md-nav__link">
+    <span class="md-ellipsis">
+      UDPRoute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UDPRoute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listener_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listener
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-fields_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-conditions_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status conditions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1964,7 +2066,7 @@
 
 
 <h1 id="gateway-api-guide">Gateway API guide<a class="headerlink" href="#gateway-api-guide" title="Permanent link">&para;</a></h1>
-<p>Coxswain implements the <a href="https://gateway-api.sigs.k8s.io/">Kubernetes Gateway API</a> standard channel. It supports <code>GatewayClass</code>, <code>Gateway</code>, <code>ListenerSet</code>, <code>HTTPRoute</code>, <code>GRPCRoute</code>, and <code>TLSRoute</code> resources.</p>
+<p>Coxswain implements the <a href="https://gateway-api.sigs.k8s.io/">Kubernetes Gateway API</a> standard channel. It supports <code>GatewayClass</code>, <code>Gateway</code>, <code>ListenerSet</code>, <code>HTTPRoute</code>, <code>GRPCRoute</code>, <code>TLSRoute</code>, <code>TCPRoute</code>, and <code>UDPRoute</code> resources.</p>
 <h2 id="supported-resources">Supported resources<a class="headerlink" href="#supported-resources" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1983,7 +2085,7 @@
 <tr>
 <td><code>Gateway</code></td>
 <td><code>gateway.networking.k8s.io/v1</code></td>
-<td>HTTP, HTTPS, and TLS passthrough listeners</td>
+<td>HTTP, HTTPS, TLS passthrough/terminate, TCP, and UDP listeners</td>
 </tr>
 <tr>
 <td><code>ListenerSet</code></td>
@@ -2002,8 +2104,18 @@
 </tr>
 <tr>
 <td><code>TLSRoute</code></td>
-<td><code>gateway.networking.k8s.io/v1alpha2</code></td>
-<td>SNI-keyed L4 passthrough; no TLS termination at proxy</td>
+<td><code>gateway.networking.k8s.io/v1</code></td>
+<td>SNI-keyed L4 passthrough and/or terminate — see <a href="#tlsroute">below</a></td>
+</tr>
+<tr>
+<td><code>TCPRoute</code></td>
+<td><code>gateway.networking.k8s.io/v1</code></td>
+<td>Raw TCP proxy, port-keyed — see <a href="#tcproute">below</a></td>
+</tr>
+<tr>
+<td><code>UDPRoute</code></td>
+<td><code>gateway.networking.k8s.io/v1</code></td>
+<td>Session-tracked UDP datagram forwarding, port-keyed — see <a href="#udproute">below</a></td>
 </tr>
 <tr>
 <td><code>ReferenceGrant</code></td>
@@ -2027,10 +2139,6 @@
 </tr>
 </tbody>
 </table>
-<div class="admonition warning">
-<p class="admonition-title">Not supported</p>
-<p><code>TCPRoute</code> and <code>UDPRoute</code> are not implemented.</p>
-</div>
 <h2 id="gatewayclass">GatewayClass<a class="headerlink" href="#gatewayclass" title="Permanent link">&para;</a></h2>
 <p>A <code>GatewayClass</code> identifies a controller implementation. Coxswain claims the class whose <code>spec.controllerName</code> matches <code>coxswain-labs.dev/gateway-controller</code>.</p>
 <h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
@@ -3417,6 +3525,163 @@
 <p class="admonition-title">Note</p>
 <p>Both listeners must use distinct hostnames on the shared port. An SNI that matches neither listener is dropped — the proxy never falls through from one table to the other.</p>
 </div>
+<h2 id="tcproute">TCPRoute<a class="headerlink" href="#tcproute" title="Permanent link">&para;</a></h2>
+<p>A <code>TCPRoute</code> routes raw TCP connections purely by listener port — there is no SNI or hostname dimension, and no HTTP-layer parsing. The proxy dials the bound backend on accept and splices the two byte streams together (GEP-1901).</p>
+<h3 id="gateway-listener_2">Gateway listener<a class="headerlink" href="#gateway-listener_2" title="Permanent link">&para;</a></h3>
+<p>Use <code>protocol: TCP</code>. A <code>TCP</code> listener never shares a port with another protocol — Gateway API's own port-compatibility rules exclude the combination.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tcp-proxy</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+</code></pre></div>
+<h3 id="example_7">Example<a class="headerlink" href="#example_7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCPRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tcp-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tcp-service</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</code></pre></div>
+<h3 id="supported-fields_4">Supported fields<a class="headerlink" href="#supported-fields_4" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec.parentRefs</code></td>
+<td>Full (including <code>sectionName</code> and <code>port</code>)</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs</code></td>
+<td>Service backends only</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs[].weight</code></td>
+<td>Full</td>
+</tr>
+</tbody>
+</table>
+<p>The Standard channel constrains <code>TCPRoute</code> to exactly one rule with no matches; when two <code>TCPRoute</code>s bind the same listener port, the highest-precedence route (oldest <code>creationTimestamp</code>, then name) wins.</p>
+<h3 id="status-conditions_4">Status conditions<a class="headerlink" href="#status-conditions_4" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>True when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accepted</code></td>
+<td>The route is attached to a <code>protocol: TCP</code> listener</td>
+</tr>
+<tr>
+<td><code>ResolvedRefs</code></td>
+<td>All <code>backendRefs</code> resolve to a reachable Service</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>tcproute<span class="w"> </span>my-tcp-route
+</code></pre></div>
+<h2 id="udproute">UDPRoute<a class="headerlink" href="#udproute" title="Permanent link">&para;</a></h2>
+<p>A <code>UDPRoute</code> forwards UDP datagrams purely by listener port — same port-keyed model as <code>TCPRoute</code>, no SNI or hostname dimension (GEP-2645).</p>
+<p>UDP is connectionless, so the proxy can't reuse a dial-once-and-splice model. Instead, the first datagram from a client address picks a backend (via the same weighted load-balancing as every other route kind) and pins it for that client's session; a background task relays the backend's replies back to the client. A session with no activity for <code>--proxy-udp-session-timeout</code> (default <code>10s</code>) is evicted — the next datagram from that client picks a backend afresh.</p>
+<h3 id="gateway-listener_3">Gateway listener<a class="headerlink" href="#gateway-listener_3" title="Permanent link">&para;</a></h3>
+<p>Use <code>protocol: UDP</code>. Like <code>TCP</code>, a <code>UDP</code> listener never shares a port with another protocol.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">udp-proxy</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5353</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UDP</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+</code></pre></div>
+<h3 id="example_8">Example<a class="headerlink" href="#example_8" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UDPRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-udp-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-udp-service</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5353</span>
+</code></pre></div>
+<h3 id="supported-fields_5">Supported fields<a class="headerlink" href="#supported-fields_5" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec.parentRefs</code></td>
+<td>Full (including <code>sectionName</code> and <code>port</code>)</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs</code></td>
+<td>Service backends only</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs[].weight</code></td>
+<td>Full — each new client session picks a backend independently, so weights converge across sessions rather than within a single client's traffic</td>
+</tr>
+</tbody>
+</table>
+<p>The Standard channel constrains <code>UDPRoute</code> to exactly one rule with no matches; when two <code>UDPRoute</code>s bind the same listener port, the highest-precedence route (oldest <code>creationTimestamp</code>, then name) wins.</p>
+<h3 id="status-conditions_5">Status conditions<a class="headerlink" href="#status-conditions_5" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>True when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accepted</code></td>
+<td>The route is attached to a <code>protocol: UDP</code> listener</td>
+</tr>
+<tr>
+<td><code>ResolvedRefs</code></td>
+<td>All <code>backendRefs</code> resolve to a reachable Service</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>udproute<span class="w"> </span>my-udp-route
+</code></pre></div>
 
 
 
