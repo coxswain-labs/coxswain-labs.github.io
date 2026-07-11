@@ -1716,6 +1716,18 @@
 <td>Comma-separated CIDRs allowed to send PROXY-protocol headers on Ingress listeners; only meaningful with <code>--ingress-accept-proxy-protocol</code></td>
 </tr>
 <tr>
+<td><code>COXSWAIN_RECONCILE_DEBOUNCE_MIN</code></td>
+<td><code>--reconcile-debounce-min</code></td>
+<td><code>20ms</code></td>
+<td><em>(controller)</em> Trailing quiet window for the rebuild debounce; a watch event resets it, and it firing with no further events rebuilds the routing table. Must be ≤ the max</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_RECONCILE_DEBOUNCE_MAX</code></td>
+<td><code>--reconcile-debounce-max</code></td>
+<td><code>500ms</code></td>
+<td><em>(controller)</em> Hard ceiling on the same debounce, measured from the first event of a cycle; bounds convergence under sustained churn (e.g. a rolling deploy). Must be ≥ the min</td>
+</tr>
+<tr>
 <td><code>COXSWAIN_STATUS_ADDRESS</code></td>
 <td><code>--status-address</code></td>
 <td><em>(none)</em></td>
