@@ -1721,7 +1721,22 @@
 <tr>
 <td><code>coxswain_controller_reconcile_errors_total</code></td>
 <td>Counter</td>
-<td><code>controller</code></td>
+<td><code>controller</code>, <code>reason</code> (see below)</td>
+</tr>
+<tr>
+<td><code>coxswain_controller_gateways_held_pending</code></td>
+<td>Gauge</td>
+<td>— (shared-mode Gateways holding <code>Programmed</code> deferred)</td>
+</tr>
+<tr>
+<td><code>coxswain_controller_vip_reconcile_total</code></td>
+<td>Counter</td>
+<td><code>result</code> (<code>ok</code>/<code>degraded</code>)</td>
+</tr>
+<tr>
+<td><code>coxswain_controller_vip_apply_failures_total</code></td>
+<td>Counter</td>
+<td>—</td>
 </tr>
 <tr>
 <td><code>coxswain_controller_status_patch_total</code></td>
@@ -1770,6 +1785,8 @@
 </tr>
 </tbody>
 </table>
+<p><code>coxswain_controller_reconcile_errors_total</code>'s <code>reason</code> label is a bounded classification of the underlying Kubernetes API error: <code>namespace_terminating</code> (SSA into a namespace mid-deletion — a self-resolving race), <code>conflict</code> (409), <code>forbidden</code> (RBAC), <code>not_found</code>, <code>invalid</code> (422 validation/webhook rejection), <code>api_other</code>, <code>transport</code>, <code>internal</code>. Errors classified <code>forbidden</code>/<code>invalid</code> are persistent — the operator polls them at a flat 15 s because retrying faster cannot fix RBAC or a rejected spec; every other class retries with a per-Gateway exponential backoff (0.5 s doubling to a 15 s cap, reset on the first success). A sustained non-zero rate on a persistent reason is an operator-action signal, not a transient blip.</p>
+<p><code>coxswain_controller_gateways_held_pending</code> counts shared-mode Gateways whose top-level <code>Programmed</code> is currently deferred (<code>False/Pending</code> with <code>observedGeneration</code> one below the current generation) awaiting VIP resolution, proxy bind, or snapshot ack. Legitimate holds clear within seconds of a spec change; alert on this gauge staying non-zero — before it existed, a Gateway stuck here was indistinguishable from healthy reconcile traffic. Terminally-invalid configurations (every listener unserviceable, unsupported <code>parametersRef</code>) never enter the hold: they settle <code>Programmed=False/Invalid</code> at the current generation immediately.</p>
 <h3 id="discovery-channel-metrics-coxswain_discovery_">Discovery channel metrics (<code>coxswain_discovery_*</code>)<a class="headerlink" href="#discovery-channel-metrics-coxswain_discovery_" title="Permanent link">&para;</a></h3>
 <p>The control-plane gRPC channel between controller (server) and proxies (clients). Server-side series are scraped from the controller <code>/metrics</code>; client-side series from each proxy <code>/metrics</code>.</p>
 <table>
