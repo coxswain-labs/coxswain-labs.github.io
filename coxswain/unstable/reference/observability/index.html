@@ -1759,6 +1759,11 @@
 <td><code>kind</code></td>
 </tr>
 <tr>
+<td><code>coxswain_controller_watch_relists_pending</code></td>
+<td>Gauge</td>
+<td><code>kind</code> (relists started but not yet completed)</td>
+</tr>
+<tr>
 <td><code>coxswain_controller_routing_table_hosts</code></td>
 <td>Gauge</td>
 <td>— (mirrors the proxy view; drift indicates a stale snapshot)</td>
@@ -1786,6 +1791,7 @@
 </tbody>
 </table>
 <p><code>coxswain_controller_reconcile_errors_total</code>'s <code>reason</code> label is a bounded classification of the underlying Kubernetes API error: <code>namespace_terminating</code> (SSA into a namespace mid-deletion — a self-resolving race), <code>conflict</code> (409), <code>forbidden</code> (RBAC), <code>not_found</code>, <code>invalid</code> (422 validation/webhook rejection), <code>api_other</code>, <code>transport</code>, <code>internal</code>. Errors classified <code>forbidden</code>/<code>invalid</code> are persistent — the operator polls them at a flat 15 s because retrying faster cannot fix RBAC or a rejected spec; every other class retries with a per-Gateway exponential backoff (0.5 s doubling to a 15 s cap, reset on the first success). A sustained non-zero rate on a persistent reason is an operator-action signal, not a transient blip.</p>
+<p><code>coxswain_controller_watch_relists_pending{kind}</code> is the <strong>watch-relist wedge</strong> signal (#573). A reflector relist increments it on <code>Event::Init</code> (relist started) and decrements it on <code>Event::InitDone</code> (relist completed); in steady state every kind sits at 0, briefly ticking to 1 while a relist is in flight. A kind pinned <strong>above 0</strong> for minutes is the wedge signature: the watch relist began but its <code>InitDone</code> never arrived, so that store is serving a stale (often empty) snapshot while the pod otherwise looks healthy — the lease renews and reconcile counters climb. Alert on any <code>kind</code> staying non-zero beyond a minute. The controller's liveness backstop restarts the pod automatically if this persists past ~2.5 min (see <a href="#health-endpoints">Health endpoints</a>); the alert exists so operators see the wedge (and the restart) rather than silent staleness. The original root cause — kube's back-pressuring shared-store dispatcher — was removed by #574's <strong>single watch fabric</strong>: the controller runs one <code>watcher() → authoritative store → derive(status/routing/provisioning)</code> pipeline (no cross-fabric fan-out, no per-kind work-queues), the store advances unconditionally, and the rebuild loop is woken by a <strong>lossless <code>watch</code>-channel trigger</strong> — a delivered watch event can never be dropped before the loop observes it (unlike an edge-triggered <code>Notify</code> in a <code>select!</code>), so convergence is event-driven and does not depend on any timer to recover a missed wake. Three backstops then cover only the residual gaps the trigger itself cannot: a periodic <strong>resync tick</strong> on the rebuild loop (re-derives even when a watch goes <em>silent</em> without delivering an event), a bounded per-watcher <strong>idle timeout</strong> (a silently-stalled watch is reconnected within the window rather than serving stale data for minutes), and this relist-liveness gate (pod restart as the last resort). A sustained non-zero here indicates a new, unrelated watch fault worth investigating.</p>
 <p><code>coxswain_controller_gateways_held_pending</code> counts shared-mode Gateways whose top-level <code>Programmed</code> is currently deferred (<code>False/Pending</code> with <code>observedGeneration</code> one below the current generation) awaiting VIP resolution, proxy bind, or snapshot ack. Legitimate holds clear within seconds of a spec change; alert on this gauge staying non-zero — before it existed, a Gateway stuck here was indistinguishable from healthy reconcile traffic. Terminally-invalid configurations (every listener unserviceable, unsupported <code>parametersRef</code>) never enter the hold: they settle <code>Programmed=False/Invalid</code> at the current generation immediately.</p>
 <h3 id="discovery-channel-metrics-coxswain_discovery_">Discovery channel metrics (<code>coxswain_discovery_*</code>)<a class="headerlink" href="#discovery-channel-metrics-coxswain_discovery_" title="Permanent link">&para;</a></h3>
 <p>The control-plane gRPC channel between controller (server) and proxies (clients). Server-side series are scraped from the controller <code>/metrics</code>; client-side series from each proxy <code>/metrics</code>.</p>
@@ -1885,7 +1891,7 @@
 <tr>
 <td><code>/healthz</code></td>
 <td><code>8081</code></td>
-<td>Always <code>200 ok</code> while the process is running</td>
+<td><code>200 ok</code> while the process is live; <code>503 not live</code> on the controller if the relist backstop has tripped (see below)</td>
 </tr>
 <tr>
 <td><code>/readyz</code></td>
@@ -1899,6 +1905,7 @@
 <li>All Kubernetes reflectors emit their first <code>InitDone</code> event (CRDs must be installed)</li>
 <li>The routing table is built for the first time</li>
 </ol>
+<p>On the <strong>controller</strong> pod, <code>/healthz</code> is also a liveness backstop for the watch-relist wedge (#573): if any reflector's watch relist starts but never completes for longer than ~2.5 min (tracked by <code>coxswain_controller_watch_relists_pending</code>), the controller trips its liveness gate and <code>/healthz</code> returns <code>503 not live</code>, so the kubelet restarts the pod and its reflectors relist from scratch. The gate arms only after a kind has completed its first relist, so a slow cold-start initial sync never trips it. The proxy pod keeps the historical always-<code>200</code> liveness semantics.</p>
 <p>Inspect the per-subsystem detail via the admin port (open <code>kubectl -n coxswain-system port-forward svc/coxswain-shared-proxy-internal 8082:8082</code> in a separate terminal first; a non-default Helm release name <code>&lt;rel&gt;</code> prefixes the Service as <code>&lt;rel&gt;-coxswain-shared-proxy-internal</code>):</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/health<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 </code></pre></div>
