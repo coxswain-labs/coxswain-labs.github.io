@@ -1348,6 +1348,30 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-relay-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      The relay tier
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The relay tier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#failure-and-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Failure and rollout
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-programmed-status-is-gated" class="md-nav__link">
     <span class="md-ellipsis">
       How Programmed status is gated
@@ -1492,6 +1516,21 @@
 <li><code>snapshot_messages_total{kind="delta"}</code> (and the client's <code>client_snapshots_applied_total{kind="delta"}</code>) climb with routing churn, while <code>{kind="full"}</code> stays <strong>flat</strong> — a full is sent only on connect, reconnect, or a Nack-driven resync, so a rising <code>full</code> rate points at an unstable control-plane link or repeated self-healing.</li>
 <li><code>client_partitions_reused_total</code> climbs far faster than <code>client_partitions_recompiled_total</code> under endpoint churn — a rolling deploy recompiles only the partitions referencing the churning Service and splices the rest.</li>
 <li><code>snapshot_resources_sent_total ÷ snapshot_messages_total</code> (average payload width) collapses toward one during endpoint-only churn — the EDS split working as intended.</li>
+</ul>
+<h2 id="the-relay-tier">The relay tier<a class="headerlink" href="#the-relay-tier" title="Permanent link">&para;</a></h2>
+<p>Every snapshot stream terminates on the <strong>leader</strong> controller pod (the discovery Service selects the leader; followers reject with <code>NOT_LEADER</code>), so fan-out scales O(nodes) on one pod. A <strong>relay</strong> is a zero-RBAC cache pod that subscribes upstream to the controller and re-serves the stream downstream to proxies, turning the leader's stream count into O(relays). Leaves speak the unchanged protocol and never learn they are behind a relay &mdash; only their discovery endpoint and expected-server identity differ.</p>
+<p>Two shapes:</p>
+<ul>
+<li><strong>Shared-pool relay</strong> subscribes <code>SharedPool</code> and re-serves it. Its client reconstructs exactly the routing cells a <code>SharedPool</code> subscriber serves, so the reconstructed cells <em>are</em> what it serves downstream.</li>
+<li><strong>Namespace relay</strong> subscribes a new <code>Namespace{ns}</code> scope &mdash; one stream carrying every dedicated Gateway's world in the namespace, each resource qualified with a <code>gw|&lt;ns&gt;|&lt;name&gt;|</code> key-segment prefix plus a per-Gateway <code>gwmeta|&lt;ns&gt;|&lt;name&gt;</code> resource (carrying that Gateway's publish-seq and bound proxy ServiceAccount). The relay demuxes these into a per-Gateway registry and serves leaves the unchanged <code>Gateway{ns,name}</code> world, enforcing the same SVID&harr;Gateway binding the controller does. (Namespace relays are controller-provisioned and provenance-authorized &mdash; that lands in a later slice; until then <code>Namespace</code> subscribes are denied by default.)</li>
+</ul>
+<p><code>Namespace</code> is exclusively the relay's <em>upstream</em> subscription: no leaf ever uses it, and a relay's own downstream server rejects it (relay-behind-relay is out of scope in v1). Bootstrap is <strong>not</strong> tiered &mdash; every node, relays included, obtains its SVID directly from the controller's all-replicas bootstrap listener.</p>
+<p>The wire changes are additive over v2 (the <code>Namespace</code> scope kind and the <code>GatewayMeta</code> resource; <code>WIRE_VERSION</code> stays 2), so all of the convergence machinery above is unchanged: version and per-Gateway publish-seq propagate verbatim leader &rarr; relay &rarr; leaf.</p>
+<h3 id="failure-and-rollout">Failure and rollout<a class="headerlink" href="#failure-and-rollout" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Controller outage</strong> &mdash; the relay serves its last-good world (the same last-good / self-healing invariants above), degrades its health, and reconverges on reconnect. Leaves never disconnect.</li>
+<li><strong>Relay outage</strong> &mdash; leaves serve last-good and reconverge when the relay returns (a reconnecting leaf gets a fresh full via the <code>expect_full</code> gate). There is <strong>no cross-tier fallback</strong>: a leaf never dials the controller when its relay is down &mdash; that would stampede the leader under exactly the correlated failure the tier exists to absorb. Relay HA is &ge;2 replicas behind the relay's Service.</li>
+<li><strong>Rollout order</strong> is controller &rarr; relay &rarr; leaf, the same skew direction the wire already tolerates: a newer controller serves an older relay/leaf, and the additive <code>Namespace</code> / <code>GatewayMeta</code> resources are inert on any leaf that never subscribes them.</li>
 </ul>
 <h2 id="how-programmed-status-is-gated">How <code>Programmed</code> status is gated<a class="headerlink" href="#how-programmed-status-is-gated" title="Permanent link">&para;</a></h2>
 <p>Each proxy reports its <strong>actually-bound listener ports</strong> back over the discovery stream (a <code>NodeStatus</code> message, sent on stream open and on every bind change). The leader uses these reports to decide when a Gateway's <code>Programmed</code> condition should flip to <code>True</code> — and it requires <em>two</em> independent signals to both hold, not just one:</p>

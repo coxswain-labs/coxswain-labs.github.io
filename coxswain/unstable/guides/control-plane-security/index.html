@@ -1055,6 +1055,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#relay-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relay tier
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1619,6 +1628,11 @@ canonical form for each deployment model:</p>
 <td><code>&lt;gateway-name&gt;-&lt;gatewayclass-name&gt;</code></td>
 <td><code>spiffe://&lt;trust-domain&gt;/ns/&lt;gateway-ns&gt;/sa/&lt;gateway-name&gt;-&lt;gatewayclass-name&gt;</code></td>
 </tr>
+<tr>
+<td>Relay (discovery cache)</td>
+<td><code>coxswain-relay</code> (chart) / provisioned per namespace</td>
+<td><code>spiffe://&lt;trust-domain&gt;/ns/&lt;relay-ns&gt;/sa/&lt;relay-sa&gt;</code></td>
+</tr>
 </tbody>
 </table>
 <p>The dedicated proxy SA name follows <a href="https://gateway-api.sigs.k8s.io/geps/gep-1762/">GEP-1762</a>:
@@ -1648,6 +1662,33 @@ rejected.</p>
 only), the binding check is skipped and the stream is fail-open. In production
 there is no plaintext discovery server; <code>SpiffeClientCertVerifier</code> mandates
 client auth, so every accepted stream carries a peer cert.</p>
+<h3 id="relay-tier">Relay tier<a class="headerlink" href="#relay-tier" title="Permanent link">&para;</a></h3>
+<p>A <a href="../../architecture/discovery-protocol/#the-relay-tier">relay</a> is both a
+discovery <strong>client</strong> (upstream, to the controller) and a discovery <strong>server</strong>
+(downstream, to proxies), so it sits on both sides of the trust model:</p>
+<ul>
+<li><strong>Upstream</strong>, the relay is an ordinary client: it bootstraps its own SVID from
+  the controller (bootstrap is never tiered) and opens the mandatory-mTLS stream
+  exactly like a proxy. Its SA holds <strong>zero Kubernetes verbs</strong> — the same
+  read-only invariant as a proxy, so the relay never touches the CA Secret,
+  trust-bundle ConfigMap, or <code>TokenReview</code> the controller's discovery server
+  needs.</li>
+<li><strong>Downstream</strong>, the relay presents that <em>same rotating bootstrapped SVID</em> as
+  its serving certificate (issued SVIDs already carry the <code>serverAuth</code> EKU) and
+  uses the mounted trust bundle as its client-CA. It enforces the identical
+  <code>SpiffeClientCertVerifier</code> trust-domain check and, for <code>Scope::Gateway</code>
+  subscribes, the identical SVID&harr;Gateway binding above — it reconstructs each
+  Gateway's expected proxy SA from the <code>GatewayMeta</code> resource on its upstream
+  stream. A relay's downstream server <strong>rejects <code>Namespace</code> subscribes</strong> (only
+  the controller serves that scope).</li>
+</ul>
+<p>A leaf placed behind a relay points its <code>--discovery-expected-server-sa</code> at the
+relay's SA so its stream verifies the relay's identity instead of the
+controller's; bootstrap still targets the controller.</p>
+<p>There is <strong>no cross-tier fallback</strong>: a leaf never dials the controller when its
+relay is down. That preserves a single dial identity per leaf and avoids
+stampeding the leader under correlated failure; relay availability is delivered
+by running ≥2 relay replicas behind the relay Service.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>See <a href="../../reference/configuration/#discovery-control-plane">Configuration reference</a>
 for the full flag/value list. The common knobs:</p>

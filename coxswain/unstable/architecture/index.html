@@ -1283,9 +1283,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#serve-relay-v06-not-yet-implemented" class="md-nav__link">
+  <a href="#serve-relay" class="md-nav__link">
     <span class="md-ellipsis">
-      serve relay (v0.6, not yet implemented)
+      serve relay
     </span>
   </a>
   
@@ -1466,8 +1466,8 @@
 <p>Read-only proxy scoped to a single Gateway (identified by <code>--dedicated --gateway-name=NAME --gateway-namespace=NS</code>). Provisioned by the controller in the Gateway's own namespace. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
 <p>The dedicated proxy subscribes with <code>Scope::Gateway { name, namespace }</code> and receives only its Gateway's routing snapshot. The controller stamps the expected proxy ServiceAccount name (<code>{gateway-name}-{gatewayclass-name}</code>, per GEP-1762) into the Gateway's registry entry at reconcile time. When the subscription arrives, the discovery server verifies that the peer's mTLS SVID matches that expected SA before sending any snapshot — a mismatch yields <code>PERMISSION_DENIED</code>.</p>
 <p>Like the shared proxy, the dedicated proxy holds <strong>zero Kubernetes API credentials</strong>. Cross-namespace route attachment (<code>allowedRoutes.namespaces.from: All</code>/<code>Selector</code>) is resolved by the controller at reconcile time — the controller's cluster-wide reflector compiles all cross-namespace routes into the dedicated snapshot before it is pushed. No proxy-side cluster-wide reflector and no proxy-side RBAC are required.</p>
-<h3 id="serve-relay-v06-not-yet-implemented"><code>serve relay</code> (v0.6, not yet implemented)<a class="headerlink" href="#serve-relay-v06-not-yet-implemented" title="Permanent link">&para;</a></h3>
-<p>Designed as a recursive discovery node — a relay that subscribes to an upstream discovery stream and re-publishes snapshots to downstream proxies across a network boundary. Deferred to v0.6.</p>
+<h3 id="serve-relay"><code>serve relay</code><a class="headerlink" href="#serve-relay" title="Permanent link">&para;</a></h3>
+<p>A zero-RBAC discovery <strong>cache</strong>: a recursive node that subscribes to an upstream discovery stream (the controller) and re-publishes snapshots to downstream proxies, so the leader's snapshot fan-out scales O(relays) instead of O(nodes). A relay holds the same zero-Kubernetes-credentials invariant as a proxy. <code>relay --shared</code> fronts the shared pool; <code>relay --namespace &lt;NS&gt;</code> fronts one namespace's dedicated Gateways (controller-provisioned; provenance-authorized). Leaves speak the unchanged protocol and are unaware of the tier. See <a href="discovery-protocol/#the-relay-tier">Discovery protocol → The relay tier</a>.</p>
 <h2 id="request-path">Request path<a class="headerlink" href="#request-path" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
     A([TCP connection]) --&gt; B{TLS?}
