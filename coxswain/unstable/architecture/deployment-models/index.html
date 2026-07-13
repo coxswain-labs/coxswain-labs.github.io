@@ -1373,7 +1373,7 @@
 <h2 id="scope-aware-dispatch">Scope-aware dispatch<a class="headerlink" href="#scope-aware-dispatch" title="Permanent link">&para;</a></h2>
 <p>Before the two models: both rely on the controller sending each proxy only the routing slice it needs, not the whole cluster's. The controller maintains two snapshot registries for this:</p>
 <ul>
-<li><strong><code>SharedPool</code></strong> — five shared routing cells (Ingress table, Gateway table, TLS store, client-cert store, listener health). The shared proxy pool subscribes with this scope and receives a snapshot covering all Ingress and non-dedicated Gateway routing.</li>
+<li><strong><code>SharedPool</code></strong> — the shared routing cells (Ingress table, Gateway table, TLS store, client-cert store, listener health, plus the TLS-passthrough/terminate and TCP/UDP L4 tables). The shared proxy pool subscribes with this scope and receives a snapshot covering all Ingress and non-dedicated Gateway routing.</li>
 <li><strong><code>Gateway { name, namespace }</code></strong> — one entry per opted-in Gateway in the <code>DedicatedRoutingRegistry</code>. Each dedicated proxy subscribes with its own Gateway identity and receives only that Gateway's slice. Cross-namespace routes (e.g. <code>from: All</code>) are resolved controller-side — the controller's cluster-wide reflector sees every namespace's routes and compiles them into the dedicated snapshot before pushing.</li>
 </ul>
 <p>A <code>Subscribe</code> message with no scope field is treated as <code>SharedPool</code>. A scope message with no kind discriminator is rejected as malformed to prevent a zero-value proto from silently escalating to <code>SharedPool</code>.</p>

@@ -1824,10 +1824,64 @@
 <td>— (snapshot Acks received; tracks fleet convergence throughput)</td>
 </tr>
 <tr>
+<td><code>coxswain_discovery_snapshot_messages_total</code></td>
+<td>Server</td>
+<td>Counter</td>
+<td><code>kind</code> (<code>full</code>/<code>delta</code>) — messages pushed; healthy steady state is a climbing <code>delta</code> against a near-static <code>full</code>. A rising <code>full</code> rate means control-plane link churn or repeated self-healing resyncs</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_snapshot_resources_sent_total</code></td>
+<td>Server</td>
+<td>Counter</td>
+<td>— (resource upserts placed in pushed snapshots; ÷ <code>snapshot_messages_total</code> is the average payload width — collapses toward 1 under endpoint-only deltas)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_snapshot_resources_removed_total</code></td>
+<td>Server</td>
+<td>Counter</td>
+<td>— (resource tombstones placed in deltas; a route delete or an endpoint's last-referrer removal shows up here)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_snapshot_build_seconds</code></td>
+<td>Server</td>
+<td>Histogram</td>
+<td>— (cost of reading the routing cells and serializing one snapshot)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_ack_latency_seconds</code></td>
+<td>Server</td>
+<td>Histogram</td>
+<td>— (send-to-Ack round trip incl. client decode+apply; a Nack or drop before Ack never observes)</td>
+</tr>
+<tr>
 <td><code>coxswain_discovery_client_reconnects_total</code></td>
 <td>Client</td>
 <td>Counter</td>
 <td>— (reconnect attempts; excludes the first connect — a climbing rate flags an unstable link)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_client_snapshots_applied_total</code></td>
+<td>Client</td>
+<td>Counter</td>
+<td><code>kind</code> (<code>full</code>/<code>delta</code>) — snapshots the client Ack'd; mirror of the server <code>snapshot_messages_total</code> from the receiving end (same healthy shape: <code>delta</code> climbs, <code>full</code> static)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_client_partitions_recompiled_total</code></td>
+<td>Client</td>
+<td>Counter</td>
+<td>— (route partitions recompiled on apply — those whose DTO or referenced endpoints changed)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_client_partitions_reused_total</code></td>
+<td>Client</td>
+<td>Counter</td>
+<td>— (partitions spliced unchanged from the live table; the reused÷recompiled ratio is the payoff of partitioned apply — under endpoint churn only referencing partitions recompile)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_snapshot_apply_seconds</code></td>
+<td>Client</td>
+<td>Histogram</td>
+<td>— (cost of one client apply, wire DTO → routing cells; observed even on a Nack'd apply)</td>
 </tr>
 <tr>
 <td><code>coxswain_discovery_client_state</code></td>

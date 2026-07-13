@@ -1288,6 +1288,66 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#the-wire-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      The wire protocol
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The wire protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-resource-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      The resource model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eds-style-endpoints-and-why" class="md-nav__link">
+    <span class="md-ellipsis">
+      EDS-style endpoints, and why
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invariants-a-client-can-rely-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Invariants a client can rely on
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convergence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Convergence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observing-the-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      Observing the stream
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-programmed-status-is-gated" class="md-nav__link">
     <span class="md-ellipsis">
       How Programmed status is gated
@@ -1369,11 +1429,70 @@
 
 
 <h1 id="discovery-protocol">Discovery protocol<a class="headerlink" href="#discovery-protocol" title="Permanent link">&para;</a></h1>
-<p>The controller compiles K8s routing snapshots and pushes them to each subscribed proxy over a mandatory-mTLS gRPC stream. Proxies apply the snapshot to their in-process routing table via an atomic pointer swap — no locks, no channels, no restart. All routing data (routes, upstream addresses, TLS certificates) arrives via the discovery stream; the proxy never reads the Kubernetes API.</p>
+<p>The controller compiles K8s routing state and pushes it to each subscribed proxy over a mandatory-mTLS gRPC stream. The wire is <strong>resource-oriented</strong> (<code>WIRE_VERSION = 2</code>): the first message of a session is a full snapshot, and every change after it is a per-resource delta — only what moved. Proxies apply each message to their in-process routing tables via atomic pointer swaps, recompiling only the partitions that changed — no locks, no channels, no restart. All routing data (routes, upstream addresses, TLS certificates) arrives via the discovery stream; the proxy never reads the Kubernetes API.</p>
 <div class="admonition note">
 <p class="admonition-title">Securing the channel</p>
 <p>This page covers the protocol's data-flow and status-gating logic. For how the channel is authenticated (mTLS, SPIFFE SVIDs, CA provisioning modes), reconnect behaviour, and wire-version compatibility, see <a href="../../guides/control-plane-security/">Control-plane security</a>.</p>
 </div>
+<h2 id="the-wire-protocol">The wire protocol<a class="headerlink" href="#the-wire-protocol" title="Permanent link">&para;</a></h2>
+<p>Each subscriber gets one full snapshot, then a stream of deltas. The server keeps a per-stream baseline — the set of resources that stream last acknowledged — and every subsequent message is a diff against it: resources whose content changed ride as <strong>upserts</strong>, resources that left the world ride as <strong>tombstones</strong>. Nothing else is re-sent.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant P as Proxy (client)
+    participant C as Controller (server)
+    P-&gt;&gt;C: Subscribe(scope, WIRE_VERSION=2)
+    C--&gt;&gt;P: Snapshot(full=true, all resources)
+    P-&gt;&gt;C: Ack(version)
+    loop steady state
+        Note over C: routing change
+        C--&gt;&gt;P: Snapshot(full=false, upserts + tombstones)
+        P-&gt;&gt;C: Ack(version)
+    end
+    Note over P,C: apply fails self-check / dangling ref
+    P-&gt;&gt;C: Nack(version)
+    C--&gt;&gt;P: Snapshot(full=true, current world)
+    Note over P,C: stream drops (leader change, restart)
+    P-&gt;&gt;C: Subscribe(...) reconnect
+    C--&gt;&gt;P: Snapshot(full=true, current world)</code></pre>
+<p>Three things always produce a <strong>full</strong> snapshot; everything else is a delta:</p>
+<ul>
+<li><strong>First subscribe</strong> — the client has no baseline yet.</li>
+<li><strong>Reconnect</strong> — per-stream baseline is not portable across streams, so a redial re-syncs from scratch.</li>
+<li><strong>Nack</strong> — if a client cannot apply a message (see the invariants below), it Nacks; the server answers with a fresh full of the current world. This is the protocol's self-healing path: a client can always recover a consistent world without operator action.</li>
+</ul>
+<p>One message is in flight at a time (send-after-Ack). Rebuilds that arrive while a message is un-Acked are coalesced — after the Ack the server sends a single delta spanning the acked baseline to the latest world.</p>
+<h3 id="the-resource-model">The resource model<a class="headerlink" href="#the-resource-model" title="Permanent link">&para;</a></h3>
+<p>The old wire sent a fixed set of whole tables and re-serialized every one of them on every change. The v2 wire is a flat set of independently-addressed <strong>resources</strong>, each with a canonical key and a content hash. A change to one route touches one resource; the rest of the world stays byte-identical on the wire and is never re-sent.</p>
+<p>Canonical keys are <code>|</code>-separated and name exactly one resource:</p>
+<ul>
+<li><code>route|&lt;ingress|gateway&gt;|&lt;port&gt;|&lt;match-kind&gt;[|&lt;host&gt;]</code> &mdash; one host bucket of an L7 route table.</li>
+<li><code>tls|&lt;port&gt;</code> and <code>clientcert|&lt;port&gt;</code> &mdash; per-port TLS material and client-cert config.</li>
+<li><code>tlspassthrough|&lt;port&gt;</code>, <code>tlsterminate|&lt;port&gt;</code>, <code>tcp|&lt;port&gt;</code>, <code>udp|&lt;port&gt;</code> &mdash; per-port L4 routes.</li>
+<li><code>listener|&lt;ns&gt;/&lt;name&gt;</code> &mdash; one Gateway's listener status.</li>
+<li><code>endpoints|&lt;ns&gt;/&lt;svc&gt;/&lt;port&gt;</code> &mdash; one EDS endpoint set (see below).</li>
+</ul>
+<p>The full grammar lives in exactly one place in the code (<code>wire/resource.rs</code>), so the server (which addresses its per-stream baseline by key) and the client (which keys its resource cache by key) cannot drift.</p>
+<h3 id="eds-style-endpoints-and-why">EDS-style endpoints, and why<a class="headerlink" href="#eds-style-endpoints-and-why" title="Permanent link">&para;</a></h3>
+<p>Upstream endpoints are their own resource, keyed <code>(namespace, service, port)</code>, and a route's weighted backend carries an <strong><code>endpoint_ref</code></strong> to one instead of inlining pod IPs. This is the change that makes deltas pay off.</p>
+<p>Under the old wire, a rolling deploy — pods coming and going — rewrote every route that referenced the churning Service, because the endpoint IPs were baked into the route. Each rewrite changed the route's hash, so the whole route re-serialized and the client recompiled it. With endpoints split out, a rolling deploy ships <strong>one</strong> <code>endpoints|…</code> delta; routes that reference it are untouched on the wire, and the client recompiles only the partitions that actually point at that Service.</p>
+<p>Endpoint-derived status is computed <strong>client-side</strong> from the same shared rule the controller would have used: a referenced Service that does not exist yields <code>500</code>, and one that exists but has zero ready endpoints yields <code>503</code>. Because that status is derived from the endpoint resource rather than baked into the route, draining a backend to zero is again a single endpoint delta — it does not rewrite or re-send the route. Endpoint-independent statuses (fail-closed <code>502</code> variants, <code>500</code> for a route with no usable backends at all) stay baked on the route where they belong.</p>
+<h3 id="invariants-a-client-can-rely-on">Invariants a client can rely on<a class="headerlink" href="#invariants-a-client-can-rely-on" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Atomic apply.</strong> A message applies in full or not at all. The client stages every change off to the side, runs all its checks, and only then swaps the live routing cells — so a malformed or inconsistent message never partially lands.</li>
+<li><strong>Last-good on failure.</strong> If any check fails, the client keeps serving its previous world unchanged and Nacks. Traffic never drops on a bad push.</li>
+<li><strong>Self-healing.</strong> A Nack is answered with a fresh full snapshot, so a client that falls out of sync — for any reason — is pulled back to a consistent world without operator intervention.</li>
+<li><strong>Referential integrity.</strong> After any message, every <code>endpoint_ref</code> a route reaches resolves to an endpoint resource the client holds. The server ships a newly-referenced endpoint set in the same message that first references it, and tombstones one in the same message its last referrer leaves.</li>
+<li><strong>Emptiness travels as removal</strong> — with one deliberate exception: an endpoint resource that exists with zero addresses is meaningful (it is the <code>503</code> "valid but empty" signal), so it is sent, not tombstoned.</li>
+<li><strong>Version self-check.</strong> Each message carries a global <code>version</code> — an order-independent hash of the per-resource hashes of the post-apply world. The client recomputes it from what it just staged and refuses to commit on a mismatch (Nack → full resync). This is the same content-hash formula the old whole-table wire used, so the convergence machinery below is unchanged.</li>
+</ol>
+<h3 id="convergence">Convergence<a class="headerlink" href="#convergence" title="Permanent link">&para;</a></h3>
+<p>The global <code>version</code> is a content hash of the whole post-apply world, identical in meaning to the pre-v2 version. <code>Programmed</code> gating (below), the <code>NodeRegistry</code>, and the ack-tracking that tells the leader whether a proxy has caught up to a given generation all key off it exactly as before — the delta rework changed <em>how</em> a world is transmitted, not how convergence to a world is measured.</p>
+<h3 id="observing-the-stream">Observing the stream<a class="headerlink" href="#observing-the-stream" title="Permanent link">&para;</a></h3>
+<p>The <code>coxswain_discovery_*</code> series expose the delta engine on both ends — server-side on the controller <code>/metrics</code>, client-side on each proxy <code>/metrics</code>. See the <a href="../../reference/observability/#discovery-channel-metrics-coxswain_discovery_">observability reference</a> for the full table. In a healthy steady state:</p>
+<ul>
+<li><code>snapshot_messages_total{kind="delta"}</code> (and the client's <code>client_snapshots_applied_total{kind="delta"}</code>) climb with routing churn, while <code>{kind="full"}</code> stays <strong>flat</strong> — a full is sent only on connect, reconnect, or a Nack-driven resync, so a rising <code>full</code> rate points at an unstable control-plane link or repeated self-healing.</li>
+<li><code>client_partitions_reused_total</code> climbs far faster than <code>client_partitions_recompiled_total</code> under endpoint churn — a rolling deploy recompiles only the partitions referencing the churning Service and splices the rest.</li>
+<li><code>snapshot_resources_sent_total ÷ snapshot_messages_total</code> (average payload width) collapses toward one during endpoint-only churn — the EDS split working as intended.</li>
+</ul>
 <h2 id="how-programmed-status-is-gated">How <code>Programmed</code> status is gated<a class="headerlink" href="#how-programmed-status-is-gated" title="Permanent link">&para;</a></h2>
 <p>Each proxy reports its <strong>actually-bound listener ports</strong> back over the discovery stream (a <code>NodeStatus</code> message, sent on stream open and on every bind change). The leader uses these reports to decide when a Gateway's <code>Programmed</code> condition should flip to <code>True</code> — and it requires <em>two</em> independent signals to both hold, not just one:</p>
 <ol>
