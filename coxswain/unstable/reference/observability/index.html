@@ -1182,6 +1182,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Controller-pod metrics (coxswain_controller_*)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-data-plane-liveness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway data-plane liveness
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1788,11 +1803,19 @@
 <td>Gauge</td>
 <td><code>bucket</code></td>
 </tr>
+<tr>
+<td><code>coxswain_gateway_dataplane_proxies</code></td>
+<td>Gauge</td>
+<td><code>namespace</code>, <code>gateway</code> (connected proxies serving a dedicated Gateway; live, alert on <code>== 0</code>)</td>
+</tr>
 </tbody>
 </table>
 <p><code>coxswain_controller_reconcile_errors_total</code>'s <code>reason</code> label is a bounded classification of the underlying Kubernetes API error: <code>namespace_terminating</code> (SSA into a namespace mid-deletion — a self-resolving race), <code>conflict</code> (409), <code>forbidden</code> (RBAC), <code>not_found</code>, <code>invalid</code> (422 validation/webhook rejection), <code>api_other</code>, <code>transport</code>, <code>internal</code>. Errors classified <code>forbidden</code>/<code>invalid</code> are persistent — the operator polls them at a flat 15 s because retrying faster cannot fix RBAC or a rejected spec; every other class retries with a per-Gateway exponential backoff (0.5 s doubling to a 15 s cap, reset on the first success). A sustained non-zero rate on a persistent reason is an operator-action signal, not a transient blip.</p>
 <p><code>coxswain_controller_watch_relists_pending{kind}</code> is the <strong>watch-relist wedge</strong> signal (#573). A reflector relist increments it on <code>Event::Init</code> (relist started) and decrements it on <code>Event::InitDone</code> (relist completed); in steady state every kind sits at 0, briefly ticking to 1 while a relist is in flight. A kind pinned <strong>above 0</strong> for minutes is the wedge signature: the watch relist began but its <code>InitDone</code> never arrived, so that store is serving a stale (often empty) snapshot while the pod otherwise looks healthy — the lease renews and reconcile counters climb. Alert on any <code>kind</code> staying non-zero beyond a minute. The controller's liveness backstop restarts the pod automatically if this persists past ~2.5 min (see <a href="#health-endpoints">Health endpoints</a>); the alert exists so operators see the wedge (and the restart) rather than silent staleness. The original root cause — kube's back-pressuring shared-store dispatcher — was removed by #574's <strong>single watch fabric</strong>: the controller runs one <code>watcher() → authoritative store → derive(status/routing/provisioning)</code> pipeline (no cross-fabric fan-out, no per-kind work-queues), the store advances unconditionally, and the rebuild loop is woken by a <strong>lossless <code>watch</code>-channel trigger</strong> — a delivered watch event can never be dropped before the loop observes it (unlike an edge-triggered <code>Notify</code> in a <code>select!</code>), so convergence is event-driven and does not depend on any timer to recover a missed wake. Three backstops then cover only the residual gaps the trigger itself cannot: a periodic <strong>resync tick</strong> on the rebuild loop (re-derives even when a watch goes <em>silent</em> without delivering an event), a bounded per-watcher <strong>idle timeout</strong> (a silently-stalled watch is reconnected within the window rather than serving stale data for minutes), and this relist-liveness gate (pod restart as the last resort). A sustained non-zero here indicates a new, unrelated watch fault worth investigating.</p>
 <p><code>coxswain_controller_gateways_held_pending</code> counts shared-mode Gateways whose top-level <code>Programmed</code> is currently deferred (<code>False/Pending</code> with <code>observedGeneration</code> one below the current generation) awaiting VIP resolution, proxy bind, or snapshot ack. Legitimate holds clear within seconds of a spec change; alert on this gauge staying non-zero — before it existed, a Gateway stuck here was indistinguishable from healthy reconcile traffic. Terminally-invalid configurations (every listener unserviceable, unsupported <code>parametersRef</code>) never enter the hold: they settle <code>Programmed=False/Invalid</code> at the current generation immediately.</p>
+<h4 id="gateway-data-plane-liveness">Gateway data-plane liveness<a class="headerlink" href="#gateway-data-plane-liveness" title="Permanent link">&para;</a></h4>
+<p><code>coxswain_gateway_dataplane_proxies{namespace,gateway}</code> is the <strong>live</strong> count of data-plane proxies serving a dedicated Gateway — folded-behind-relay or directly connected. It is the counterpart to the Gateway's latched <code>Programmed</code> status: <code>Programmed</code> is a spec-observation signal that deliberately stays <code>True</code> through data-plane churn (rollouts, HPA, relay blips, leader failover) and only re-arms on a spec change, so it does <strong>not</strong> go <code>False</code> when every proxy behind a Gateway dies. Alert on <code>coxswain_gateway_dataplane_proxies == 0 for N s</code> to catch that total-loss blind spot; alert on <code>Programmed</code> for spec observation, never for liveness. (See <a href="../../architecture/discovery-protocol/#how-programmed-status-is-gated">How <code>Programmed</code> status is gated</a>.)</p>
+<p>The series is <strong>dedicated Gateways only</strong>: every shared proxy serves every shared Gateway, so a per-shared-Gateway series would be pool-size × Gateways cardinality for no added signal — shared-pool total loss is the global <code>coxswain_discovery_connected_proxies</code> (below) reaching 0. The controller removes a Gateway's series on deprovision/delete, so labels do not grow unbounded.</p>
 <h3 id="discovery-channel-metrics-coxswain_discovery_">Discovery channel metrics (<code>coxswain_discovery_*</code>)<a class="headerlink" href="#discovery-channel-metrics-coxswain_discovery_" title="Permanent link">&para;</a></h3>
 <p>The control-plane gRPC channel between controller (server) and proxies (clients). Server-side series are scraped from the controller <code>/metrics</code>; client-side series from each proxy <code>/metrics</code>.</p>
 <table>
