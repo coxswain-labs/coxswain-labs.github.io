@@ -619,6 +619,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#discovery-relay-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovery relay tier
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#namespace-scoped-install" class="md-nav__link">
     <span class="md-ellipsis">
       Namespace-scoped install
@@ -1538,6 +1547,66 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 </tbody>
 </table>
 <p>See the <a href="https://github.com/coxswain-labs/coxswain/blob/main/charts/coxswain/README.md">Helm chart README</a> for the full values reference.</p>
+<h2 id="discovery-relay-tier">Discovery relay tier<a class="headerlink" href="#discovery-relay-tier" title="Permanent link">&para;</a></h2>
+<p>The optional <a href="../../architecture/deployment-models/#discovery-relay-tier">relay tier</a> scales leader fan-out by inserting zero-RBAC cache pods between the controller and the proxies. It is <strong>off by default</strong> — a relay-free install is byte-identical to one without the feature — and is configured under <code>relay.*</code>, split into two independent families:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>relay.shared.enabled</code></td>
+<td><code>false</code></td>
+<td>Render the shared-pool relay <strong>and</strong> repoint the shared proxies at it</td>
+</tr>
+<tr>
+<td><code>relay.shared.replicas</code></td>
+<td><code>2</code></td>
+<td>Shared-relay replica count (ignored when autoscaling)</td>
+</tr>
+<tr>
+<td><code>relay.shared.autoscaling.enabled</code></td>
+<td><code>false</code></td>
+<td>Enable HPA for the shared relay (it fronts the whole pool, so it can scale)</td>
+</tr>
+<tr>
+<td><code>relay.shared.resources</code></td>
+<td><code>{}</code></td>
+<td>Shared-relay container resources</td>
+</tr>
+<tr>
+<td><code>relay.dedicated.enabled</code></td>
+<td><code>false</code></td>
+<td>Enable controller-provisioned per-namespace relays (→ <code>--relay-enabled</code>)</td>
+</tr>
+<tr>
+<td><code>relay.dedicated.replicas</code></td>
+<td><code>2</code></td>
+<td>HA replica count for each provisioned namespace relay</td>
+</tr>
+<tr>
+<td><code>relay.dedicated.minProxyReplicas</code></td>
+<td><code>8</code></td>
+<td>Break-even threshold: a namespace gets a relay only once its desired dedicated-proxy replicas reach this (below it, direct-to-controller)</td>
+</tr>
+<tr>
+<td><code>relay.dedicated.resources.{cpuRequest,memoryRequest,memoryLimit}</code></td>
+<td><code>50m</code> / <code>64Mi</code> / <code>256Mi</code></td>
+<td>Resources for each provisioned namespace relay (CPU request only — a limit would throttle fan-out)</td>
+</tr>
+</tbody>
+</table>
+<p><code>relay.shared.*</code> renders Deployment/Service/SA/PDB/HPA directly (static install infra). <code>relay.dedicated.*</code> is passed to the controller, which provisions the per-namespace relays dynamically — there are no dedicated-relay templates to render. Only the shared relay is a raw-manifest resource; enabling the tier on a non-Helm install is a Helm-only path today.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Enable both relay families</span>
+helm<span class="w"> </span>upgrade<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>relay.shared.enabled<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>relay.dedicated.enabled<span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
 <h2 id="namespace-scoped-install">Namespace-scoped install<a class="headerlink" href="#namespace-scoped-install" title="Permanent link">&para;</a></h2>
 <p>By default Coxswain watches the entire cluster. To restrict to a single namespace:</p>
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
