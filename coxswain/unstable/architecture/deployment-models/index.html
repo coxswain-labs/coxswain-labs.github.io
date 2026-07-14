@@ -1106,6 +1106,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/relay-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Relay policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/observability/" class="md-nav__link">
         
   
@@ -1520,7 +1541,9 @@
 <p><strong>When a namespace relay appears (break-even + scale-to-zero).</strong> A relay costs the leader <code>relay.dedicated.replicas</code> streams (each replica opens its own upstream stream) and saves it the namespace's downstream streams. So it only <em>reduces</em> leader load once a namespace's desired dedicated-proxy replicas exceed the relay's own cost. The controller provisions a namespace relay only when that count reaches <code>relay.dedicated.minProxyReplicas</code> (default 8); below it the namespace stays direct-to-controller — a small namespace is never handed a relay it doesn't need. Once provisioned, a relay is kept until its namespace drains to <strong>zero</strong> dedicated Gateways (hysteresis), so a transient dip never strands the sibling proxies still pointed at it.</p>
 <p><strong>Authorization.</strong> The shared relay's <code>SharedPool</code> subscribe needs no grant. A namespace relay's <code>Namespace</code> subscribe is privileged (it aggregates a whole namespace), so the controller authorizes it <strong>by provenance</strong>: only the relay ServiceAccount it provisioned in that namespace, deny-by-default. A projected token cryptographically binds a pod's SVID to its own namespace, so the worst a forged label can buy is a stream for the tenant's <em>own</em> namespace — never a peer's.</p>
 <p><strong>Failure model.</strong> Bootstrap is never tiered — every node, relays included, obtains its SVID straight from the controller. On relay loss a leaf serves its last-good snapshot and reconnects; there is no cross-tier fallback (a leaf never dials the controller when its relay is down). Relay HA is its replica count.</p>
-<p>The whole tier is <strong>off by default</strong> — a relay-free install is byte-identical to one without the feature. Per-namespace tuning of the dedicated relays (resources, scheduling, per-namespace overrides, optional autoscaling) is tracked for a future <code>CoxswainRelayPolicy</code> CRD.</p>
+<p><strong>Per-namespace tuning (<code>CoxswainRelayPolicy</code>).</strong> The break-even rule above is the <em>automatic default</em> — turning the tier on already provisions relays where they reduce leader load, with no per-namespace action. The cluster-scoped <a href="../../reference/relay-policy/"><code>CoxswainRelayPolicy</code></a> CRD overlays per-namespace <strong>overrides and tuning</strong> on top: <code>enabled</code> force-on/off (bypassing or vetoing the threshold), <code>replicas</code>, full <code>resources</code>, <code>podTemplate</code> scheduling (nodeSelector / tolerations / affinity / topologySpreadConstraints / priorityClassName), and opt-in autoscaling. It applies <strong>only</strong> to the controller-provisioned namespace relays — the shared-pool relay is static Helm-managed infra tuned entirely through <code>relay.shared.*</code> values, never this CRD.</p>
+<p>Namespace-relay autoscaling is <strong>controller-driven, not an HPA</strong>. The relay is I/O/fan-out-bound (CPU mistracks its load) and each replica opens its own upstream stream to the leader, so the controller sizes the relay directly from the namespace's dedicated-proxy fan-out — <code>clamp(ceil(fanout / targetProxiesPerReplica), minReplicas, maxReplicas)</code> — with <strong><code>maxReplicas</code> mandatory</strong> as the cap on that fan-out regrowth (an uncapped autoscaling stanza is ignored). Keep <code>maxReplicas</code> well below the namespace's downstream fan-out, or the relay's own upstream streams approach the count it is meant to collapse. A connection-count custom-metric HPA would track load even more precisely but requires a cluster metrics adapter; it is a possible future refinement, deliberately not the default.</p>
+<p>The whole tier is <strong>off by default</strong> — a relay-free install is byte-identical to one without the feature.</p>
 
 
 

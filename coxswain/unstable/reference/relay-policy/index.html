@@ -10,26 +10,28 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/reference/relay-policy/">
       
       
+        <link rel="prev" href="../configuration/">
       
-        <link rel="next" href="getting-started/">
+      
+        <link rel="next" href="../observability/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
-        <title>Coxswain</title>
+        <title>Relay policy - Coxswain</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.a40c8224.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,7 +50,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -74,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#coxswain" class="md-skip">
+        <a href="#coxswainrelaypolicy" class="md-skip">
           Skip to content
         </a>
       
@@ -109,7 +111,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Coxswain" class="md-header__button md-logo" aria-label="Coxswain" data-md-component="logo">
+    <a href="../.." title="Coxswain" class="md-header__button md-logo" aria-label="Coxswain" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -129,7 +131,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Relay policy
             
           </span>
         </div>
@@ -238,11 +240,9 @@
         
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -259,7 +259,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="getting-started/" class="md-tabs__link">
+      <a href="../../getting-started/" class="md-tabs__link">
         
   
     
@@ -278,7 +278,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="installation/" class="md-tabs__link">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -302,7 +302,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="guides/ingress/" class="md-tabs__link">
+        <a href="../../guides/ingress/" class="md-tabs__link">
           
   
   Guides
@@ -319,11 +319,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="reference/configuration/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../configuration/" class="md-tabs__link">
           
   
   Reference
@@ -341,7 +343,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="architecture/" class="md-tabs__link">
+        <a href="../../architecture/" class="md-tabs__link">
           
   
   Architecture
@@ -357,7 +359,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="faq/" class="md-tabs__link">
+      <a href="../../faq/" class="md-tabs__link">
         
   
     
@@ -399,7 +401,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Coxswain" class="md-nav__button md-logo" aria-label="Coxswain" data-md-component="logo">
+    <a href="../.." title="Coxswain" class="md-nav__button md-logo" aria-label="Coxswain" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -426,30 +428,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Home
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -458,44 +440,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-install" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick install
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -507,7 +451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -567,7 +511,7 @@
   
   
     <li class="md-nav__item">
-      <a href="installation/" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -588,7 +532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="installation/helm/" class="md-nav__link">
+      <a href="../../installation/helm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -609,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="installation/kustomize/" class="md-nav__link">
+      <a href="../../installation/kustomize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -630,7 +574,7 @@
   
   
     <li class="md-nav__item">
-      <a href="installation/manifests/" class="md-nav__link">
+      <a href="../../installation/manifests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -738,7 +682,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/ingress/" class="md-nav__link">
+      <a href="../../guides/ingress/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -759,7 +703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/ingress-annotations/" class="md-nav__link">
+      <a href="../../guides/ingress-annotations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -828,7 +772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/gateway-api/" class="md-nav__link">
+      <a href="../../guides/gateway-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -849,7 +793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/listener-sets/" class="md-nav__link">
+      <a href="../../guides/listener-sets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -870,7 +814,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/dedicated-mode/" class="md-nav__link">
+      <a href="../../guides/dedicated-mode/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -939,7 +883,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/running-in-production/" class="md-nav__link">
+      <a href="../../guides/running-in-production/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -960,7 +904,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/control-plane-security/" class="md-nav__link">
+      <a href="../../guides/control-plane-security/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -981,7 +925,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/tls/" class="md-nav__link">
+      <a href="../../guides/tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1002,7 +946,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/rate-limiting/" class="md-nav__link">
+      <a href="../../guides/rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1023,7 +967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/retries/" class="md-nav__link">
+      <a href="../../guides/retries/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1044,7 +988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/verifying-releases/" class="md-nav__link">
+      <a href="../../guides/verifying-releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1065,7 +1009,7 @@
   
   
     <li class="md-nav__item">
-      <a href="guides/troubleshooting/" class="md-nav__link">
+      <a href="../../guides/troubleshooting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1098,25 +1042,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1127,7 +1076,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Reference
@@ -1141,7 +1090,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/configuration/" class="md-nav__link">
+      <a href="../configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1159,10 +1108,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="reference/relay-policy/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Relay policy
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1171,6 +1140,110 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-override-not-activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model: override, not activation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selector-precedence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selector precedence
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fields
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fields">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoscaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      autoscaling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cluster-default-relay-every-dedicated-namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cluster default: relay every dedicated namespace
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-scale-namespace-with-autoscaling-and-dedicated-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      High-scale namespace with autoscaling and dedicated nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#force-a-namespace-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      Force a namespace off
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1183,7 +1256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/observability/" class="md-nav__link">
+      <a href="../observability/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1204,7 +1277,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/conformance/" class="md-nav__link">
+      <a href="../conformance/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1272,7 +1345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/" class="md-nav__link">
+      <a href="../../architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1293,7 +1366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/deployment-models/" class="md-nav__link">
+      <a href="../../architecture/deployment-models/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1314,7 +1387,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/discovery-protocol/" class="md-nav__link">
+      <a href="../../architecture/discovery-protocol/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1342,7 +1415,7 @@
   
   
     <li class="md-nav__item">
-      <a href="faq/" class="md-nav__link">
+      <a href="../../faq/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1373,33 +1446,184 @@
   
 
 
-<h1 id="coxswain">Coxswain<a class="headerlink" href="#coxswain" title="Permanent link">&para;</a></h1>
-<div class="admonition info">
-<p class="admonition-title">Pre-1.0 release</p>
-<p>Coxswain has been re-architected with a strict controller/proxy boundary and ships a complete <code>ingress.coxswain-labs.dev/*</code> annotation surface with admission-time validation.
-Active development is getting ready for v0.5 (Gateway API extended features). Feedback and contributions are welcome.</p>
+<h1 id="coxswainrelaypolicy">CoxswainRelayPolicy<a class="headerlink" href="#coxswainrelaypolicy" title="Permanent link">&para;</a></h1>
+<p><code>CoxswainRelayPolicy</code> is a <strong>cluster-scoped</strong> CRD that tunes the controller-provisioned
+<strong>namespace relays</strong> of the <a href="../../architecture/deployment-models/#discovery-relay-tier">discovery relay tier</a>
+per namespace. It overlays structured control — enablement, HA, resources, scheduling, and
+autoscaling — on top of the install-wide <code>--relay-*</code> controller flags.</p>
+<div class="admonition note">
+<p class="admonition-title">Scope: namespace relays only</p>
+<p>This CRD applies <strong>only</strong> to the dynamic, per-namespace relays the controller provisions
+for <strong>dedicated</strong> proxies. The <strong>shared-pool relay</strong> is static Helm-managed infrastructure
+— tune it through <code>relay.shared.*</code> Helm values, never this CRD.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Production use</p>
-<p>Coxswain is under active development, production use is at your own risk.</p>
-</div>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>A Kubernetes Ingress and Gateway API controller written in Rust, backed by <a href="https://github.com/cloudflare/pingora">Pingora</a> — Cloudflare's battle-tested proxy library.</p>
-<ul>
-<li>Bridges classic <code>Ingress</code> and Gateway API <code>HTTPRoute</code> in a single proxy fleet</li>
-<li>Routing changes and TLS certificate rotations take effect without restarting the proxy</li>
-<li>Controller/proxy split with a strict security boundary — proxy pods hold zero Kubernetes API access</li>
-<li>Rich <code>ingress.coxswain-labs.dev/*</code> annotation surface with admission-time validation via <code>ValidatingAdmissionPolicy</code></li>
-</ul>
-<p>See <a href="architecture/">Architecture</a> for how the controller and proxy roles fit together, and <a href="architecture/deployment-models/">Deployment models</a> for Shared vs Dedicated.</p>
-<h2 id="quick-install">Quick install<a class="headerlink" href="#quick-install" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># 1. Install Gateway API CRDs</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
-
-<span class="c1"># 2. Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/coxswain-labs/coxswain/releases/latest/download/install.yaml
+<h2 id="model-override-not-activation">Model: override, not activation<a class="headerlink" href="#model-override-not-activation" title="Permanent link">&para;</a></h2>
+<p>Turning the tier on (<code>--relay-enabled</code>) already provisions relays automatically wherever they
+reduce leader fan-out (the break-even threshold + hysteresis). You do <strong>not</strong> need a policy to
+get the optimization. <code>CoxswainRelayPolicy</code> is for <strong>overrides and tuning</strong> — force a
+namespace on or off, resize it, pin its scheduling, or opt it into autoscaling.</p>
+<h2 id="selector-precedence">Selector precedence<a class="headerlink" href="#selector-precedence" title="Permanent link">&para;</a></h2>
+<p>The effective policy for a namespace is a two-layer overlay:</p>
+<ol>
+<li><strong>Cluster default</strong> — the policy with no <code>namespaceSelector</code>. Applies to every
+   relay-fronted namespace.</li>
+<li><strong>Namespace match</strong> — the most-specific policy whose <code>namespaceSelector</code> matches the
+   namespace's labels.</li>
+</ol>
+<p>Layer 2 overrides Layer 1 per field; unset fields fall through to Layer 1 and then to the
+global <code>--relay-*</code> defaults. <code>podTemplate</code> strategic-merges across layers. "Most-specific" =
+more selector terms (<code>matchLabels</code> + <code>matchExpressions</code>); ties break lexically by policy name.
+Ambiguous same-specificity matches (and multiple cluster defaults) are resolved
+deterministically and warn-logged by the controller.</p>
+<h2 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>namespaceSelector</code></td>
+<td><code>LabelSelector</code></td>
+<td>none (cluster default)</td>
+<td>Which namespaces the policy applies to.</td>
+</tr>
+<tr>
+<td><code>enabled</code></td>
+<td><code>bool</code></td>
+<td>unset (auto)</td>
+<td>Tri-state override: unset = controller decides (threshold); <code>true</code> = force on (bypass threshold; still GC'd at zero dedicated Gateways); <code>false</code> = force off (overrides hysteresis).</td>
+</tr>
+<tr>
+<td><code>replicas</code></td>
+<td><code>int</code></td>
+<td><code>--relay-replicas</code> (2)</td>
+<td>Static relay replica count when autoscaling is off.</td>
+</tr>
+<tr>
+<td><code>resources</code></td>
+<td><code>ResourceRequirements</code></td>
+<td><code>--relay-*-request</code> / <code>--relay-memory-limit</code></td>
+<td>Relay container requests/limits.</td>
+</tr>
+<tr>
+<td><code>podTemplate</code></td>
+<td>partial <code>PodTemplateSpec</code></td>
+<td>none</td>
+<td>Scheduling escape hatch strategic-merged onto the relay pod (nodeSelector, tolerations, affinity, topologySpreadConstraints, priorityClassName, …).</td>
+</tr>
+<tr>
+<td><code>autoscaling</code></td>
+<td>object</td>
+<td>off</td>
+<td>Controller-driven autoscaling (see below).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autoscaling"><code>autoscaling</code><a class="headerlink" href="#autoscaling" title="Permanent link">&para;</a></h3>
+<p>Namespace-relay autoscaling is <strong>controller-driven — there is no <code>HorizontalPodAutoscaler</code></strong>.
+The relay is I/O/fan-out-bound (CPU mistracks its load) and each replica opens its own upstream
+stream to the leader, so the controller sizes the relay directly from the namespace's
+spec-derived dedicated-proxy fan-out:</p>
+<div class="highlight"><pre><span></span><code>replicas = clamp(ceil(fanout / targetProxiesPerReplica), minReplicas, maxReplicas)
 </code></pre></div>
-<p>See <a href="getting-started/">Getting started</a> for the complete walkthrough, or <a href="installation/">Installation</a> for all install methods.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Opt into controller-driven sizing.</td>
+</tr>
+<tr>
+<td><code>minReplicas</code></td>
+<td><code>int</code></td>
+<td>effective <code>replicas</code></td>
+<td>HA floor. Keep ≥ 2.</td>
+</tr>
+<tr>
+<td><code>maxReplicas</code></td>
+<td><code>int</code></td>
+<td>— (<strong>required</strong>)</td>
+<td>Cap on relay replicas — bounds the upstream fan-out regrowth. <strong>If unset, autoscaling is ignored</strong> (the relay stays at static <code>replicas</code>) and the controller warn-logs; an uncapped relay never runs.</td>
+</tr>
+<tr>
+<td><code>targetProxiesPerReplica</code></td>
+<td><code>int</code></td>
+<td><code>8</code></td>
+<td>Downstream proxies each relay replica should front.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Keep <code>maxReplicas</code> below the fan-out it collapses</p>
+<p>Each relay replica opens its own upstream <code>Namespace</code> stream to the leader. If
+<code>maxReplicas</code> approaches the namespace's downstream proxy count, the relay's own streams
+approach the count it exists to collapse and the tier stops paying off.</p>
+</div>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h3 id="cluster-default-relay-every-dedicated-namespace">Cluster default: relay every dedicated namespace<a class="headerlink" href="#cluster-default-relay-every-dedicated-namespace" title="Permanent link">&para;</a></h3>
+<p>A no-selector policy that turns the automatic threshold into "always on":</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainRelayPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster-default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</code></pre></div>
+<h3 id="high-scale-namespace-with-autoscaling-and-dedicated-nodes">High-scale namespace with autoscaling and dedicated nodes<a class="headerlink" href="#high-scale-namespace-with-autoscaling-and-dedicated-nodes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainRelayPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">platform-relays</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">namespaceSelector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">coxswain-labs.dev/relay-tier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high-scale</span>
+<span class="w">  </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100m</span>
+<span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128Mi</span>
+<span class="w">    </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">512Mi</span>
+<span class="w">  </span><span class="nt">podTemplate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">tolerations</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dedicated</span>
+<span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Equal</span>
+<span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relay</span>
+<span class="w">          </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NoSchedule</span>
+<span class="w">  </span><span class="nt">autoscaling</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">minReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">maxReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="w">    </span><span class="nt">targetProxiesPerReplica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+</code></pre></div>
+<h3 id="force-a-namespace-off">Force a namespace off<a class="headerlink" href="#force-a-namespace-off" title="Permanent link">&para;</a></h3>
+<p>Keep a namespace direct-to-controller even if it crosses the break-even threshold:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainRelayPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-relay-legacy</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">namespaceSelector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">team</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">legacy</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
 
 
 
@@ -1471,10 +1695,10 @@ kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> <
       <div class="md-progress" data-md-component="progress" role="progressbar"></div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.top", "toc.integrate", "content.code.copy", "content.tabs.link"], "search": "assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.top", "toc.integrate", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.60a45f97.min.js"></script>
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>
