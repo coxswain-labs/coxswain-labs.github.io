@@ -1758,7 +1758,7 @@
 <td><code>COXSWAIN_WATCH_NAMESPACE</code></td>
 <td><code>--watch-namespace</code></td>
 <td><em>(cluster-wide)</em></td>
-<td>Restrict the controller and proxy watch to a single namespace; both pods must be set to the same value</td>
+<td>Restrict the controller's namespaced watches to a comma-separated namespace list (e.g. <code>ns1,ns2,ns3</code>); a single value scopes to one namespace, omitted watches cluster-wide. Enables a namespaced-<code>Role</code>-per-namespace RBAC lockdown (see <a href="../../guides/running-in-production/#rbac">Running in production</a>). Only the controller watches Kubernetes; the proxy is unaffected</td>
 </tr>
 <tr>
 <td><code>POD_NAME</code></td>

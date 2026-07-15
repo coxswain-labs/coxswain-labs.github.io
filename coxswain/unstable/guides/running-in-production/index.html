@@ -1052,6 +1052,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="RBAC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scoping-the-controller-to-specific-namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scoping the controller to specific namespaces
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1665,7 +1680,9 @@ kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w">
 <li>Status writes (<code>*/status</code>) on <code>ingresses</code>, <code>gateways</code>, <code>httproutes</code>, <code>backendtlspolicies</code>, and <code>gatewayclasses</code>.</li>
 </ul>
 <p>A separate namespaced <code>Role</code> (in <code>coxswain-system</code>) grants <code>get</code>, <code>create</code>, <code>patch</code> on <code>coordination.k8s.io/leases</code> — used only by the controller pod for leader election — plus <code>get</code>, <code>list</code>, <code>patch</code> on <code>pods</code> in the same namespace, used by the lease holder to maintain the <code>discovery.coxswain-labs.dev/leader</code> pod label that routes proxy discovery dials to the leader (and to strip a stale label off a crashed ex-leader). Review the rendered manifests with <code>helm template</code> or read <code>deploy/manifests/controller-rbac.yaml</code> before deploying. The shared proxy and dedicated proxy ServiceAccounts hold <strong>no Kubernetes RBAC</strong> — they are identity-only SAs whose projected tokens are used solely for mTLS bootstrap with the controller; verify with <code>kubectl auth can-i --list --as=system:serviceaccount:coxswain-system:coxswain-shared-proxy</code> (output should show only Kubernetes baseline grants).</p>
-<p>If Coxswain should only manage resources in a single namespace, set <code>watchNamespace</code>. This restricts only the controller's reflectors; the proxy's discovery client is unaffected (it receives routing from the controller, not from K8s directly). The controller's <code>ClusterRole</code>/<code>ClusterRoleBinding</code> still ships cluster-wide; to scope it to a namespace, edit the rendered manifests by hand.</p>
+<h3 id="scoping-the-controller-to-specific-namespaces">Scoping the controller to specific namespaces<a class="headerlink" href="#scoping-the-controller-to-specific-namespaces" title="Permanent link">&para;</a></h3>
+<p>To restrict Coxswain to a fixed set of namespaces, set <code>watchNamespace</code> to a comma-separated list (<code>ns1,ns2,ns3</code>); a single value scopes to one namespace, omitted watches cluster-wide. This restricts the controller's reflectors — one namespaced watch per listed namespace, per resource type — so the ServiceAccount needs <strong>no cluster-wide read</strong> on the high-value tenant resources: <code>services</code>, <code>endpointslices</code>, <strong><code>secrets</code></strong>, <code>configmaps</code>, <code>ingresses</code>, the Gateway API routes/<code>gateways</code>/<code>backendtlspolicies</code>/<code>listenersets</code>, and the route-scoped coxswain CRDs. The proxy's discovery client is unaffected (it receives routing from the controller, not from Kubernetes directly).</p>
+<p>This is the least-privilege lockdown for soft multi-tenancy: replace the cluster-wide <code>ClusterRole</code> read rules with a namespaced <code>Role</code> + <code>RoleBinding</code> in <strong>each</strong> listed namespace, granting the same read (and status-write) verbs there. Namespaced resources whose objects can also live in the controller's own namespace — <code>services</code> (besides tenant backend Services, the per-Gateway shared-VIP Services are provisioned in <code>coxswain-system</code>), <code>pods</code> (the shared-proxy fleet pods live in <code>coxswain-system</code>, dedicated-proxy pods in the Gateway namespaces), and <code>coxswaingatewayparameters</code> / <code>coxswainingressclassparameters</code> (a <code>parametersRef</code> default commonly lives in <code>coxswain-system</code>) — are watched in the listed namespaces <strong>plus <code>coxswain-system</code></strong>, so they need a <code>Role</code> there too, not a cluster-wide grant. The only reads that stay cluster-wide are genuinely cluster-scoped Kubernetes resources (no namespace to scope by): <code>gatewayclasses</code>, <code>namespaces</code>, <code>nodes</code>, <code>ingressclasses</code>, and <code>tokenreviews</code>. Every coxswain-owned CRD is namespaced. The leader-election <code>Role</code> in <code>coxswain-system</code> is unchanged. See <code>deploy/manifests/controller-rbac-namespaced.yaml</code> for a worked example to replicate per listed namespace. Verify the lockdown with <code>kubectl auth can-i list secrets -A --as=system:serviceaccount:coxswain-system:coxswain-controller</code> (expect <code>no</code> outside the listed namespaces).</p>
 <h2 id="signed-image-verification">Signed image verification<a class="headerlink" href="#signed-image-verification" title="Permanent link">&para;</a></h2>
 <p>Every release image is signed with cosign. Verify the signature before deploying to a production cluster:</p>
 <div class="highlight"><pre><span></span><code>cosign<span class="w"> </span>verify<span class="w"> </span><span class="se">\</span>

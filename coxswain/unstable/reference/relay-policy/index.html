@@ -1166,9 +1166,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#selector-precedence" class="md-nav__link">
+  <a href="#resolution" class="md-nav__link">
     <span class="md-ellipsis">
-      Selector precedence
+      Resolution
     </span>
   </a>
   
@@ -1209,9 +1209,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cluster-default-relay-every-dedicated-namespace" class="md-nav__link">
+  <a href="#force-a-namespaces-relay-on" class="md-nav__link">
     <span class="md-ellipsis">
-      Cluster default: relay every dedicated namespace
+      Force a namespace's relay on
     </span>
   </a>
   
@@ -1447,10 +1447,11 @@
 
 
 <h1 id="coxswainrelaypolicy">CoxswainRelayPolicy<a class="headerlink" href="#coxswainrelaypolicy" title="Permanent link">&para;</a></h1>
-<p><code>CoxswainRelayPolicy</code> is a <strong>cluster-scoped</strong> CRD that tunes the controller-provisioned
-<strong>namespace relays</strong> of the <a href="../../architecture/deployment-models/#discovery-relay-tier">discovery relay tier</a>
-per namespace. It overlays structured control — enablement, HA, resources, scheduling, and
-autoscaling — on top of the install-wide <code>--relay-*</code> controller flags.</p>
+<p><code>CoxswainRelayPolicy</code> is a <strong>namespaced</strong> CRD that tunes the controller-provisioned
+<strong>namespace relays</strong> of the <a href="../../architecture/deployment-models/#discovery-relay-tier">discovery relay tier</a>.
+The policy in a namespace governs that namespace's relay, overlaying structured control —
+enablement, HA, resources, scheduling, and autoscaling — on top of the install-wide
+<code>--relay-*</code> controller flags.</p>
 <div class="admonition note">
 <p class="admonition-title">Scope: namespace relays only</p>
 <p>This CRD applies <strong>only</strong> to the dynamic, per-namespace relays the controller provisions
@@ -1462,19 +1463,16 @@ for <strong>dedicated</strong> proxies. The <strong>shared-pool relay</strong> i
 reduce leader fan-out (the break-even threshold + hysteresis). You do <strong>not</strong> need a policy to
 get the optimization. <code>CoxswainRelayPolicy</code> is for <strong>overrides and tuning</strong> — force a
 namespace on or off, resize it, pin its scheduling, or opt it into autoscaling.</p>
-<h2 id="selector-precedence">Selector precedence<a class="headerlink" href="#selector-precedence" title="Permanent link">&para;</a></h2>
-<p>The effective policy for a namespace is a two-layer overlay:</p>
-<ol>
-<li><strong>Cluster default</strong> — the policy with no <code>namespaceSelector</code>. Applies to every
-   relay-fronted namespace.</li>
-<li><strong>Namespace match</strong> — the most-specific policy whose <code>namespaceSelector</code> matches the
-   namespace's labels.</li>
-</ol>
-<p>Layer 2 overrides Layer 1 per field; unset fields fall through to Layer 1 and then to the
-global <code>--relay-*</code> defaults. <code>podTemplate</code> strategic-merges across layers. "Most-specific" =
-more selector terms (<code>matchLabels</code> + <code>matchExpressions</code>); ties break lexically by policy name.
-Ambiguous same-specificity matches (and multiple cluster defaults) are resolved
-deterministically and warn-logged by the controller.</p>
+<h2 id="resolution">Resolution<a class="headerlink" href="#resolution" title="Permanent link">&para;</a></h2>
+<p>The effective policy for a namespace is simply the <code>CoxswainRelayPolicy</code> that lives <strong>in</strong>
+that namespace — keyed by the object's own namespace, the same model as the
+<code>CoxswainGatewayParameters</code> used for <a href="../../guides/dedicated-mode/">dedicated proxies</a>. Every
+field is optional; unset fields fall through to the global <code>--relay-*</code> controller-flag
+defaults. <code>podTemplate</code> strategic-merges onto the controller-rendered relay pod.</p>
+<p>There is no cluster-wide "default policy" and no label selector: the only install-wide default
+is the flat <code>--relay-*</code> flags; structured overrides (autoscaling, <code>podTemplate</code>, <code>resources</code>)
+are set per namespace. Keep <strong>at most one</strong> policy per namespace — if several exist the
+controller picks the lexically-first by name and warn-logs the ambiguity.</p>
 <h2 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1486,12 +1484,6 @@ deterministically and warn-logged by the controller.</p>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>namespaceSelector</code></td>
-<td><code>LabelSelector</code></td>
-<td>none (cluster default)</td>
-<td>Which namespaces the policy applies to.</td>
-</tr>
 <tr>
 <td><code>enabled</code></td>
 <td><code>bool</code></td>
@@ -1574,12 +1566,13 @@ spec-derived dedicated-proxy fan-out:</p>
 approach the count it exists to collapse and the tier stops paying off.</p>
 </div>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<h3 id="cluster-default-relay-every-dedicated-namespace">Cluster default: relay every dedicated namespace<a class="headerlink" href="#cluster-default-relay-every-dedicated-namespace" title="Permanent link">&para;</a></h3>
-<p>A no-selector policy that turns the automatic threshold into "always on":</p>
+<h3 id="force-a-namespaces-relay-on">Force a namespace's relay on<a class="headerlink" href="#force-a-namespaces-relay-on" title="Permanent link">&para;</a></h3>
+<p>Turn the automatic threshold into "always on" for <code>team-a</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainRelayPolicy</span>
 <span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster-default</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relay</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">team-a</span>
 <span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
@@ -1588,11 +1581,9 @@ approach the count it exists to collapse and the tier stops paying off.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainRelayPolicy</span>
 <span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">platform-relays</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relay</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">platform</span>
 <span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">namespaceSelector</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">coxswain-labs.dev/relay-tier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">high-scale</span>
 <span class="w">  </span><span class="nt">resources</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">requests</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100m</span>
@@ -1617,11 +1608,9 @@ approach the count it exists to collapse and the tier stops paying off.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainRelayPolicy</span>
 <span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-relay-legacy</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relay</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">legacy</span>
 <span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">namespaceSelector</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">team</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">legacy</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 
