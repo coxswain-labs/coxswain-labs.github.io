@@ -1703,13 +1703,19 @@ discovery <strong>client</strong> (upstream, to the controller) and a discovery 
   stream. A relay's downstream server <strong>rejects <code>Namespace</code> subscribes</strong> (only
   the controller serves that scope).</li>
 </ul>
-<p>A leaf placed behind a relay points its <code>--discovery-expected-server-sa</code> at the
-relay's SA so its stream verifies the relay's identity instead of the
-controller's; bootstrap still targets the controller.</p>
-<p>There is <strong>no cross-tier fallback</strong>: a leaf never dials the controller when its
-relay is down. That preserves a single dial identity per leaf and avoids
-stampeding the leader under correlated failure; relay availability is delivered
-by running ≥2 relay replicas behind the relay Service.</p>
+<p>A leaf placed behind a relay verifies the relay's identity instead of the
+controller's — but it is not configured with a static endpoint or expected SA.
+Since the routing upstream is <strong>bootstrap-delivered and runtime-directed</strong>
+(#601), the controller hands the leaf its upstream <code>(endpoint, expected_server_sa)</code>
+in the bootstrap response — the relay's Service and the relay's SA when the
+namespace is relay-fronted — and the leaf verifies that identity on its stream.
+Bootstrap itself always targets the controller (never tiered).</p>
+<p>Relay availability is delivered by running ≥2 relay replicas behind the relay
+Service. If a relay is nonetheless unreachable (e.g. torn down in a rebalance
+race), the leaf <strong>re-bootstraps</strong> to the controller — the always-up anchor — and
+is re-pointed at whatever upstream is current. This fallback repoints the
+control stream only; the data plane keeps serving its last-good routing snapshot
+throughout, so a relay rebalance never disrupts live traffic.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <p>See <a href="../../reference/configuration/#discovery-control-plane">Configuration reference</a>
 for the full flag/value list. The common knobs:</p>
@@ -1810,9 +1816,10 @@ an SVID and received its first snapshot. Check, in order:</p>
 <li><strong><code>external</code> Secret absent.</strong> In <code>external</code> mode the controller logs
   <code>CA Secret absent and mode=external</code> and does not serve discovery. Supply the
   Secret (cert-manager or <code>kubectl create secret tls</code>).</li>
-<li><strong>Wrong <code>--discovery-endpoint</code>.</strong> The proxy logs a connection error if it cannot
-  reach the controller's Stream listener. Verify the endpoint URI and that the
-  discovery <code>Service</code> exists in the controller namespace.</li>
+<li><strong>Wrong <code>--discovery-bootstrap-endpoint</code>.</strong> This is the proxy's sole endpoint
+  anchor: if it cannot reach the controller's bootstrap listener it never obtains
+  an SVID (nor learns its routing upstream) and stays NotReady. Verify the URI and
+  that the discovery bootstrap <code>Service</code> exists in the controller namespace.</li>
 </ul>
 <p><strong>Proxy <code>Degraded</code> after restart.</strong> Normal — the proxy starts <code>NotReady</code> until it reconnects and receives its first snapshot from the new controller. If it stays <code>Degraded</code> indefinitely, check connectivity to the discovery endpoint.</p>
 <p><strong>Wire-version mismatch.</strong> The proxy logs <code>FAILED_PRECONDITION</code> and backs off permanently. Check that the controller and proxy images are from the same release. See <a href="#wire-version-skew">Wire-version skew</a>.</p>

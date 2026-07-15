@@ -1565,8 +1565,8 @@
 <tr>
 <td><code>COXSWAIN_DISCOVERY_BOOTSTRAP_ENDPOINT</code></td>
 <td><code>--discovery-bootstrap-endpoint</code></td>
-<td><em>(none)</em></td>
-<td><em>(proxy)</em> <code>https://</code> URI of the controller bootstrap listener; where the proxy exchanges its SA token + CSR for an SVID. See <a href="../../guides/control-plane-security/">Control-plane security</a></td>
+<td><em>(none; <strong>required</strong> for proxy/relay)</em></td>
+<td><em>(proxy/relay)</em> <code>https://</code> URI of the controller bootstrap listener — the <strong>sole endpoint anchor</strong>. The proxy exchanges its SA token + CSR for an SVID here, and the response carries its routing-stream upstream (the controller, or its namespace's relay if provisioned), repointed live thereafter. See <a href="../../guides/control-plane-security/">Control-plane security</a></td>
 </tr>
 <tr>
 <td><code>COXSWAIN_DISCOVERY_BOOTSTRAP_PORT</code></td>
@@ -1593,16 +1593,16 @@
 <td><em>(controller)</em> Name of the CA Secret (<code>tls.crt</code>/<code>tls.key</code>) in the controller namespace</td>
 </tr>
 <tr>
-<td><code>COXSWAIN_DISCOVERY_ENDPOINT</code></td>
-<td><code>--discovery-endpoint</code></td>
-<td><em>(none; required for proxy)</em></td>
-<td><em>(proxy)</em> Comma-separated controller discovery (Stream) endpoints; <code>https://host:port</code> for mTLS</td>
-</tr>
-<tr>
 <td><code>COXSWAIN_DISCOVERY_PORT</code></td>
 <td><code>--discovery-port</code></td>
 <td><code>50051</code></td>
 <td><em>(controller)</em> Port for the mTLS Stream gRPC listener (routing snapshots)</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_SHARED_RELAY_ENDPOINT</code></td>
+<td><code>--shared-relay-endpoint</code></td>
+<td><em>(none)</em></td>
+<td><em>(controller)</em> <code>https://</code> Stream endpoint of the shared relay when one fronts the shared proxy pool (a static Helm toggle). Set, the controller hands shared-pool proxies this upstream at bootstrap instead of itself; unset, they stream from the controller</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_DISCOVERY_SA_TOKEN_PATH</code></td>
@@ -1776,7 +1776,7 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The dedicated proxy scope flags (<code>--dedicated</code>, <code>--gateway-name</code>, <code>--gateway-namespace</code>) are set by the controller on the proxy Deployments it provisions, or passed by hand when running a dedicated proxy manually. The discovery flags (<code>--discovery-endpoint</code>, <code>--discovery-bootstrap-endpoint</code>) are also set by the controller on provisioned Deployments. See <a href="../../guides/dedicated-mode/">Dedicated proxy pools</a>.</p>
+<p>The dedicated proxy scope flags (<code>--dedicated</code>, <code>--gateway-name</code>, <code>--gateway-namespace</code>) are set by the controller on the proxy Deployments it provisions, or passed by hand when running a dedicated proxy manually. The discovery anchor (<code>--discovery-bootstrap-endpoint</code>) is likewise set by the controller on provisioned Deployments; there is no <code>--discovery-endpoint</code> — the routing-stream upstream is delivered by the bootstrap response and repointed live, so a relay rebalance never re-renders (nor rolls) a proxy Deployment. See <a href="../../guides/dedicated-mode/">Dedicated proxy pools</a>.</p>
 </div>
 <h2 id="ports-summary">Ports summary<a class="headerlink" href="#ports-summary" title="Permanent link">&para;</a></h2>
 <table>
