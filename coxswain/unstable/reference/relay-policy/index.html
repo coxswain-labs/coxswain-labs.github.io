@@ -1455,8 +1455,8 @@ enablement, HA, resources, scheduling, and autoscaling — on top of the install
 <div class="admonition note">
 <p class="admonition-title">Scope: namespace relays only</p>
 <p>This CRD applies <strong>only</strong> to the dynamic, per-namespace relays the controller provisions
-for <strong>dedicated</strong> proxies. The <strong>shared-pool relay</strong> is static Helm-managed infrastructure
-— tune it through <code>relay.shared.*</code> Helm values, never this CRD.</p>
+for <strong>dedicated</strong> proxies. The <strong>shared-pool relay</strong> is global (one per install) and reads
+the install-wide <code>--relay-*</code> flag values directly — it has no per-namespace policy.</p>
 </div>
 <h2 id="model-override-not-activation">Model: override, not activation<a class="headerlink" href="#model-override-not-activation" title="Permanent link">&para;</a></h2>
 <p>Turning the tier on (<code>--relay-enabled</code>) already provisions relays automatically wherever they

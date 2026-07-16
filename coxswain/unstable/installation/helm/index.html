@@ -1569,7 +1569,7 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 </table>
 <p>See the <a href="https://github.com/coxswain-labs/coxswain/blob/main/charts/coxswain/README.md">Helm chart README</a> for the full values reference.</p>
 <h2 id="discovery-relay-tier">Discovery relay tier<a class="headerlink" href="#discovery-relay-tier" title="Permanent link">&para;</a></h2>
-<p>The optional <a href="../../architecture/deployment-models/#discovery-relay-tier">relay tier</a> scales leader fan-out by inserting zero-RBAC cache pods between the controller and the proxies. It is <strong>off by default</strong> — a relay-free install is byte-identical to one without the feature — and is configured under <code>relay.*</code>, split into two independent families:</p>
+<p>The <a href="../../architecture/deployment-models/#discovery-relay-tier">relay tier</a> scales leader fan-out by inserting zero-RBAC cache pods between the controller and the proxies. It is <strong>on by default (opt-out)</strong>, but the break-even gate keeps it inert until a scope's demand earns a relay — so a small install provisions no relays and is byte-identical to a relay-free one. The <strong>controller</strong> owns the whole tier (both the shared-pool relay and the per-namespace dedicated relays); these <code>relay.*</code> values map onto its <code>--relay-*</code> flags — there are no relay templates to render:</p>
 <table>
 <thead>
 <tr>
@@ -1580,73 +1580,57 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 </thead>
 <tbody>
 <tr>
-<td><code>relay.shared.enabled</code></td>
-<td><code>false</code></td>
-<td>Render the shared-pool relay <strong>and</strong> repoint the shared proxies at it</td>
+<td><code>relay.enabled</code></td>
+<td><code>true</code></td>
+<td>Master switch (→ <code>--relay-enabled</code>). Set <code>false</code> to disable the whole tier</td>
 </tr>
 <tr>
-<td><code>relay.shared.replicas</code></td>
+<td><code>relay.replicas</code></td>
 <td><code>2</code></td>
-<td>Shared-relay replica count (ignored when autoscaling)</td>
+<td>HA replica count / autoscaling floor for a provisioned relay</td>
 </tr>
 <tr>
-<td><code>relay.shared.autoscaling.enabled</code></td>
-<td><code>false</code></td>
-<td>Enable HPA for the shared relay (it fronts the whole pool, so it can scale)</td>
+<td><code>relay.maxReplicas</code></td>
+<td><code>10</code></td>
+<td>Shared-relay autoscaling ceiling (→ <code>--relay-max-replicas</code>) — the mandatory cap on the upstream streams the shared relay opens against the leader. Dedicated relays cap via <code>CoxswainRelayPolicy</code></td>
 </tr>
 <tr>
-<td><code>relay.shared.resources</code></td>
-<td><code>{}</code></td>
-<td>Shared-relay container resources</td>
-</tr>
-<tr>
-<td><code>relay.dedicated.enabled</code></td>
-<td><code>false</code></td>
-<td>Enable controller-provisioned per-namespace relays (→ <code>--relay-enabled</code>)</td>
-</tr>
-<tr>
-<td><code>relay.dedicated.replicas</code></td>
-<td><code>2</code></td>
-<td>HA replica count for each provisioned namespace relay</td>
-</tr>
-<tr>
-<td><code>relay.dedicated.minProxyReplicas</code></td>
+<td><code>relay.minProxyReplicas</code></td>
 <td><code>8</code></td>
-<td>Break-even <strong>activation</strong> threshold: a namespace gets a relay only once its live dedicated-proxy subscriber count reaches this (below it, direct-to-controller)</td>
+<td>Break-even <strong>activation</strong> threshold: a scope gets a relay only once its demand (a namespace's live dedicated-proxy count, or the shared pool's replica count) reaches this (below it, direct-to-controller)</td>
 </tr>
 <tr>
-<td><code>relay.dedicated.targetProxiesPerReplica</code></td>
+<td><code>relay.targetProxiesPerReplica</code></td>
 <td><code>50</code></td>
 <td>Capacity ratio — proxies per relay replica the sizing loop targets. Decoupled from the break-even threshold</td>
 </tr>
 <tr>
-<td><code>relay.dedicated.cooldown</code></td>
+<td><code>relay.cooldown</code></td>
 <td><code>300s</code></td>
-<td>Deactivation cooldown: an active relay is torn down after the subscriber count holds below break-even for this long (0 → immediate)</td>
+<td>Deactivation cooldown: an active relay is torn down after demand holds below break-even for this long (a genuinely-drained scope tears down at once)</td>
 </tr>
 <tr>
-<td><code>relay.dedicated.scaleDownStabilization</code></td>
+<td><code>relay.scaleDownStabilization</code></td>
 <td><code>300s</code></td>
 <td>Scale-down stabilization window for an autoscaled relay (scale up promptly, down only on the trailing-window peak)</td>
 </tr>
 <tr>
-<td><code>relay.dedicated.tolerance</code></td>
+<td><code>relay.tolerance</code></td>
 <td><code>0.10</code></td>
 <td>Relative sizing deadband — the replica count changes only when load deviates from target by more than this fraction</td>
 </tr>
 <tr>
-<td><code>relay.dedicated.resources.{cpuRequest,memoryRequest,memoryLimit}</code></td>
+<td><code>relay.resources.{cpuRequest,memoryRequest,memoryLimit}</code></td>
 <td><code>50m</code> / <code>64Mi</code> / <code>256Mi</code></td>
-<td>Resources for each provisioned namespace relay (CPU request only — a limit would throttle fan-out)</td>
+<td>Resources for each provisioned relay (CPU request only — a limit would throttle fan-out)</td>
 </tr>
 </tbody>
 </table>
-<p><code>relay.shared.*</code> renders Deployment/Service/SA/PDB/HPA directly (static install infra). <code>relay.dedicated.*</code> is passed to the controller, which provisions the per-namespace relays dynamically — there are no dedicated-relay templates to render. Only the shared relay is a raw-manifest resource; enabling the tier on a non-Helm install is a Helm-only path today.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Enable both relay families</span>
+<p>Per-namespace overrides for the <strong>dedicated</strong> relays (force-on/off, replicas, resources, <code>podTemplate</code> scheduling, autoscaling) come from the namespaced <a href="../../reference/relay-policy/"><code>CoxswainRelayPolicy</code></a> CRD; the shared relay is global and reads the <code>relay.*</code> flag values directly.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Disable the relay tier entirely</span>
 helm<span class="w"> </span>upgrade<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span>relay.shared.enabled<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--set<span class="w"> </span>relay.dedicated.enabled<span class="o">=</span><span class="nb">true</span>
+<span class="w">  </span>--set<span class="w"> </span>relay.enabled<span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
 <h2 id="namespace-scoped-install">Namespace-scoped install<a class="headerlink" href="#namespace-scoped-install" title="Permanent link">&para;</a></h2>
 <p>By default Coxswain watches the entire cluster. To restrict to a single namespace:</p>
