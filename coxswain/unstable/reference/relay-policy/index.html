@@ -1460,9 +1460,10 @@ for <strong>dedicated</strong> proxies. The <strong>shared-pool relay</strong> i
 </div>
 <h2 id="model-override-not-activation">Model: override, not activation<a class="headerlink" href="#model-override-not-activation" title="Permanent link">&para;</a></h2>
 <p>Turning the tier on (<code>--relay-enabled</code>) already provisions relays automatically wherever they
-reduce leader fan-out (the break-even threshold + hysteresis). You do <strong>not</strong> need a policy to
-get the optimization. <code>CoxswainRelayPolicy</code> is for <strong>overrides and tuning</strong> — force a
-namespace on or off, resize it, pin its scheduling, or opt it into autoscaling.</p>
+reduce leader fan-out (the <a href="../../architecture/deployment-models/#discovery-relay-tier">control loop</a>:
+activation at break-even, cooldown deactivation). You do <strong>not</strong> need a policy to get the
+optimization. <code>CoxswainRelayPolicy</code> is for <strong>overrides and tuning</strong> — force a namespace on or
+off, resize it, pin its scheduling, or tune/opt it into autoscaling.</p>
 <h2 id="resolution">Resolution<a class="headerlink" href="#resolution" title="Permanent link">&para;</a></h2>
 <p>The effective policy for a namespace is simply the <code>CoxswainRelayPolicy</code> that lives <strong>in</strong>
 that namespace — keyed by the object's own namespace, the same model as the
@@ -1488,7 +1489,7 @@ controller picks the lexically-first by name and warn-logs the ambiguity.</p>
 <td><code>enabled</code></td>
 <td><code>bool</code></td>
 <td>unset (auto)</td>
-<td>Tri-state override: unset = controller decides (threshold); <code>true</code> = force on (bypass threshold; still GC'd at zero dedicated Gateways); <code>false</code> = force off (overrides hysteresis).</td>
+<td>Tri-state override: unset = controller decides (activation threshold); <code>true</code> = force on (bypass threshold; still torn down at zero subscribers); <code>false</code> = force off (unconditional, overrides the cooldown).</td>
 </tr>
 <tr>
 <td><code>replicas</code></td>
@@ -1519,10 +1520,12 @@ controller picks the lexically-first by name and warn-logs the ambiguity.</p>
 <h3 id="autoscaling"><code>autoscaling</code><a class="headerlink" href="#autoscaling" title="Permanent link">&para;</a></h3>
 <p>Namespace-relay autoscaling is <strong>controller-driven — there is no <code>HorizontalPodAutoscaler</code></strong>.
 The relay is I/O/fan-out-bound (CPU mistracks its load) and each replica opens its own upstream
-stream to the leader, so the controller sizes the relay directly from the namespace's
-spec-derived dedicated-proxy fan-out:</p>
-<div class="highlight"><pre><span></span><code>replicas = clamp(ceil(fanout / targetProxiesPerReplica), minReplicas, maxReplicas)
+stream to the leader, so the controller re-implements the standard autoscaler loop internally,
+sizing the relay from the namespace's <strong>live dedicated-proxy subscriber count</strong>:</p>
+<div class="highlight"><pre><span></span><code>replicas = clamp(ceil(liveSubscribers / targetProxiesPerReplica), minReplicas, maxReplicas)
 </code></pre></div>
+<p>damped by a relative <strong>tolerance</strong> deadband and an asymmetric <strong>scale-down stabilization</strong>
+window (scale up promptly, scale down only on the trailing-window peak).</p>
 <table>
 <thead>
 <tr>
@@ -1554,8 +1557,26 @@ spec-derived dedicated-proxy fan-out:</p>
 <tr>
 <td><code>targetProxiesPerReplica</code></td>
 <td><code>int</code></td>
-<td><code>8</code></td>
-<td>Downstream proxies each relay replica should front.</td>
+<td><code>--relay-target-proxies-per-replica</code> (50)</td>
+<td><strong>Capacity ratio</strong> — downstream proxies each replica should front. Decoupled from the break-even threshold (a relay is a fan-out cache, so real per-replica capacity is O(100s), not the break-even number).</td>
+</tr>
+<tr>
+<td><code>scaleDownStabilizationSeconds</code></td>
+<td><code>int</code></td>
+<td><code>--relay-scale-down-stabilization</code> (300)</td>
+<td>Scale-<strong>down</strong> sizes on the max subscriber count over this trailing window; scale-up is prompt. Damps flapping.</td>
+</tr>
+<tr>
+<td><code>cooldownSeconds</code></td>
+<td><code>int</code></td>
+<td><code>--relay-cooldown</code> (300)</td>
+<td>The relay is torn down only after the subscriber count holds <strong>below</strong> break-even for this long. A genuinely drained namespace (no dedicated Gateways) tears down at once; a transient 0 (relay restart/reconnect) waits the cooldown.</td>
+</tr>
+<tr>
+<td><code>tolerance</code></td>
+<td><code>float</code></td>
+<td><code>--relay-tolerance</code> (0.10)</td>
+<td>Relative sizing deadband: the replica count changes only when load deviates from target by more than this fraction.</td>
 </tr>
 </tbody>
 </table>

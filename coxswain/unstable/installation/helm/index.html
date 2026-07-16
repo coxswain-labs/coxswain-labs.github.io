@@ -1612,7 +1612,27 @@ helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="
 <tr>
 <td><code>relay.dedicated.minProxyReplicas</code></td>
 <td><code>8</code></td>
-<td>Break-even threshold: a namespace gets a relay only once its desired dedicated-proxy replicas reach this (below it, direct-to-controller)</td>
+<td>Break-even <strong>activation</strong> threshold: a namespace gets a relay only once its live dedicated-proxy subscriber count reaches this (below it, direct-to-controller)</td>
+</tr>
+<tr>
+<td><code>relay.dedicated.targetProxiesPerReplica</code></td>
+<td><code>50</code></td>
+<td>Capacity ratio — proxies per relay replica the sizing loop targets. Decoupled from the break-even threshold</td>
+</tr>
+<tr>
+<td><code>relay.dedicated.cooldown</code></td>
+<td><code>300s</code></td>
+<td>Deactivation cooldown: an active relay is torn down after the subscriber count holds below break-even for this long (0 → immediate)</td>
+</tr>
+<tr>
+<td><code>relay.dedicated.scaleDownStabilization</code></td>
+<td><code>300s</code></td>
+<td>Scale-down stabilization window for an autoscaled relay (scale up promptly, down only on the trailing-window peak)</td>
+</tr>
+<tr>
+<td><code>relay.dedicated.tolerance</code></td>
+<td><code>0.10</code></td>
+<td>Relative sizing deadband — the replica count changes only when load deviates from target by more than this fraction</td>
 </tr>
 <tr>
 <td><code>relay.dedicated.resources.{cpuRequest,memoryRequest,memoryLimit}</code></td>
