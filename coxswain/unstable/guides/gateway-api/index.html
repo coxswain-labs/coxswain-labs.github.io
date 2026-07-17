@@ -2808,7 +2808,7 @@
 <p>Two transports, selected by <code>spec.protocol</code>:</p>
 <ul>
 <li><strong><code>HTTP</code></strong> — forward-auth: the original method, Host, path, and client headers are replayed to the service (no body); <strong>2xx</strong> allows, any other status is returned to the client.</li>
-<li><strong><code>GRPC</code></strong> — the Envoy <code>envoy.service.auth.v3.Authorization/Check</code> proto: the request context is sent as a <code>CheckRequest</code>; an <code>OK</code> status allows (copying <code>allowedResponseHeaders</code> from the OK response onto the upstream request), any other status denies with the denied response's HTTP status (default <code>403</code>), headers, and body.</li>
+<li><strong><code>GRPC</code></strong> — the Envoy <code>envoy.service.auth.v3.Authorization/Check</code> proto: the request context is sent as a <code>CheckRequest</code>; an <code>OK</code> status allows (copying <code>allowedResponseHeaders</code> from the OK response onto the upstream request), any other status denies with the denied response's HTTP status (default <code>403</code>), headers, and body. The <code>CheckRequest</code>'s <code>attributes.request.http.scheme</code> reflects the real downstream connection — <code>https</code> on a TLS listener, <code>http</code> on a cleartext one — so an authz policy may key on it.</li>
 </ul>
 <p><code>CoxswainExternalAuth</code> is <strong>HTTPRoute-only</strong> (a Gateway-attached policy covers the HTTPRoutes on the Gateway); <code>GRPCRoute</code> is not yet supported.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
