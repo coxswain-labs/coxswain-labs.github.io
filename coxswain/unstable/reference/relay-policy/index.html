@@ -1557,8 +1557,8 @@ window (scale up promptly, scale down only on the trailing-window peak).</p>
 <tr>
 <td><code>targetProxiesPerReplica</code></td>
 <td><code>int</code></td>
-<td><code>--relay-target-proxies-per-replica</code> (50)</td>
-<td><strong>Capacity ratio</strong> — downstream proxies each replica should front. Decoupled from the break-even threshold (a relay is a fan-out cache, so real per-replica capacity is O(100s), not the break-even number).</td>
+<td><code>--relay-target-proxies-per-replica</code> (250)</td>
+<td><strong>Capacity ratio</strong> — downstream proxies each replica should front. Decoupled from the break-even threshold (a relay is a fan-out cache, so real per-replica capacity is O(100s), not the break-even number). Measured (#603): under one CPU core and p99 fan-out latency under 20ms at 250 subscribers even under sustained 10 changes/sec churn.</td>
 </tr>
 <tr>
 <td><code>scaleDownStabilizationSeconds</code></td>
