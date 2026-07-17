@@ -1194,6 +1194,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Proxy-pod metrics (coxswain_proxy_*)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#udp-datagram-drops" class="md-nav__link">
+    <span class="md-ellipsis">
+      UDP datagram drops
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1719,9 +1734,71 @@
 <td>Histogram</td>
 <td><code>listener</code></td>
 </tr>
+<tr>
+<td><code>coxswain_proxy_udp_sessions_active</code></td>
+<td>Gauge</td>
+<td><code>listener</code> — open <code>UDPRoute</code> sessions</td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_udp_sessions_total</code></td>
+<td>Counter</td>
+<td><code>listener</code> — cumulative <code>UDPRoute</code> sessions created</td>
+</tr>
+<tr>
+<td><code>coxswain_proxy_udp_datagrams_dropped_total</code></td>
+<td>Counter</td>
+<td><code>listener</code>, <code>reason</code> (see below)</td>
+</tr>
 </tbody>
 </table>
+<h4 id="udp-datagram-drops">UDP datagram drops<a class="headerlink" href="#udp-datagram-drops" title="Permanent link">&para;</a></h4>
+<p>UDP carries no status code and no connection reset, so a lost datagram is invisible to the client. <code>coxswain_proxy_udp_datagrams_dropped_total</code> is the only signal that distinguishes "no traffic" from "every datagram discarded". Its <code>reason</code> label:</p>
+<table>
+<thead>
+<tr>
+<th><code>reason</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>recv_error</code></td>
+<td>The listener socket's own <code>recv_from</code> failed — realistically <code>ENOBUFS</code>/<code>ENOMEM</code>, i.e. the kernel dropped an inbound datagram.</td>
+</tr>
+<tr>
+<td><code>no_route</code></td>
+<td>No <code>UDPRoute</code> is bound to this port. Fires legitimately in the window between a listener binding and its route snapshot arriving, so alert on a <em>sustained</em> rate rather than any non-zero value.</td>
+</tr>
+<tr>
+<td><code>no_backend</code></td>
+<td>A route matched but its backend group is empty.</td>
+</tr>
+<tr>
+<td><code>session_limit</code></td>
+<td>The listener is at its concurrent-session cap. The only drop logged at <code>warn</code>: it means saturation, not ordinary UDP loss.</td>
+</tr>
+<tr>
+<td><code>upstream_bind</code>, <code>upstream_connect</code></td>
+<td>A new session's ephemeral upstream socket could not be prepared.</td>
+</tr>
+<tr>
+<td><code>upstream_send</code></td>
+<td>A new session's <strong>first</strong> datagram was rejected by the backend socket, so the session never established — typically the backend is down at session start.</td>
+</tr>
+<tr>
+<td><code>session_send</code></td>
+<td>A <strong>subsequent</strong> datagram on an established session could not be handed to the backend socket. Do <strong>not</strong> read this as "the backend died": the dominant cause is a full kernel send buffer under a burst, i.e. local backpressure.</td>
+</tr>
+<tr>
+<td><code>client_send</code></td>
+<td>A backend <strong>reply</strong> could not be delivered back to the client.</td>
+</tr>
+</tbody>
+</table>
+<p>A backend that goes away <em>mid-session</em> is not counted here — it surfaces as a session teardown rather than a datagram drop. Watch <code>coxswain_proxy_udp_sessions_active</code> falling while <code>coxswain_proxy_udp_sessions_total</code> keeps climbing (re-establishment churn) for that.</p>
+<p><code>coxswain_proxy_udp_sessions_active</code> counts only <em>established</em> sessions, while the session cap is applied at <em>admission</em> — before a session finishes binding and connecting. The gauge therefore reads at or below the cap by design and cannot be used to detect saturation; <code>session_limit</code> above is the signal for that.</p>
 <p>The following listener-lifecycle metrics are also exposed: <code>coxswain_proxy_listeners_active</code>, <code>coxswain_proxy_listener_lifecycle_total</code>, <code>coxswain_proxy_listener_drain_duration_seconds</code>, <code>coxswain_proxy_requests_force_closed_total</code>.</p>
+<p><code>coxswain_proxy_listeners_active</code> carries a <code>state</code> label ∈ <code>{serving, draining}</code>. A listener occupies exactly one state at a time and releases it when its task exits, so both series return to zero once every listener is gone. <code>coxswain_proxy_listener_drain_duration_seconds</code> is observed for TCP/HTTP listeners only — a UDP drain has no graceful window to measure (a dropped datagram is normal for the protocol, and clients already retry), so UDP listeners stop immediately and report only <code>drain_completed</code>.</p>
 <p><code>coxswain_proxy_listener_lifecycle_total</code> carries an <code>event</code> label ∈ <code>{added, removed, drain_completed, drain_exceeded, bind_failed}</code>. <strong><code>bind_failed</code></strong> counts a listener whose socket <code>bind()</code> failed — that local port serves no traffic until a later reconcile retries the bind. A sustained non-zero rate is a data-plane outage signal worth alerting on (a port conflict, or a stale process still holding the port); it should otherwise stay flat at zero.</p>
 <p>The <code>listener</code> label is the <strong>local port the proxy accepted the connection on</strong>. For Ingress and dedicated-mode Gateway traffic this is the advertised port (e.g. <code>80</code>/<code>443</code>). For shared-mode Gateway listeners it is the <strong>internal accept port</strong> the controller allocates per Gateway (in the <code>30000–32767</code> range), <em>not</em> the advertised port: a per-Gateway VIP Service maps the advertised port onto that internal port, and the proxy keys routing, TLS, and metrics on the port it accepts on so cross-Gateway hostname namespaces stay isolated (see <a href="../../architecture/deployment-models/#shared">Deployment models → per-Gateway addressing</a>). To slice a shared-mode Gateway's series by its advertised port, join on the VIP Service rather than reading it from the <code>listener</code> label.</p>
 <h3 id="controller-pod-metrics-coxswain_controller_">Controller-pod metrics (<code>coxswain_controller_*</code>)<a class="headerlink" href="#controller-pod-metrics-coxswain_controller_" title="Permanent link">&para;</a></h3>
