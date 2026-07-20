@@ -1230,6 +1230,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#relay-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relay lifecycle
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1927,6 +1936,16 @@
 <td>Gauge</td>
 <td><code>namespace</code>, <code>gateway</code> (connected proxies serving a dedicated Gateway; live, alert on <code>== 0</code>)</td>
 </tr>
+<tr>
+<td><code>coxswain_relay_state</code></td>
+<td>Gauge</td>
+<td><code>scope</code> (<code>namespace</code>/<code>shared</code>), <code>namespace</code>, <code>state</code> (<code>provisioning</code>/<code>active</code>/<code>draining</code>)</td>
+</tr>
+<tr>
+<td><code>coxswain_relay_subscribers</code></td>
+<td>Gauge</td>
+<td><code>scope</code>, <code>namespace</code> (subscribers still folded behind the relay)</td>
+</tr>
 </tbody>
 </table>
 <p><code>coxswain_controller_reconcile_errors_total</code>'s <code>reason</code> label is a bounded classification of the underlying Kubernetes API error: <code>namespace_terminating</code> (SSA into a namespace mid-deletion — a self-resolving race), <code>conflict</code> (409), <code>forbidden</code> (RBAC), <code>not_found</code>, <code>invalid</code> (422 validation/webhook rejection), <code>api_other</code>, <code>transport</code>, <code>internal</code>. Errors classified <code>forbidden</code>/<code>invalid</code> are persistent — the operator polls them at a flat 15 s because retrying faster cannot fix RBAC or a rejected spec; every other class retries with a per-Gateway exponential backoff (0.5 s doubling to a 15 s cap, reset on the first success). A sustained non-zero rate on a persistent reason is an operator-action signal, not a transient blip.</p>
@@ -1935,6 +1954,33 @@
 <h4 id="gateway-data-plane-liveness">Gateway data-plane liveness<a class="headerlink" href="#gateway-data-plane-liveness" title="Permanent link">&para;</a></h4>
 <p><code>coxswain_gateway_dataplane_proxies{namespace,gateway}</code> is the <strong>live</strong> count of data-plane proxies serving a dedicated Gateway — folded-behind-relay or directly connected. It is the counterpart to the Gateway's latched <code>Programmed</code> status: <code>Programmed</code> is a spec-observation signal that deliberately stays <code>True</code> through data-plane churn (rollouts, HPA, relay blips, leader failover) and only re-arms on a spec change, so it does <strong>not</strong> go <code>False</code> when every proxy behind a Gateway dies. Alert on <code>coxswain_gateway_dataplane_proxies == 0 for N s</code> to catch that total-loss blind spot; alert on <code>Programmed</code> for spec observation, never for liveness. (See <a href="../../architecture/discovery-protocol/#how-programmed-status-is-gated">How <code>Programmed</code> status is gated</a>.)</p>
 <p>The series is <strong>dedicated Gateways only</strong>: every shared proxy serves every shared Gateway, so a per-shared-Gateway series would be pool-size × Gateways cardinality for no added signal — shared-pool total loss is the global <code>coxswain_discovery_connected_proxies</code> (below) reaching 0. The controller removes a Gateway's series on deprovision/delete, so labels do not grow unbounded.</p>
+<h4 id="relay-lifecycle">Relay lifecycle<a class="headerlink" href="#relay-lifecycle" title="Permanent link">&para;</a></h4>
+<p><code>coxswain_relay_state{scope,namespace,state}</code> reports <code>1</code> on a relay cell's current control-loop state and <code>0</code> on the others; <code>coxswain_relay_subscribers{scope,namespace}</code> reports how many downstream subscribers are still folded behind it. <code>scope</code> is <code>namespace</code> or <code>shared</code>, and the shared tier carries an empty <code>namespace</code> because there is exactly one such cell.</p>
+<p>The pair exists because relay teardown is otherwise opaque. Deciding to drain performs <strong>no</strong> cluster I/O — it only repoints leaves back to the controller in memory — so <code>active</code> and <code>draining</code> look identical to anything reading the Kubernetes API, and a relay that fails to disappear gives no clue as to why. The three failure shapes are distinguishable only here:</p>
+<table>
+<thead>
+<tr>
+<th>Observation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>state="active"</code> persists, relay Deployment still up</td>
+<td>Teardown was never decided — a convergence problem</td>
+</tr>
+<tr>
+<td><code>state="draining"</code> with <code>coxswain_relay_subscribers &gt; 0</code></td>
+<td>Teardown decided, but a proxy never repointed back to the controller</td>
+</tr>
+<tr>
+<td>Relay Deployment exists with <strong>no</strong> <code>coxswain_relay_*</code> series</td>
+<td>No cell is tracking it — an orphan the control loop will only ever provision, never reclaim</td>
+</tr>
+</tbody>
+</table>
+<p>That last row is why absence is meaningful: series are removed the moment a cell is cleared, so a relay with no series is a real finding rather than a scrape gap. Alert on <code>state="draining"</code> persisting beyond a few minutes.</p>
+<p>Only the leader publishes, since the relay control loop is leader-only; a demoted replica clears its relay series rather than freezing them, so <code>sum by (namespace, state) (coxswain_relay_state)</code> stays at 1 per live relay across a failover.</p>
 <h3 id="discovery-channel-metrics-coxswain_discovery_">Discovery channel metrics (<code>coxswain_discovery_*</code>)<a class="headerlink" href="#discovery-channel-metrics-coxswain_discovery_" title="Permanent link">&para;</a></h3>
 <p>The control-plane gRPC channel between controller (server) and proxies (clients). Server-side series are scraped from the controller <code>/metrics</code>; client-side series from each proxy <code>/metrics</code>.</p>
 <table>
