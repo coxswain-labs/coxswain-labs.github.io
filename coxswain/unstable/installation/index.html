@@ -1243,6 +1243,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/capability-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway API capability matrix
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1402,7 +1423,10 @@
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Kubernetes 1.30+</strong></li>
-<li><strong>Gateway API CRDs</strong> (standard channel, v1.5.x or later matching the Coxswain release):</li>
+<li><strong>Gateway API CRDs</strong> (standard channel, <strong>v1.4.0 or later</strong>). Coxswain detects
+  which kinds and fields the installed CRDs serve and runs with that feature set,
+  so it can share a cluster with an implementation pinned to an older version —
+  see the <a href="../reference/capability-matrix/">capability matrix</a>:</li>
 </ul>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
 </code></pre></div>

@@ -16,7 +16,7 @@
         <link rel="prev" href="../observability/">
       
       
-        <link rel="next" href="../../architecture/">
+        <link rel="next" href="../capability-matrix/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -1265,7 +1265,16 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Running the suite">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-against-an-older-gateway-api-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running against an older Gateway API version
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running against an older Gateway API version">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1322,6 +1331,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../capability-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway API capability matrix
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1485,30 +1515,50 @@
 <h1 id="gateway-api-conformance">Gateway API Conformance<a class="headerlink" href="#gateway-api-conformance" title="Permanent link">&para;</a></h1>
 <p>Coxswain is tested against the official <a href="https://gateway-api.sigs.k8s.io/concepts/conformance/">Gateway API conformance suite</a> on every release. This page explains what is claimed, how to run the suite locally, and how to interpret the report.</p>
 <h2 id="claimed-profiles-and-features">Claimed profiles and features<a class="headerlink" href="#claimed-profiles-and-features" title="Permanent link">&para;</a></h2>
-<p>Coxswain claims three conformance profiles:</p>
+<p>Coxswain claims up to five conformance profiles. Which ones are claimed depends
+on the <strong>installed Gateway API CRDs</strong>, not on a compiled-in list — a profile
+whose route kind is absent cannot be claimed, because the suite would create
+that kind and fail:</p>
 <table>
 <thead>
 <tr>
 <th>Profile</th>
+<th>Requires</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>GATEWAY-HTTP</code></td>
+<td>always</td>
 <td>HTTPRoute routing, header/path manipulation, redirects, mirroring, timeouts</td>
 </tr>
 <tr>
 <td><code>GATEWAY-GRPC</code></td>
+<td><code>GRPCRoute</code></td>
 <td>GRPCRoute routing</td>
 </tr>
 <tr>
 <td><code>GATEWAY-TLS</code></td>
+<td><code>TLSRoute</code> (v1.5+)</td>
 <td>TLSRoute passthrough, terminate, and mixed-mode listeners</td>
+</tr>
+<tr>
+<td><code>GATEWAY-TCP</code></td>
+<td><code>TCPRoute</code> (v1.6+)</td>
+<td>TCPRoute routing</td>
+</tr>
+<tr>
+<td><code>GATEWAY-UDP</code></td>
+<td><code>UDPRoute</code> (v1.6+)</td>
+<td>UDPRoute routing</td>
 </tr>
 </tbody>
 </table>
-<p>Extended features are listed in <code>conformance/main_test.go</code> (<code>opts.SupportedFeatures</code>) and kept in sync with the Rust <code>SUPPORTED_FEATURES</code> constant in <code>crates/coxswain-controller/src/controller/gateway_class_status.rs</code>. The <code>scripts/check-supported-features.sh</code> script enforces this parity in CI — a mismatch is a build error.</p>
+<p>So a run against Gateway API v1.4 claims two profiles (HTTP and GRPC — it has
+no TLSRoute, TCPRoute or UDPRoute CRD) and a run against v1.6 claims all five.
+See the <a href="../capability-matrix/">capability matrix</a>.</p>
+<p>Extended features are listed in <code>conformance/features.go</code> (<code>gatedFeatures</code>) and kept in sync with the Rust <code>SUPPORTED_FEATURES</code> table in <code>crates/coxswain-controller/src/controller/gateway_class_status.rs</code>. The <code>scripts/check-supported-features.sh</code> script enforces this parity in CI — a mismatch is a build error. Each entry carries what the cluster must install for the declaration to be true, so both sides shrink identically on an older CRD set.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Go toolchain (same version as <code>go.mod</code> in <code>conformance/</code>).</li>
@@ -1595,8 +1645,38 @@ bash<span class="w"> </span>scripts/setup-conformance.sh<span class="w"> </span>
 <span class="w">  </span>--version<span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>git<span class="w"> </span>describe<span class="w"> </span>--tags<span class="w"> </span>--always<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--report-output<span class="o">=</span>reports/local-report.yaml
 </code></pre></div>
-<p><code>reports/local-report.yaml</code> is gitignored. A CI-generated report for each release is published to <code>conformance/reports/</code>.</p>
+<p>Or use the wrapper, which resolves the upstream report path for you:</p>
+<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>scripts/run-conformance.sh
+</code></pre></div>
+<p><code>conformance/reports/</code> is gitignored in full (bar its README): reports are
+build outputs, archived as release assets rather than committed. Running the
+suite locally never dirties the tree. See <code>conformance/reports/README.md</code> for
+the layout, which mirrors what <code>kubernetes-sigs/gateway-api</code> expects.</p>
 <p>A full run takes 8–15 minutes on a clean cluster.</p>
+<h2 id="running-against-an-older-gateway-api-version">Running against an older Gateway API version<a class="headerlink" href="#running-against-an-older-gateway-api-version" title="Permanent link">&para;</a></h2>
+<p>Coxswain supports several Gateway API versions (see the
+<a href="../capability-matrix/">capability matrix</a>), and publishes a report for each.
+Because Gateway API CRDs are cluster-scoped singletons, <strong>every version needs
+its own fresh cluster</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span>v<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>scripts/gateway-api-versions.sh<span class="w"> </span>--versions<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>kind<span class="w"> </span>create<span class="w"> </span>cluster<span class="w"> </span>--name<span class="w"> </span>coxswain-conf
+<span class="w">  </span>bash<span class="w"> </span>scripts/setup-conformance.sh<span class="w"> </span>--gateway-api-version<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$v</span><span class="s2">&quot;</span><span class="w"> </span>--reset<span class="w"> </span><span class="s1">&#39;&#39;</span>
+<span class="w">  </span>bash<span class="w"> </span>scripts/run-conformance.sh<span class="w">   </span>--gateway-api-version<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$v</span><span class="s2">&quot;</span>
+<span class="w">  </span>kind<span class="w"> </span>delete<span class="w"> </span>cluster<span class="w"> </span>--name<span class="w"> </span>coxswain-conf
+<span class="k">done</span>
+</code></pre></div>
+<p><code>run-conformance.sh</code> pins the Go suite module to the matching version in a
+temporary copy of <code>conformance/</code>, so no tracked file is modified — a pinned
+<code>go.mod</code> left behind would look like an intentional downgrade of the project's
+own dependency.</p>
+<p>Expect fewer profiles and a shorter <code>supportedFeatures</code> list on older versions.
+That is the mechanism working. The versions come from
+<code>.gateway-api-versions.json</code>, whose <code>"latest": true</code> entry is also what drives
+codegen, e2e and kubeconform; <code>scripts/check-gateway-api-versions.sh</code> validates
+the manifest.</p>
+<p>The same matrix runs in CI via the <code>Conformance reports (all Gateway API versions)</code>
+workflow, which is <code>workflow_dispatch</code> only and emits one combined,
+repo-tree-shaped artifact.</p>
 <h3 id="running-a-subset-of-tests">Running a subset of tests<a class="headerlink" href="#running-a-subset-of-tests" title="Permanent link">&para;</a></h3>
 <p>Pass a <code>-test.run</code> filter to run only the tests matching a pattern:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Only TLSRoute tests</span>
@@ -1628,13 +1708,17 @@ go<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-v
 <p>A test is <strong>skipped</strong> (not failed) when the implementation explicitly claims the feature that supersedes it — for example, claiming <code>TLSRouteModeMixed</code> causes <code>TLSRouteListenerMixedTerminationNotSupported</code> to be skipped, since implementations that support mixed mode must accept (not reject) such configurations.</p>
 <h2 id="adding-a-new-claimed-feature">Adding a new claimed feature<a class="headerlink" href="#adding-a-new-claimed-feature" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Add the <code>features.SupportXxx</code> constant to <code>opts.SupportedFeatures</code> in <code>conformance/main_test.go</code>.</li>
+<li>Add a <code>{name: features.SupportXxx}</code> entry to the <code>gatedFeatures</code> table in <code>conformance/features.go</code>, with a <code>requiresKind</code> or <code>requiresField</code> guard if the CRD kind or schema field is absent below the newest supported Gateway API version.</li>
 <li>Add the bare feature name (e.g. <code>"TLSRouteModeTerminate"</code>) to the sorted <code>SUPPORTED_FEATURES</code> slice in <code>crates/coxswain-controller/src/controller/gateway_class_status.rs</code>.</li>
 <li>Run <code>scripts/check-supported-features.sh</code> — it must report the feature count in sync.</li>
 <li>Add or update e2e tests for the new behaviour (<code>crates/coxswain-e2e/tests/</code>).</li>
 </ol>
 <h2 id="ci">CI<a class="headerlink" href="#ci" title="Permanent link">&para;</a></h2>
-<p>The conformance suite runs in CI against a kind cluster with cloud-provider-kind on every PR. The CI job uses <code>Dockerfile.ci</code> (Linux-only fast path) and <code>VIP_SERVICE_TYPE=LoadBalancer</code> (the default). Reports for merged releases are committed to <code>conformance/reports/</code>.</p>
+<p>The conformance suite runs in CI against a kind cluster with cloud-provider-kind on every PR, at the pinned latest Gateway API version. The CI job uses <code>Dockerfile.ci</code> (Linux-only fast path) and <code>VIP_SERVICE_TYPE=LoadBalancer</code> (the default).</p>
+<p>Reports for every supported version are produced by the <code>Conformance reports (all Gateway API versions)</code> workflow (<code>workflow_dispatch</code>), which uploads one bundle laid out as the repo tree.</p>
+<p>Nothing in CI commits reports back to this repository. Run that workflow with <code>publish_release: true</code> and the bundle is attached to a GitHub release instead — release assets never expire, whereas Actions artifacts are capped at 90 days on a public repo. Publishing upstream is then: download the release asset, unpack at the root of a <code>kubernetes-sigs/gateway-api</code> checkout, open a PR.</p>
+<p>Every report is traceable to its source tree. <code>implementation.version</code> and the report filename both carry a <code>git describe --tags --always --long</code> string, so the commit ref is present even for a build on an exact release tag, and the release body names the full source commit.</p>
+<p>The release workflow separately attaches the latest-version report to each product release, where conformance also acts as a <strong>gate</strong> — a build that fails conformance is never published.</p>
 
 
 
