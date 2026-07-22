@@ -13,10 +13,10 @@
         <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/reference/observability/">
       
       
-        <link rel="prev" href="../relay-policy/">
+        <link rel="prev" href="../configuration/">
       
       
-        <link rel="next" href="../conformance/">
+        <link rel="next" href="../../architecture/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -49,6 +49,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -295,6 +297,42 @@
   
     
     
+      <li class="md-tabs__item">
+        <a href="../../gateway-api/" class="md-tabs__link">
+          
+  
+  Gateway API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ingress/" class="md-tabs__link">
+          
+  
+  Ingress
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
       
   
   
@@ -302,10 +340,10 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../guides/ingress/" class="md-tabs__link">
+        <a href="../../operations/tls/" class="md-tabs__link">
           
   
-  Guides
+  Operations
 
         </a>
       </li>
@@ -354,23 +392,6 @@
   
 
       
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../faq/" class="md-tabs__link">
-        
-  
-    
-  
-  FAQ
-
-      </a>
-    </li>
-  
-
-      
     </ul>
   </div>
 </nav>
@@ -397,9 +418,7 @@
   
 
 
-  
-
-<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Coxswain" class="md-nav__button md-logo" aria-label="Coxswain" data-md-component="logo">
       
@@ -578,7 +597,7 @@
         
   
   <span class="md-ellipsis">
-    Raw manifests
+    Manifests
   </span>
   
 
@@ -621,7 +640,7 @@
             
   
   <span class="md-ellipsis">
-    Guides
+    Gateway API
   </span>
   
 
@@ -630,136 +649,6 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            Guides
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Ingress
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1">
-            <span class="md-nav__icon md-icon"></span>
-            Ingress
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../guides/ingress/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Overview
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../guides/ingress-annotations/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Annotations
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Gateway API
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             Gateway API
           </label>
@@ -772,7 +661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/gateway-api/" class="md-nav__link">
+      <a href="../../gateway-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -793,7 +682,28 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/listener-sets/" class="md-nav__link">
+      <a href="../../gateway-api/gateway/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway-api/listenerset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -814,11 +724,137 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/dedicated-mode/" class="md-nav__link">
+      <a href="../../gateway-api/httproute/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Dedicated proxy pools
+    HTTPRoute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway-api/grpcroute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GRPCRoute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway-api/tlsroute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLSRoute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway-api/tcp-udp-routes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TCP / UDP routes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway-api/route-extensions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Route extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway-api/backend-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backend policy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway-api/capability-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conformance
   </span>
   
 
@@ -834,7 +870,135 @@
     </li>
   
 
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Ingress
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ingress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ingress/annotations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annotations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -855,24 +1019,24 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
         
           
-          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    Operations
+    Traffic
   </span>
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
             <span class="md-nav__icon md-icon"></span>
-            Operations
+            Traffic
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -883,49 +1047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/running-in-production/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Running in production
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../guides/control-plane-security/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Control-plane security
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../guides/tls/" class="md-nav__link">
+      <a href="../../operations/tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -946,7 +1068,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/rate-limiting/" class="md-nav__link">
+      <a href="../../operations/rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -967,7 +1089,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/retries/" class="md-nav__link">
+      <a href="../../operations/retries/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -981,6 +1103,14 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
               
                 
   
@@ -988,11 +1118,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/verifying-releases/" class="md-nav__link">
+      <a href="../../operations/running-in-production/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Verifying releases
+    Production
   </span>
   
 
@@ -1009,7 +1139,70 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/troubleshooting/" class="md-nav__link">
+      <a href="../../operations/control-plane-security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control plane
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/relay-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Relay tier
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/verifying-releases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Releases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/troubleshooting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1018,14 +1211,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1062,10 +1247,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1076,8 +1261,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Reference
           </label>
@@ -1095,27 +1280,6 @@
   
   <span class="md-ellipsis">
     Configuration
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../relay-policy/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Relay policy
   </span>
   
 
@@ -1374,9 +1538,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#internalportrangeexhausted-shared-mode-gateway" class="md-nav__link">
+  <a href="#nointernalportavailable-shared-mode-gateway" class="md-nav__link">
     <span class="md-ellipsis">
-      InternalPortRangeExhausted (shared-mode Gateway)
+      NoInternalPortAvailable (shared-mode Gateway)
     </span>
   </a>
   
@@ -1438,61 +1602,10 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#grafana-dashboard" class="md-nav__link">
-    <span class="md-ellipsis">
-      Grafana dashboard
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../conformance/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Conformance
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../capability-matrix/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Gateway API capability matrix
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1524,10 +1637,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1538,8 +1651,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Architecture
           </label>
@@ -1573,11 +1686,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/deployment-models/" class="md-nav__link">
+      <a href="../../architecture/proxy-topology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Deployment models
+    Proxy topology
   </span>
   
 
@@ -1615,32 +1728,299 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../faq/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    FAQ
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
                 </div>
               </div>
             
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#proxy-pod-metrics-coxswain_proxy_" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxy-pod metrics (coxswain_proxy_*)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proxy-pod metrics (coxswain_proxy_*)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#udp-datagram-drops" class="md-nav__link">
+    <span class="md-ellipsis">
+      UDP datagram drops
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controller-pod-metrics-coxswain_controller_" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controller-pod metrics (coxswain_controller_*)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Controller-pod metrics (coxswain_controller_*)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-data-plane-liveness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway data-plane liveness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relay-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relay lifecycle
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discovery-channel-metrics-coxswain_discovery_" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovery channel metrics (coxswain_discovery_*)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metric-labels-per-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metric labels per Gateway
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#health-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Health endpoints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routes-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Routes endpoint
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access logs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Access logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path-redaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Path redaction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-class-suppression" class="md-nav__link">
+    <span class="md-ellipsis">
+      Per-class suppression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtering-access-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtering access logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kubernetes Events
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#routeconflict" class="md-nav__link">
+    <span class="md-ellipsis">
+      RouteConflict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invalidannotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      InvalidAnnotation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internalportremapped-shared-mode-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      InternalPortRemapped (shared-mode Gateway)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nointernalportavailable-shared-mode-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      NoInternalPortAvailable (shared-mode Gateway)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deduplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deduplication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operator-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operator queries
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log formats
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prometheus-scrape-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prometheus scrape configuration
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
             
           
           
@@ -1657,14 +2037,14 @@
 <h2 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">&para;</a></h2>
 <p>Coxswain exposes the Prometheus endpoint at <code>http://&lt;admin-address&gt;:&lt;admin-port&gt;/metrics</code> (default port <code>8082</code>). Series are emitted under one of three prefixes:</p>
 <ul>
-<li><code>coxswain_proxy_*</code> — emitted by <code>serve proxy --shared</code> and <code>serve proxy --dedicated</code>.</li>
-<li><code>coxswain_controller_*</code> — emitted by <code>serve controller</code>.</li>
+<li><code>coxswain_proxy_*</code> — emitted by the shared and dedicated proxies.</li>
+<li><code>coxswain_controller_*</code> — emitted by the controller.</li>
 <li><code>coxswain_discovery_*</code> — the control-plane gRPC channel. Server-side series appear on the <strong>controller</strong> <code>/metrics</code> (it serves the stream); client-side series appear on each <strong>proxy</strong> <code>/metrics</code> (it consumes the stream).</li>
 </ul>
 <p>The <code>route</code> Prometheus label is a <strong>stable rule identifier</strong>, not a request path. Operators reading <code>coxswain_proxy_requests_total{route="httproute/checkout/api:0"}</code> see the same label value on the matching access-log line's <code>route_id</code> field, so a Grafana → Loki/Tempo pivot is an exact join (no fuzzy host/path matching). Path patterns stay on the access log for human-readable display.</p>
 <p>Route id formats:</p>
 <ul>
-<li>HTTPRoute / GRPCRoute: <code>httproute/&lt;namespace&gt;/&lt;name&gt;:&lt;rule-id&gt;</code> / <code>grpcroute/&lt;namespace&gt;/&lt;name&gt;:&lt;rule-id&gt;</code> — <code>rule-id</code> is the rule's <code>.name</code> (<code>HTTPRouteNamedRouteRule</code> / <code>GRPCRouteNamedRouteRule</code>, GEP-995) when the operator sets one; otherwise the position in <code>spec.rules[]</code>. A rule's id is stable across reorders only when named — an unnamed rule's index-based id shifts if a preceding rule is added or removed.</li>
+<li>HTTPRoute / GRPCRoute: <code>httproute/&lt;namespace&gt;/&lt;name&gt;:&lt;rule-id&gt;</code> / <code>grpcroute/&lt;namespace&gt;/&lt;name&gt;:&lt;rule-id&gt;</code> — <code>rule-id</code> is the rule's <code>.name</code> (<code>HTTPRouteNamedRouteRule</code> / <code>GRPCRouteNamedRouteRule</code>) when the operator sets one; otherwise the position in <code>spec.rules[]</code>. A rule's id is stable across reorders only when named — an unnamed rule's index-based id shifts if a preceding rule is added or removed.</li>
 <li>Ingress per-rule: <code>ingress/&lt;namespace&gt;/&lt;name&gt;:&lt;r&gt;.&lt;p&gt;</code> — nested <code>(rules, paths)</code> index, mirroring the YAML structure.</li>
 <li>Ingress <code>spec.defaultBackend</code>: <code>ingress/&lt;namespace&gt;/&lt;name&gt;:default</code>.</li>
 <li>The controller-wide <code>--ingress-default-backend</code> fallback: <code>ingress-default-backend/&lt;service-namespace&gt;/&lt;service-name&gt;</code>.</li>
@@ -1692,7 +2072,7 @@
 <tr>
 <td><code>coxswain_proxy_upstream_errors_total</code></td>
 <td>Counter</td>
-<td><code>listener</code>, <code>route</code>, <code>upstream</code>, <code>error_type</code> (<code>connect</code>/<code>timeout</code>/<code>refused</code>/<code>tls</code>/<code>5xx</code>/<code>other</code>)</td>
+<td><code>listener</code>, <code>route</code>, <code>upstream</code>, <code>error_type</code> (<code>connect</code>/<code>timeout</code>/<code>5xx</code>/<code>other</code>)</td>
 </tr>
 <tr>
 <td><code>coxswain_proxy_upstream_retries_total</code></td>
@@ -1742,7 +2122,7 @@
 <tr>
 <td><code>coxswain_proxy_tls_cert_expiry_seconds</code></td>
 <td>Gauge</td>
-<td><code>sni</code></td>
+<td><code>sni</code>, <code>source</code></td>
 </tr>
 <tr>
 <td><code>coxswain_proxy_tls_handshakes_total</code></td>
@@ -1830,7 +2210,7 @@
 <p>The following listener-lifecycle metrics are also exposed: <code>coxswain_proxy_listeners_active</code>, <code>coxswain_proxy_listener_lifecycle_total</code>, <code>coxswain_proxy_listener_drain_duration_seconds</code>, <code>coxswain_proxy_requests_force_closed_total</code>.</p>
 <p><code>coxswain_proxy_listeners_active</code> carries a <code>state</code> label ∈ <code>{serving, draining}</code>. A listener occupies exactly one state at a time and releases it when its task exits, so both series return to zero once every listener is gone. <code>coxswain_proxy_listener_drain_duration_seconds</code> is observed for TCP/HTTP listeners only — a UDP drain has no graceful window to measure (a dropped datagram is normal for the protocol, and clients already retry), so UDP listeners stop immediately and report only <code>drain_completed</code>.</p>
 <p><code>coxswain_proxy_listener_lifecycle_total</code> carries an <code>event</code> label ∈ <code>{added, removed, drain_completed, drain_exceeded, bind_failed}</code>. <strong><code>bind_failed</code></strong> counts a listener whose socket <code>bind()</code> failed — that local port serves no traffic until a later reconcile retries the bind. A sustained non-zero rate is a data-plane outage signal worth alerting on (a port conflict, or a stale process still holding the port); it should otherwise stay flat at zero.</p>
-<p>The <code>listener</code> label is the <strong>local port the proxy accepted the connection on</strong>. For Ingress and dedicated-mode Gateway traffic this is the advertised port (e.g. <code>80</code>/<code>443</code>). For shared-mode Gateway listeners it is the <strong>internal accept port</strong> the controller allocates per Gateway (in the <code>30000–32767</code> range), <em>not</em> the advertised port: a per-Gateway VIP Service maps the advertised port onto that internal port, and the proxy keys routing, TLS, and metrics on the port it accepts on so cross-Gateway hostname namespaces stay isolated (see <a href="../../architecture/deployment-models/#shared">Deployment models → per-Gateway addressing</a>). To slice a shared-mode Gateway's series by its advertised port, join on the VIP Service rather than reading it from the <code>listener</code> label.</p>
+<p>The <code>listener</code> label is the <strong>local port the proxy accepted the connection on</strong>. For Ingress and dedicated-mode Gateway traffic this is the advertised port (e.g. <code>80</code>/<code>443</code>). For shared-mode Gateway listeners it is the <strong>internal accept port</strong> the controller allocates per Gateway (in the <code>30000–32767</code> range), <em>not</em> the advertised port: a per-Gateway VIP Service maps the advertised port onto that internal port, and the proxy keys routing, TLS, and metrics on the port it accepts on so cross-Gateway hostname namespaces stay isolated (see <a href="../../architecture/proxy-topology/#shared">Proxy topology → per-Gateway addressing</a>). To slice a shared-mode Gateway's series by its advertised port, join on the VIP Service rather than reading it from the <code>listener</code> label.</p>
 <h3 id="controller-pod-metrics-coxswain_controller_">Controller-pod metrics (<code>coxswain_controller_*</code>)<a class="headerlink" href="#controller-pod-metrics-coxswain_controller_" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1949,7 +2329,7 @@
 </tbody>
 </table>
 <p><code>coxswain_controller_reconcile_errors_total</code>'s <code>reason</code> label is a bounded classification of the underlying Kubernetes API error: <code>namespace_terminating</code> (SSA into a namespace mid-deletion — a self-resolving race), <code>conflict</code> (409), <code>forbidden</code> (RBAC), <code>not_found</code>, <code>invalid</code> (422 validation/webhook rejection), <code>api_other</code>, <code>transport</code>, <code>internal</code>. Errors classified <code>forbidden</code>/<code>invalid</code> are persistent — the operator polls them at a flat 15 s because retrying faster cannot fix RBAC or a rejected spec; every other class retries with a per-Gateway exponential backoff (0.5 s doubling to a 15 s cap, reset on the first success). A sustained non-zero rate on a persistent reason is an operator-action signal, not a transient blip.</p>
-<p><code>coxswain_controller_watch_relists_pending{kind}</code> is the <strong>watch-relist wedge</strong> signal (#573). A reflector relist increments it on <code>Event::Init</code> (relist started) and decrements it on <code>Event::InitDone</code> (relist completed); in steady state every kind sits at 0, briefly ticking to 1 while a relist is in flight. A kind pinned <strong>above 0</strong> for minutes is the wedge signature: the watch relist began but its <code>InitDone</code> never arrived, so that store is serving a stale (often empty) snapshot while the pod otherwise looks healthy — the lease renews and reconcile counters climb. Alert on any <code>kind</code> staying non-zero beyond a minute. The controller's liveness backstop restarts the pod automatically if this persists past ~2.5 min (see <a href="#health-endpoints">Health endpoints</a>); the alert exists so operators see the wedge (and the restart) rather than silent staleness. The original root cause — kube's back-pressuring shared-store dispatcher — was removed by #574's <strong>single watch fabric</strong>: the controller runs one <code>watcher() → authoritative store → derive(status/routing/provisioning)</code> pipeline (no cross-fabric fan-out, no per-kind work-queues), the store advances unconditionally, and the rebuild loop is woken by a <strong>lossless <code>watch</code>-channel trigger</strong> — a delivered watch event can never be dropped before the loop observes it (unlike an edge-triggered <code>Notify</code> in a <code>select!</code>), so convergence is event-driven and does not depend on any timer to recover a missed wake. Three backstops then cover only the residual gaps the trigger itself cannot: a periodic <strong>resync tick</strong> on the rebuild loop (re-derives even when a watch goes <em>silent</em> without delivering an event), a bounded per-watcher <strong>idle timeout</strong> (a silently-stalled watch is reconnected within the window rather than serving stale data for minutes), and this relist-liveness gate (pod restart as the last resort). A sustained non-zero here indicates a new, unrelated watch fault worth investigating.</p>
+<p><code>coxswain_controller_watch_relists_pending{kind}</code> is the <strong>watch-relist wedge</strong> signal. It increments when a reflector relist starts and decrements when it completes; in steady state every kind sits at 0, briefly ticking to 1 while a relist is in flight. A kind pinned <strong>above 0</strong> for minutes is the wedge signature — the relist began but never completed, so that store serves a stale (often empty) snapshot while the pod otherwise looks healthy (the lease renews, reconcile counters climb). <strong>Alert on any <code>kind</code> staying non-zero beyond a minute.</strong> The controller's liveness backstop restarts the pod automatically if this persists past ~2.5 min (see <a href="#health-endpoints">Health endpoints</a>); the alert exists so operators see the wedge rather than silent staleness.</p>
 <p><code>coxswain_controller_gateways_held_pending</code> counts shared-mode Gateways whose top-level <code>Programmed</code> is currently deferred (<code>False/Pending</code> with <code>observedGeneration</code> one below the current generation) awaiting VIP resolution, proxy bind, or snapshot ack. Legitimate holds clear within seconds of a spec change; alert on this gauge staying non-zero — before it existed, a Gateway stuck here was indistinguishable from healthy reconcile traffic. Terminally-invalid configurations (every listener unserviceable, unsupported <code>parametersRef</code>) never enter the hold: they settle <code>Programmed=False/Invalid</code> at the current generation immediately.</p>
 <h4 id="gateway-data-plane-liveness">Gateway data-plane liveness<a class="headerlink" href="#gateway-data-plane-liveness" title="Permanent link">&para;</a></h4>
 <p><code>coxswain_gateway_dataplane_proxies{namespace,gateway}</code> is the <strong>live</strong> count of data-plane proxies serving a dedicated Gateway — folded-behind-relay or directly connected. It is the counterpart to the Gateway's latched <code>Programmed</code> status: <code>Programmed</code> is a spec-observation signal that deliberately stays <code>True</code> through data-plane churn (rollouts, HPA, relay blips, leader failover) and only re-arms on a spec change, so it does <strong>not</strong> go <code>False</code> when every proxy behind a Gateway dies. Alert on <code>coxswain_gateway_dataplane_proxies == 0 for N s</code> to catch that total-loss blind spot; alert on <code>Programmed</code> for spec observation, never for liveness. (See <a href="../../architecture/discovery-protocol/#how-programmed-status-is-gated">How <code>Programmed</code> status is gated</a>.)</p>
@@ -2003,7 +2383,7 @@
 <td><code>coxswain_discovery_streams_total</code></td>
 <td>Server</td>
 <td>Counter</td>
-<td><code>result</code> (<code>accepted</code>/<code>rejected</code>) — <code>rejected</code> covers wire-version mismatch, malformed scope, and SVID/scope-binding denial</td>
+<td><code>result</code> (<code>accepted</code>/<code>rejected</code>/<code>rejected_not_leader</code>) — <code>rejected</code> covers wire-version mismatch, malformed scope, and SVID/scope-binding denial; <code>rejected_not_leader</code> is a standby replica declining the stream</td>
 </tr>
 <tr>
 <td><code>coxswain_discovery_acks_total</code></td>
@@ -2104,10 +2484,10 @@
 </tbody>
 </table>
 <h3 id="metric-labels-per-gateway">Metric labels per Gateway<a class="headerlink" href="#metric-labels-per-gateway" title="Permanent link">&para;</a></h3>
-<p>When you run a <a href="../../guides/dedicated-mode/">dedicated proxy pool</a>, you usually want to slice its metrics by Gateway. Coxswain does <strong>not</strong> bake the Gateway identity into the emitted series — a <code>gateway_name</code> / <code>gateway_namespace</code> label on every counter would multiply request-counter cardinality across every dedicated Gateway, and the shared pool has no single Gateway to name.</p>
+<p>When you run a <a href="../../gateway-api/#dedicated-proxy-pools">dedicated proxy pool</a>, you usually want to slice its metrics by Gateway. Coxswain does <strong>not</strong> bake the Gateway identity into the emitted series — a <code>gateway_name</code> / <code>gateway_namespace</code> label on every counter would multiply request-counter cardinality across every dedicated Gateway, and the shared pool has no single Gateway to name.</p>
 <p>Instead the identity rides in as a <strong>scrape-time target label</strong>. Each proxy pod the controller provisions carries the Gateway it serves as two pod labels:</p>
 <ul>
-<li><code>gateway.networking.k8s.io/gateway-name</code> — the Gateway name (the GEP-1762 well-known label).</li>
+<li><code>gateway.networking.k8s.io/gateway-name</code> — the Gateway name (the well-known label).</li>
 <li><code>gateway.coxswain-labs.dev/gateway-namespace</code> — the Gateway namespace (a Coxswain label; the upstream group defines no namespace label).</li>
 </ul>
 <p>The chart's PodMonitor then copies those pod labels onto every scraped sample via <code>relabelings</code>, so they appear on the metrics without ever touching the series the proxy emits:</p>
@@ -2147,7 +2527,7 @@
 <li>All Kubernetes reflectors emit their first <code>InitDone</code> event (CRDs must be installed)</li>
 <li>The routing table is built for the first time</li>
 </ol>
-<p>On the <strong>controller</strong> pod, <code>/healthz</code> is also a liveness backstop for the watch-relist wedge (#573): if any reflector's watch relist starts but never completes for longer than ~2.5 min (tracked by <code>coxswain_controller_watch_relists_pending</code>), the controller trips its liveness gate and <code>/healthz</code> returns <code>503 not live</code>, so the kubelet restarts the pod and its reflectors relist from scratch. The gate arms only after a kind has completed its first relist, so a slow cold-start initial sync never trips it. The proxy pod keeps the historical always-<code>200</code> liveness semantics.</p>
+<p>On the <strong>controller</strong> pod, <code>/healthz</code> is also a liveness backstop for the watch-relist wedge: if any reflector's watch relist starts but never completes for longer than ~2.5 min (tracked by <code>coxswain_controller_watch_relists_pending</code>), the controller trips its liveness gate and <code>/healthz</code> returns <code>503 not live</code>, so the kubelet restarts the pod and its reflectors relist from scratch. The gate arms only after a kind has completed its first relist, so a slow cold-start initial sync never trips it. The proxy pod keeps the historical always-<code>200</code> liveness semantics.</p>
 <p>Inspect the per-subsystem detail via the admin port (open <code>kubectl -n coxswain-system port-forward svc/coxswain-shared-proxy-internal 8082:8082</code> in a separate terminal first; a non-default Helm release name <code>&lt;rel&gt;</code> prefixes the Service as <code>&lt;rel&gt;-coxswain-shared-proxy-internal</code>):</p>
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/health<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 </code></pre></div>
@@ -2214,6 +2594,11 @@ names with <code>curl -s http://&lt;controller-admin-address&gt;:8082/api/v1/fle
 <td><code>status</code></td>
 <td>integer</td>
 <td>Response HTTP status code</td>
+</tr>
+<tr>
+<td><code>client_ip</code></td>
+<td>string</td>
+<td>Resolved client IP (PROXY-protocol peer or a trusted forwarded-for header, else the L4 peer)</td>
 </tr>
 <tr>
 <td><code>route_id</code></td>
@@ -2320,7 +2705,7 @@ earliest-applied rule wins; every losing Ingress receives one <code>Warning</cod
 Warning  RouteConflict  12s   coxswain-controller  Route on host api.example.com path /v1 is shadowed by default/primary-ingress
 </code></pre></div>
 <p>The <code>Message</code> field names the winning Ingress as <code>&lt;namespace&gt;/&lt;name&gt;</code>. No Event is emitted
-on the winning Ingress. See <a href="../../guides/ingress-annotations/">Ingress annotation reference</a>
+on the winning Ingress. See <a href="../../ingress/annotations/">Ingress annotation reference</a>
 for how to resolve conflicts (e.g. deduplicate rules or adjust <code>IngressClass</code> assignments).</p>
 <h3 id="invalidannotation">InvalidAnnotation<a class="headerlink" href="#invalidannotation" title="Permanent link">&para;</a></h3>
 <p>Triggered when an <code>ingress.coxswain-labs.dev/*</code> annotation value cannot be parsed. The
@@ -2342,7 +2727,7 @@ outside the range, or a duplicate.</p>
 ----     ------                ---   ----                 -------
 Warning  InternalPortRemapped  3s    coxswain-controller  listener 443 internal port moved 30001 -&gt; 30004 while the Gateway is live
 </code></pre></div>
-<h3 id="internalportrangeexhausted-shared-mode-gateway">InternalPortRangeExhausted (shared-mode Gateway)<a class="headerlink" href="#internalportrangeexhausted-shared-mode-gateway" title="Permanent link">&para;</a></h3>
+<h3 id="nointernalportavailable-shared-mode-gateway">NoInternalPortAvailable (shared-mode Gateway)<a class="headerlink" href="#nointernalportavailable-shared-mode-gateway" title="Permanent link">&para;</a></h3>
 <p>Emitted on a shared-mode <code>Gateway</code> when the <code>30000–32767</code> internal-port band is exhausted;
 the un-allocated listeners get no VIP port and are not addressed until capacity frees up.</p>
 <h3 id="deduplication">Deduplication<a class="headerlink" href="#deduplication" title="Permanent link">&para;</a></h3>
@@ -2438,8 +2823,6 @@ kubectl<span class="w"> </span>describe<span class="w"> </span>ingress<span clas
 </div>
 </div>
 </div>
-<h2 id="grafana-dashboard">Grafana dashboard<a class="headerlink" href="#grafana-dashboard" title="Permanent link">&para;</a></h2>
-<p>A community Grafana dashboard for Coxswain is planned for a future release. In the meantime, the metrics above are compatible with standard Kubernetes proxy dashboards (e.g. <code>kubernetes-nginx-ingress</code> panels adapted for <code>coxswain_</code> prefix).</p>
 
 
 
@@ -2511,7 +2894,7 @@ kubectl<span class="w"> </span>describe<span class="w"> </span>ingress<span clas
       <div class="md-progress" data-md-component="progress" role="progressbar"></div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.top", "toc.integrate", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.top", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
       <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>

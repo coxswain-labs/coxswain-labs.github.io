@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/operations/troubleshooting/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../verifying-releases/">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../../reference/configuration/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>Troubleshooting - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#troubleshooting" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              Troubleshooting
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -332,17 +330,21 @@
         
   
   
+    
+  
   
     
     
       
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../operations/tls/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../tls/" class="md-tabs__link">
           
   
   Operations
@@ -487,30 +489,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -521,7 +518,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Installation
@@ -535,7 +532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -556,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../../installation/helm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -574,30 +571,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Kustomize
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -606,71 +583,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install from main
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install a specific version
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    <span class="md-ellipsis">
-      Upgrade
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -683,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
+      <a href="../../installation/manifests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,25 +966,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1083,7 +1000,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Operations
@@ -1102,17 +1019,20 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
         
           
-          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1137,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/tls/" class="md-nav__link">
+      <a href="../tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1158,7 +1078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/rate-limiting/" class="md-nav__link">
+      <a href="../rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1179,7 +1099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/retries/" class="md-nav__link">
+      <a href="../retries/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1208,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/running-in-production/" class="md-nav__link">
+      <a href="../running-in-production/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1229,7 +1149,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/control-plane-security/" class="md-nav__link">
+      <a href="../control-plane-security/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1250,7 +1170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/relay-policy/" class="md-nav__link">
+      <a href="../relay-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1271,7 +1191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/verifying-releases/" class="md-nav__link">
+      <a href="../verifying-releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1289,10 +1209,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../operations/troubleshooting/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1301,6 +1241,134 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#port-forward" class="md-nav__link">
+    <span class="md-ellipsis">
+      Port forward
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#readyz-returns-503-on-startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      /readyz returns 503 on startup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routes-are-not-being-picked-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      Routes are not being picked up
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tls-certificate-is-not-being-served" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLS certificate is not being served
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#leader-election-is-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      Leader election is not working
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dedicated-proxy-pod-never-becomes-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dedicated proxy pod never becomes Ready
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dedicated-proxy-stuck-notready-or-degraded" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dedicated proxy stuck NotReady or Degraded
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provisioned-resources-not-garbage-collected-after-gateway-deletion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provisioned resources not garbage-collected after Gateway deletion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controller-stuck-in-ingress-only-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controller stuck in Ingress-only mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingress-route-is-shadowed-by-a-conflict" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress route is shadowed by a conflict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingress-annotation-has-no-effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress annotation has no effect
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-memory-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      High memory usage
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1539,45 +1607,108 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#port-forward" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Port forward
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#readyz-returns-503-on-startup" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      /readyz returns 503 on startup
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#routes-are-not-being-picked-up" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Routes are not being picked up
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#tls-certificate-is-not-being-served" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      TLS certificate is not being served
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#leader-election-is-not-working" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Leader election is not working
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dedicated-proxy-pod-never-becomes-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dedicated proxy pod never becomes Ready
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dedicated-proxy-stuck-notready-or-degraded" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dedicated proxy stuck NotReady or Degraded
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provisioned-resources-not-garbage-collected-after-gateway-deletion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provisioned resources not garbage-collected after Gateway deletion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controller-stuck-in-ingress-only-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controller stuck in Ingress-only mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingress-route-is-shadowed-by-a-conflict" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress route is shadowed by a conflict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingress-annotation-has-no-effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress annotation has no effect
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-memory-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      High memory usage
     </span>
   </a>
   
@@ -1601,48 +1732,179 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
+<h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h1>
+<h2 id="port-forward">Port forward<a class="headerlink" href="#port-forward" title="Permanent link">&para;</a></h2>
+<p>Most commands below query the admin port. Open a port-forward in a separate terminal first: </p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-shared-proxy-internal<span class="w"> </span><span class="m">8082</span>:8082
+</code></pre></div>
+<h2 id="readyz-returns-503-on-startup"><code>/readyz</code> returns 503 on startup<a class="headerlink" href="#readyz-returns-503-on-startup" title="Permanent link">&para;</a></h2>
+<p>The readiness endpoint gates on every registered subsystem reaching <code>Ready</code> or <code>Degraded</code>. During startup it stays <code>503</code> until each subsystem reports at least one successful completion:</p>
+<ul>
+<li><strong>Controller</strong>: all Kubernetes reflectors emit their first <code>InitDone</code> (requires CRDs to be installed and controller RBAC to be correct), and the routing table is built at least once.</li>
+<li><strong>Proxy</strong>: the discovery client connects to the controller, bootstraps an SVID, and receives its first routing snapshot.</li>
+</ul>
+<p>Inspect which subsystem is blocking:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/health<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.subsystems
+</code></pre></div>
+<p>Controller subsystem stuck in <code>Pending</code> (CRD missing or controller RBAC wrong):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;controller&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;checks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;httproute&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;ingress&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ready&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;gateway&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;routing_table_built&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Proxy subsystem stuck in <code>Pending</code> (discovery not yet connected or first snapshot not received):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;proxy&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;checks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;routing_table_loaded&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Pending&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Common causes for the <strong>controller</strong> being <code>Pending</code>:
+- Gateway API CRDs not installed — install with <code>kubectl apply -f .../standard-install.yaml</code>
+- Controller RBAC missing a permission — check <code>kubectl -n coxswain-system logs -l app.kubernetes.io/name=coxswain</code> for <code>forbidden</code> errors</p>
+<p>Common causes for the <strong>proxy</strong> being <code>Pending</code>:
+- Bootstrap endpoint unreachable — verify <code>COXSWAIN_DISCOVERY_BOOTSTRAP_ENDPOINT</code> points at the controller's bootstrap <code>Service</code> (the sole anchor; the routing upstream is delivered by the bootstrap response)
+- Trust bundle not yet published — <code>kubectl -n coxswain-system get configmap coxswain-discovery-trust</code> must exist; the controller publishes it at startup
+- Bootstrap rejected — check for <code>BootstrapRejected</code> events: <code>kubectl -n coxswain-system get events --field-selector reason=BootstrapRejected</code>
+- Wire-version mismatch — proxy logs <code>FAILED_PRECONDITION</code> and backs off permanently; see <a href="../control-plane-security/#wire-version-skew">Wire-version skew</a></p>
+<h2 id="routes-are-not-being-picked-up">Routes are not being picked up<a class="headerlink" href="#routes-are-not-being-picked-up" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check the routing table — served from the controller&#39;s admin port, not the proxy&#39;s</span>
+curl<span class="w"> </span>-s<span class="w"> </span>http://&lt;controller-admin-address&gt;:8082/api/v1/fleet/proxies/&lt;pod-name&gt;/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+
+<span class="c1"># Check HTTPRoute status</span>
+kubectl<span class="w"> </span>describe<span class="w"> </span>httproute<span class="w"> </span>my-route
+
+<span class="c1"># Check Gateway status</span>
+kubectl<span class="w"> </span>describe<span class="w"> </span>gateway<span class="w"> </span>my-gateway
+</code></pre></div>
+<p>In the <code>kubectl describe httproute</code> output, look for a condition like this — <code>ResolvedRefs: False</code> means a backend Service cannot be found or a <code>ReferenceGrant</code> is missing for cross-namespace backends:</p>
+<div class="highlight"><pre><span></span><code>Status:
+  Parents:
+    Conditions:
+      Message:               Backend &quot;my-service&quot; not found in namespace &quot;default&quot;
+      Reason:                BackendNotFound
+      Status:                False
+      Type:                  ResolvedRefs
+</code></pre></div>
+<p>And in the routes query above, the host entry will either be absent or show no upstream addresses.</p>
+<h2 id="tls-certificate-is-not-being-served">TLS certificate is not being served<a class="headerlink" href="#tls-certificate-is-not-being-served" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Verify the Secret exists and has the correct type:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-tls<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.type}&#39;</span>
+<span class="c1"># Should print: kubernetes.io/tls</span>
+</code></pre></div>
+<ol>
+<li>
+<p>Check Coxswain logs for <code>TLS Secret unusable</code> messages.</p>
+</li>
+<li>
+<p>Confirm the Secret is in the same namespace as the <code>Ingress</code> or <code>Gateway</code>.</p>
+</li>
+</ol>
+<h2 id="leader-election-is-not-working">Leader election is not working<a class="headerlink" href="#leader-election-is-not-working" title="Permanent link">&para;</a></h2>
+<p>Check if the Lease exists and who holds it:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>lease
+<span class="c1"># NAME        HOLDER                          AGE</span>
+<span class="c1"># &lt;name&gt;      coxswain-7d9f6b5c8-xk2pn        5m</span>
+</code></pre></div>
+<p>If the <code>HOLDER</code> column is empty or the lease is expired, no replica has claimed leadership. Common causes:</p>
+<ul>
+<li>All replicas are crashing before they can acquire the lease — check <code>kubectl -n coxswain-system logs -l app.kubernetes.io/name=coxswain</code>.</li>
+<li>Clock skew between nodes — the default lease TTL (<code>--controller-lease-ttl=15s</code>) assumes clocks are synchronised within a few seconds.</li>
+</ul>
+<h2 id="dedicated-proxy-pod-never-becomes-ready">Dedicated proxy pod never becomes Ready<a class="headerlink" href="#dedicated-proxy-pod-never-becomes-ready" title="Permanent link">&para;</a></h2>
+<p>After the controller provisions a dedicated proxy (because a <code>Gateway</code> carries a <code>parametersRef</code> → <code>CoxswainGatewayParameters</code>), the pod should reach <code>Running</code> within the same time it takes any Deployment to pull its image and pass readiness checks.</p>
+<p>If the pod is stuck:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check the Deployment events</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>describe<span class="w"> </span>deployment<span class="w"> </span>&lt;gateway-name&gt;-coxswain
+
+<span class="c1"># Check the pod events</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span>gateway.networking.k8s.io/gateway-name<span class="o">=</span>&lt;gateway-name&gt;
+
+<span class="c1"># Check controller logs for reconcile errors</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>controller<span class="w"> </span>--tail<span class="o">=</span><span class="m">100</span>
+</code></pre></div>
+<p>Common causes:</p>
+<ul>
+<li><strong><code>Accepted=False, reason=InvalidParameters</code> on the Gateway</strong> — the <code>parametersRef</code> points at a <code>CoxswainGatewayParameters</code> object that doesn't exist or is in the wrong namespace. Create the object or fix the reference; the controller will reconcile and provision the pod.</li>
+<li><strong>Image pull error</strong> — the dedicated proxy uses the same image as the controller; verify <code>imagePullSecrets</code> and registry credentials in the Gateway's target namespace.</li>
+<li><strong>Controller RBAC missing</strong> — the controller <code>ServiceAccount</code> needs permission to create <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> objects in the Gateway's namespace. If the Helm chart was upgraded without running <code>helm upgrade</code>, re-run it to restore the latest ClusterRole.</li>
+</ul>
+<h2 id="dedicated-proxy-stuck-notready-or-degraded">Dedicated proxy stuck <code>NotReady</code> or <code>Degraded</code><a class="headerlink" href="#dedicated-proxy-stuck-notready-or-degraded" title="Permanent link">&para;</a></h2>
+<p>The dedicated proxy is a discovery client: it bootstraps an SVID from the controller and then opens a mTLS stream to receive its Gateway's routing snapshot. The proxy stays <code>NotReady</code> until the first snapshot arrives; it transitions to <code>Degraded</code> on any subsequent reconnect window.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check proxy logs for discovery errors</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>&lt;gateway-namespace&gt;<span class="w"> </span>logs<span class="w"> </span>deployment/&lt;gateway-name&gt;-coxswain<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-50
+
+<span class="c1"># Check for bootstrap rejections (controller is the sole event emitter)</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>BootstrapRejected
+</code></pre></div>
+<p>Common causes:</p>
+<ul>
+<li><strong>Bootstrap endpoint unreachable</strong> — the dedicated proxy's <code>COXSWAIN_DISCOVERY_BOOTSTRAP_ENDPOINT</code> (its sole anchor) is rendered by the controller; verify the controller's bootstrap <code>Service</code> exists and the proxy pod can reach it. The routing upstream — the controller, or this namespace's relay if provisioned — is delivered by the bootstrap response, so a proxy that never bootstraps also never learns where to stream from.</li>
+<li><strong>SVID scope mismatch</strong> — the stream server logs <code>PERMISSION_DENIED</code> if the proxy's SVID does not match the expected ServiceAccount for the Gateway. Check that the SA name follows the pattern (<code>{gateway-name}-{gatewayclass-name}</code>) and that the controller's registry entry is current. Reconciling the Gateway again (e.g. by adding/removing an annotation) forces a registry refresh.</li>
+<li><strong>Wire-version mismatch</strong> — proxy logs <code>FAILED_PRECONDITION</code>; see <a href="../control-plane-security/#wire-version-skew">Wire-version skew</a>.</li>
+</ul>
+<h2 id="provisioned-resources-not-garbage-collected-after-gateway-deletion">Provisioned resources not garbage-collected after Gateway deletion<a class="headerlink" href="#provisioned-resources-not-garbage-collected-after-gateway-deletion" title="Permanent link">&para;</a></h2>
+<p>When a <code>Gateway</code> is deleted, Kubernetes owner-reference GC removes the provisioned <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> (all owner-referenced to the Gateway). The <code>gateway.coxswain-labs.dev/dedicated-cleanup</code> finalizer ensures the controller completes any remaining cleanup before Kubernetes finalizes the Gateway.</p>
+<p>If resources are not disappearing after a <code>kubectl delete gateway</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check whether the finalizer is still present (it should be removed by the controller)</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>&lt;name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;ns&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.finalizers}&#39;</span>
+
+<span class="c1"># Check controller logs for cleanup errors</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/component<span class="o">=</span>controller<span class="w"> </span>--tail<span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>dedicated-cleanup
+</code></pre></div>
+<p>Common cause: the controller is not running or has lost the leader lease — the finalizer is processed only by the active controller replica. If the controller is down or failing to elect a leader, the Gateway will be stuck in a terminating state until the controller recovers.</p>
+<h2 id="controller-stuck-in-ingress-only-mode">Controller stuck in Ingress-only mode<a class="headerlink" href="#controller-stuck-in-ingress-only-mode" title="Permanent link">&para;</a></h2>
+<p>At startup, the controller probes for Gateway API CRDs (<code>gatewayclass.gateway.networking.k8s.io</code>, <code>gateway.gateway.networking.k8s.io</code>, <code>httproute.gateway.networking.k8s.io</code>). If any are absent, it drops the Gateway API reconciliation pipelines and runs as a pure Ingress controller.</p>
+<p>Symptoms: no <code>GatewayClass</code>, <code>Gateway</code>, or <code>HTTPRoute</code> conditions are written; <code>kubectl get gatewayclass coxswain</code> returns nothing.</p>
+<p>Fix: install the Gateway API CRDs and restart the controller.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install the standard-channel CRDs</span>
 kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
 
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
+<span class="c1"># Restart the controller so it re-probes</span>
+kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>rollout<span class="w"> </span>restart<span class="w"> </span>deployment/coxswain-controller
 </code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
+<h2 id="ingress-route-is-shadowed-by-a-conflict">Ingress route is shadowed by a conflict<a class="headerlink" href="#ingress-route-is-shadowed-by-a-conflict" title="Permanent link">&para;</a></h2>
+<p>When two <code>Ingress</code> objects claim the same host and path combination, only one wins (see <a href="../../ingress/#multiple-ingresses-on-the-same-host">Multi-Ingress merging and conflict precedence</a>). The losing Ingress's route is silently dropped from the routing table. The controller emits a <code>Warning</code> Event on the shadowed Ingress to make the conflict visible:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>ingress<span class="w"> </span>&lt;shadowed-ingress&gt;
+<span class="c1"># ...</span>
+<span class="c1"># Events:</span>
+<span class="c1">#   Type     Reason         Age  From               Message</span>
+<span class="c1">#   ----     ------         ---  ----               -------</span>
+<span class="c1">#   Warning  RouteConflict  1m   coxswain           Route on host app.example.com path /api is shadowed by default/winning-ingress</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
-
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
+<p>You can also query events directly:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>RouteConflict<span class="w"> </span>-A
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
+<p>To resolve: ensure only one Ingress claims a given <code>(host, path)</code> slot, or migrate the conflicting rules into a single Ingress object.</p>
+<h2 id="ingress-annotation-has-no-effect">Ingress annotation has no effect<a class="headerlink" href="#ingress-annotation-has-no-effect" title="Permanent link">&para;</a></h2>
+<p>If an <code>ingress.coxswain-labs.dev/*</code> annotation value is invalid, the controller ignores it (fail-open) and emits a <code>Warning</code> Event on the Ingress:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>ingress<span class="w"> </span>&lt;name&gt;
+<span class="c1"># Events:</span>
+<span class="c1">#   Type     Reason            Age  From               Message</span>
+<span class="c1">#   ----     ------            ---  ----               -------</span>
+<span class="c1">#   Warning  InvalidAnnotation  1m  coxswain           read-timeout: invalid duration &quot;5 seconds&quot; — expected a Go duration string (e.g. &quot;5s&quot;, &quot;1m30s&quot;)</span>
 </code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
+<p>Query all annotation-parse warnings in the cluster:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>InvalidAnnotation<span class="w"> </span>-A
 </code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
+<p>On Kubernetes ≥ 1.30 with the Helm chart, the <code>ValidatingAdmissionPolicy</code> catches most invalid values at <code>kubectl apply</code> time — the admission rejection message matches the Event message format above.</p>
+<h2 id="high-memory-usage">High memory usage<a class="headerlink" href="#high-memory-usage" title="Permanent link">&para;</a></h2>
+<p>The routing table is rebuilt from scratch on every reconcile. Very large clusters (thousands of <code>HTTPRoute</code> objects) may show elevated memory during rebuilds. Each completed rebuild releases the old table; the GC-free nature of Rust means this is deterministic rather than dependent on a garbage collector schedule.</p>
+<p>Profile with:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/metrics<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>routing_table_rebuild_duration
 </code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
-</div>
 
 
 

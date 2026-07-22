@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/operations/control-plane-security/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../running-in-production/">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../relay-policy/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>Control plane - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#control-plane-security" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              Control plane
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -332,17 +330,21 @@
         
   
   
+    
+  
   
     
     
       
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../operations/tls/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../tls/" class="md-tabs__link">
           
   
   Operations
@@ -487,30 +489,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -521,7 +518,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Installation
@@ -535,7 +532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -556,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../../installation/helm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -574,30 +571,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Kustomize
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -606,71 +583,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install from main
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install a specific version
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    <span class="md-ellipsis">
-      Upgrade
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -683,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
+      <a href="../../installation/manifests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,25 +966,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1083,7 +1000,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Operations
@@ -1102,17 +1019,20 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
         
           
-          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1137,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/tls/" class="md-nav__link">
+      <a href="../tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1158,7 +1078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/rate-limiting/" class="md-nav__link">
+      <a href="../rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1179,7 +1099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/retries/" class="md-nav__link">
+      <a href="../retries/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1208,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/running-in-production/" class="md-nav__link">
+      <a href="../running-in-production/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1226,10 +1146,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../operations/control-plane-security/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Control plane
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1238,6 +1178,164 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      The model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ca-provisioning-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      CA provisioning modes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CA provisioning modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auto-default-self-managed" class="md-nav__link">
+    <span class="md-ellipsis">
+      auto (default) — self-managed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-cert-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      external + cert-manager
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-bring-your-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      external + bring-your-own
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-read-only-proxy-invariant" class="md-nav__link">
+    <span class="md-ellipsis">
+      The read-only-proxy invariant
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#svid-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      SVID rotation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#svid-identity-and-gateway-scope-binding" class="md-nav__link">
+    <span class="md-ellipsis">
+      SVID identity and Gateway scope binding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SVID identity and Gateway scope binding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scope-binding-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope binding enforcement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relay-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relay tier
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reconnect-and-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reconnect and failure modes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wire-version-skew" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wire-version skew
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1250,7 +1348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/relay-policy/" class="md-nav__link">
+      <a href="../relay-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1271,7 +1369,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/verifying-releases/" class="md-nav__link">
+      <a href="../verifying-releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1292,7 +1390,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,45 +1637,138 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#the-model" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      The model
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#ca-provisioning-modes" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      CA provisioning modes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CA provisioning modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auto-default-self-managed" class="md-nav__link">
+    <span class="md-ellipsis">
+      auto (default) — self-managed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-cert-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      external + cert-manager
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-bring-your-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      external + bring-your-own
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-read-only-proxy-invariant" class="md-nav__link">
+    <span class="md-ellipsis">
+      The read-only-proxy invariant
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#svid-rotation" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      SVID rotation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#svid-identity-and-gateway-scope-binding" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      SVID identity and Gateway scope binding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SVID identity and Gateway scope binding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scope-binding-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope binding enforcement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relay-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relay tier
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#reconnect-and-failure-modes" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Reconnect and failure modes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wire-version-skew" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wire-version skew
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
     </span>
   </a>
   
@@ -1601,48 +1792,274 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
-
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
+<h1 id="control-plane-security">Control-plane security<a class="headerlink" href="#control-plane-security" title="Permanent link">&para;</a></h1>
+<p>Coxswain's data plane (the proxy) never talks to the Kubernetes API. Instead the
+<strong>controller</strong> compiles routing snapshots and pushes them to proxies over a gRPC
+<strong>discovery</strong> channel. This page explains how that channel is secured: the
+controller acts as a certificate authority (CA), a fresh proxy bootstraps its
+identity with its Kubernetes ServiceAccount token, and the resulting short-lived
+SPIFFE certificate (SVID) authenticates every snapshot stream — with no plaintext
+fallback.</p>
+<h2 id="the-model">The model<a class="headerlink" href="#the-model" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+  subgraph Controller pod
+    CA[Controller-as-CA]
+    BS[Bootstrap listener&lt;br/&gt;:50052 server-auth TLS]
+    ST[Stream listener&lt;br/&gt;:50051 mTLS]
+    CA --- BS
+    CA --- ST
+  end
+  subgraph Proxy pod
+    P[Proxy]
+  end
+  P -- "1. SA token + CSR" --&gt; BS
+  BS -- "2. signed SVID + trust bundle" --&gt; P
+  P -- "3. mTLS stream (SVID)" --&gt; ST
+  ST -- "4. routing snapshots" --&gt; P</code></pre>
+<ol>
+<li><strong>Bootstrap.</strong> A fresh proxy has no certificate. It reads its projected
+   ServiceAccount token, generates a keypair locally, and sends the token plus a
+   Certificate Signing Request (CSR) to the controller's bootstrap listener over
+   server-authenticated TLS (the proxy verifies the controller; it presents no
+   client cert — it has none yet).</li>
+<li><strong>Issuance.</strong> The controller validates the token with the Kubernetes
+   <code>TokenReview</code> API (scoped to the <code>coxswain-discovery</code> audience), derives the
+   proxy's SPIFFE identity (<code>spiffe://&lt;trust-domain&gt;/ns/&lt;ns&gt;/sa/&lt;sa&gt;</code>), signs the
+   CSR, and returns the SVID plus the public trust bundle. <strong>The proxy's private
+   key never leaves the pod, never transits the wire, and never enters controller
+   memory.</strong></li>
+<li><strong>Stream.</strong> The proxy opens the mandatory-mTLS stream with its SVID and
+   receives routing snapshots. A proxy without a valid CA-signed SVID cannot
+   connect — there is no plaintext fallback.</li>
+<li><strong>Rotation.</strong> Before the SVID expires the proxy re-bootstraps and reconnects
+   with the fresh certificate. Routing never gaps (see
+   <a href="#svid-rotation">SVID rotation</a>).</li>
+</ol>
+<p>The trust bundle is a <strong>set</strong> of public CA roots, so CA rotation can trust the
+old and new roots during an overlap window.</p>
+<h2 id="ca-provisioning-modes">CA provisioning modes<a class="headerlink" href="#ca-provisioning-modes" title="Permanent link">&para;</a></h2>
+<p>The CA lives in a Kubernetes Secret (<code>type: kubernetes.io/tls</code> or <code>Opaque</code>, keys
+<code>tls.crt</code> / <code>tls.key</code>) in the controller's namespace. How that Secret is created
+is the single operator decision, controlled by <code>discovery.ca.mode</code>:</p>
+<h3 id="auto-default-self-managed"><code>auto</code> (default) — self-managed<a class="headerlink" href="#auto-default-self-managed" title="Permanent link">&para;</a></h3>
+<p>Nothing to provision. On first start the controller generates a CA and creates
+the Secret (race-free across replicas: the first to create wins; the others read
+it). It publishes the trust bundle and self-issues its own server certificate.
+Zero external tooling.</p>
+<p>Inspect the generated CA:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>coxswain-discovery-ca<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
+<h3 id="external-cert-manager"><code>external</code> + cert-manager<a class="headerlink" href="#external-cert-manager" title="Permanent link">&para;</a></h3>
+<p>Set <code>discovery.ca.mode=external</code> and let cert-manager author the CA. Coxswain
+only <strong>consumes</strong> the resulting Secret and hot-reloads when cert-manager rotates
+it — this mirrors how Envoy Gateway and kgateway integrate with cert-manager
+(the operator authors the cert; the control plane consumes the Secret). Coxswain
+does not render or own the <code>Certificate</code>. A copy-pasteable recipe ships at
+<code>deploy/manifests/cert-manager-example.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cert-manager.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Certificate</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-discovery-ca</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-system</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">isCA</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">commonName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-discovery-ca</span>
+<span class="w">  </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-discovery-ca</span><span class="w">   </span><span class="c1"># what discovery.ca.secretName points at</span>
+<span class="w">  </span><span class="nt">duration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8760h</span>
+<span class="w">  </span><span class="nt">renewBefore</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">720h</span>
+<span class="w">  </span><span class="nt">issuerRef</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-discovery-selfsigned</span>
+<span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Issuer</span>
+<span class="w">    </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cert-manager.io</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
-
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
+<p>(The controller programmatically managing <code>Certificate</code> CRs itself — the
+istio-csr style — is tracked for a later release.)</p>
+<h3 id="external-bring-your-own"><code>external</code> + bring-your-own<a class="headerlink" href="#external-bring-your-own" title="Permanent link">&para;</a></h3>
+<p>Set <code>discovery.ca.mode=external</code> and supply the Secret yourself:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>tls<span class="w"> </span>coxswain-discovery-ca<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cert<span class="o">=</span>ca.crt<span class="w"> </span>--key<span class="o">=</span>ca.key
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
+<p>In <code>external</code> mode the controller <strong>fails closed</strong>: if the Secret is absent it
+logs an error and does not serve discovery (it never silently self-signs). With
+Helm, <code>external</code> mode also omits the namespace-scoped secrets-create Role, so the
+controller holds no secrets-write grant at all.</p>
+<h2 id="the-read-only-proxy-invariant">The read-only-proxy invariant<a class="headerlink" href="#the-read-only-proxy-invariant" title="Permanent link">&para;</a></h2>
+<p>The proxy mounts only <strong>public</strong> material and holds <strong>zero</strong> Kubernetes write
+verbs:</p>
+<ul>
+<li>A <strong>projected ServiceAccount token</strong> (audience <code>coxswain-discovery</code>,
+  auto-rotated by the kubelet) at
+  <code>/var/run/secrets/coxswain/discovery-token/token</code>.</li>
+<li>The controller-published <strong>trust-bundle ConfigMap</strong> (<code>coxswain-discovery-trust</code>,
+  public CA roots only) at <code>/var/run/secrets/coxswain/trust-bundle/ca.crt</code>.</li>
+</ul>
+<p>Both are mounted by the kubelet — the proxy needs no API access to read them. The
+proxy never references the CA Secret (which holds the private key). This is the
+load-bearing security property of the controller/proxy split: a compromised proxy
+cannot write to Kubernetes and cannot read the CA key.</p>
+<h2 id="svid-rotation">SVID rotation<a class="headerlink" href="#svid-rotation" title="Permanent link">&para;</a></h2>
+<p>SVIDs are short-lived (<code>discovery.svidTtl</code>, default <code>24h</code>). The proxy refreshes at
+~50 % of the TTL: it re-bootstraps, caches the fresh SVID, and signals the stream
+supervisor to reconnect. The proxy's routing tables are <strong>never cleared</strong> across a
+reconnect — the last-good snapshot keeps serving traffic throughout — so rotation
+causes no routing gap and no dropped requests.</p>
+<p>The controller's own server certificate is long-lived and refreshed when the
+controller pod restarts.</p>
+<h2 id="svid-identity-and-gateway-scope-binding">SVID identity and Gateway scope binding<a class="headerlink" href="#svid-identity-and-gateway-scope-binding" title="Permanent link">&para;</a></h2>
+<p>Every proxy's SVID is derived from its Kubernetes ServiceAccount — the identity
+that the <code>TokenReview</code> check validates at bootstrap. The table below shows the
+canonical form for each proxy role:</p>
+<table>
+<thead>
+<tr>
+<th>Proxy role</th>
+<th>ServiceAccount</th>
+<th>SVID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shared-pool proxy</td>
+<td><code>coxswain-shared-proxy</code></td>
+<td><code>spiffe://&lt;trust-domain&gt;/ns/&lt;ns&gt;/sa/coxswain-shared-proxy</code></td>
+</tr>
+<tr>
+<td>Dedicated proxy (per Gateway)</td>
+<td><code>&lt;gateway-name&gt;-&lt;gatewayclass-name&gt;</code></td>
+<td><code>spiffe://&lt;trust-domain&gt;/ns/&lt;gateway-ns&gt;/sa/&lt;gateway-name&gt;-&lt;gatewayclass-name&gt;</code></td>
+</tr>
+<tr>
+<td>Relay (discovery cache)</td>
+<td><code>coxswain-relay</code> (chart) / provisioned per namespace</td>
+<td><code>spiffe://&lt;trust-domain&gt;/ns/&lt;relay-ns&gt;/sa/&lt;relay-sa&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>The dedicated proxy SA name follows a fixed pattern:
+it is the same name the controller uses for the provisioned Deployment, Service,
+and ServiceAccount. For example, a Gateway <code>prod/my-gw</code> of class <code>coxswain</code> runs
+as SA <code>my-gw-coxswain</code> with SVID
+<code>spiffe://&lt;trust-domain&gt;/ns/prod/sa/my-gw-coxswain</code>.</p>
+<h3 id="scope-binding-enforcement">Scope binding enforcement<a class="headerlink" href="#scope-binding-enforcement" title="Permanent link">&para;</a></h3>
+<p>A dedicated proxy subscribes for only its own Gateway's routing snapshot, and the discovery server enforces that the claimed Gateway matches the proxy's authenticated SVID. The controller stamps the expected proxy SA (<code>{gateway}-{class}</code>) into the Gateway's registry entry at reconcile time; a <code>Subscribe</code> whose peer SVID does not match <code>…/ns/&lt;namespace&gt;/sa/&lt;expected-sa&gt;</code> is closed with <strong><code>PERMISSION_DENIED</code></strong> before any snapshot is delivered. A valid certificate from the <em>wrong</em> Gateway is still rejected.</p>
+<p>The binding check is skipped only when no peer certificate is present — a path that exists solely for tests and degraded modes. Production discovery mandates client auth, so every accepted stream carries a peer cert.</p>
+<h3 id="relay-tier">Relay tier<a class="headerlink" href="#relay-tier" title="Permanent link">&para;</a></h3>
+<p>A <a href="../../architecture/discovery-protocol/#the-relay-tier">relay</a> is both a discovery <strong>client</strong> (upstream, to the controller) and a discovery <strong>server</strong> (downstream, to proxies). Its ServiceAccount holds <strong>zero Kubernetes verbs</strong> — the same read-only invariant as a proxy — so it never touches the CA Secret, trust bundle, or the controller's <code>TokenReview</code>. Downstream it presents its own rotating SVID as its serving certificate and enforces the identical trust-domain and Gateway-scope-binding checks the controller does; it <strong>rejects <code>Namespace</code> subscribes</strong> (only the controller serves that scope).</p>
+<p>A proxy behind a relay is handed its upstream <code>(endpoint, expected server SA)</code> in the bootstrap response and verifies that identity on its stream — bootstrap always targets the controller directly, never a relay. Run <strong>≥2 relay replicas</strong> for availability; if a relay becomes unreachable, the proxy <strong>re-bootstraps</strong> to the controller (the always-up anchor) and is re-pointed at the current upstream. This repoints the control stream only — the data plane keeps serving its last-good snapshot throughout, so a relay rebalance never disrupts live traffic.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>See <a href="../../reference/configuration/#discovery-control-plane">Configuration reference</a>
+for the full flag/value list. The common knobs:</p>
+<table>
+<thead>
+<tr>
+<th>Helm value</th>
+<th>Env var</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>discovery.ca.mode</code></td>
+<td><code>COXSWAIN_DISCOVERY_CA_MODE</code></td>
+<td><code>auto</code></td>
+<td><code>auto</code> self-generates; <code>external</code> consumes a pre-existing Secret (fail closed).</td>
+</tr>
+<tr>
+<td><code>discovery.ca.secretName</code></td>
+<td><code>COXSWAIN_DISCOVERY_CA_SECRET</code></td>
+<td><code>coxswain-discovery-ca</code></td>
+<td>CA Secret name (controller namespace).</td>
+</tr>
+<tr>
+<td><code>discovery.svidTtl</code></td>
+<td><code>COXSWAIN_DISCOVERY_SVID_TTL</code></td>
+<td><code>24h</code></td>
+<td>Proxy SVID lifetime; refresh fires at ~50 %.</td>
+</tr>
+<tr>
+<td><code>discovery.trustDomain</code></td>
+<td><code>COXSWAIN_DISCOVERY_TRUST_DOMAIN</code></td>
+<td><code>cluster.local</code></td>
+<td>SPIFFE trust domain; must match across controller and proxies.</td>
+</tr>
+<tr>
+<td><code>discovery.port</code></td>
+<td><code>COXSWAIN_DISCOVERY_PORT</code></td>
+<td><code>50051</code></td>
+<td>mTLS Stream listener port.</td>
+</tr>
+<tr>
+<td><code>discovery.bootstrapPort</code></td>
+<td><code>COXSWAIN_DISCOVERY_BOOTSTRAP_PORT</code></td>
+<td><code>50052</code></td>
+<td>Server-auth bootstrap listener port.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reconnect-and-failure-modes">Reconnect and failure modes<a class="headerlink" href="#reconnect-and-failure-modes" title="Permanent link">&para;</a></h2>
+<p>The proxy runs a jittered-exponential-backoff reconnect supervisor (250 ms → 30 s):</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th><code>/readyz</code></th>
+<th>Traffic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Before first snapshot</td>
+<td><code>503 NotReady</code></td>
+<td>— (no routing yet)</td>
+</tr>
+<tr>
+<td>Disconnect after first snapshot</td>
+<td><code>200 Degraded</code></td>
+<td>Served from last-good snapshot</td>
+</tr>
+<tr>
+<td>Reconnect + new snapshot</td>
+<td><code>200 Ready</code></td>
+<td>Updated routing</td>
+</tr>
+<tr>
+<td>Controller down</td>
+<td><code>200 Degraded</code></td>
+<td>Last-good snapshot served indefinitely</td>
+</tr>
+</tbody>
+</table>
+<p>Routing tables are <strong>never cleared</strong> during a reconnect window. A controller outage does not disrupt traffic — proxies keep serving their last compiled snapshot until the controller comes back and pushes a new one.</p>
+<h2 id="wire-version-skew">Wire-version skew<a class="headerlink" href="#wire-version-skew" title="Permanent link">&para;</a></h2>
+<p><code>WIRE_VERSION = 2</code> (current — the resource-oriented delta protocol; see <a href="../../architecture/discovery-protocol/#the-wire-protocol">Discovery protocol → wire protocol</a>). Every <code>Subscribe</code> message includes this version. The server rejects a client with a different version immediately with <code>FAILED_PRECONDITION</code>; the client backs off <strong>permanently</strong> on that status (it does not retry the stream). Recovery: roll back the mismatched component (controller or proxy) to a matching version. There is no runtime negotiation — both ends must agree, and the break from <code>1</code> is hard (no back-compat: v1 sent a whole-table snapshot on every change, v2 streams per-resource deltas).</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<p><strong>Proxy stuck <code>NotReady</code>.</strong> The proxy reports <code>NotReady</code> until it has bootstrapped
+an SVID and received its first snapshot. Check, in order:</p>
+<ul>
+<li><strong>Trust bundle missing.</strong> <code>kubectl -n coxswain-system get configmap
+  coxswain-discovery-trust</code> must exist. It is published by the controller on
+  startup; if the controller never became ready (e.g. <code>external</code> mode with no CA
+  Secret), the bundle is never written and proxies cannot verify the controller.</li>
+<li><strong>Wrong token audience.</strong> The projected token's audience must be
+  <code>coxswain-discovery</code>. A mismatch is rejected at <code>TokenReview</code>.</li>
+<li><strong><code>external</code> Secret absent.</strong> In <code>external</code> mode the controller logs
+  <code>CA Secret absent and mode=external</code> and does not serve discovery. Supply the
+  Secret (cert-manager or <code>kubectl create secret tls</code>).</li>
+<li><strong>Wrong <code>--discovery-bootstrap-endpoint</code>.</strong> This is the proxy's sole endpoint
+  anchor: if it cannot reach the controller's bootstrap listener it never obtains
+  an SVID (nor learns its routing upstream) and stays NotReady. Verify the URI and
+  that the discovery bootstrap <code>Service</code> exists in the controller namespace.</li>
+</ul>
+<p><strong>Proxy <code>Degraded</code> after restart.</strong> Normal — the proxy starts <code>NotReady</code> until it reconnects and receives its first snapshot from the new controller. If it stays <code>Degraded</code> indefinitely, check connectivity to the discovery endpoint.</p>
+<p><strong>Wire-version mismatch.</strong> The proxy logs <code>FAILED_PRECONDITION</code> and backs off permanently. Check that the controller and proxy images are from the same release. See <a href="#wire-version-skew">Wire-version skew</a>.</p>
+<p><strong><code>BootstrapRejected</code> events.</strong> When the controller rejects a bootstrap (invalid
+or wrong-audience token, malformed CSR), it emits a <code>BootstrapRejected</code> Warning
+Event in its namespace. The controller is the sole diagnostic emitter — the proxy
+never writes events. List them with:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>BootstrapRejected
 </code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
-</div>
+<p>The event note carries the rejected principal and the reason.</p>
 
 
 

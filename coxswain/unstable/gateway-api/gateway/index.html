@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/gateway-api/gateway/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../listenerset/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>Gateway - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#gateway" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              Gateway
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -296,11 +294,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../gateway-api/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   Gateway API
@@ -487,30 +487,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -521,7 +516,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Installation
@@ -535,7 +530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -556,11 +551,126 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../../installation/helm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kustomize
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Gateway API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Gateway API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
   </span>
   
 
@@ -590,7 +700,7 @@
           
   
   <span class="md-ellipsis">
-    Kustomize
+    Gateway
   </span>
   
 
@@ -601,7 +711,7 @@
         
   
   <span class="md-ellipsis">
-    Kustomize
+    Gateway
   </span>
   
 
@@ -623,45 +733,78 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allowedroutesnamespacesfrom" class="md-nav__link">
+    <span class="md-ellipsis">
+      allowedRoutes.namespaces.from
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported fields
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#tls" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      TLS
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#listener-hostnames" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Listener hostnames
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#load-balancer-address" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      Load balancer address
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#requesting-a-static-address" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Requesting a static address
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status conditions
     </span>
   </a>
   
@@ -683,117 +826,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Manifests
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Gateway API
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            Gateway API
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Overview
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/gateway/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Gateway
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/listenerset/" class="md-nav__link">
+      <a href="../listenerset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -814,7 +847,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/httproute/" class="md-nav__link">
+      <a href="../httproute/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -835,7 +868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/grpcroute/" class="md-nav__link">
+      <a href="../grpcroute/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -856,7 +889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/tlsroute/" class="md-nav__link">
+      <a href="../tlsroute/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -877,7 +910,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/tcp-udp-routes/" class="md-nav__link">
+      <a href="../tcp-udp-routes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -898,7 +931,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/route-extensions/" class="md-nav__link">
+      <a href="../route-extensions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -919,7 +952,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/backend-policy/" class="md-nav__link">
+      <a href="../backend-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -940,7 +973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/capability-matrix/" class="md-nav__link">
+      <a href="../capability-matrix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,45 +1572,78 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#allowedroutesnamespacesfrom" class="md-nav__link">
+    <span class="md-ellipsis">
+      allowedRoutes.namespaces.from
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported fields
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#tls" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      TLS
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#listener-hostnames" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Listener hostnames
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#load-balancer-address" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      Load balancer address
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#requesting-a-static-address" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Requesting a static address
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status conditions
     </span>
   </a>
   
@@ -1601,48 +1667,213 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
-
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
-</code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
-
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
+<h1 id="gateway">Gateway<a class="headerlink" href="#gateway" title="Permanent link">&para;</a></h1>
+<p>A <code>Gateway</code> object defines one or more listeners, each binding a port and protocol to a set of allowed routes. Coxswain routes the <code>HTTP</code>, <code>HTTPS</code>, and <code>TLS</code> protocols. A listener declaring any other protocol is rejected: it gets <code>Accepted=False, reason=UnsupportedProtocol</code> with an empty <code>supportedKinds</code>, and the Gateway's own <code>Accepted</code> condition rolls up to <code>reason=ListenersNotValid</code> (status <code>False</code> when <em>every</em> listener is unsupported, <code>True</code> when at least one listener is still valid).</p>
+<div class="admonition tip">
+<p class="admonition-title">Dedicated proxy per Gateway</p>
+<p>A <code>Gateway</code> can be opted into its own isolated proxy pool via <code>spec.infrastructure.parametersRef</code> pointing at a <code>CoxswainGatewayParameters</code>. See <a href="../#dedicated-proxy-pools">Dedicated proxy pools</a> for the full walkthrough. A <code>parametersRef</code> targeting any other (unrecognized) kind is rejected with <code>Accepted=False, reason=InvalidParameters</code>.</p>
 </div>
+<div class="admonition info">
+<p class="admonition-title">Infrastructure metadata propagation</p>
+<p><code>spec.infrastructure.labels</code> and <code>spec.infrastructure.annotations</code> propagate onto the resources Coxswain provisions for the Gateway, whether it is served by the shared pool or by a dedicated proxy. For a dedicated proxy they land on the per-Gateway <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code>; for a shared-pool Gateway they land on the per-Gateway VIP <code>Service</code> (e.g. cloud load-balancer annotations) and on a per-Gateway identity <code>ServiceAccount</code> provisioned in the Gateway's namespace. The four reserved label keys (<code>app.kubernetes.io/{name,instance,managed-by,component}</code> and <code>gateway.networking.k8s.io/gateway-name</code>) cannot be overridden — a collision is dropped with a warning, since the Service/Deployment selectors depend on them.</p>
+</div>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span><span class="w">        </span><span class="c1"># see below</span>
+</code></pre></div>
+<h3 id="allowedroutesnamespacesfrom"><code>allowedRoutes.namespaces.from</code><a class="headerlink" href="#allowedroutesnamespacesfrom" title="Permanent link">&para;</a></h3>
+<p>Controls which namespaces may attach <code>HTTPRoute</code>s to this listener.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Same</code> (default)</td>
+<td>Only routes in the Gateway's own namespace can attach.</td>
+</tr>
+<tr>
+<td><code>All</code></td>
+<td>Routes from any namespace can attach.</td>
+</tr>
+<tr>
+<td><code>Selector</code></td>
+<td>Routes from namespaces matching <code>namespaces.selector</code> (a label selector) can attach.</td>
+</tr>
+</tbody>
+</table>
+<p><code>All</code> and <code>Selector</code> cause the controller to automatically grant the dedicated proxy cluster-wide <code>HTTPRoute</code> reads. No extra fields on <code>CoxswainGatewayParameters</code> are required — the listener spec is the single source of truth. See the <a href="../#cross-namespace-routes">dedicated-mode guide</a> for details.</p>
+<h2 id="supported-fields">Supported fields<a class="headerlink" href="#supported-fields" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec.gatewayClassName</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.listeners[].name</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.listeners[].port</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.listeners[].protocol</code></td>
+<td><code>HTTP</code>, <code>HTTPS</code>, <code>TLS</code></td>
+</tr>
+<tr>
+<td><code>spec.listeners[].hostname</code></td>
+<td>Full (wildcard: any number of labels)</td>
+</tr>
+<tr>
+<td><code>spec.listeners[].allowedRoutes</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.listeners[].tls</code></td>
+<td><code>mode: Terminate</code> (HTTPS) and <code>mode: Passthrough</code> (TLS)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tls">TLS<a class="headerlink" href="#tls" title="Permanent link">&para;</a></h2>
+<p>Add an <code>HTTPS</code> listener and reference a <code>kubernetes.io/tls</code> Secret in the same namespace. Coxswain reloads the certificate automatically when the Secret changes. See the <a href="../../operations/tls/">TLS guide</a> for cert-manager integration. For TLS passthrough (no termination at the proxy), see <a href="../tlsroute/">TLSRoute</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
+<span class="w">        </span><span class="nt">certificateRefs</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway-tls</span><span class="w">   </span><span class="c1"># must exist in the same namespace</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+</code></pre></div>
+<p>The referenced Secret must have <code>type: kubernetes.io/tls</code> with <code>tls.crt</code> and <code>tls.key</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway-tls</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/tls</span>
+<span class="nt">data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">tls.crt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;base64-encoded certificate&gt;</span>
+<span class="w">  </span><span class="nt">tls.key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;base64-encoded private key&gt;</span>
+</code></pre></div>
+<p>To reference a Secret in a different namespace, create a <code>ReferenceGrant</code> in the namespace where the Secret lives:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReferenceGrant</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">allow-gateway-tls</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">certs-namespace</span><span class="w">     </span><span class="c1"># namespace of the Secret</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">from</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="w">      </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w">         </span><span class="c1"># namespace of the Gateway</span>
+<span class="w">  </span><span class="nt">to</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+</code></pre></div>
+<h2 id="listener-hostnames">Listener hostnames<a class="headerlink" href="#listener-hostnames" title="Permanent link">&para;</a></h2>
+<p>The <code>hostname</code> field on a listener filters which requests reach its attached routes. Gateway API wildcard matching allows any number of DNS labels: <code>*.example.com</code> matches both <code>foo.example.com</code> and <code>foo.bar.example.com</code>.</p>
+<p>An empty <code>hostname</code> accepts requests for any hostname. For SNI-based TLS termination, the listener <code>hostname</code> is also used to select the correct certificate when multiple HTTPS listeners share the same port.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Gateway API wildcards match any number of labels; classic <code>Ingress</code> matches only a single label. See <a href="../httproute/#wildcard-hostnames">HTTPRoute → Wildcard hostnames</a>.</p>
+</div>
+<h2 id="load-balancer-address">Load balancer address<a class="headerlink" href="#load-balancer-address" title="Permanent link">&para;</a></h2>
+<p>Set <code>--status-address</code> to the external IP or hostname of your load balancer. Coxswain writes it to <code>status.addresses</code> on the <code>Gateway</code> object. Without it, the address is left empty.</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>my-gateway
+<span class="c1"># NAME         CLASS      ADDRESS         PROGRAMMED</span>
+<span class="c1"># my-gateway   coxswain   203.0.113.10    True</span>
+</code></pre></div>
+<h2 id="requesting-a-static-address">Requesting a static address<a class="headerlink" href="#requesting-a-static-address" title="Permanent link">&para;</a></h2>
+<p>Set <code>spec.addresses</code> to ask coxswain to bind a specific address rather than letting the cluster auto-assign one (Gateway API <code>GatewayStaticAddresses</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">addresses</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IPAddress</span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.96.0.42</span>
+</code></pre></div>
+<p>Coxswain honors a requested <code>IPAddress</code> by provisioning that Gateway's VIP <code>Service</code> as a <strong><code>ClusterIP</code></strong> pinned to the requested address (overriding the default VIP type for that one Gateway). The apiserver assigns the address exactly when it is a free IP inside the cluster's Service CIDR, and rejects it otherwise — giving a deterministic accept/reject on every cluster. The outcome is reflected in the conditions:</p>
+<table>
+<thead>
+<tr>
+<th>Requested address</th>
+<th><code>Accepted</code></th>
+<th><code>Programmed</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Supported type, bindable value</td>
+<td><code>True</code></td>
+<td><code>True</code> — the address appears in <code>status.addresses</code></td>
+</tr>
+<tr>
+<td>Supported type, value coxswain cannot bind (out of range / in use)</td>
+<td><code>True</code></td>
+<td><code>False</code>, reason <code>AddressNotUsable</code> — the value is <strong>not</strong> published</td>
+</tr>
+<tr>
+<td>Unsupported <code>type</code> (anything but <code>IPAddress</code>/<code>Hostname</code>)</td>
+<td><code>False</code>, reason <code>UnsupportedAddress</code></td>
+<td><code>False</code>, reason <code>Invalid</code></td>
+</tr>
+</tbody>
+</table>
+<p>A request for two distinct IPs is always <code>AddressNotUsable</code> — one <code>Service</code> binds a single <code>clusterIP</code>. Leaving <code>value</code> empty keeps the auto-assign behaviour (<code>GatewayAddressEmpty</code>).</p>
+<blockquote>
+<p>Because a static-IP Gateway is bound to a <code>ClusterIP</code>, its address is <strong>cluster-internal</strong> — coxswain cannot guarantee an arbitrary externally-routable IP across load-balancer providers. Use a static address when you need a stable, predictable in-cluster address; for external exposure, leave <code>spec.addresses</code> empty and let the cluster's load balancer assign one.</p>
+</blockquote>
+<h2 id="status-conditions">Status conditions<a class="headerlink" href="#status-conditions" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>True when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accepted</code></td>
+<td>The controller has claimed this Gateway</td>
+</tr>
+<tr>
+<td><code>Programmed</code></td>
+<td>All listeners are configured and the Gateway's address has resolved</td>
+</tr>
+</tbody>
+</table>
+<p>The controller does not stamp <code>Programmed</code> as processed for the current <code>metadata.generation</code> until the Gateway's own address has resolved into <code>status.addresses</code>. Until then <code>Programmed</code> stays <code>False</code>/<code>Pending</code> and its <code>observedGeneration</code> trails <code>metadata.generation</code>, so a client that waits for the latest conditions never observes <code>Programmed</code> claiming a generation while <code>status.addresses</code> is still empty — the same reconcile that flips <code>Programmed=True</code> also publishes the address. <code>Accepted</code> advances immediately. (A <em>settled</em> negative such as <code>AddressNotUsable</code> is not held back — it is a final answer for the current generation.)</p>
+<p>Per-listener conditions are also written: <code>Accepted</code>, <code>ResolvedRefs</code>, and <code>Programmed</code>. Inspect them when a listener is not serving traffic:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>gateway<span class="w"> </span>my-gateway
+</code></pre></div>
 
 
 

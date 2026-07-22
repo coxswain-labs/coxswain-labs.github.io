@@ -13,10 +13,10 @@
         <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/architecture/">
       
       
-        <link rel="prev" href="../reference/capability-matrix/">
+        <link rel="prev" href="../reference/observability/">
       
       
-        <link rel="next" href="deployment-models/">
+        <link rel="next" href="proxy-topology/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -49,6 +49,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -295,6 +297,42 @@
   
     
     
+      <li class="md-tabs__item">
+        <a href="../gateway-api/" class="md-tabs__link">
+          
+  
+  Gateway API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../ingress/" class="md-tabs__link">
+          
+  
+  Ingress
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
       
   
   
@@ -302,10 +340,10 @@
     
     
       <li class="md-tabs__item">
-        <a href="../guides/ingress/" class="md-tabs__link">
+        <a href="../operations/tls/" class="md-tabs__link">
           
   
-  Guides
+  Operations
 
         </a>
       </li>
@@ -354,23 +392,6 @@
   
 
       
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../faq/" class="md-tabs__link">
-        
-  
-    
-  
-  FAQ
-
-      </a>
-    </li>
-  
-
-      
     </ul>
   </div>
 </nav>
@@ -397,9 +418,7 @@
   
 
 
-  
-
-<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="Coxswain" class="md-nav__button md-logo" aria-label="Coxswain" data-md-component="logo">
       
@@ -578,7 +597,7 @@
         
   
   <span class="md-ellipsis">
-    Raw manifests
+    Manifests
   </span>
   
 
@@ -621,7 +640,7 @@
             
   
   <span class="md-ellipsis">
-    Guides
+    Gateway API
   </span>
   
 
@@ -630,136 +649,6 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            Guides
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Ingress
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1">
-            <span class="md-nav__icon md-icon"></span>
-            Ingress
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guides/ingress/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Overview
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guides/ingress-annotations/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Annotations
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Gateway API
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             Gateway API
           </label>
@@ -772,7 +661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/gateway-api/" class="md-nav__link">
+      <a href="../gateway-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -793,7 +682,28 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/listener-sets/" class="md-nav__link">
+      <a href="../gateway-api/gateway/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gateway-api/listenerset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -814,80 +724,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/dedicated-mode/" class="md-nav__link">
+      <a href="../gateway-api/httproute/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Dedicated proxy pools
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Operations
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
-            <span class="md-nav__icon md-icon"></span>
-            Operations
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guides/running-in-production/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Running in production
+    HTTPRoute
   </span>
   
 
@@ -904,11 +745,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/control-plane-security/" class="md-nav__link">
+      <a href="../gateway-api/grpcroute/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Control-plane security
+    GRPCRoute
   </span>
   
 
@@ -925,11 +766,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/tls/" class="md-nav__link">
+      <a href="../gateway-api/tlsroute/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TLS
+    TLSRoute
   </span>
   
 
@@ -946,11 +787,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/rate-limiting/" class="md-nav__link">
+      <a href="../gateway-api/tcp-udp-routes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Rate limiting
+    TCP / UDP routes
   </span>
   
 
@@ -967,11 +808,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/retries/" class="md-nav__link">
+      <a href="../gateway-api/route-extensions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Retries
+    Route extensions
   </span>
   
 
@@ -988,11 +829,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/verifying-releases/" class="md-nav__link">
+      <a href="../gateway-api/backend-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Verifying releases
+    Backend policy
   </span>
   
 
@@ -1009,23 +850,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/troubleshooting/" class="md-nav__link">
+      <a href="../gateway-api/capability-matrix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Troubleshooting
+    Conformance
   </span>
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1064,7 +897,7 @@
             
   
   <span class="md-ellipsis">
-    Reference
+    Ingress
   </span>
   
 
@@ -1073,6 +906,358 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Ingress
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingress/annotations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annotations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Traffic
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            Traffic
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/tls/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TLS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/rate-limiting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rate limiting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/retries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Retries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/running-in-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/control-plane-security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control plane
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/relay-policy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Relay tier
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/verifying-releases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Releases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             Reference
           </label>
@@ -1106,74 +1291,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/relay-policy/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Relay policy
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../reference/observability/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Observability
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/conformance/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Conformance
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/capability-matrix/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Gateway API capability matrix
   </span>
   
 
@@ -1214,10 +1336,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1228,8 +1350,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_6">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Architecture
           </label>
@@ -1339,9 +1461,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#request-path" class="md-nav__link">
+  <a href="#request-lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
-      Request path
+      Request lifecycle
     </span>
   </a>
   
@@ -1372,11 +1494,11 @@
   
   
     <li class="md-nav__item">
-      <a href="deployment-models/" class="md-nav__link">
+      <a href="proxy-topology/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Deployment models
+    Proxy topology
   </span>
   
 
@@ -1414,32 +1536,107 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../faq/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    FAQ
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
                 </div>
               </div>
             
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#serve-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      serve controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serve-proxy-shared" class="md-nav__link">
+    <span class="md-ellipsis">
+      serve proxy --shared
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serve-proxy-dedicated" class="md-nav__link">
+    <span class="md-ellipsis">
+      serve proxy --dedicated
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serve-relay" class="md-nav__link">
+    <span class="md-ellipsis">
+      serve relay
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#request-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request lifecycle
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-go-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where to go next
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
             
           
           
@@ -1459,7 +1656,7 @@
     K8s[Kubernetes\nAPI Server]
 
     subgraph cs[coxswain-system]
-        C[Controller\nreflector · discovery server\nidentity server]
+        C[Controller]
         SP["Proxy pool (shared)"]
     end
 
@@ -1489,28 +1686,28 @@
 <p>The controller also runs two gRPC listeners that proxies connect to:</p>
 <ul>
 <li>
-<p><strong>Discovery (Stream) listener</strong> (port 50051, mTLS mandatory, <strong>leader-only</strong>) — compiles routing snapshots from K8s resources and pushes them to subscribed proxies. Each snapshot is scoped to the subscriber's declared <code>Scope</code> — see <a href="deployment-models/#scope-aware-dispatch">Scope-aware dispatch</a>.</p>
+<p><strong>Discovery (Stream) listener</strong> (port 50051, mTLS mandatory, <strong>leader-only</strong>) — compiles routing snapshots from K8s resources and pushes them to subscribed proxies. Each snapshot is scoped to the subscriber's declared <code>Scope</code> — see <a href="proxy-topology/#scope-aware-dispatch">Scope-aware dispatch</a>.</p>
 <p>Only the lease holder serves streams. Mechanically: the leader labels its own pod (<code>discovery.coxswain-labs.dev/leader: "true"</code>), so the <code>coxswain-controller-discovery</code> Service routes dials to it; a standby replica that gets dialled anyway (during a leader transition) rejects the stream with <code>FAILED_PRECONDITION</code>, and the proxy fast-retries until it lands on the real leader.</p>
 <p>Why single-replica: it gives every proxy one consistent watch position (no two replicas can disagree about routing state), and it puts each proxy's bound-listener readiness report in the same process that writes <code>Gateway</code> status — so <code>Programmed=True</code> is a genuine claim that the data plane is actually bound and serving, not just that the controller compiled a snapshot.</p>
 </li>
 <li>
-<p><strong>Bootstrap (Identity) listener</strong> (port 50052, server-auth-only TLS, <strong>every replica</strong>, via the separate <code>coxswain-controller-discovery-bootstrap</code> Service) — acts as a certificate authority for new proxies. A fresh proxy presents its ServiceAccount token and a CSR; the controller validates the token via <code>TokenReview</code>, signs a short-lived SPIFFE SVID, and returns it. Unlike the Stream listener, every replica can do this (not just the leader) because issuance needs no shared state beyond the one CA Secret all replicas already read — so it keeps working through leader churn. See <a href="../guides/control-plane-security/">Control-plane security</a>.</p>
+<p><strong>Bootstrap (Identity) listener</strong> (port 50052, server-auth-only TLS, <strong>every replica</strong>, via the separate <code>coxswain-controller-discovery-bootstrap</code> Service) — acts as a certificate authority for new proxies. A fresh proxy presents its ServiceAccount token and a CSR; the controller validates the token via <code>TokenReview</code>, signs a short-lived SPIFFE SVID, and returns it. Unlike the Stream listener, every replica can do this (not just the leader) because issuance needs no shared state beyond the one CA Secret all replicas already read — so it keeps working through leader churn. See <a href="../operations/control-plane-security/">Control-plane security</a>.</p>
 </li>
 </ul>
 <p>On a leader change, routing <em>updates</em> stall for the brief reconnect window (bounded by the Lease TTL) while every proxy keeps serving its last-good snapshot — no data-plane outage. Status writes race nothing: a demoted leader re-checks its leadership immediately before every status patch, narrowing the residual last-write-wins window to a single request round-trip (accepted; both replicas compute identical status from warm caches).</p>
-<p>The provisioning operator reconciles off the controller's single watch fabric (#574): rather than running its own kube-rs <code>Controller</code> and Kubernetes client, its reconcile is driven by the same unified status worker that writes Gateway API status, so a dedicated Gateway and its shared-pool siblings share one authoritative set of watches. Its reconcile resolves each Gateway's effective <code>CoxswainGatewayParameters</code> (per-field overlay: Gateway's <code>parametersRef</code> wins per-field, GatewayClass's fills the rest; <code>podTemplate</code> strategic-merges across both layers) and renders the desired <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code>. The <code>podTemplate</code> escape hatch is merged onto the rendered Deployment with <code>kubectl apply</code> strategic-merge semantics — <code>containers</code> merges by <code>name</code>, <code>tolerations</code> by <code>(key, operator)</code>, container-level <code>env</code> by <code>name</code>, and so on — so sidecar injection and env overlays behave the way operators expect from native K8s tooling.</p>
+<p>The provisioning operator reconciles off the controller's single watch fabric: rather than running its own kube-rs <code>Controller</code> and Kubernetes client, its reconcile is driven by the same unified status worker that writes Gateway API status, so a dedicated Gateway and its shared-pool siblings share one authoritative set of watches. Its reconcile resolves each Gateway's effective <code>CoxswainGatewayParameters</code> (per-field overlay: Gateway's <code>parametersRef</code> wins per-field, GatewayClass's fills the rest; <code>podTemplate</code> strategic-merges across both layers) and renders the desired <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code>. The <code>podTemplate</code> escape hatch is merged onto the rendered Deployment with <code>kubectl apply</code> strategic-merge semantics — <code>containers</code> merges by <code>name</code>, <code>tolerations</code> by <code>(key, operator)</code>, container-level <code>env</code> by <code>name</code>, and so on — so sidecar injection and env overlays behave the way operators expect from native K8s tooling.</p>
 <p>The controller also watches <code>IngressClass</code> and its associated <code>CoxswainIngressClassParameters</code> objects (the <code>IngressClass.spec.parameters</code> reference target). These carry class-level defaults for Ingress routes: <code>spec.defaultAnnotations</code> (per-key annotation defaults that per-Ingress annotations can override) and <code>spec.accessLog</code> (per-class access-log suppression).</p>
 <h3 id="serve-proxy-shared"><code>serve proxy --shared</code><a class="headerlink" href="#serve-proxy-shared" title="Permanent link">&para;</a></h3>
 <p>Read-only Pingora data plane. Subscribes to the controller discovery stream with <code>Scope::SharedPool</code> and receives a compiled snapshot covering every <code>Ingress</code> and every <code>Gateway</code> not opted into dedicated mode. Scales horizontally with no leader election and no inter-replica coordination.</p>
-<p>Required arg: <code>--discovery-bootstrap-endpoint</code> (<code>https://</code>) — the sole endpoint anchor. On first start the proxy bootstraps an SVID there, and the bootstrap response also carries its current best <strong>routing-stream upstream</strong> <code>(endpoint, expected_server_sa)</code>: the controller, or its namespace's relay if one is provisioned. The proxy opens the mTLS stream directly to that upstream. There is no <code>--discovery-endpoint</code> (#601): the upstream is bootstrap-delivered and <strong>runtime-directed</strong> — the controller can repoint a proxy between itself and a relay by pushing a <code>PreferredUpstream</code> directive on the stream, which swaps only the control-stream connection. Routing tables are never cleared across reconnects, and <strong>a relay rebalance never disrupts data-plane traffic</strong>: listeners are held and the last-good routing snapshot is served throughout the brief control-stream reconnect. If a relay becomes unreachable, the proxy re-bootstraps to the controller (the always-up anchor).</p>
+<p>Required arg: <code>--discovery-bootstrap-endpoint</code> (<code>https://</code>) — the sole endpoint anchor. On first start the proxy bootstraps an SVID there, and the bootstrap response also carries its current best <strong>routing-stream upstream</strong> <code>(endpoint, expected_server_sa)</code>: the controller, or its namespace's relay if one is provisioned. The proxy opens the mTLS stream directly to that upstream. There is no <code>--discovery-endpoint</code>: the upstream is bootstrap-delivered and <strong>runtime-directed</strong> — the controller can repoint a proxy between itself and a relay by pushing a <code>PreferredUpstream</code> directive on the stream, which swaps only the control-stream connection. Routing tables are never cleared across reconnects, and <strong>a relay rebalance never disrupts data-plane traffic</strong>: listeners are held and the last-good routing snapshot is served throughout the brief control-stream reconnect. If a relay becomes unreachable, the proxy re-bootstraps to the controller (the always-up anchor).</p>
 <p>The shared proxy holds <strong>zero Kubernetes API credentials</strong>. Its ServiceAccount exists only as a pod identity; the only token mounted is an audience-scoped projected SA token (<code>coxswain-discovery</code> audience) used exclusively for SVID bootstrap. No ClusterRole or RoleBinding is bound to it.</p>
 <h3 id="serve-proxy-dedicated"><code>serve proxy --dedicated</code><a class="headerlink" href="#serve-proxy-dedicated" title="Permanent link">&para;</a></h3>
 <p>Read-only proxy scoped to a single Gateway (identified by <code>--dedicated --gateway-name=NAME --gateway-namespace=NS</code>). Provisioned by the controller in the Gateway's own namespace. Has its own rollout, failure domain, and <code>/metrics</code>.</p>
-<p>The dedicated proxy subscribes with <code>Scope::Gateway { name, namespace }</code> and receives only its Gateway's routing snapshot. The controller stamps the expected proxy ServiceAccount name (<code>{gateway-name}-{gatewayclass-name}</code>, per GEP-1762) into the Gateway's registry entry at reconcile time. When the subscription arrives, the discovery server verifies that the peer's mTLS SVID matches that expected SA before sending any snapshot — a mismatch yields <code>PERMISSION_DENIED</code>.</p>
+<p>The dedicated proxy subscribes with <code>Scope::Gateway { name, namespace }</code> and receives only its Gateway's routing snapshot. The controller stamps the expected proxy ServiceAccount name (<code>{gateway-name}-{gatewayclass-name}</code>) into the Gateway's registry entry at reconcile time. When the subscription arrives, the discovery server verifies that the peer's mTLS SVID matches that expected SA before sending any snapshot — a mismatch yields <code>PERMISSION_DENIED</code>.</p>
 <p>Like the shared proxy, the dedicated proxy holds <strong>zero Kubernetes API credentials</strong>. Cross-namespace route attachment (<code>allowedRoutes.namespaces.from: All</code>/<code>Selector</code>) is resolved by the controller at reconcile time — the controller's cluster-wide reflector compiles all cross-namespace routes into the dedicated snapshot before it is pushed. No proxy-side cluster-wide reflector and no proxy-side RBAC are required.</p>
 <h3 id="serve-relay"><code>serve relay</code><a class="headerlink" href="#serve-relay" title="Permanent link">&para;</a></h3>
 <p>A zero-RBAC discovery <strong>cache</strong>: a recursive node that subscribes to an upstream discovery stream (the controller) and re-publishes snapshots to downstream proxies, so the leader's snapshot fan-out scales O(relays) instead of O(nodes). A relay holds the same zero-Kubernetes-credentials invariant as a proxy. <code>relay --shared</code> fronts the shared pool; <code>relay --namespace &lt;NS&gt;</code> fronts one namespace's dedicated Gateways (controller-provisioned; provenance-authorized). Leaves speak the unchanged protocol and are unaware of the tier. See <a href="discovery-protocol/#the-relay-tier">Discovery protocol → The relay tier</a>.</p>
-<h2 id="request-path">Request path<a class="headerlink" href="#request-path" title="Permanent link">&para;</a></h2>
+<h2 id="request-lifecycle">Request lifecycle<a class="headerlink" href="#request-lifecycle" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
     A([TCP connection]) --&gt; B{TLS?}
     B --&gt;|yes| C[SNI cert\nselection]
@@ -1523,9 +1720,9 @@
 <p>TLS works the same way: the TLS store is an atomic snapshot rebuilt on every push. New connections use the new certificate; connections in progress complete with the old one.</p>
 <h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><a href="deployment-models/">Deployment models</a></strong> — the Shared and Dedicated topologies, how per-Gateway addressing works when compute is shared, and the scope-aware snapshot dispatch that keeps them isolated.</li>
+<li><strong><a href="proxy-topology/">Proxy topology</a></strong> — the shared and dedicated topologies, how per-Gateway addressing works when compute is shared, and the scope-aware snapshot dispatch that keeps them isolated.</li>
 <li><strong><a href="discovery-protocol/">Discovery protocol</a></strong> — how <code>Programmed</code> status is gated on real bind + ack signals, RBAC by role, and which admin endpoints each role exposes.</li>
-<li><strong><a href="../guides/control-plane-security/">Control-plane security</a></strong> — how the discovery channel is secured (mTLS, SPIFFE SVIDs, CA provisioning), reconnect behaviour, and wire-version compatibility.</li>
+<li><strong><a href="../operations/control-plane-security/">Control-plane security</a></strong> — how the discovery channel is secured (mTLS, SPIFFE SVIDs, CA provisioning), reconnect behaviour, and wire-version compatibility.</li>
 </ul>
 
 
@@ -1598,7 +1795,7 @@
       <div class="md-progress" data-md-component="progress" role="progressbar"></div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.top", "toc.integrate", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.top", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
       <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>

@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/gateway-api/grpcroute/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../httproute/">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../tlsroute/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>GRPCRoute - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#grpcroute" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              GRPCRoute
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -296,11 +294,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../gateway-api/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   Gateway API
@@ -487,6 +487,137 @@
       
   
   
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kustomize
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -507,24 +638,24 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    Installation
+    Gateway API
   </span>
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            Installation
+            Gateway API
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -556,11 +687,53 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../gateway/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Helm
+    Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../listenerset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../httproute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTPRoute
   </span>
   
 
@@ -590,7 +763,7 @@
           
   
   <span class="md-ellipsis">
-    Kustomize
+    GRPCRoute
   </span>
   
 
@@ -601,7 +774,7 @@
         
   
   <span class="md-ellipsis">
-    Kustomize
+    GRPCRoute
   </span>
   
 
@@ -623,45 +796,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#backend-requirements" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Backend requirements
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      Example
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#method-matching" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Method matching
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#supported-fields" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      Supported fields
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#status-conditions" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Status conditions
     </span>
   </a>
   
@@ -683,180 +856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Manifests
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Gateway API
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            Gateway API
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Overview
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/gateway/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Gateway
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/listenerset/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ListenerSets
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/httproute/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    HTTPRoute
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/grpcroute/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    GRPCRoute
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/tlsroute/" class="md-nav__link">
+      <a href="../tlsroute/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -877,7 +877,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/tcp-udp-routes/" class="md-nav__link">
+      <a href="../tcp-udp-routes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -898,7 +898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/route-extensions/" class="md-nav__link">
+      <a href="../route-extensions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -919,7 +919,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/backend-policy/" class="md-nav__link">
+      <a href="../backend-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -940,7 +940,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/capability-matrix/" class="md-nav__link">
+      <a href="../capability-matrix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,45 +1539,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#backend-requirements" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Backend requirements
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      Example
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#method-matching" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Method matching
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#supported-fields" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      Supported fields
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#status-conditions" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Status conditions
     </span>
   </a>
   
@@ -1601,48 +1601,140 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
-
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
+<h1 id="grpcroute">GRPCRoute<a class="headerlink" href="#grpcroute" title="Permanent link">&para;</a></h1>
+<p>A <code>GRPCRoute</code> routes gRPC traffic attached to a <code>Gateway</code> listener. gRPC is HTTP/2 <code>POST /{ServiceName}/{MethodName}</code>, so no special listener protocol is required — an ordinary <code>HTTP</code> listener on the Gateway accepts gRPC connections.</p>
+<h2 id="backend-requirements">Backend requirements<a class="headerlink" href="#backend-requirements" title="Permanent link">&para;</a></h2>
+<p>gRPC backends must advertise cleartext HTTP/2 (h2c) by setting <code>appProtocol: kubernetes.io/h2c</code> on the Service port. Coxswain uses prior-knowledge h2c to connect to the backend, which preserves gRPC trailers (<code>grpc-status</code>, <code>grpc-message</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-grpc-service</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-grpc-app</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50051</span>
+<span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50051</span>
+<span class="w">      </span><span class="nt">appProtocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/h2c</span><span class="w">   </span><span class="c1"># required for gRPC backends</span>
 </code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GRPCRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-grpc-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grpc.example.com</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matches</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">method</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exact</span>
+<span class="w">            </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">com.example.MyService</span>
+<span class="w">            </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SayHello</span>
+<span class="w">      </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-grpc-service</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50051</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
-
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
+<h2 id="method-matching">Method matching<a class="headerlink" href="#method-matching" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Spec</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No <code>matches</code> (or empty <code>matches</code>)</td>
+<td>Routes all gRPC traffic on attached listeners</td>
+</tr>
+<tr>
+<td><code>method.type: Exact</code>, service + method</td>
+<td>Routes <code>/{service}/{method}</code> exactly</td>
+</tr>
+<tr>
+<td><code>method.type: Exact</code>, service only</td>
+<td>Routes any method under <code>/{service}/</code></td>
+</tr>
+<tr>
+<td><code>method.type: Exact</code>, method only</td>
+<td>Routes the method name on any service</td>
+</tr>
+<tr>
+<td><code>method.type: RegularExpression</code></td>
+<td><code>service</code> and <code>method</code> are RE2 patterns</td>
+</tr>
+</tbody>
+</table>
+<p>Header matching uses the same <code>Exact</code> and <code>RegularExpression</code> semantics as <code>HTTPRoute</code>.</p>
+<h2 id="supported-fields">Supported fields<a class="headerlink" href="#supported-fields" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec.parentRefs</code></td>
+<td>Full (including <code>sectionName</code> and <code>port</code>)</td>
+</tr>
+<tr>
+<td><code>spec.hostnames</code></td>
+<td>Full (including wildcards)</td>
+</tr>
+<tr>
+<td><code>spec.rules[].matches[].method</code></td>
+<td><code>Exact</code> and <code>RegularExpression</code></td>
+</tr>
+<tr>
+<td><code>spec.rules[].matches[].headers</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.rules[].filters</code></td>
+<td><code>RequestHeaderModifier</code>, <code>ResponseHeaderModifier</code>, <code>ExtensionRef</code> (<code>RateLimit</code>, <code>IpAccessControl</code>, <code>JwtAuth</code>)</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs</code></td>
+<td>Service backends only</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs[].weight</code></td>
+<td>Full</td>
+</tr>
+</tbody>
+</table>
+<p>GRPCRoute supports the protocol-agnostic <code>ExtensionRef</code> filters — <a href="../../operations/rate-limiting/"><code>RateLimit</code></a>, <a href="../route-extensions/#ip-access-control"><code>IpAccessControl</code></a>, and <a href="../route-extensions/#jwt-authentication"><code>JwtAuth</code></a> (bearer/JWT auth is a common gRPC pattern, unlike <code>BasicAuth</code>) — which apply identically to gRPC (HTTP/2) traffic. <code>PathRewriteRegex</code> is not supported: for gRPC the request path <em>is</em> the <code>/{service}/{method}</code> RPC address, so rewriting it is meaningless. <code>BasicAuth</code> and <code>Compression</code> are HTTP-only idioms and are not supported either — gRPC clients authenticate with bearer tokens or mTLS, and gRPC compresses per-message at the framing layer rather than via HTTP <code>Content-Encoding</code>. <code>RequestSizeLimit</code> is also not enforced on gRPC — a mid-stream body cap over HTTP/2 deadlocks the client under pingora, so gRPC message sizes are left to the backend's <code>max_recv_msg_size</code> (<a href="../route-extensions/#request-size-limit-is-not-enforced-on-grpcroute">details</a>). Any other <code>ExtensionRef</code> (and <code>RequestMirror</code>) is skipped with a WARN log line.</p>
+<h2 id="status-conditions">Status conditions<a class="headerlink" href="#status-conditions" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>True when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accepted</code></td>
+<td>The route is attached to a Gateway listener</td>
+</tr>
+<tr>
+<td><code>Programmed</code></td>
+<td>The route is active in the data plane</td>
+</tr>
+<tr>
+<td><code>ResolvedRefs</code></td>
+<td>All <code>backendRefs</code> resolve to a reachable Service</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>grpcroute<span class="w"> </span>my-grpc-route
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
-</div>
 
 
 

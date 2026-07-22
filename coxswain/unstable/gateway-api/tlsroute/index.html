@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/gateway-api/tlsroute/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../grpcroute/">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../tcp-udp-routes/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>TLSRoute - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#tlsroute" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              TLSRoute
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -296,11 +294,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../gateway-api/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   Gateway API
@@ -487,6 +487,137 @@
       
   
   
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Installation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Helm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kustomize
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -507,24 +638,24 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    Installation
+    Gateway API
   </span>
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            Installation
+            Gateway API
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -556,11 +687,74 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../gateway/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Helm
+    Gateway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../listenerset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ListenerSets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../httproute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HTTPRoute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grpcroute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GRPCRoute
   </span>
   
 
@@ -590,7 +784,7 @@
           
   
   <span class="md-ellipsis">
-    Kustomize
+    TLSRoute
   </span>
   
 
@@ -601,7 +795,7 @@
         
   
   <span class="md-ellipsis">
-    Kustomize
+    TLSRoute
   </span>
   
 
@@ -623,47 +817,113 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#gateway-listener-passthrough" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Gateway listener (Passthrough)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      Example
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#sni-matching" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      SNI matching
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#supported-fields" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      Supported fields
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#status-conditions" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Status conditions
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminate-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Terminate mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Terminate mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listener
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mixed-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mixed mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mixed mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listener_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listener
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -683,201 +943,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Manifests
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Gateway API
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            Gateway API
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Overview
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/gateway/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Gateway
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/listenerset/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ListenerSets
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/httproute/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    HTTPRoute
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/grpcroute/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    GRPCRoute
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/tlsroute/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TLSRoute
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../gateway-api/tcp-udp-routes/" class="md-nav__link">
+      <a href="../tcp-udp-routes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -898,7 +964,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/route-extensions/" class="md-nav__link">
+      <a href="../route-extensions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -919,7 +985,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/backend-policy/" class="md-nav__link">
+      <a href="../backend-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -940,7 +1006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gateway-api/capability-matrix/" class="md-nav__link">
+      <a href="../capability-matrix/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,47 +1605,113 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#gateway-listener-passthrough" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Gateway listener (Passthrough)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      Example
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#sni-matching" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      SNI matching
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#supported-fields" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      Supported fields
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#status-conditions" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Status conditions
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminate-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Terminate mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Terminate mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listener
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mixed-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mixed mode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mixed mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gateway-listener_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway listener
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1601,47 +1733,239 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
-
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
+<h1 id="tlsroute">TLSRoute<a class="headerlink" href="#tlsroute" title="Permanent link">&para;</a></h1>
+<p>A <code>TLSRoute</code> routes raw TLS connections by SNI. Coxswain supports three modes, configured via <code>tls.mode</code> on the Gateway listener:</p>
+<ul>
+<li><strong>Passthrough</strong> — the proxy peeks the ClientHello SNI and splices the still-encrypted byte stream directly to the backend. TLS is terminated at the backend pod.</li>
+<li><strong>Terminate</strong> — the proxy terminates TLS using the listener certificate, then L4-splices the decrypted stream to a plaintext TCP backend.</li>
+<li><strong>Mixed</strong> — a single Gateway port carries both Passthrough and Terminate listeners, disambiguated by SNI hostname.</li>
+</ul>
+<h2 id="gateway-listener-passthrough">Gateway listener (Passthrough)<a class="headerlink" href="#gateway-listener-passthrough" title="Permanent link">&para;</a></h2>
+<p>Use <code>protocol: TLS</code> with <code>tls.mode: Passthrough</code> on the listener. No <code>certificateRefs</code> are needed — the proxy never holds or inspects a certificate on this path.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLS</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Passthrough</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tls-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">      </span><span class="nt">sectionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span><span class="w">       </span><span class="c1"># matched against the TLS ClientHello SNI</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tls-service</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
-
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
+<p>The backend Service receives the unmodified TLS stream; its pod terminates TLS and sees the client's original handshake.</p>
+<h2 id="sni-matching">SNI matching<a class="headerlink" href="#sni-matching" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Hostname format</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app.example.com</code></td>
+<td>Exact SNI match</td>
+</tr>
+<tr>
+<td><code>*.example.com</code></td>
+<td>Wildcard: matches any number of labels (<code>foo.example.com</code>, <code>a.b.example.com</code>)</td>
+</tr>
+<tr>
+<td><em>(omitted)</em></td>
+<td>Catch-all: matches any SNI that no other rule handles</td>
+</tr>
+</tbody>
+</table>
+<p>Matching follows Gateway API hostname precedence: exact before wildcard before catch-all.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Wildcard matching here is routing-only (no cert is involved at the proxy on the passthrough path), and follows the same any-number-of-labels semantics as <a href="../httproute/#wildcard-hostnames">HTTPRoute wildcards</a>.</p>
+</div>
+<h2 id="supported-fields">Supported fields<a class="headerlink" href="#supported-fields" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec.parentRefs</code></td>
+<td>Full (including <code>sectionName</code> and <code>port</code>)</td>
+</tr>
+<tr>
+<td><code>spec.hostnames</code></td>
+<td>Full (exact, wildcard, omitted catch-all)</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs</code></td>
+<td>Service backends only</td>
+</tr>
+<tr>
+<td><code>spec.rules[].backendRefs[].weight</code></td>
+<td>Full</td>
+</tr>
+</tbody>
+</table>
+<h2 id="status-conditions">Status conditions<a class="headerlink" href="#status-conditions" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>True when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accepted</code></td>
+<td>The route is attached to a <code>TLS/Passthrough</code> or <code>TLS/Terminate</code> listener</td>
+</tr>
+<tr>
+<td><code>ResolvedRefs</code></td>
+<td>All <code>backendRefs</code> resolve to a reachable Service</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>tlsroute<span class="w"> </span>my-tls-route
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
+<h2 id="terminate-mode">Terminate mode<a class="headerlink" href="#terminate-mode" title="Permanent link">&para;</a></h2>
+<p>In terminate mode the proxy holds the TLS session. The listener must carry a <code>certificateRefs</code> entry pointing to a <code>kubernetes.io/tls</code> Secret. Coxswain selects the certificate by SNI using the same mechanism as HTTPS listeners. The TLSRoute backend receives a <strong>plaintext</strong> TCP stream; no TLS certificate is needed at the backend.</p>
+<h3 id="gateway-listener">Gateway listener<a class="headerlink" href="#gateway-listener" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLS</span>
+<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
+<span class="w">        </span><span class="nt">certificateRefs</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tls-cert</span><span class="w">   </span><span class="c1"># must exist in the same namespace</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
+<h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-terminate-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">      </span><span class="nt">sectionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-plaintext-service</span><span class="w">  </span><span class="c1"># backend receives decrypted TCP, no TLS required</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
 </code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
+<p>The proxy performs an SNI peek on accept, looks up the certificate, completes the TLS handshake, then L4-splices the decrypted byte stream to the backend. HTTP-layer parsing does not occur — this is a raw TCP splice post-decryption, not an HTTPS proxy.</p>
+<h2 id="mixed-mode">Mixed mode<a class="headerlink" href="#mixed-mode" title="Permanent link">&para;</a></h2>
+<p>A single Gateway port can carry both a Terminate and a Passthrough TLS listener simultaneously. The proxy disambiguates by SNI hostname: traffic whose SNI matches the Terminate listener's hostname is decrypted at the proxy; traffic whose SNI matches the Passthrough listener's hostname is forwarded encrypted to the backend. The two routing tables are isolated — a miss in one never leaks into the other.</p>
+<h3 id="gateway-listener_1">Gateway listener<a class="headerlink" href="#gateway-listener_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-mixed-gateway</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-terminate</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLS</span>
+<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate.example.com</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Terminate</span>
+<span class="w">        </span><span class="nt">certificateRefs</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-tls-cert</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-passthrough</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLS</span>
+<span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough.example.com</span>
+<span class="w">      </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Passthrough</span>
+<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
 </code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
+<h3 id="example_2">Example<a class="headerlink" href="#example_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Terminate route — backend is a plaintext TCP service</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-mixed-gateway</span>
+<span class="w">      </span><span class="nt">sectionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-terminate</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate.example.com</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plaintext-service</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<span class="nn">---</span>
+<span class="c1"># Passthrough route — backend terminates TLS itself</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough-route</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-mixed-gateway</span>
+<span class="w">      </span><span class="nt">sectionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-passthrough</span>
+<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passthrough.example.com</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls-backend</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8443</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both listeners must use distinct hostnames on the shared port. An SNI that matches neither listener is dropped — the proxy never falls through from one table to the other.</p>
 </div>
 
 

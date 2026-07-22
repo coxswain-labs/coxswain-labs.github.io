@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/operations/running-in-production/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../retries/">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../control-plane-security/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>Production - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#running-in-production" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              Production
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -332,17 +330,21 @@
         
   
   
+    
+  
   
     
     
       
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../operations/tls/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../tls/" class="md-tabs__link">
           
   
   Operations
@@ -487,30 +489,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -521,7 +518,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Installation
@@ -535,7 +532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -556,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../../installation/helm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -574,30 +571,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Kustomize
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -606,71 +583,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install from main
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install a specific version
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    <span class="md-ellipsis">
-      Upgrade
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -683,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
+      <a href="../../installation/manifests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,25 +966,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1083,7 +1000,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Operations
@@ -1102,17 +1019,20 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
         
           
-          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1137,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/tls/" class="md-nav__link">
+      <a href="../tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1158,7 +1078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/rate-limiting/" class="md-nav__link">
+      <a href="../rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1179,7 +1099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/retries/" class="md-nav__link">
+      <a href="../retries/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1205,10 +1125,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../operations/running-in-production/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Production
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1217,6 +1157,158 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#replicas-and-availability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replicas and availability
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resource-requests-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource requests and limits
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#health-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Health probes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graceful-shutdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graceful shutdown
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#live-gateway-listener-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Live Gateway listener changes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status address
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Observability
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#annotation-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Annotation validation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-class-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Per-class configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rbac" class="md-nav__link">
+    <span class="md-ellipsis">
+      RBAC
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RBAC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scoping-the-controller-to-specific-namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scoping the controller to specific namespaces
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#signed-image-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Signed image verification
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1229,7 +1321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/control-plane-security/" class="md-nav__link">
+      <a href="../control-plane-security/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1250,7 +1342,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/relay-policy/" class="md-nav__link">
+      <a href="../relay-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1271,7 +1363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/verifying-releases/" class="md-nav__link">
+      <a href="../verifying-releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1292,7 +1384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,45 +1631,132 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#replicas-and-availability" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Replicas and availability
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#resource-requests-and-limits" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      Resource requests and limits
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#health-probes" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Health probes
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#graceful-shutdown" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      Graceful shutdown
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#live-gateway-listener-changes" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Live Gateway listener changes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status address
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Observability
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#annotation-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Annotation validation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-class-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Per-class configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rbac" class="md-nav__link">
+    <span class="md-ellipsis">
+      RBAC
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RBAC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scoping-the-controller-to-specific-namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scoping the controller to specific namespaces
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#signed-image-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Signed image verification
     </span>
   </a>
   
@@ -1601,48 +1780,185 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
+<h1 id="running-in-production">Running in production<a class="headerlink" href="#running-in-production" title="Permanent link">&para;</a></h1>
+<p>Review each section below before directing production traffic to Coxswain.</p>
+<h2 id="replicas-and-availability">Replicas and availability<a class="headerlink" href="#replicas-and-availability" title="Permanent link">&para;</a></h2>
+<p><strong>Controller.</strong> The chart defaults to <code>controller.replicas: 2</code> — two replicas with leader election. The <code>PodDisruptionBudget</code> (<code>maxUnavailable: 1</code>) is provisioned automatically when <code>replicas &gt;= 2</code>, so a node drain never removes the last controller pod. The controller does not use an HPA (extra replicas are failover standby, not throughput).</p>
+<p>On a leader failover (pod death, node drain, rolling upgrade) the warm standby takes the lease within one Lease TTL (15 s default) and immediately re-drives every reconciler — status writes, dedicated proxy provisioning, and per-Gateway VIP provisioning all resume without waiting for their periodic backstops. The discovery stream is leader-only: proxies reconnect to the new leader (sub-second once the lease moves, via the leader-labelled <code>coxswain-controller-discovery</code> Service) and keep serving their last-good routing throughout — a failover stalls routing <em>updates</em> briefly, never live traffic. A single failed lease renewal (an API-server blip) does not demote a healthy leader; demotion requires either a positive takeover by another replica or elapsed time since the last successful renew approaching the TTL.</p>
+<p><strong>Shared proxy.</strong> The chart defaults to <code>proxy.shared.replicas: 1</code>, which is fine for evaluation but inadequate for production. Run at least two replicas — the PDB is only provisioned when the effective replica floor is ≥ 2:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Static replicas:</span>
+helm<span class="w"> </span>upgrade<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.replicas<span class="o">=</span><span class="m">2</span>
 
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
+<span class="c1"># Or enable the HPA (minReplicas must also be ≥ 2 for the PDB to be active):</span>
+helm<span class="w"> </span>upgrade<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.autoscaling.enabled<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.autoscaling.minReplicas<span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.autoscaling.maxReplicas<span class="o">=</span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.autoscaling.targetCPUUtilizationPercentage<span class="o">=</span><span class="m">80</span>
 </code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
+<p>When the HPA is enabled, remove the static <code>proxy.shared.replicas</code> from your values — it is ignored while the HPA is active, and Helm will not fight the HPA on upgrades.</p>
+<p>Verify both the <code>HorizontalPodAutoscaler</code> and <code>PodDisruptionBudget</code> are in place:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>hpa,pdb
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
-
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
+<p>Pod anti-affinity is not set by default. Add it via your <code>values.yaml</code> to spread shared proxy replicas across nodes:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">proxy</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">shared</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">affinity</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">podAntiAffinity</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">            </span><span class="nt">podAffinityTerm</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/hostname</span>
+<span class="w">              </span><span class="nt">labelSelector</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">matchLabels</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">                  </span><span class="nt">app.kubernetes.io/component</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">shared-proxy</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
+<h2 id="resource-requests-and-limits">Resource requests and limits<a class="headerlink" href="#resource-requests-and-limits" title="Permanent link">&para;</a></h2>
+<p>The Helm chart defaults are sized for evaluation: requests <code>100m</code> CPU / <code>128Mi</code> memory, limits <code>500m</code> CPU / <code>256Mi</code> memory. Adjust for your expected traffic:</p>
+<table>
+<thead>
+<tr>
+<th>Traffic level</th>
+<th>CPU request</th>
+<th>Memory request</th>
+<th>Proxy threads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light (&lt; 1k rps)</td>
+<td>100m–250m</td>
+<td>128Mi</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Medium (1k–10k rps)</td>
+<td>500m–1</td>
+<td>128Mi–256Mi</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Heavy (&gt; 10k rps)</td>
+<td>2–4</td>
+<td>256Mi–512Mi</td>
+<td>≥ CPU core count</td>
+</tr>
+</tbody>
+</table>
+<p>Set <code>proxy.shared.threads</code> to match the CPU cores allocated to the container:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>upgrade<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.resources.requests.cpu<span class="o">=</span>500m<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.resources.requests.memory<span class="o">=</span>128Mi<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.resources.limits.cpu<span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.resources.limits.memory<span class="o">=</span>512Mi<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set<span class="w"> </span>proxy.shared.threads<span class="o">=</span><span class="m">4</span>
 </code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
+<h2 id="health-probes">Health probes<a class="headerlink" href="#health-probes" title="Permanent link">&para;</a></h2>
+<p>The default Helm chart wires both probes automatically. Do not disable them:</p>
+<ul>
+<li><strong>Liveness</strong> (<code>/healthz</code>, port <code>8081</code>) — always 200 while the process is running.</li>
+<li><strong>Readiness</strong> (<code>/readyz</code>, port <code>8081</code>) — returns 200 only once every subsystem in the pod reaches <code>Ready</code> or <code>Degraded</code>.</li>
+</ul>
+<p>Subsystems have four states:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+<th>Effect on <code>/readyz</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pending</code></td>
+<td>Still initialising</td>
+<td>503</td>
+</tr>
+<tr>
+<td><code>Ready</code></td>
+<td>Fully operational</td>
+<td>passes</td>
+</tr>
+<tr>
+<td><code>Degraded</code></td>
+<td>Partial fault, still serving</td>
+<td>passes</td>
+</tr>
+<tr>
+<td><code>Failed</code></td>
+<td>Fatal error</td>
+<td>503</td>
+</tr>
+</tbody>
+</table>
+<p>Readiness gates differ by mode:</p>
+<ul>
+<li><strong>Controller pod</strong> — all Kubernetes reflectors must complete their initial list and the controller must have acquired (or be in standby for) the Lease.</li>
+<li><strong>Shared proxy and dedicated proxy pods</strong> — the discovery client must connect to the controller, bootstrap an SVID, and receive the first routing snapshot. Proxy pods do not participate in leader election; they will stay <code>NotReady</code> until the controller is reachable and the first snapshot lands.</li>
+</ul>
+<p>Verify the probes are present on the deployed pod:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>deploy<span class="w"> </span>coxswain-shared-proxy<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.template.spec.containers[0].readinessProbe}&#39;</span>
 </code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
+<p>If <code>/readyz</code> returns 503 on a running pod, inspect <code>/api/v1/health</code> to see which subsystem is blocked — see <a href="../troubleshooting/#readyz-returns-503-on-startup">Troubleshooting</a>.</p>
+<h2 id="graceful-shutdown">Graceful shutdown<a class="headerlink" href="#graceful-shutdown" title="Permanent link">&para;</a></h2>
+<p>On <code>SIGTERM</code>, Coxswain drains in-flight connections for <code>--proxy-shutdown-grace-period</code> (default <code>30s</code>), then forcibly closes any remaining connections after <code>--proxy-shutdown-timeout</code> (default <code>5s</code>). Make sure the grace period aligns with your load balancer's connection draining timeout.</p>
+<p>For long-lived connections (WebSocket, SSE), increase the grace period:</p>
+<div class="highlight"><pre><span></span><code>--proxy-shutdown-grace-period<span class="o">=</span>60s
+--proxy-shutdown-timeout<span class="o">=</span>10s
 </code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
-</div>
+<h2 id="live-gateway-listener-changes">Live Gateway listener changes<a class="headerlink" href="#live-gateway-listener-changes" title="Permanent link">&para;</a></h2>
+<p>When a Gateway's listener set changes (port added or removed), Coxswain reconciles listeners in-process without restarting. New ports are bound immediately; removed ports enter a drain window (<code>--proxy-listener-drain-timeout</code>, default <code>30s</code>) during which in-flight requests complete normally before the socket is released.</p>
+<p>Tune the drain timeout to cover your longest expected upstream latency:</p>
+<div class="highlight"><pre><span></span><code>--proxy-listener-drain-timeout<span class="o">=</span>60s
+</code></pre></div>
+<p>The <code>coxswain_proxy_requests_force_closed_total{reason="drain_exceeded"}</code> metric increments for any connection that could not finish within the window. It should remain at 0 under normal operation; a non-zero value means the drain timeout is too short for your workload.</p>
+<h2 id="status-address">Status address<a class="headerlink" href="#status-address" title="Permanent link">&para;</a></h2>
+<p>Set <code>--status-address</code> to the external IP or hostname of your load balancer. Without it, <code>Ingress.status</code> and <code>Gateway.status.addresses</code> are left empty, which breaks cert-manager HTTP-01 challenges and external-dns.</p>
+<div class="highlight"><pre><span></span><code>--status-address<span class="o">=</span><span class="m">203</span>.0.113.10
+<span class="c1"># or</span>
+--status-address<span class="o">=</span>lb.example.com
+</code></pre></div>
+<h2 id="tls">TLS<a class="headerlink" href="#tls" title="Permanent link">&para;</a></h2>
+<p>TLS Secrets must be in the correct namespace — for <code>Ingress</code>, the same namespace as the <code>Ingress</code> object; for <code>Gateway</code>, the same namespace as the <code>Gateway</code> unless a <code>ReferenceGrant</code> permits cross-namespace access. See the <a href="../tls/">TLS guide</a> for cert-manager setup.</p>
+<h2 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h2>
+<p>Configure a Prometheus scrape against the admin port (<code>8082</code>) — see the <a href="../../reference/observability/">Observability reference</a> for the PodMonitor and scrape_config examples. Alert on <code>/readyz</code> returning non-200 for more than one scrape interval.</p>
+<p>The controller emits Kubernetes <code>Warning</code> Events on <code>Ingress</code> objects when a route conflict is detected (<code>reason: RouteConflict</code>) or an annotation value is invalid (<code>reason: InvalidAnnotation</code>). Set up an alerting rule or regularly query these events:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>RouteConflict,type<span class="o">=</span>Warning<span class="w"> </span>-A
+kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--field-selector<span class="w"> </span><span class="nv">reason</span><span class="o">=</span>InvalidAnnotation,type<span class="o">=</span>Warning<span class="w"> </span>-A
+</code></pre></div>
+<p>See <a href="../troubleshooting/#ingress-route-is-shadowed-by-a-conflict">Troubleshooting — route conflicts</a> and <a href="../troubleshooting/#ingress-annotation-has-no-effect">annotation diagnostics</a> for remediation steps.</p>
+<p>Set <code>--log-format=json</code> for structured log ingestion and <code>--log=warn</code> in production to reduce noise.</p>
+<h2 id="annotation-validation">Annotation validation<a class="headerlink" href="#annotation-validation" title="Permanent link">&para;</a></h2>
+<p>On Kubernetes ≥ 1.30, the Helm chart installs a <code>ValidatingAdmissionPolicy</code> that rejects <code>Ingress</code> objects carrying malformed <code>ingress.coxswain-labs.dev/*</code> annotation values at apply time, surfacing errors immediately rather than silently falling back to defaults. It is enabled by default; disable with <code>--set vap.enabled=false</code> if your cluster does not support the <code>admissionregistration.k8s.io/v1</code> API. See <a href="../../installation/helm/#validatingadmissionpolicy">Helm install — ValidatingAdmissionPolicy</a>.</p>
+<h2 id="per-class-configuration">Per-class configuration<a class="headerlink" href="#per-class-configuration" title="Permanent link">&para;</a></h2>
+<p><code>CoxswainIngressClassParameters</code> lets you set class-level defaults that apply to every <code>Ingress</code> claiming the class. Useful for cluster-wide policies:</p>
+<ul>
+<li><strong><code>spec.defaultAnnotations</code></strong> — default <code>ingress.coxswain-labs.dev/*</code> values; per-Ingress annotations override these per key.</li>
+<li><strong><code>spec.accessLog</code></strong> — set <code>false</code> to suppress proxy access-log lines for all routes in the class (never force-enables — a <code>false</code> class setting cannot be overridden per Ingress). See the <a href="../../reference/observability/#access-logs">Observability reference</a> for the full access-log configuration model.</li>
+</ul>
+<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
+<p>Coxswain unconditionally strips <code>Forwarded</code>, <code>X-Forwarded-For</code>, <code>X-Forwarded-Proto</code>, and <code>X-Real-IP</code> from every upstream request before any route filter runs. The proxy owns these headers; client-supplied values are never forwarded. When PROXY protocol is enabled (via <code>--ingress-accept-proxy-protocol</code> for Ingress or a <code>ClientTrafficPolicy</code> for Gateway listeners), Coxswain injects a proxy-generated <code>Forwarded</code> header derived from the real PROXY-protocol client address.</p>
+<h2 id="rbac">RBAC<a class="headerlink" href="#rbac" title="Permanent link">&para;</a></h2>
+<p>The default <code>ClusterRole</code> grants Coxswain cluster-wide:</p>
+<ul>
+<li>Read on <code>services</code>, <code>endpoints</code>, <code>endpointslices</code>, <code>secrets</code>, <code>configmaps</code> (core API group).</li>
+<li>Read on <code>ingresses</code>, <code>ingressclasses</code> (<code>networking.k8s.io</code>).</li>
+<li>Read on <code>gatewayclasses</code>, <code>gateways</code>, <code>httproutes</code>, <code>referencegrants</code>, <code>backendtlspolicies</code> (<code>gateway.networking.k8s.io</code>).</li>
+<li>Status writes (<code>*/status</code>) on <code>ingresses</code>, <code>gateways</code>, <code>httproutes</code>, <code>backendtlspolicies</code>, and <code>gatewayclasses</code>.</li>
+</ul>
+<p>A separate namespaced <code>Role</code> (in <code>coxswain-system</code>) grants <code>get</code>, <code>create</code>, <code>patch</code> on <code>coordination.k8s.io/leases</code> — used only by the controller pod for leader election — plus <code>get</code>, <code>list</code>, <code>patch</code> on <code>pods</code> in the same namespace, used by the lease holder to maintain the <code>discovery.coxswain-labs.dev/leader</code> pod label that routes proxy discovery dials to the leader (and to strip a stale label off a crashed ex-leader). Review the rendered manifests with <code>helm template</code> or read <code>deploy/manifests/controller-rbac.yaml</code> before deploying. The shared proxy and dedicated proxy ServiceAccounts hold <strong>no Kubernetes RBAC</strong> — they are identity-only SAs whose projected tokens are used solely for mTLS bootstrap with the controller; verify with <code>kubectl auth can-i --list --as=system:serviceaccount:coxswain-system:coxswain-shared-proxy</code> (output should show only Kubernetes baseline grants).</p>
+<h3 id="scoping-the-controller-to-specific-namespaces">Scoping the controller to specific namespaces<a class="headerlink" href="#scoping-the-controller-to-specific-namespaces" title="Permanent link">&para;</a></h3>
+<p>To restrict Coxswain to a fixed set of namespaces, set <code>watchNamespace</code> to a comma-separated list (<code>ns1,ns2,ns3</code>); a single value scopes to one namespace, omitted watches cluster-wide. This restricts the controller's reflectors — one namespaced watch per listed namespace, per resource type — so the ServiceAccount needs <strong>no cluster-wide read</strong> on the high-value tenant resources: <code>services</code>, <code>endpointslices</code>, <strong><code>secrets</code></strong>, <code>configmaps</code>, <code>ingresses</code>, the Gateway API routes/<code>gateways</code>/<code>backendtlspolicies</code>/<code>listenersets</code>, and the route-scoped coxswain CRDs. The proxy's discovery client is unaffected (it receives routing from the controller, not from Kubernetes directly).</p>
+<p>This is the least-privilege lockdown for soft multi-tenancy: replace the cluster-wide <code>ClusterRole</code> read rules with a namespaced <code>Role</code> + <code>RoleBinding</code> in <strong>each</strong> listed namespace, granting the same read (and status-write) verbs there. Namespaced resources whose objects can also live in the controller's own namespace — <code>services</code> (besides tenant backend Services, the per-Gateway shared-VIP Services are provisioned in <code>coxswain-system</code>), <code>pods</code> (the shared proxy fleet pods live in <code>coxswain-system</code>, dedicated proxy pods in the Gateway namespaces), and <code>coxswaingatewayparameters</code> / <code>coxswainingressclassparameters</code> (a <code>parametersRef</code> default commonly lives in <code>coxswain-system</code>) — are watched in the listed namespaces <strong>plus <code>coxswain-system</code></strong>, so they need a <code>Role</code> there too, not a cluster-wide grant. The only reads that stay cluster-wide are genuinely cluster-scoped Kubernetes resources (no namespace to scope by): <code>gatewayclasses</code>, <code>namespaces</code>, <code>nodes</code>, <code>ingressclasses</code>, and <code>tokenreviews</code>. Every coxswain-owned CRD is namespaced. The leader-election <code>Role</code> in <code>coxswain-system</code> is unchanged. See <code>deploy/manifests/controller-rbac-namespaced.yaml</code> for a worked example to replicate per listed namespace. Verify the lockdown with <code>kubectl auth can-i list secrets -A --as=system:serviceaccount:coxswain-system:coxswain-controller</code> (expect <code>no</code> outside the listed namespaces).</p>
+<h2 id="signed-image-verification">Signed image verification<a class="headerlink" href="#signed-image-verification" title="Permanent link">&para;</a></h2>
+<p>Every release image and chart is signed with cosign. Verify the signature before deploying to a production cluster — see <a href="../verifying-releases/">Verifying releases</a>.</p>
+<p>See <a href="../verifying-releases/">Verifying releases</a> for the cosign verification flow for both the image and the Helm chart.</p>
 
 
 

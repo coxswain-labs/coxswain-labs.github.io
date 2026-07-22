@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/operations/verifying-releases/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../relay-policy/">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../troubleshooting/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>Releases - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#verifying-releases" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              Releases
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -332,17 +330,21 @@
         
   
   
+    
+  
   
     
     
       
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../operations/tls/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../tls/" class="md-tabs__link">
           
   
   Operations
@@ -487,30 +489,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -521,7 +518,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Installation
@@ -535,7 +532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -556,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../../installation/helm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -574,30 +571,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Kustomize
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -606,71 +583,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install from main
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install a specific version
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    <span class="md-ellipsis">
-      Upgrade
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -683,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
+      <a href="../../installation/manifests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,25 +966,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1083,7 +1000,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Operations
@@ -1102,17 +1019,20 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
         
           
-          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1137,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/tls/" class="md-nav__link">
+      <a href="../tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1158,7 +1078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/rate-limiting/" class="md-nav__link">
+      <a href="../rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1179,7 +1099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/retries/" class="md-nav__link">
+      <a href="../retries/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1208,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/running-in-production/" class="md-nav__link">
+      <a href="../running-in-production/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1229,7 +1149,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/control-plane-security/" class="md-nav__link">
+      <a href="../control-plane-security/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1250,7 +1170,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/relay-policy/" class="md-nav__link">
+      <a href="../relay-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1268,10 +1188,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../operations/verifying-releases/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Releases
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1280,6 +1220,71 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-cosign" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install cosign
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-the-oci-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify the OCI image
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-the-helm-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify the Helm chart
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-signature-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the signature covers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy enforcement
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1292,7 +1297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,45 +1544,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#install-cosign" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Install cosign
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#verify-the-oci-image" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      Verify the OCI image
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#verify-the-helm-chart" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Verify the Helm chart
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#what-the-signature-covers" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
+      What the signature covers
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#policy-enforcement" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Policy enforcement
     </span>
   </a>
   
@@ -1601,48 +1606,71 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
-
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
-</code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
-
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
+<h1 id="verifying-releases">Verifying releases<a class="headerlink" href="#verifying-releases" title="Permanent link">&para;</a></h1>
+<p>Every Coxswain release artifact — the OCI image and the Helm chart — is signed with
+<a href="https://github.com/sigstore/cosign">cosign</a> using keyless <a href="https://sigstore.dev">Sigstore</a>
+signing. Signing happens inside the GitHub Actions release workflow using the job's OIDC
+identity token; no long-lived private key is stored anywhere.</p>
+<div class="admonition note">
+<p class="admonition-title">Scope of attestation</p>
+<p>Only image and chart signatures are produced today. SBOM attestation is not yet
+emitted by the release pipeline; treat absence of an SBOM as expected, not as
+evidence of tampering.</p>
 </div>
+<h2 id="install-cosign">Install cosign<a class="headerlink" href="#install-cosign" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># macOS</span>
+brew<span class="w"> </span>install<span class="w"> </span>cosign
+
+<span class="c1"># Linux — see https://github.com/sigstore/cosign#installation for package manager options</span>
+</code></pre></div>
+<h2 id="verify-the-oci-image">Verify the OCI image<a class="headerlink" href="#verify-the-oci-image" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>cosign<span class="w"> </span>verify<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--certificate-identity-regexp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s2">&quot;https://github.com/coxswain-labs/coxswain/.github/workflows/release.yml&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--certificate-oidc-issuer<span class="w"> </span><span class="s2">&quot;https://token.actions.githubusercontent.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ghcr.io/coxswain-labs/coxswain:vX.Y.Z
+</code></pre></div>
+<p>A successful verification prints the certificate claims and exits 0. A non-zero exit means the
+image is unsigned or the signature does not match the expected workflow identity.</p>
+<h2 id="verify-the-helm-chart">Verify the Helm chart<a class="headerlink" href="#verify-the-helm-chart" title="Permanent link">&para;</a></h2>
+<p>The Helm chart is published as an OCI artifact and signed at the same digest level. Note that the
+chart tag does not carry the <code>v</code> prefix that the image tag uses:</p>
+<div class="highlight"><pre><span></span><code>cosign<span class="w"> </span>verify<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--certificate-identity-regexp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s2">&quot;https://github.com/coxswain-labs/coxswain/.github/workflows/release.yml&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--certificate-oidc-issuer<span class="w"> </span><span class="s2">&quot;https://token.actions.githubusercontent.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ghcr.io/coxswain-labs/charts/coxswain:X.Y.Z
+</code></pre></div>
+<h2 id="what-the-signature-covers">What the signature covers<a class="headerlink" href="#what-the-signature-covers" title="Permanent link">&para;</a></h2>
+<p>The signature is attached to the content digest of the artifact, not just the tag. Tags are
+mutable (they can be re-pointed), but the digest is a content hash and is immutable. If a tag is
+ever re-published, the old digest retains its original signature; the new digest will have a
+different (or absent) signature.</p>
+<h2 id="policy-enforcement">Policy enforcement<a class="headerlink" href="#policy-enforcement" title="Permanent link">&para;</a></h2>
+<p>If your cluster uses an admission webhook that evaluates cosign signatures (e.g. Kyverno,
+Ratify, Sigstore Policy Controller), configure it to match:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Certificate identity regexp</td>
+<td><code>https://github.com/coxswain-labs/coxswain/.github/workflows/release.yml</code></td>
+</tr>
+<tr>
+<td>OIDC issuer</td>
+<td><code>https://token.actions.githubusercontent.com</code></td>
+</tr>
+<tr>
+<td>Image reference</td>
+<td><code>ghcr.io/coxswain-labs/coxswain</code></td>
+</tr>
+</tbody>
+</table>
 
 
 

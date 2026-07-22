@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/operations/rate-limiting/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../tls/">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../retries/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>Rate limiting - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#rate-limiting" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              Rate limiting
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -332,17 +330,21 @@
         
   
   
+    
+  
   
     
     
       
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../operations/tls/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../tls/" class="md-tabs__link">
           
   
   Operations
@@ -487,30 +489,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -521,7 +518,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Installation
@@ -535,7 +532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -556,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../../installation/helm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -574,30 +571,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Kustomize
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -606,71 +583,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install from main
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install a specific version
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    <span class="md-ellipsis">
-      Upgrade
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -683,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
+      <a href="../../installation/manifests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,25 +966,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1083,7 +1000,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Operations
@@ -1094,25 +1011,30 @@
                 
   
   
+    
   
   
+  
     
     
     
       
       
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
         
           
-          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1123,7 +1045,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_1">
             <span class="md-nav__icon md-icon"></span>
             Traffic
@@ -1137,7 +1059,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/tls/" class="md-nav__link">
+      <a href="../tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1155,10 +1077,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../operations/rate-limiting/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Rate limiting
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1167,6 +1109,110 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client identity
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingress-annotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress annotation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingress annotation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-5-reqs-per-api-key-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: 5 req/s per API key header
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gateway-api-extensionref" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway API ExtensionRef
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gateway API ExtensionRef">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ratelimit-spec-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      RateLimit spec fields
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#429-response-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      429 response format
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-and-gc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory and GC
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1179,7 +1225,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/retries/" class="md-nav__link">
+      <a href="../retries/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1208,7 +1254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/running-in-production/" class="md-nav__link">
+      <a href="../running-in-production/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1229,7 +1275,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/control-plane-security/" class="md-nav__link">
+      <a href="../control-plane-security/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1250,7 +1296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/relay-policy/" class="md-nav__link">
+      <a href="../relay-policy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1271,7 +1317,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/verifying-releases/" class="md-nav__link">
+      <a href="../verifying-releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1292,7 +1338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,45 +1585,84 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#algorithm" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Algorithm
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#client-identity" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      Client identity
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#ingress-annotation" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Ingress annotation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingress annotation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-5-reqs-per-api-key-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: 5 req/s per API key header
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gateway-api-extensionref" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gateway API ExtensionRef
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gateway API ExtensionRef">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ratelimit-spec-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      RateLimit spec fields
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#429-response-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      429 response format
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#memory-and-gc" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
+      Memory and GC
     </span>
   </a>
   
@@ -1601,47 +1686,188 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
-
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
+<h1 id="rate-limiting">Rate limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h1>
+<p>Per-route, per-client rate limiting protects upstream services from traffic spikes and abuse. Over-limit requests are rejected immediately by the proxy with <strong>429 Too Many Requests</strong> and a <code>Retry-After</code> header; the upstream never sees them.</p>
+<p>Both bindings reference the same <code>RateLimit</code> custom resource, resolved through the identical spec→config translation — parity between the two surfaces is guaranteed by construction, not by convention:</p>
+<table>
+<thead>
+<tr>
+<th>Binding</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#ingress-annotation">Ingress annotation</a></td>
+<td>Per-Ingress: <code>ingress.coxswain-labs.dev/rate-limit: "namespace/name"</code></td>
+</tr>
+<tr>
+<td><a href="#gateway-api-extensionref">Gateway API <code>ExtensionRef</code></a></td>
+<td>Per-<code>HTTPRoute</code> rule, via the same <code>RateLimit</code> custom resource</td>
+</tr>
+</tbody>
+</table>
+<h2 id="algorithm">Algorithm<a class="headerlink" href="#algorithm" title="Permanent link">&para;</a></h2>
+<p>Coxswain uses the <a href="https://en.wikipedia.org/wiki/Generic_cell_rate_algorithm">GCRA</a> (Generic Cell Rate Algorithm), a leaky-bucket variant, provided by the <a href="https://docs.rs/governor"><code>governor</code></a> crate.</p>
+<ul>
+<li><strong>Sustained rate</strong> — <code>requests-per-second</code> tokens replenish per second per client.</li>
+<li><strong>Burst</strong> — a client that has been idle accumulates headroom up to <code>rps + burst</code> tokens. A burst of 0 (the default) means the client is limited to exactly <code>rps</code> in each second.</li>
+<li><strong>State</strong> — buckets are held in-process, per-proxy-replica. Distributed limiting across replicas is not yet supported.</li>
+</ul>
+<h2 id="client-identity">Client identity<a class="headerlink" href="#client-identity" title="Permanent link">&para;</a></h2>
+<p>The rate-limit key determines which bucket a request is counted against.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>How it is derived</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ip</code> (default)</td>
+<td>Real client IP from a PROXY-protocol header (when <code>--proxy-accept-proxy-protocol</code> is set) or the L4 peer address. Each distinct IP gets its own bucket.</td>
+</tr>
+<tr>
+<td><code>header:Name</code></td>
+<td>The value of the named request header. Each distinct header value gets its own bucket.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fail-open</strong>: when the keying dimension is unavailable — undeterminable IP, or an absent header on a header-keyed route — the request is <strong>admitted without counting</strong>. A missing key never blocks traffic.</p>
+<h2 id="ingress-annotation">Ingress annotation<a class="headerlink" href="#ingress-annotation" title="Permanent link">&para;</a></h2>
+<p>Reference a <code>RateLimit</code> CR — the same one an <code>HTTPRoute</code> <code>ExtensionRef</code> filter would point at — from the <code>rate-limit</code> annotation:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-limit</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">requestsPerSecond</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">  </span><span class="nt">burst</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w">              </span><span class="c1"># optional, default 0</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/api-limit&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
 </code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
-
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
+<p><strong>Fail-open</strong>: if the referenced <code>RateLimit</code> CR is missing, the route serves with rate limiting disabled (a WARN is logged) rather than failing the route — the same posture as the Gateway API binding below. See the <a href="#ratelimit-spec-fields"><code>RateLimit</code> spec fields</a> below for <code>requestsPerSecond</code>/<code>burst</code>/<code>byHeader</code>.</p>
+<h3 id="example-5-reqs-per-api-key-header">Example: 5 req/s per API key header<a class="headerlink" href="#example-5-reqs-per-api-key-header" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">per-key-limit</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">requestsPerSecond</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">  </span><span class="nt">byHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Api-Key&quot;</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/rate-limit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app/per-key-limit&quot;</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
+<p>Header keying can be bypassed by rotating the header value. Pair it with <code>ext-auth</code> or <code>auth-basic-secret</code> to ensure the header is authenticated before being trusted. The controller emits a <code>Warning</code> Event on the Ingress when <code>byHeader</code> keying is configured without an auth annotation, so operators are notified at reconcile time. See the <a href="../../ingress/annotations/#rate-limiting">rate-limit annotation reference</a> for details.</p>
+</div>
+<p>See the <a href="../../ingress/annotations/#rate-limiting">Ingress annotations reference</a> for the full annotation semantics.</p>
+<h2 id="gateway-api-extensionref">Gateway API ExtensionRef<a class="headerlink" href="#gateway-api-extensionref" title="Permanent link">&para;</a></h2>
+<p>Attach a rate limit to a single <code>HTTPRoute</code> rule by referencing a <code>RateLimit</code> custom resource from an <code>ExtensionRef</code> filter:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-limit</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-namespace</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">requestsPerSecond</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">  </span><span class="nt">burst</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w">           </span><span class="c1"># optional, default 0</span>
+<span class="w">  </span><span class="nt">byHeader</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;X-Api-Key&quot;</span><span class="w">  </span><span class="c1"># optional; absent = limit by client IP</span>
+<span class="nn">---</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-route</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-gateway</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matches</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PathPrefix</span>
+<span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/api/</span>
+<span class="w">      </span><span class="nt">filters</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExtensionRef</span>
+<span class="w">          </span><span class="nt">extensionRef</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev</span>
+<span class="w">            </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-limit</span>
+<span class="w">      </span><span class="nt">backendRefs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-api</span>
+<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</code></pre></div>
+<h3 id="ratelimit-spec-fields"><code>RateLimit</code> spec fields<a class="headerlink" href="#ratelimit-spec-fields" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>requestsPerSecond</code></td>
+<td>integer ≥ 1</td>
+<td>required</td>
+<td>Sustained rate per client (req/s)</td>
+</tr>
+<tr>
+<td><code>burst</code></td>
+<td>integer ≥ 0</td>
+<td><code>0</code></td>
+<td>Extra burst capacity above sustained rate</td>
+</tr>
+<tr>
+<td><code>byHeader</code></td>
+<td>string</td>
+<td><em>absent</em> (IP-keyed)</td>
+<td>Header name to use as the client key</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>RateLimit</code> CR must be in the same namespace as the <code>HTTPRoute</code>. A rule can reference at most one <code>RateLimit</code> (the first <code>ExtensionRef</code> with <code>group: gateway.coxswain-labs.dev</code> and <code>kind: RateLimit</code> wins).</p>
+<p><strong>Fail-open</strong>: a dangling reference to a non-existent <code>RateLimit</code> CR emits a controller warning and installs the route with no rate limiting — traffic is never blocked by a missing CR.</p>
+<h2 id="429-response-format">429 response format<a class="headerlink" href="#429-response-format" title="Permanent link">&para;</a></h2>
+<p>A rate-limited request receives:</p>
+<div class="highlight"><pre><span></span><code>HTTP/1.1 429 Too Many Requests
+Retry-After: 1
+</code></pre></div>
+<p>The <code>Retry-After</code> value is the number of whole seconds until the client's bucket has at least one token again (minimum 1). The response body is empty.</p>
+<h2 id="memory-and-gc">Memory and GC<a class="headerlink" href="#memory-and-gc" title="Permanent link">&para;</a></h2>
+<p>Bucket state is held in memory per proxy replica. A background sweep runs every ~60 seconds to evict idle per-client entries (GCRA cells whose token count has fully recovered) and drop entries for routes with no active clients. The sweep bounds memory growth under high-cardinality client key spaces (many distinct IPs or header values).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>State is not shared across proxy replicas. In a multi-replica deployment each replica enforces the limit independently, so the effective cluster-wide limit is <code>rps × replica_count</code>. Distributed limiting is tracked separately.</p>
 </div>
 
 

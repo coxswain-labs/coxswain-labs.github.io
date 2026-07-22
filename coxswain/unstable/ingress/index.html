@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/getting-started/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/ingress/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../gateway-api/capability-matrix/">
       
       
-        <link rel="next" href="../installation/">
+        <link rel="next" href="annotations/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Getting started - Coxswain</title>
+        <title>Overview - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#getting-started" class="md-skip">
+        <a href="#ingress-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Getting started
+              Overview
             
           </span>
         </div>
@@ -259,11 +259,9 @@
         
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
         
   
     
@@ -314,11 +312,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../ingress/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   Ingress
@@ -467,30 +467,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Getting started
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -499,98 +479,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-1-install-the-gateway-api-crds" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 1 — Install the Gateway API CRDs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-2-install-coxswain" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 2 — Install Coxswain
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-deploy-a-test-backend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 3 — Deploy a test backend
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-route-traffic" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 4 — Route traffic
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-verify-traffic" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 5 — Verify traffic
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-6-open-the-operator-console" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 6 — Open the operator console
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      What's next?
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -987,25 +875,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1016,7 +909,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Ingress
@@ -1027,10 +920,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../ingress/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1039,6 +952,182 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ingressclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      IngressClass
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngressClass">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#annotations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Annotations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#making-coxswain-the-cluster-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      Making Coxswain the cluster default
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingress">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#annotations_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Annotations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load balancer address
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default backend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Path matching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildcard-hostnames" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wildcard hostnames
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#catch-all-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Catch-all rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-ingresses-on-the-same-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiple Ingresses on the same host
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graceful-endpoint-removal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graceful endpoint removal
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1051,7 +1140,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ingress/annotations/" class="md-nav__link">
+      <a href="annotations/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1561,72 +1650,156 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#ingressclass" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequisites
+      IngressClass
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IngressClass">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#step-1-install-the-gateway-api-crds" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#annotations" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 1 — Install the Gateway API CRDs
+      Annotations
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#step-2-install-coxswain" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#making-coxswain-the-cluster-default" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 2 — Install Coxswain
+      Making Coxswain the cluster default
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-deploy-a-test-backend" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 3 — Deploy a test backend
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-route-traffic" class="md-nav__link">
+  <a href="#ingress" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 4 — Route traffic
+      Ingress
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ingress">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-verify-traffic" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#annotations_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 5 — Verify traffic
+      Annotations
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#step-6-open-the-operator-console" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#supported-fields" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 6 — Open the operator console
+      Supported fields
     </span>
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load balancer address
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default backend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#path-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Path matching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildcard-hostnames" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wildcard hostnames
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#catch-all-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Catch-all rule
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-ingresses-on-the-same-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiple Ingresses on the same host
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
+  <a href="#graceful-endpoint-removal" class="md-nav__link">
     <span class="md-ellipsis">
-      What's next?
+      Graceful endpoint removal
     </span>
   </a>
   
@@ -1650,191 +1823,289 @@
   
 
 
-<h1 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
-<p>This guide installs Coxswain into an existing cluster, deploys a test backend, routes traffic using either Gateway API or classic Ingress, and verifies the flow end-to-end. It takes about 10 minutes.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Kubernetes 1.30 or later</li>
-<li><code>kubectl</code> configured against your target cluster</li>
-<li><code>helm</code> 3.x installed</li>
-</ul>
-<h2 id="step-1-install-the-gateway-api-crds">Step 1 — Install the Gateway API CRDs<a class="headerlink" href="#step-1-install-the-gateway-api-crds" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p><strong>Ingress-only?</strong> Skip this step. The Gateway API CRDs are only required if you plan to use <code>Gateway</code> and <code>HTTPRoute</code> resources in Step 4.</p>
-</blockquote>
-<p>The Gateway API CRDs are not bundled with Kubernetes and must be installed once per cluster:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
+<h1 id="ingress-guide">Ingress guide<a class="headerlink" href="#ingress-guide" title="Permanent link">&para;</a></h1>
+<p>Coxswain supports the standard Kubernetes <code>Ingress</code> resource (networking.k8s.io/v1). It handles <code>Ingress</code> and <code>HTTPRoute</code> simultaneously — no separate mode or flag is needed.</p>
+<h2 id="ingressclass">IngressClass<a class="headerlink" href="#ingressclass" title="Permanent link">&para;</a></h2>
+<p>An <code>IngressClass</code> tells Kubernetes which controller owns a given class name. Coxswain registers one named <code>coxswain</code>; reference it from any <code>Ingress</code> via <code>spec.ingressClassName: coxswain</code>.</p>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IngressClass</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">controller</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-labs.dev/gateway-controller</span><span class="w">  </span><span class="c1"># must match --controller-name</span>
 </code></pre></div>
-<h2 id="step-2-install-coxswain">Step 2 — Install Coxswain<a class="headerlink" href="#step-2-install-coxswain" title="Permanent link">&para;</a></h2>
-<p>Install with Helm — the recommended path, with values-driven configuration and easy upgrades. See <a href="../installation/">Installation</a> for the Kustomize and raw-manifest alternatives.</p>
-<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>coxswain<span class="w"> </span>oci://ghcr.io/coxswain-labs/charts/coxswain<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span>--create-namespace
-</code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Local clusters (kind, k3s, OrbStack)</p>
-<p>These have no cloud load balancer, so each Gateway's per-Gateway VIP <code>Service</code> can't be assigned an external address and the <code>Gateway</code> stays <code>Programmed=False</code>. Add <code>--set proxy.shared.vipServiceType=ClusterIP</code> to the install so VIPs get in-cluster addresses instead; reach them (and the shared-proxy Ingress endpoint) with <code>kubectl port-forward</code> — see Step 5.</p>
+<h3 id="annotations">Annotations<a class="headerlink" href="#annotations" title="Permanent link">&para;</a></h3>
+<div class="nowrap-col1">
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ingressclass.kubernetes.io/is-default-class</code></td>
+<td>Makes Coxswain the cluster default — handles <code>Ingress</code> objects with no class specified</td>
+</tr>
+</tbody>
+</table>
 </div>
-<p>Wait for the controller to become ready:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/name<span class="o">=</span>coxswain<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Ready<span class="w"> </span>--timeout<span class="o">=</span>90s
+<h3 id="making-coxswain-the-cluster-default">Making Coxswain the cluster default<a class="headerlink" href="#making-coxswain-the-cluster-default" title="Permanent link">&para;</a></h3>
+<p>To handle <code>Ingress</code> objects that do not specify a class:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>annotate<span class="w"> </span>ingressclass<span class="w"> </span>coxswain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ingressclass.kubernetes.io/is-default-class<span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
-<p>Verify the <code>GatewayClass</code> is accepted:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>gatewayclass<span class="w"> </span>coxswain
-<span class="c1"># NAME       CONTROLLER                              ACCEPTED   AGE</span>
-<span class="c1"># coxswain   coxswain-labs.dev/gateway-controller    True       ...</span>
-</code></pre></div>
-<h2 id="step-3-deploy-a-test-backend">Step 3 — Deploy a test backend<a class="headerlink" href="#step-3-deploy-a-test-backend" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># echo-backend.yaml</span>
-<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo</span>
-<span class="w">  </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo</span>
-<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo</span>
-<span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gcr.io/k8s-staging-gateway-api/echo-basic:latest</span>
-<span class="w">          </span><span class="nt">ports</span><span class="p">:</span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span>
-<span class="nn">---</span>
-<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo</span>
-<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-<span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>echo-backend.yaml
-</code></pre></div>
-<h2 id="step-4-route-traffic">Step 4 — Route traffic<a class="headerlink" href="#step-4-route-traffic" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Gateway API</label><label for="__tabbed_1_2">Ingress</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>Create a <code>Gateway</code> and an <code>HTTPRoute</code> that forwards traffic to the echo backend.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># gateway.yaml</span>
-<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gateway</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-gateway</span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
-<span class="w">  </span><span class="nt">listeners</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
-<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-<span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP</span>
-<span class="w">      </span><span class="nt">allowedRoutes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">namespaces</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Same</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>gateway.yaml
-kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>gateway/example-gateway<span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Programmed<span class="w"> </span>--timeout<span class="o">=</span>30s
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># route.yaml</span>
-<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-route</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-gateway</span>
-<span class="w">  </span><span class="nt">hostnames</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo.example.com</span>
-<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matches</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PathPrefix</span>
-<span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
-<span class="w">      </span><span class="nt">backendRefs</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo</span>
-<span class="w">          </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>route.yaml
-kubectl<span class="w"> </span>get<span class="w"> </span>httproute<span class="w"> </span>echo-route
-<span class="c1"># NAME         HOSTNAMES              AGE</span>
-<span class="c1"># echo-route   [&quot;echo.example.com&quot;]   5s</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<p>Create an <code>Ingress</code> using the <code>coxswain</code> class that Coxswain registers at install time.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># ingress.yaml</span>
-<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
+<h2 id="ingress">Ingress<a class="headerlink" href="#ingress" title="Permanent link">&para;</a></h2>
+<p>An <code>Ingress</code> resource defines host- and path-based routing rules that map incoming HTTP(S) requests to backend Services.</p>
+<h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span>
 <span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo-ingress</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
 <span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span><span class="w">          </span><span class="c1"># routes this Ingress to Coxswain</span>
 <span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo.example.com</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span><span class="w">           </span><span class="c1"># only matches this hostname</span>
 <span class="w">      </span><span class="nt">http</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
 <span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
 <span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
 <span class="w">              </span><span class="nt">service</span><span class="p">:</span>
-<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service</span>
 <span class="w">                </span><span class="nt">port</span><span class="p">:</span>
 <span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>ingress.yaml
-kubectl<span class="w"> </span>get<span class="w"> </span>ingress<span class="w"> </span>echo-ingress
-<span class="c1"># NAME           CLASS      HOSTS              ADDRESS   PORTS   AGE</span>
-<span class="c1"># echo-ingress   coxswain   echo.example.com             80      5s</span>
+<h3 id="annotations_1">Annotations<a class="headerlink" href="#annotations_1" title="Permanent link">&para;</a></h3>
+<div class="nowrap-col1">
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kubernetes.io/ingress.class</code></td>
+<td>Legacy class selection; takes effect when <code>spec.ingressClassName</code> is absent. Use <code>spec.ingressClassName</code> on Kubernetes 1.18+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Coxswain also supports the <code>ingress.coxswain-labs.dev/*</code> annotation namespace for per-Ingress configuration (timeouts, retries, path rewrites, backend protocol). See <a href="annotations/">Ingress annotations</a> for the full reference.</p>
+<h3 id="supported-fields">Supported fields<a class="headerlink" href="#supported-fields" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec.ingressClassName</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.rules[].host</code></td>
+<td>Full (including wildcards)</td>
+</tr>
+<tr>
+<td><code>spec.rules[].http.paths[].path</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.rules[].http.paths[].pathType</code></td>
+<td><code>Prefix</code>, <code>Exact</code>, <code>ImplementationSpecific</code></td>
+</tr>
+<tr>
+<td><code>spec.tls[].hosts</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.tls[].secretName</code></td>
+<td>Full</td>
+</tr>
+<tr>
+<td><code>spec.defaultBackend</code></td>
+<td>Service backends only; Resource backends are skipped</td>
+</tr>
+<tr>
+<td><code>spec.rules[].http.paths[].backend.resource</code></td>
+<td>Not supported</td>
+</tr>
+</tbody>
+</table>
+<h3 id="load-balancer-address">Load balancer address<a class="headerlink" href="#load-balancer-address" title="Permanent link">&para;</a></h3>
+<p>Set <code>--status-address</code> to the external IP or hostname of your load balancer. Coxswain writes it to <code>status.loadBalancer.ingress</code> on every managed Ingress. Without it, <code>ADDRESS</code> stays empty and cert-manager HTTP-01 challenges will not work.</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>ingress<span class="w"> </span>my-app
+<span class="c1"># NAME     CLASS     HOSTS             ADDRESS         PORTS   AGE</span>
+<span class="c1"># my-app   coxswain  app.example.com   203.0.113.10    80      1m</span>
 </code></pre></div>
-</div>
-</div>
-</div>
-<h2 id="step-5-verify-traffic">Step 5 — Verify traffic<a class="headerlink" href="#step-5-verify-traffic" title="Permanent link">&para;</a></h2>
-<p>Reach the backend by the address of whichever entry point you configured in Step 4.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Gateway API</label><label for="__tabbed_2_2">Ingress</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>Each <code>Gateway</code> gets its own address (Coxswain provisions a per-Gateway VIP <code>Service</code> in <code>coxswain-system</code>). Read the address from the Gateway's status:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>gateway<span class="w"> </span>example-gateway
-<span class="c1"># NAME              CLASS      ADDRESS        PROGRAMMED   AGE</span>
-<span class="c1"># example-gateway   coxswain   203.0.113.10   True         30s</span>
-
-curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: echo.example.com&quot;</span><span class="w"> </span>http://203.0.113.10/
-<span class="c1"># {&quot;host&quot;:&quot;echo.example.com&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/&quot;, ...}</span>
+<h3 id="default-backend">Default backend<a class="headerlink" href="#default-backend" title="Permanent link">&para;</a></h3>
+<p><code>spec.defaultBackend</code> defines a backend that receives any request that matches no rule at all. It is a top-level field on the <code>Ingress</code>, not part of <code>spec.rules</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">defaultBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">catch-all</span><span class="w">               </span><span class="c1"># receives requests that match no rule</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
 </code></pre></div>
-<p>On a local cluster without an external load balancer, port-forward the Gateway's VIP <code>Service</code> instead (find it with <code>kubectl -n coxswain-system get svc</code>), then <code>curl</code> <code>localhost</code> with the same <code>Host</code> header.</p>
-</div>
-<div class="tabbed-block">
-<p>Ingress traffic is served on the shared proxy's fixed <code>80</code>/<code>443</code> listeners, exposed by the <code>coxswain-shared-proxy</code> <code>Service</code> (<code>LoadBalancer</code> by default):</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>coxswain-shared-proxy
-
-curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Host: echo.example.com&quot;</span><span class="w"> </span>http://&lt;proxy-address&gt;/
-<span class="c1"># {&quot;host&quot;:&quot;echo.example.com&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;path&quot;:&quot;/&quot;, ...}</span>
+<p>Only Service backends are supported; Resource backends are ignored.</p>
+<h3 id="path-matching">Path matching<a class="headerlink" href="#path-matching" title="Permanent link">&para;</a></h3>
+<p><code>pathType</code> controls how the path is matched:</p>
+<table>
+<thead>
+<tr>
+<th><code>pathType</code></th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Prefix</code></td>
+<td>Matches any request path with the given prefix. <code>/foo</code> matches <code>/foo</code>, <code>/foo/</code>, <code>/foo/bar</code>.</td>
+</tr>
+<tr>
+<td><code>Exact</code></td>
+<td>Matches only the exact path. <code>/foo</code> does not match <code>/foo/</code>.</td>
+</tr>
+<tr>
+<td><code>ImplementationSpecific</code></td>
+<td>Treated as <code>Prefix</code> by default; becomes regex matching when <a href="annotations/#use-regex"><code>use-regex: "true"</code></a> is set on the Ingress.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nt">rules</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">    </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/api</span>
+<span class="w">          </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span><span class="w">        </span><span class="c1"># matches /api, /api/users, /api/v2/...</span>
+<span class="w">          </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-service</span>
+<span class="w">              </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/healthz</span>
+<span class="w">          </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exact</span><span class="w">         </span><span class="c1"># matches only /healthz</span>
+<span class="w">          </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">health-service</span>
+<span class="w">              </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
 </code></pre></div>
-<p>On a local cluster without an external load balancer, <code>kubectl -n coxswain-system port-forward svc/coxswain-shared-proxy 8080:80</code> and <code>curl</code> <code>http://localhost:8080/</code> with the same <code>Host</code> header.</p>
-</div>
-</div>
-</div>
-<h2 id="step-6-open-the-operator-console">Step 6 — Open the operator console<a class="headerlink" href="#step-6-open-the-operator-console" title="Permanent link">&para;</a></h2>
-<p>The controller exposes a built-in web UI on its admin port. Forward it locally:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-controller<span class="w"> </span><span class="m">8082</span>:8082
+<h3 id="wildcard-hostnames">Wildcard hostnames<a class="headerlink" href="#wildcard-hostnames" title="Permanent link">&para;</a></h3>
+<p>Coxswain follows the Kubernetes Ingress spec for wildcard matching: <code>*.example.com</code> matches exactly one DNS label, so <code>foo.example.com</code> matches but <code>foo.bar.example.com</code> does not.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">rules</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;*.example.com&quot;</span><span class="w">           </span><span class="c1"># matches foo.example.com, not foo.bar.example.com</span>
+<span class="w">    </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">          </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">          </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wildcard-service</span>
+<span class="w">              </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
 </code></pre></div>
-<p>Then open <code>http://localhost:8082</code> in your browser. The console shows cluster health, the live routing table across Gateways and Ingresses, per-pod fleet status, and recent events.</p>
-<h2 id="whats-next">What's next?<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Gateway API</strong> — see the <a href="../gateway-api/">Gateway API guide</a> for the full <code>HTTPRoute</code> feature surface, TLS listeners, and cross-namespace routing.</li>
-<li><strong>Ingress</strong> — see the <a href="../ingress/">Ingress guide</a> to use classic <code>Ingress</code> resources.</li>
-<li><strong>TLS</strong> — see the <a href="../operations/tls/">TLS guide</a> to add HTTPS with cert-manager or a manual Secret.</li>
-<li><strong>Production</strong> — see <a href="../operations/running-in-production/">Running in production</a> before going live.</li>
-<li><strong>Troubleshooting</strong> — if something isn't working, see the <a href="../operations/troubleshooting/">Troubleshooting guide</a>.</li>
-</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Gateway API wildcards differ: <code>*.example.com</code> in a <code>Gateway</code> listener or <code>HTTPRoute</code> matches any number of labels, including <code>foo.bar.example.com</code>. See the <a href="../gateway-api/httproute/#wildcard-hostnames">Gateway API guide</a> if you also use <code>HTTPRoute</code> objects in the cluster.</p>
+</div>
+<h3 id="catch-all-rule">Catch-all rule<a class="headerlink" href="#catch-all-rule" title="Permanent link">&para;</a></h3>
+<p>A rule with no <code>host</code> field matches any hostname that is not claimed by a more specific host rule. Unlike <code>spec.defaultBackend</code>, path matching still applies — the request must match the rule's <code>path</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">rules</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">http</span><span class="p">:</span><span class="w">                           </span><span class="c1"># no host — matches any unmatched hostname</span>
+<span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">          </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">          </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">catch-all</span>
+<span class="w">              </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<h3 id="multiple-ingresses-on-the-same-host">Multiple Ingresses on the same host<a class="headerlink" href="#multiple-ingresses-on-the-same-host" title="Permanent link">&para;</a></h3>
+<p>When multiple <code>Ingress</code> objects name the same host, Coxswain merges their paths automatically. Each <code>Ingress</code> is reconciled independently; all routes accumulate into a single per-host routing table, so serving different paths from separate <code>Ingress</code> objects works out of the box:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ingress &quot;api&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/api</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-service</span><span class="w">     </span><span class="c1"># serves /api/*</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ingress &quot;web&quot;</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">web-service</span><span class="w">     </span><span class="c1"># serves everything else</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<p>Both <code>Ingress</code> objects are active simultaneously — <code>/api/*</code> goes to <code>api-service</code> and everything else to <code>web-service</code>.</p>
+<p><strong>Collision precedence</strong></p>
+<p>When two <code>Ingress</code> objects define the same <code>(host, path, pathType)</code>, exactly one wins. Since Ingress routes carry no method, header, or query predicates, Coxswain falls through to the timestamp tie-break: the <code>Ingress</code> with the <strong>oldest <code>creationTimestamp</code></strong> serves the path; the newer one is shadowed.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Two Ingresses both define host app.example.com, path /foo, pathType Prefix:</span>
+<span class="c1">#   old-app (created first)  → old-svc   — wins</span>
+<span class="c1">#   new-app (created later)  → new-svc   — shadowed, never serves /foo</span>
+</code></pre></div>
+<p>Delete or rename the conflicting path in one of the <code>Ingress</code> objects to restore it. Conflicts are reported via <code>GET /api/v1/problems</code> (<code>routing.conflicts</code>) on the controller admin port.</p>
+<p>Routes with the same <code>(host, path)</code> but <strong>different predicate conditions</strong> — for example, an <code>HTTPRoute</code> rule with a method or header constraint on the same host and path — are not a conflict: they coexist and each serves its matching traffic.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Kubernetes Ingress spec does not define how conflicts between <code>Ingress</code> objects on the same host are resolved — it delegates the behaviour to the controller. The merge model and precedence rules described here are Coxswain-specific.</p>
+</div>
+<h3 id="tls">TLS<a class="headerlink" href="#tls" title="Permanent link">&para;</a></h3>
+<p>Add a <code>spec.tls</code> block and reference a <code>kubernetes.io/tls</code> Secret in the same namespace. Coxswain reloads the cert automatically when the Secret changes. See the <a href="../operations/tls/">TLS guide</a> for cert-manager integration.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingressClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain</span>
+<span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app-tls</span><span class="w">           </span><span class="c1"># must exist in the same namespace</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app.example.com</span>
+<span class="w">      </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">            </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">            </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-service</span>
+<span class="w">                </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<p>The referenced Secret must have <code>type: kubernetes.io/tls</code> with <code>tls.crt</code> and <code>tls.key</code>.</p>
+<h2 id="graceful-endpoint-removal">Graceful endpoint removal<a class="headerlink" href="#graceful-endpoint-removal" title="Permanent link">&para;</a></h2>
+<p>When a pod is deleted (rolling deploy, scale-down, preStop hook), the Kubernetes EndpointSlice
+controller marks its endpoint <code>terminating=true</code>. Coxswain's reflector reads this condition and
+immediately removes the endpoint from the active routing pool: <strong>no new requests are sent to the
+pod once it enters the terminating state</strong>.</p>
+<p>Requests that are already in flight on an open connection to that pod complete naturally — the
+underlying TCP stream is unaffected by routing-table swaps, so in-flight work is not interrupted.
+New requests are routed to the remaining healthy endpoints.</p>
+<p>The effective drain window is bounded by the pod's <code>terminationGracePeriodSeconds</code>. Design your
+<code>preStop</code> hooks to complete within this budget.</p>
 
 
 

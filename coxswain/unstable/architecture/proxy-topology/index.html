@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/architecture/proxy-topology/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../discovery-protocol/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>Proxy topology - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#proxy-topology" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              Proxy topology
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -377,11 +375,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../architecture/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   Architecture
@@ -487,30 +487,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -521,7 +516,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Installation
@@ -535,7 +530,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -556,7 +551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../../installation/helm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -574,30 +569,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Kustomize
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -606,71 +581,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install from main
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install a specific version
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    <span class="md-ellipsis">
-      Upgrade
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -683,7 +593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
+      <a href="../../installation/manifests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1406,25 +1316,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1435,7 +1350,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             Architecture
@@ -1449,7 +1364,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1467,10 +1382,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../architecture/proxy-topology/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Proxy topology
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1479,6 +1414,62 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#scope-aware-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scope-aware dispatch
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shared
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dedicated-per-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dedicated (per Gateway)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discovery-relay-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Discovery relay tier
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1491,7 +1482,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/discovery-protocol/" class="md-nav__link">
+      <a href="../discovery-protocol/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,45 +1530,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#scope-aware-dispatch" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Scope-aware dispatch
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#shared" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      Shared
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#dedicated-per-gateway" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Dedicated (per Gateway)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
+  <a href="#discovery-relay-tier" class="md-nav__link">
     <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
+      Discovery relay tier
     </span>
   </a>
   
@@ -1601,48 +1583,158 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
+<h1 id="proxy-topology">Proxy topology<a class="headerlink" href="#proxy-topology" title="Permanent link">&para;</a></h1>
+<p>Coxswain runs a single controller-managed data plane. <strong>By default every <code>Ingress</code> and every <code>Gateway</code> is served by one shared proxy pool</strong>; a <code>Gateway</code> that requests its own infrastructure (<code>spec.infrastructure.parametersRef</code> → <code>CoxswainGatewayParameters</code>) instead gets a <strong>dedicated</strong> proxy of its own. This is just how Coxswain implements the Gateway API's per-Gateway infrastructure model — classic <code>Ingress</code>, which has no <code>parametersRef</code> equivalent, is always shared.</p>
+<p>Shared and dedicated are therefore two topologies of the same data plane, not separate install modes: they compose. A production cluster typically runs the shared pool alongside a few dedicated proxies for Gateways that need isolation.</p>
+<h2 id="scope-aware-dispatch">Scope-aware dispatch<a class="headerlink" href="#scope-aware-dispatch" title="Permanent link">&para;</a></h2>
+<p>Before the two models: both rely on the controller sending each proxy only the routing slice it needs, not the whole cluster's. The controller maintains two snapshot registries for this:</p>
+<ul>
+<li><strong><code>SharedPool</code></strong> — the shared routing cells (Ingress table, Gateway table, TLS store, client-cert store, listener health, plus the TLS-passthrough/terminate and TCP/UDP L4 tables). The shared proxy pool subscribes with this scope and receives a snapshot covering all Ingress and non-dedicated Gateway routing.</li>
+<li><strong><code>Gateway { name, namespace }</code></strong> — one entry per opted-in Gateway in the <code>DedicatedRoutingRegistry</code>. Each dedicated proxy subscribes with its own Gateway identity and receives only that Gateway's slice. Cross-namespace routes (e.g. <code>from: All</code>) are resolved controller-side — the controller's cluster-wide reflector sees every namespace's routes and compiles them into the dedicated snapshot before pushing.</li>
+</ul>
+<p>A <code>Subscribe</code> message with no scope field is treated as <code>SharedPool</code>. A scope message with no kind discriminator is rejected as malformed to prevent a zero-value proto from silently escalating to <code>SharedPool</code>.</p>
+<h2 id="shared">Shared<a class="headerlink" href="#shared" title="Permanent link">&para;</a></h2>
+<p>One cluster-wide proxy pool serves every <code>Ingress</code> and every <code>Gateway</code> that has not opted into dedicated mode. This is the Helm chart default: one controller <code>Deployment</code> in <code>coxswain-system</code>, which in turn provisions the shared proxy pool.</p>
+<p><strong>The controller owns the shared proxy pool.</strong> The pool's <code>Deployment</code>, <code>ServiceAccount</code>, internal <code>Service</code>, and (optional) <code>HorizontalPodAutoscaler</code>/<code>PodDisruptionBudget</code> are <strong>controller-provisioned and controller-owned</strong> (SSA field manager <code>coxswain-controller</code>), not rendered by Helm — the same ownership model as dedicated proxies and namespace relays. The chart supplies the pool's configuration to the controller as <code>COXSWAIN_SHARED_PROXY_*</code> env (remapped from <code>proxy.shared.*</code> values) and keeps only the pool's external Ingress <code>LoadBalancer</code> <code>Service</code>, which selects the pods the controller stamps. Controller ownership is what lets the controller repoint the pool's discovery upstream without fighting Helm's field manager on every <code>helm upgrade</code>. Because the pool is provisioned off config rather than off any Gateway, it exists from install with <strong>zero Gateways</strong> — the base data plane. Disabling it (<code>proxy.shared.enabled=false</code>) makes the controller reclaim the pool rather than orphan it.</p>
+<p><strong>Shared compute, per-Gateway addressing.</strong> "Shared" describes the proxy <em>pod</em> (one set of compute serving everything) — it does not mean Gateways share an address. Each owned <code>Gateway</code> still gets its own <code>Service</code>/VIP:</p>
+<ul>
+<li>The controller provisions one <code>Service</code> per Gateway. That <code>Service</code> selects the (single, shared) proxy pod, but maps each of the Gateway's advertised listener ports (e.g. <code>:443</code>) to its own distinct internal <code>targetPort</code> on that pod.</li>
+<li>The proxy uses the local port a connection arrived on to decide which Gateway's routing/TLS tables apply. That's what keeps two Gateways with overlapping hostnames (both listening on <code>*.example.com</code>, say) fully isolated from each other — they're distinguished by port, not just by name.</li>
+<li>Each Gateway still reports its own VIP in <code>status.addresses</code>, same as if it had its own dedicated proxy.</li>
+<li>This only relies on standard Kubernetes <code>Service</code> <code>port → targetPort</code> mapping — no <code>SO_ORIGINAL_DST</code>, no conntrack tricks — so it works the same on iptables, IPVS, eBPF, and cloud load balancers alike.</li>
+</ul>
+<p><strong>Per-Gateway infrastructure identity.</strong> The shared pool's actual compute lives in <code>coxswain-system</code>, but each Gateway still needs its own "infrastructure identity" per the Gateway API spec — so the controller also provisions a <code>ServiceAccount</code> for each owned Gateway, in that Gateway's <em>own</em> namespace. This SA is deliberately inert:</p>
+<ul>
+<li>It carries <strong>zero RBAC</strong> — the proxy pod itself runs under a different ServiceAccount entirely. This one exists purely as an identity object.</li>
+<li>Its job is to be the carrier for <code>spec.infrastructure.{labels,annotations}</code> (the infrastructure metadata a Gateway can request be applied to its infrastructure) — since in the shared model there's no per-Gateway proxy pod in that namespace for those labels/annotations to land on otherwise.</li>
+<li>It's owner-referenced to the Gateway, so deleting the Gateway garbage-collects it automatically; moving a Gateway into dedicated mode prunes it explicitly instead.</li>
+<li>Infrastructure annotations from this object also propagate onto the Gateway's VIP <code>Service</code> — this is how, for example, a cloud load-balancer annotation set on the Gateway reaches the actual <code>LoadBalancer</code> Service.</li>
+</ul>
+<p>The fixed shared <code>80</code>/<code>443</code> listeners on the proxy pod are <strong>Ingress-only</strong>: Ingresses legitimately share one address because they merge by host/path and have no per-Ingress isolation. The cost of per-Gateway addressing is <strong>one load-balancer IP per Gateway</strong> in cloud environments — the "one IP for everything" property is intentionally given up; only the proxy compute stays shared. The shared proxy pod selector is supplied by the Helm chart via <code>--shared-proxy-selector</code> (the chart knows the release name; the controller cannot derive <code>app.kubernetes.io/instance</code> itself); the controller stamps that same label set on the pool's pods and reuses it as the selector of each VIP <code>Service</code> and the retained Ingress <code>LoadBalancer</code> <code>Service</code>, so all three agree.</p>
+<p>The VIP <code>Service</code> type is set by <code>proxy.shared.vipServiceType</code> (default <code>LoadBalancer</code>), independent of the shared-proxy <code>Service</code> itself. <code>LoadBalancer</code> gives each Gateway an external address and works on cloud LBs and MetalLB, which assign a distinct IP per <code>Service</code> and route <code>IP:port</code> independently. It does <strong>not</strong> work on host-port-binding LBs such as k3s/OrbStack <code>klipper-lb</code>, where multiple <code>LoadBalancer</code> Services advertising the same port (e.g. <code>:443</code>) collide on the host and stay <code>&lt;pending&gt;</code> — set <code>vipServiceType: ClusterIP</code> there to give each Gateway a stable in-cluster VIP (typically fronted by an external ingress/LB). <code>NodePort</code> is rejected: it cannot preserve the advertised listener port.</p>
+<pre class="mermaid"><code>flowchart LR
+    K8s[Kubernetes API]
 
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
-</code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
+    subgraph cs[coxswain-system]
+        C[Controller]
+        SP["Proxy pool (shared)"]
+    end
 
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
-</div>
+    subgraph n1[ns-1]
+        A1(app-1)
+    end
+
+    subgraph n2[ns-2]
+        A2(app-2)
+    end
+
+    K8s --&gt;|watch| C
+    C --&gt;|status writes| K8s
+    C --&gt;|gRPC discovery| SP
+
+    Clients([Clients]) --&gt;|Ingress +\nGateway traffic| SP
+    SP --&gt; A1 &amp; A2</code></pre>
+<p><strong>Ingress-only (runtime variant):</strong> when Gateway API CRDs are absent at startup, the controller detects their absence, skips Gateway API reconciliation, and the shared proxy pool serves all <code>Ingress</code> resources.</p>
+<pre class="mermaid"><code>flowchart LR
+    K8s[Kubernetes API]
+
+    subgraph cs[coxswain-system]
+        C[Controller]
+        SP["Proxy pool (shared)"]
+    end
+
+    subgraph n1[ns-1]
+        A1(app-1)
+    end
+
+    subgraph n2[ns-2]
+        A2(app-2)
+    end
+
+    K8s --&gt;|watch\nIngress only| C
+    C --&gt;|status writes| K8s
+    C --&gt;|gRPC discovery| SP
+
+    Clients([Clients]) --&gt;|Ingress traffic| SP
+    SP --&gt; A1 &amp; A2</code></pre>
+<h2 id="dedicated-per-gateway">Dedicated (per Gateway)<a class="headerlink" href="#dedicated-per-gateway" title="Permanent link">&para;</a></h2>
+<p>When a <code>Gateway</code> carries a <code>parametersRef</code> pointing at a <code>CoxswainGatewayParameters</code> object (either on the Gateway directly or inherited from its <code>GatewayClass</code>'s <code>spec.parametersRef</code>), the controller provisions a dedicated proxy — its own <code>Deployment</code>, <code>Service</code>, and <code>ServiceAccount</code> — in the Gateway's namespace. Traffic for that Gateway is served exclusively by its dedicated proxy pool; the shared proxy pool continues to serve everything else.</p>
+<p>A cluster running some dedicated Gateways alongside the shared pool is the typical mixed arrangement:</p>
+<pre class="mermaid"><code>flowchart LR
+    K8s[Kubernetes API]
+
+    subgraph cs[coxswain-system]
+        C[Controller]
+        SP["Proxy pool (shared)"]
+    end
+
+    subgraph ns[gw-namespace-1]
+        GP["Proxy pool (dedicated)"]
+        A1(app-1)
+    end
+
+    subgraph n1[ns-1]
+        A2(app-2)
+    end
+
+    subgraph n2[ns-2]
+        A3(app-3)
+    end
+
+    K8s --&gt;|watch| C
+    C --&gt;|status writes| K8s
+    C --&gt;|provisions| GP
+    C --&gt;|gRPC discovery| SP &amp; GP
+
+    Clients([Clients]) --&gt;|Ingress +\nother Gateways| SP
+    Clients --&gt;|gw-namespace-1 Gateway\ntraffic| GP
+    SP --&gt; A2 &amp; A3
+    GP --&gt; A1</code></pre>
+<p>When every Gateway opts into dedicated mode and the shared proxy pool is scaled to zero (<code>proxy.shared.replicas: 0</code>) or disabled (<code>proxy.shared.enabled: false</code>), each team's Gateway gets a fully isolated data plane. Classic <code>Ingress</code> is unavailable in this arrangement.</p>
+<pre class="mermaid"><code>flowchart LR
+    K8s[Kubernetes API]
+
+    subgraph cs[coxswain-system]
+        C[Controller]
+    end
+
+    subgraph ns_a[gw-namespace-1]
+        GPA["Proxy pool (dedicated)"]
+        A1(app-1)
+    end
+
+    subgraph ns_b[gw-namespace-2]
+        GPB["Proxy pool (dedicated)"]
+        A2(app-2)
+    end
+
+    K8s --&gt;|watch| C
+    C --&gt;|status writes| K8s
+    C --&gt;|provisions + gRPC discovery| GPA &amp; GPB
+
+    ClientsA([Clients]) --&gt; GPA
+    ClientsB([Clients]) --&gt; GPB
+    GPA --&gt; A1
+    GPB --&gt; A2</code></pre>
+<p>See <a href="../../gateway-api/#dedicated-proxy-pools">Dedicated proxy pools</a> for the operator-facing walkthrough — opting a Gateway in, tunable fields, and RBAC.</p>
+<h2 id="discovery-relay-tier">Discovery relay tier<a class="headerlink" href="#discovery-relay-tier" title="Permanent link">&para;</a></h2>
+<p>The relay tier is <strong>not</strong> part of the proxy topology — it is optional <em>discovery infrastructure</em> between the controller and the proxies that scales leader fan-out. It changes nothing about how proxies serve traffic; it only changes where they get their routing snapshots.</p>
+<p><strong>The problem it solves.</strong> Every snapshot stream terminates on the leader controller pod (the discovery <code>Service</code> selects the leader), so fan-out, per-stream delta computation, and push bandwidth all scale O(nodes) — shared replicas + dedicated Gateways × replicas — on that one pod. A relay is a zero-RBAC cache pod that subscribes <em>once</em> upstream and re-serves the <strong>unchanged</strong> protocol downstream, so the leader sees one stream per relay instead of one per proxy. Leaves run unmodified binaries with unmodified scopes — only their discovery endpoint and expected-server identity differ — and never learn they are behind a relay.</p>
+<p><strong>One controller-owned tier, two scopes</strong> — both provisioned, sized, and torn down by the <strong>controller</strong> off the same <code>relay.*</code> knobs; there is no chart-rendered relay:</p>
+<ul>
+<li><strong>Shared-pool relay</strong> — a single, install-level relay in front of the shared proxy pool. It subscribes <code>SharedPool</code> and re-serves it verbatim (a flat passthrough cache). The controller provisions it once the shared pool's replica count crosses the break-even threshold and repoints the pool onto it at runtime.</li>
+<li><strong>Namespace relay</strong> — a per-namespace relay in front of a namespace's <em>dedicated</em> proxies. It subscribes the aggregate <code>Namespace</code> scope (every dedicated Gateway's world in that namespace, key-qualified per Gateway), demuxes it back into per-Gateway worlds, and serves each dedicated proxy exactly as the controller would. The controller provisions it (and repoints that namespace's dedicated proxies) once the namespace's dedicated fan-out crosses the threshold.</li>
+</ul>
+<p>Enable the whole tier with <code>relay.enabled</code> (<strong>on by default — opt-out</strong>; <code>relay.enabled: false</code> disables it). The break-even gate keeps each scope inert below threshold, so an install with a small pool and no large dedicated namespaces provisions no relays and is byte-identical to a relay-free one.</p>
+<p><strong>When a relay appears — a control loop.</strong> A relay costs the leader one upstream stream per replica and saves it the downstream streams, so it only <em>reduces</em> leader load past a break-even point. The controller re-implements the autoscaler loop internally — it cannot use a Kubernetes HPA, since each relay replica opens the very upstream stream the tier conserves, so a CPU HPA would scale <em>up</em> under load and regrow the leader fan-out. The <strong>signal</strong> is the scope's demand: a namespace's live dedicated proxy subscriber count, or the shared pool's replica count.</p>
+<ul>
+<li><strong>Activation (on/off).</strong> The relay is provisioned once the signal reaches the break-even threshold <code>relay.minProxyReplicas</code> (default 8), and torn down after it holds <strong>below</strong> that threshold for the <strong>cooldown</strong> <code>relay.cooldown</code> (default 300s). A scope that genuinely drains (no dedicated Gateways left; the pool disabled) is torn down at once; a <em>transient</em> drop to 0 live subscribers while demand remains — a relay restart or a control-stream reconnect — waits out the cooldown, so a blip never deletes a live relay.</li>
+<li><strong>Sizing.</strong> An <a href="../../operations/relay-policy/#autoscaling">autoscaled</a> relay is sized <code>clamp(ceil(liveSubscribers / targetProxiesPerReplica), minReplicas, maxReplicas)</code>, with a relative <strong>tolerance</strong> deadband so small jitter doesn't churn and an asymmetric <strong>scale-down stabilization</strong> window (scale up promptly, scale down only on the trailing-window peak). <strong><code>maxReplicas</code> is mandatory</strong> — it caps the upstream-stream regrowth; keep it well below the scope's downstream fan-out or the relay's own streams approach the count it exists to collapse. The <strong>capacity ratio</strong> <code>targetProxiesPerReplica</code> (default 250, measured) is decoupled from the break-even threshold: a relay is a fan-out cache, so real per-replica capacity is O(100s), not the break-even number.</li>
+</ul>
+<p><strong>Make-before-break (a rebalance never disrupts data-plane traffic).</strong> Repointing a proxy between the controller and a relay is a live control-stream reconnect — the proxy swaps its discovery upstream and keeps serving from its last-good routing snapshot; data-plane listeners are never recycled. Because the loop tears relays down at a <em>nonzero</em> subscriber count, it sequences explicitly: on <strong>provision</strong> it creates the relay and waits until it is Ready (upstream cache loaded) <em>before</em> repointing proxies onto it; on <strong>teardown</strong> it repoints proxies back to the controller <em>first</em>, then deletes the relay only once it reports zero downstream subscribers. A proxy is thus never pointed at a not-yet-serving or already-deleted relay.</p>
+<p><strong>Authorization.</strong> The shared relay's <code>SharedPool</code> subscribe needs no grant. A namespace relay's <code>Namespace</code> subscribe is privileged (it aggregates a whole namespace), so the controller authorizes it <strong>by provenance</strong>: only the relay ServiceAccount it provisioned in that namespace, deny-by-default. A projected token cryptographically binds a pod's SVID to its own namespace, so the worst a forged label can buy is a stream for the tenant's <em>own</em> namespace — never a peer's.</p>
+<p><strong>Failure model.</strong> Bootstrap is never tiered — every node, relays included, obtains its SVID straight from the controller, which is also where each node learns its routing-stream upstream. On relay loss a leaf serves its last-good snapshot and reconnects; if the relay is genuinely gone, the leaf re-bootstraps to the controller (the always-up anchor) and is re-pointed at the current upstream — a bounded last-resort handshake, never a routing-snapshot stampede, and the data plane is never disrupted. Relay HA is its replica count.</p>
+<p><strong>Per-namespace tuning.</strong> The break-even loop is the automatic default — no per-namespace action is needed to provision relays where they help. The namespaced <a href="../../operations/relay-policy/"><code>CoxswainRelayPolicy</code></a> CRD overlays overrides on the per-namespace dedicated relays only: force-on/off, <code>replicas</code>, <code>resources</code>, <code>podTemplate</code> scheduling, and opt-in autoscaling. The shared-pool relay is global — it has no policy and reads the <code>relay.*</code> values directly (autoscaling between <code>relay.replicas</code> and <code>relay.maxReplicas</code>).</p>
 
 
 

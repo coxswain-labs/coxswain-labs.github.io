@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/installation/kustomize/">
+        <link rel="canonical" href="https://docs.coxswain-labs.dev/coxswain/stable/operations/relay-policy/">
       
       
-        <link rel="prev" href="../helm/">
+        <link rel="prev" href="../control-plane-security/">
       
       
-        <link rel="next" href="../manifests/">
+        <link rel="next" href="../verifying-releases/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Kustomize - Coxswain</title>
+        <title>Relay tier - Coxswain</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kustomize-install" class="md-skip">
+        <a href="#coxswainrelaypolicy" class="md-skip">
           Skip to content
         </a>
       
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Kustomize
+              Relay tier
             
           </span>
         </div>
@@ -276,13 +276,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../installation/" class="md-tabs__link">
           
   
   Installation
@@ -332,17 +330,21 @@
         
   
   
+    
+  
   
     
     
       
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../operations/tls/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../tls/" class="md-tabs__link">
           
   
   Operations
@@ -487,30 +489,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -521,7 +518,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Installation
@@ -535,7 +532,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -556,7 +553,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../helm/" class="md-nav__link">
+      <a href="../../installation/helm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -574,30 +571,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Kustomize
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../installation/kustomize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -606,71 +583,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install from main
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install a specific version
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    <span class="md-ellipsis">
-      Upgrade
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
-    <span class="md-ellipsis">
-      Uninstall
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -683,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../manifests/" class="md-nav__link">
+      <a href="../../installation/manifests/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,25 +966,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1083,7 +1000,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Operations
@@ -1102,17 +1019,20 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
         
           
-          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1137,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/tls/" class="md-nav__link">
+      <a href="../tls/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1158,7 +1078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/rate-limiting/" class="md-nav__link">
+      <a href="../rate-limiting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1179,7 +1099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/retries/" class="md-nav__link">
+      <a href="../retries/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1208,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/running-in-production/" class="md-nav__link">
+      <a href="../running-in-production/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1229,7 +1149,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/control-plane-security/" class="md-nav__link">
+      <a href="../control-plane-security/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1247,10 +1167,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../operations/relay-policy/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Relay tier
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1259,6 +1199,110 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-override-not-activation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model: override, not activation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resolution
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fields
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fields">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoscaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      autoscaling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#force-a-namespaces-relay-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Force a namespace's relay on
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-scale-namespace-with-autoscaling-and-dedicated-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      High-scale namespace with autoscaling and dedicated nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#force-a-namespace-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      Force a namespace off
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1271,7 +1315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/verifying-releases/" class="md-nav__link">
+      <a href="../verifying-releases/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1292,7 +1336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../operations/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1539,47 +1583,86 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-from-main" class="md-nav__link">
+  <a href="#model-override-not-activation" class="md-nav__link">
     <span class="md-ellipsis">
-      Install from main
+      Model: override, not activation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-a-specific-version" class="md-nav__link">
+  <a href="#resolution" class="md-nav__link">
     <span class="md-ellipsis">
-      Install a specific version
+      Resolution
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
+  <a href="#fields" class="md-nav__link">
     <span class="md-ellipsis">
-      Upgrade
+      Fields
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fields">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoscaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      autoscaling
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#control-plane-ca" class="md-nav__link">
-    <span class="md-ellipsis">
-      Control-plane CA
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#uninstall" class="md-nav__link">
+  <a href="#examples" class="md-nav__link">
     <span class="md-ellipsis">
-      Uninstall
+      Examples
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#force-a-namespaces-relay-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Force a namespace's relay on
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-scale-namespace-with-autoscaling-and-dedicated-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      High-scale namespace with autoscaling and dedicated nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#force-a-namespace-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      Force a namespace off
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1601,48 +1684,194 @@
   
 
 
-<h1 id="kustomize-install">Kustomize install<a class="headerlink" href="#kustomize-install" title="Permanent link">&para;</a></h1>
-<p>Coxswain's deployment manifests are structured as a Kustomize base under <code>deploy/manifests/</code>. Use this method when you need to apply overlays — custom resource limits, additional labels, namespace changes, or image overrides. The base's core resource, <code>coxswain.yaml</code>, is <strong>rendered from the Helm chart</strong>, so a Kustomize install produces the same result as <code>helm install</code>; it plus all of Coxswain's CRDs and a <code>ValidatingAdmissionPolicy</code> for Ingress annotation validation (silently skipped on Kubernetes &lt; 1.30) make up the base.</p>
-<h2 id="install-from-main">Install from main<a class="headerlink" href="#install-from-main" title="Permanent link">&para;</a></h2>
-<p>For a quick install without version pinning:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install Gateway API CRDs first (once per cluster)</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
-
-<span class="c1"># Install Coxswain</span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;github.com/coxswain-labs/coxswain//deploy/manifests?ref=main&quot;</span>
-</code></pre></div>
-<h2 id="install-a-specific-version">Install a specific version<a class="headerlink" href="#install-a-specific-version" title="Permanent link">&para;</a></h2>
-<p>The remote base always uses <code>image: ...:latest</code>. To pin both the manifests and the image to a specific release, create a local overlay:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>coxswain-install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>coxswain-install
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># kustomization.yaml</span>
-<span class="nt">resources</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.com/coxswain-labs/coxswain//deploy/manifests?ref=vX.Y.Z</span>
-
-<span class="nt">images</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/coxswain-labs/coxswain</span>
-<span class="w">    </span><span class="nt">newTag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vX.Y.Z</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">&para;</a></h2>
-<p>Update the <code>?ref=</code> and <code>newTag:</code> values in your overlay to the new version, then re-apply:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<h2 id="control-plane-ca">Control-plane CA<a class="headerlink" href="#control-plane-ca" title="Permanent link">&para;</a></h2>
-<p>The base runs the controller in <code>auto</code> CA mode: it self-generates the discovery
-CA and works out of the box. To consume an external CA instead, apply
-<code>deploy/manifests/cert-manager-example.yaml</code> (a standalone recipe, not part of
-the base), set <code>COXSWAIN_DISCOVERY_CA_MODE=external</code> on the controller, and delete
-the <code>coxswain-controller-discovery-ca</code> Role/RoleBinding. See
-<a href="../../operations/control-plane-security/">Control-plane security</a>.</p>
-<h2 id="uninstall">Uninstall<a class="headerlink" href="#uninstall" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>-k<span class="w"> </span>.
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This removes the <code>coxswain-system</code> namespace and everything in it. Gateway API CRDs and any user-created <code>Gateway</code>/<code>HTTPRoute</code>/<code>Ingress</code> objects in other namespaces are not affected.</p>
+<h1 id="coxswainrelaypolicy">CoxswainRelayPolicy<a class="headerlink" href="#coxswainrelaypolicy" title="Permanent link">&para;</a></h1>
+<p><code>CoxswainRelayPolicy</code> is a <strong>namespaced</strong> CRD that tunes the controller-provisioned
+<strong>namespace relays</strong> of the <a href="../../architecture/proxy-topology/#discovery-relay-tier">discovery relay tier</a>.
+The policy in a namespace governs that namespace's relay, overlaying structured control —
+enablement, HA, resources, scheduling, and autoscaling — on top of the install-wide
+<code>--relay-*</code> controller flags.</p>
+<div class="admonition note">
+<p class="admonition-title">Scope: namespace relays only</p>
+<p>This CRD applies <strong>only</strong> to the dynamic, per-namespace relays the controller provisions
+for <strong>dedicated</strong> proxies. The <strong>shared-pool relay</strong> is global (one per install) and reads
+the install-wide <code>--relay-*</code> flag values directly — it has no per-namespace policy.</p>
 </div>
+<h2 id="model-override-not-activation">Model: override, not activation<a class="headerlink" href="#model-override-not-activation" title="Permanent link">&para;</a></h2>
+<p>Turning the tier on (<code>--relay-enabled</code>) already provisions relays automatically wherever they
+reduce leader fan-out (the <a href="../../architecture/proxy-topology/#discovery-relay-tier">control loop</a>:
+activation at break-even, cooldown deactivation). You do <strong>not</strong> need a policy to get the
+optimization. <code>CoxswainRelayPolicy</code> is for <strong>overrides and tuning</strong> — force a namespace on or
+off, resize it, pin its scheduling, or tune/opt it into autoscaling.</p>
+<h2 id="resolution">Resolution<a class="headerlink" href="#resolution" title="Permanent link">&para;</a></h2>
+<p>The effective policy for a namespace is simply the <code>CoxswainRelayPolicy</code> that lives <strong>in</strong>
+that namespace — keyed by the object's own namespace, the same model as the
+<code>CoxswainGatewayParameters</code> used for <a href="../../gateway-api/#dedicated-proxy-pools">dedicated proxies</a>. Every
+field is optional; unset fields fall through to the global <code>--relay-*</code> controller-flag
+defaults. <code>podTemplate</code> strategic-merges onto the controller-rendered relay pod.</p>
+<p>There is no cluster-wide "default policy" and no label selector: the only install-wide default
+is the flat <code>--relay-*</code> flags; structured overrides (autoscaling, <code>podTemplate</code>, <code>resources</code>)
+are set per namespace. Keep <strong>at most one</strong> policy per namespace — if several exist the
+controller picks the lexically-first by name and warn-logs the ambiguity.</p>
+<h2 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>bool</code></td>
+<td>unset (auto)</td>
+<td>Tri-state override: unset = controller decides (activation threshold); <code>true</code> = force on (bypass threshold; still torn down at zero subscribers); <code>false</code> = force off (unconditional, overrides the cooldown).</td>
+</tr>
+<tr>
+<td><code>replicas</code></td>
+<td><code>int</code></td>
+<td><code>--relay-replicas</code> (2)</td>
+<td>Static relay replica count when autoscaling is off.</td>
+</tr>
+<tr>
+<td><code>resources</code></td>
+<td><code>ResourceRequirements</code></td>
+<td><code>--relay-*-request</code> / <code>--relay-memory-limit</code></td>
+<td>Relay container requests/limits.</td>
+</tr>
+<tr>
+<td><code>podTemplate</code></td>
+<td>partial <code>PodTemplateSpec</code></td>
+<td>none</td>
+<td>Scheduling escape hatch strategic-merged onto the relay pod (nodeSelector, tolerations, affinity, topologySpreadConstraints, priorityClassName, …).</td>
+</tr>
+<tr>
+<td><code>autoscaling</code></td>
+<td>object</td>
+<td>off</td>
+<td>Controller-driven autoscaling (see below).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autoscaling"><code>autoscaling</code><a class="headerlink" href="#autoscaling" title="Permanent link">&para;</a></h3>
+<p>Namespace-relay autoscaling is <strong>controller-driven — there is no <code>HorizontalPodAutoscaler</code></strong>.
+The relay is I/O/fan-out-bound (CPU mistracks its load) and each replica opens its own upstream
+stream to the leader, so the controller re-implements the standard autoscaler loop internally,
+sizing the relay from the namespace's <strong>live dedicated proxy subscriber count</strong>:</p>
+<div class="highlight"><pre><span></span><code>replicas = clamp(ceil(liveSubscribers / targetProxiesPerReplica), minReplicas, maxReplicas)
+</code></pre></div>
+<p>damped by a relative <strong>tolerance</strong> deadband and an asymmetric <strong>scale-down stabilization</strong>
+window (scale up promptly, scale down only on the trailing-window peak).</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Opt into controller-driven sizing.</td>
+</tr>
+<tr>
+<td><code>minReplicas</code></td>
+<td><code>int</code></td>
+<td>effective <code>replicas</code></td>
+<td>HA floor. Keep ≥ 2.</td>
+</tr>
+<tr>
+<td><code>maxReplicas</code></td>
+<td><code>int</code></td>
+<td>— (<strong>required</strong>)</td>
+<td>Cap on relay replicas — bounds the upstream fan-out regrowth. <strong>If unset, autoscaling is ignored</strong> (the relay stays at static <code>replicas</code>) and the controller warn-logs; an uncapped relay never runs.</td>
+</tr>
+<tr>
+<td><code>targetProxiesPerReplica</code></td>
+<td><code>int</code></td>
+<td><code>--relay-target-proxies-per-replica</code> (250)</td>
+<td><strong>Capacity ratio</strong> — downstream proxies each replica should front. Decoupled from the break-even threshold (a relay is a fan-out cache, so real per-replica capacity is O(100s), not the break-even number). Measured: under one CPU core and p99 fan-out latency under 20ms at 250 subscribers even under sustained 10 changes/sec churn.</td>
+</tr>
+<tr>
+<td><code>scaleDownStabilizationSeconds</code></td>
+<td><code>int</code></td>
+<td><code>--relay-scale-down-stabilization</code> (300)</td>
+<td>Scale-<strong>down</strong> sizes on the max subscriber count over this trailing window; scale-up is prompt. Damps flapping.</td>
+</tr>
+<tr>
+<td><code>cooldownSeconds</code></td>
+<td><code>int</code></td>
+<td><code>--relay-cooldown</code> (300)</td>
+<td>The relay is torn down only after the subscriber count holds <strong>below</strong> break-even for this long. A genuinely drained namespace (no dedicated Gateways) tears down at once; a transient 0 (relay restart/reconnect) waits the cooldown.</td>
+</tr>
+<tr>
+<td><code>tolerance</code></td>
+<td><code>float</code></td>
+<td><code>--relay-tolerance</code> (0.10)</td>
+<td>Relative sizing deadband: the replica count changes only when load deviates from target by more than this fraction.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Keep <code>maxReplicas</code> below the fan-out it collapses</p>
+<p>Each relay replica opens its own upstream <code>Namespace</code> stream to the leader. If
+<code>maxReplicas</code> approaches the namespace's downstream proxy count, the relay's own streams
+approach the count it exists to collapse and the tier stops paying off.</p>
+</div>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h3 id="force-a-namespaces-relay-on">Force a namespace's relay on<a class="headerlink" href="#force-a-namespaces-relay-on" title="Permanent link">&para;</a></h3>
+<p>Turn the automatic threshold into "always on" for <code>team-a</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainRelayPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relay</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">team-a</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</code></pre></div>
+<h3 id="high-scale-namespace-with-autoscaling-and-dedicated-nodes">High-scale namespace with autoscaling and dedicated nodes<a class="headerlink" href="#high-scale-namespace-with-autoscaling-and-dedicated-nodes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainRelayPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relay</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">platform</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100m</span>
+<span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128Mi</span>
+<span class="w">    </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">512Mi</span>
+<span class="w">  </span><span class="nt">podTemplate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">tolerations</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dedicated</span>
+<span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Equal</span>
+<span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relay</span>
+<span class="w">          </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NoSchedule</span>
+<span class="w">  </span><span class="nt">autoscaling</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">minReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">maxReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="w">    </span><span class="nt">targetProxiesPerReplica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+</code></pre></div>
+<h3 id="force-a-namespace-off">Force a namespace off<a class="headerlink" href="#force-a-namespace-off" title="Permanent link">&para;</a></h3>
+<p>Keep a namespace direct-to-controller even if it crosses the break-even threshold:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoxswainRelayPolicy</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">relay</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">legacy</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
 
 
 
