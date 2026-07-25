@@ -782,6 +782,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#the-pod-security-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      The pod security envelope
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#automatic-provisioning" class="md-nav__link">
     <span class="md-ellipsis">
       Automatic provisioning
@@ -1672,6 +1681,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#the-pod-security-envelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      The pod security envelope
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#automatic-provisioning" class="md-nav__link">
     <span class="md-ellipsis">
       Automatic provisioning
@@ -1894,7 +1912,7 @@
 </tr>
 <tr>
 <td><code>podTemplate</code></td>
-<td>Partial <code>PodTemplateSpec</code> merged over the rendered template (nodeSelector, tolerations, env, sidecars, …)</td>
+<td>Partial <code>PodTemplateSpec</code> merged over the rendered template (nodeSelector, tolerations, env, sidecars, …), bounded by the <a href="#the-pod-security-envelope">pod security envelope</a></td>
 <td>—</td>
 </tr>
 <tr>
@@ -1927,6 +1945,80 @@
 <span class="w">    </span><span class="nt">maxReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="w">    </span><span class="nt">targetCPUUtilizationPercentage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
 </code></pre></div>
+<h3 id="the-pod-security-envelope">The pod security envelope<a class="headerlink" href="#the-pod-security-envelope" title="Permanent link">&para;</a></h3>
+<p><code>podTemplate</code> is an escape hatch on an object a namespace tenant can write, applied to a pod the
+cluster-privileged controller creates on their behalf. It therefore cannot weaken the rendered pod's
+security: the controller merges the overlay and then re-asserts its own hardening over the result.</p>
+<p>Controller-owned — an overlay value for any of these is ignored:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What the controller renders</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec.securityContext</code></td>
+<td><code>runAsNonRoot: true</code> with the <code>RuntimeDefault</code> seccomp profile</td>
+</tr>
+<tr>
+<td><code>spec.serviceAccountName</code></td>
+<td>the provisioned zero-verb ServiceAccount</td>
+</tr>
+<tr>
+<td><code>spec.automountServiceAccountToken</code></td>
+<td><code>false</code> — only the explicit audience-scoped discovery token is mounted</td>
+</tr>
+<tr>
+<td><code>spec.hostNetwork</code> / <code>hostPID</code> / <code>hostIPC</code></td>
+<td>unset; a provisioned pod never joins a host namespace</td>
+</tr>
+<tr>
+<td><code>spec.containers[coxswain].securityContext</code></td>
+<td>no privilege escalation, all capabilities dropped, read-only root filesystem</td>
+</tr>
+<tr>
+<td>the controller's own volumes (<code>discovery-token</code>, <code>trust-bundle</code>)</td>
+<td>restored verbatim; an overlay entry reusing one of these names is reverted, not merged</td>
+</tr>
+<tr>
+<td>the reserved <code>app.kubernetes.io/*</code> pod labels</td>
+<td>the Deployment selector depends on them</td>
+</tr>
+<tr>
+<td><code>spec.ephemeralContainers</code></td>
+<td>cleared — a pod template may not carry one, so the apiserver would refuse the Deployment</td>
+</tr>
+</tbody>
+</table>
+<p>A volume the overlay adds must use a source the <code>restricted</code> Pod Security Standard allows —
+<code>configMap</code>, <code>csi</code>, <code>downwardAPI</code>, <code>emptyDir</code>, <code>ephemeral</code>, <code>persistentVolumeClaim</code>, <code>projected</code>, or
+<code>secret</code>. Anything else is dropped along with any <code>volumeMount</code> referencing it: <code>hostPath</code> mounts the
+node's filesystem, <code>gitRepo</code> has the kubelet clone a repository as root on the node, and
+<code>nfs</code>/<code>iscsi</code>/<code>cephfs</code>/<code>flexVolume</code> attach storage the controller never vetted. <code>hostPort</code> is
+stripped from every container port.</p>
+<p>A container the controller did not render — a sidecar or init container you add through the overlay —
+keeps its own image, command, mounts, and writable root filesystem, but runs with privilege escalation
+blocked: <code>privileged: false</code>, <code>allowPrivilegeEscalation: false</code>, all capabilities dropped, and
+<code>runAsNonRoot: true</code>. A sidecar that needs a writable path should mount an <code>emptyDir</code>.</p>
+<p>Everything else in the overlay applies normally — <code>nodeSelector</code>, <code>tolerations</code>, <code>affinity</code>,
+<code>topologySpreadConstraints</code>, <code>priorityClassName</code>, additional volumes, container <code>env</code>, and added
+containers are all merged as written. The controller filters the overlay rather than rejecting it, so
+one disallowed field never discards the rest.</p>
+<p>When an overlay does set a controller-owned field, the controller emits a <code>PodTemplateSanitized</code>
+<code>Warning</code> Event naming each ignored field:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>gateway<span class="w"> </span>tenant-a-gw<span class="w"> </span>-n<span class="w"> </span>tenant-a
+</code></pre></div>
+<p>The same rules apply to the namespace relay's <a href="../operations/relay-policy/"><code>CoxswainRelayPolicy.podTemplate</code></a>,
+which reports on the policy object instead.</p>
+<p>If the install's <a href="../installation/helm/"><code>ValidatingAdmissionPolicy</code></a> is active (Kubernetes 1.30+,
+<code>vap.enabled</code>), the escalation-relevant subset — the two <code>securityContext</code> fields, the ServiceAccount
+fields, the host namespace flags, <code>ephemeralContainers</code>, disallowed volume sources, and <code>hostPort</code> —
+is rejected at <code>kubectl apply</code> time instead, with a message naming the field. The rest (the reserved
+pod labels, the controller's own volumes) is filtered by the controller and reported by Event, since
+an availability guardrail is no reason to fail a tenant's apply. The controller-side filter stays
+authoritative either way: it also covers objects created before the policy was installed.</p>
 <h3 id="automatic-provisioning">Automatic provisioning<a class="headerlink" href="#automatic-provisioning" title="Permanent link">&para;</a></h3>
 <p>The controller runs a provisioning loop that watches every <code>Gateway</code>. For any Gateway whose <code>parametersRef</code> (or whose <code>GatewayClass</code>'s <code>parametersRef</code>) resolves to a <code>CoxswainGatewayParameters</code>, the operator applies a dedicated proxy <code>Deployment</code> / <code>Service</code> / <code>ServiceAccount</code> via server-side-apply, owner-referenced to the parent Gateway so deletion cascades.</p>
 <p>Verify the resources landed — all three carry the Gateway's name label:</p>

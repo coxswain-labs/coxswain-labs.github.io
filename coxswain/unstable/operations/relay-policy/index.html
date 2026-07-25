@@ -1707,7 +1707,13 @@ off, resize it, pin its scheduling, or tune/opt it into autoscaling.</p>
 that namespace — keyed by the object's own namespace, the same model as the
 <code>CoxswainGatewayParameters</code> used for <a href="../../gateway-api/#dedicated-proxy-pools">dedicated proxies</a>. Every
 field is optional; unset fields fall through to the global <code>--relay-*</code> controller-flag
-defaults. <code>podTemplate</code> strategic-merges onto the controller-rendered relay pod.</p>
+defaults. <code>podTemplate</code> strategic-merges onto the controller-rendered relay pod, then the
+controller re-asserts its own hardening over the result — the pod- and container-level
+<code>securityContext</code>, the pinned ServiceAccount, its own volumes, and the host namespace flags are
+controller-owned, and an added volume must use a source the <code>restricted</code> Pod Security Standard
+allows. See the
+<a href="../../gateway-api/#the-pod-security-envelope">pod security envelope</a> for the full list;
+ignored fields are reported as a <code>PodTemplateSanitized</code> Warning Event on this policy.</p>
 <p>There is no cluster-wide "default policy" and no label selector: the only install-wide default
 is the flat <code>--relay-*</code> flags; structured overrides (autoscaling, <code>podTemplate</code>, <code>resources</code>)
 are set per namespace. Keep <strong>at most one</strong> policy per namespace — if several exist the
@@ -1745,7 +1751,7 @@ controller picks the lexically-first by name and warn-logs the ambiguity.</p>
 <td><code>podTemplate</code></td>
 <td>partial <code>PodTemplateSpec</code></td>
 <td>none</td>
-<td>Scheduling escape hatch strategic-merged onto the relay pod (nodeSelector, tolerations, affinity, topologySpreadConstraints, priorityClassName, …).</td>
+<td>Scheduling escape hatch strategic-merged onto the relay pod (nodeSelector, tolerations, affinity, topologySpreadConstraints, priorityClassName, …), bounded by the <a href="../../gateway-api/#the-pod-security-envelope">pod security envelope</a>.</td>
 </tr>
 <tr>
 <td><code>autoscaling</code></td>
