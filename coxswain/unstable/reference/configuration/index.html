@@ -1886,6 +1886,12 @@
 <td>SPIFFE trust domain; must match across the controller and all proxies</td>
 </tr>
 <tr>
+<td><code>COXSWAIN_EGRESS_ALLOW_CIDR</code></td>
+<td><code>--egress-allow-cidr</code></td>
+<td><em>(none)</em></td>
+<td><em>(controller)</em> Comma-separated CIDRs the controller may connect to, beyond the public internet, when fetching a tenant-authored <code>JwtAuth.spec.jwks.remote.uri</code>. Empty refuses every reserved/special-purpose destination (RFC 1918, loopback, link-local/cloud-metadata, CGNAT, documentation ranges, multicast) so a tenant can't turn the controller into an SSRF proxy; list a CIDR (e.g. the cluster's Service CIDR) to permit an in-cluster identity provider. A listed CIDR is also the only destination class where a plaintext <code>http://</code> <code>remote.uri</code> is accepted — everything else requires <code>https://</code>. See <a href="../../gateway-api/route-extensions/#jwt-authentication">JwtAuth</a></td>
+</tr>
+<tr>
 <td><code>COXSWAIN_HEALTH_PORT</code></td>
 <td><code>--health-port</code></td>
 <td><code>8081</code></td>
