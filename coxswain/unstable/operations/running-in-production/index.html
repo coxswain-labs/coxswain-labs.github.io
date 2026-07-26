@@ -1270,6 +1270,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-admin-and-management-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      The admin and management ports
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controller-egress" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controller egress
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1727,6 +1751,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-admin-and-management-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      The admin and management ports
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controller-egress" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controller egress
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1945,6 +1993,60 @@ kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w">
 <h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
 <p>Coxswain unconditionally strips <code>Forwarded</code>, <code>X-Forwarded-For</code>, <code>X-Forwarded-Proto</code>, <code>X-Real-IP</code>, and <code>X-SSL-Client-Cert</code> from every upstream request before any route filter runs. The proxy owns these headers; client-supplied values are never forwarded. When PROXY protocol is enabled (via <code>--ingress-accept-proxy-protocol</code> for Ingress or a <code>ClientTrafficPolicy</code> for Gateway listeners), Coxswain injects a proxy-generated <code>Forwarded</code> header derived from the real PROXY-protocol client address. On an mTLS host with <code>auth-tls-pass-certificate-to-upstream: "true"</code>, it re-inserts <code>X-SSL-Client-Cert</code> carrying the verified client certificate after the strip, so a client's own copy of the header is always replaced rather than trusted.</p>
 <p>The same rule applies to <code>ext-auth</code>'s <code>allowedResponseHeaders</code>: every configured name is stripped from the client's request before the check runs, regardless of whether the auth service actually echoes it back. A route that allow-lists a header the auth service doesn't always return would otherwise let a client's forged value through untouched on the requests where it isn't returned.</p>
+<h3 id="the-admin-and-management-ports">The admin and management ports<a class="headerlink" href="#the-admin-and-management-ports" title="Permanent link">&para;</a></h3>
+<p>Every Coxswain pod binds two management ports, both on <code>management.bindAddress</code> (<code>0.0.0.0</code> by default, so kubelet probes and Prometheus scraping work without configuration):</p>
+<ul>
+<li><strong>Health, <code>8081</code></strong> — <code>/healthz</code> and <code>/readyz</code>. Carries no cluster data.</li>
+<li><strong>Admin, <code>8082</code></strong> — <code>/metrics</code> on every role, plus, on the <strong>controller</strong>, the operator UI and the <code>/api/v1/*</code> surface: verbatim Kubernetes manifests (<code>/api/v1/manifests/{kind}/{ns}/{name}</code>, including Pod <code>spec.containers[].env</code>, which frequently holds credentials), Coxswain pod logs, and the full routing topology.</li>
+</ul>
+<p>The Kubernetes pod network is flat, so an unfenced admin port is readable by any pod in any namespace. That is a strong reconnaissance and credential-pivot primitive in a multi-tenant cluster, where a tenant in namespace A could otherwise read namespace B's Pod environment. Two controls address it.</p>
+<p><strong>NetworkPolicy (on by default).</strong> Coxswain ships one <code>NetworkPolicy</code> per pod set — the controller's from the chart, and one each for the shared pool, every dedicated proxy, and every relay, applied by the controller that owns those Deployments. Each admits the admin port from two places only: pods in the policy's own namespace, and pods in the install namespace. The second is what lets the controller aggregate a dedicated proxy, which runs in its Gateway's namespace rather than alongside the controller. Everything else stays reachable from anywhere: the data plane, kubelet probes, and the mTLS-authenticated discovery ports.</p>
+<p>A proxy binds ports that are not knowable when the policy is written — the shared pool allocates one internal port per Gateway listener, and a dedicated proxy binds whatever its Gateway declares. Because a <code>NetworkPolicy</code> denies every port it does not name, those policies allow the full port range <em>except</em> the admin port, rather than enumerating the data plane. Adding or removing a listener therefore never requires the policy to be rewritten and can never be blocked by a stale one.</p>
+<p>To let Prometheus scrape from another namespace, name it explicitly:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">networkPolicy</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">admin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">extraIngress</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">namespaceSelector</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">matchLabels</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">kubernetes.io/metadata.name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">monitoring</span>
+</code></pre></div>
+<p>Set <code>networkPolicy.enabled: false</code> on clusters whose CNI does not enforce <code>NetworkPolicy</code> (where the object is inert anyway), or if you fence the surface with your own policy. Disabling removes any policy the controller previously applied; it keeps the <code>networkpolicies</code> RBAC either way, since the delete verb is exactly what reclaiming them needs.</p>
+<p><strong>Basic auth (opt-in).</strong> A second factor for the controller's admin port, worth enabling whenever the port is reachable beyond the install namespace. Create a Secret holding one bcrypt htpasswd line under the key <code>auth</code>:</p>
+<div class="highlight"><pre><span></span><code>htpasswd<span class="w"> </span>-nbB<span class="w"> </span>admin<span class="w"> </span><span class="s1">&#39;s3cret&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>auth
+kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>coxswain-admin-auth<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--namespace<span class="w"> </span>coxswain-system<span class="w"> </span>--from-file<span class="o">=</span>auth
+rm<span class="w"> </span>auth
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nt">adminAuth</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coxswain-admin-auth</span>
+</code></pre></div>
+<p>Only the Secret's <em>name</em> reaches the controller; it reads the Secret with the RBAC it already holds and re-reads it every 30 seconds, so rotating the credential needs no restart. Only bcrypt is accepted — a plaintext or SHA-1 entry is rejected at load. If the Secret is deleted or becomes unreadable the admin surface returns <code>503</code>; it never falls back to unauthenticated, so a typo in the name cannot silently reopen it. A transient apiserver error does <em>not</em> clear the credential — the last known-good one is kept until the apiserver gives a definitive answer.</p>
+<p>Authentication covers everything that exposes cluster data: <code>/api/v1/{manifests,fleet,routing,problems,events,topology}</code>, <code>/api/v1/pods/*/logs</code>, and the operator UI at <code>/</code>. Three endpoints stay open because gating them would break the product rather than protect it:</p>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Why it stays open</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/metrics</code></td>
+<td>The chart's <code>PodMonitor</code> scrapes it by pod IP and has no credential field.</td>
+</tr>
+<tr>
+<td><code>/api/v1/health</code></td>
+<td>The controller probes <strong>peer</strong> pods here to build the fleet view; it holds only the bcrypt hash, so it cannot authenticate to itself.</td>
+</tr>
+<tr>
+<td><code>/api/v1/topology/local</code></td>
+<td>The same fan-out, for the merged HA topology view.</td>
+</tr>
+</tbody>
+</table>
+<p>None of the three returns manifests, environment variables, pod logs, or routing tables, and all three remain behind the <code>NetworkPolicy</code> fence. The health port is a separate listener and is never authenticated — kubelet probes keep working untouched.</p>
+<p>Basic auth is deliberately not offered on proxy and relay admin ports: those serve only <code>/metrics</code> and <code>/api/v1/health</code>, and those pods hold zero Kubernetes RBAC by design, so they cannot read a credential Secret. <code>NetworkPolicy</code> is the control there.</p>
+<h3 id="controller-egress">Controller egress<a class="headerlink" href="#controller-egress" title="Permanent link">&para;</a></h3>
 <p><code>JwtAuth.spec.jwks.remote.uri</code> is tenant-authored (any namespace with create-rights on <code>JwtAuth</code> controls it), and the controller — a privileged, cluster-network-reachable pod — fetches it every 30 s–5 min. The controller refuses <code>remote.uri</code> unless it is <code>https://</code> and resolves to a public IP: every reserved/special-purpose range (RFC 1918 private space, loopback, link-local — including cloud metadata at <code>169.254.169.254</code> — CGNAT, documentation ranges, multicast) is denied by default, closing off SSRF against the cluster network or cloud metadata service. Set <code>controller.egressAllowCidrs</code> (<code>--egress-allow-cidr</code>) to permit specific additional destinations — typically an in-cluster identity provider's Service CIDR. A CIDR listed there is also the only destination class where a plaintext <code>http://</code> <code>remote.uri</code> is accepted; every other destination requires <code>https://</code>. See <a href="../../gateway-api/route-extensions/#jwt-authentication">JwtAuth</a> and the <a href="../../reference/configuration/">configuration reference</a>.</p>
 <h2 id="rbac">RBAC<a class="headerlink" href="#rbac" title="Permanent link">&para;</a></h2>
 <p>The default <code>ClusterRole</code> grants Coxswain cluster-wide:</p>

@@ -1808,6 +1808,24 @@
 <td>What the access-log <code>path</code> field records: <code>full</code>, <code>pattern</code>, or <code>none</code></td>
 </tr>
 <tr>
+<td><code>COXSWAIN_ADMIN_BASIC_AUTH_SECRET</code></td>
+<td><code>--admin-basic-auth-secret</code></td>
+<td><em>(none)</em></td>
+<td><em>(controller)</em> Name of a Secret in the install namespace holding one bcrypt htpasswd line under key <code>auth</code>. Requires HTTP Basic auth on the whole admin listener, <code>/metrics</code> included. Re-read every 30s, so rotation needs no restart; a missing or unusable Secret closes the surface with <code>503</code> rather than serving it unauthenticated. See <a href="../../operations/running-in-production/#the-admin-and-management-ports">Running in production</a></td>
+</tr>
+<tr>
+<td><code>COXSWAIN_ADMIN_FENCE_ENABLED</code></td>
+<td><code>--admin-fence-enabled</code></td>
+<td><code>true</code></td>
+<td><em>(controller)</em> Restrict the admin port of every provisioned pod (shared pool, dedicated proxies, relays) to callers in the pod's own namespace, via a <code>NetworkPolicy</code>. All other ports stay reachable from anywhere. <code>false</code> removes any policy already applied</td>
+</tr>
+<tr>
+<td><code>COXSWAIN_ADMIN_FENCE_EXTRA_INGRESS</code></td>
+<td><code>--admin-fence-extra-ingress</code></td>
+<td><code>[]</code></td>
+<td><em>(controller)</em> JSON array of Kubernetes <code>NetworkPolicyPeer</code> objects allowed through the admin-port restriction, e.g. to let a Prometheus in another namespace scrape <code>/metrics</code></td>
+</tr>
+<tr>
 <td><code>COXSWAIN_ADMIN_PORT</code></td>
 <td><code>--admin-port</code></td>
 <td><code>8082</code></td>
@@ -2168,6 +2186,10 @@ SVID rotation, and troubleshooting.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The data plane and the management surface bind independently: <code>COXSWAIN_PROXY_BIND_ADDRESS</code> for the HTTP/HTTPS proxy listeners, and <code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code> for the health and admin servers. Both default to <code>0.0.0.0</code>; set the management address to a management-network IP to keep <code>/metrics</code>, <code>/api/v1/health</code>, and the health endpoints off the data-plane interface.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Fence the admin port</p>
+<p>On the controller, the admin port serves verbatim Kubernetes manifests (including Pod environment variables) and pod logs. It is fenced by a <code>NetworkPolicy</code> by default, and <code>COXSWAIN_ADMIN_BASIC_AUTH_SECRET</code> adds authentication. See <a href="../../operations/running-in-production/#the-admin-and-management-ports">the admin and management ports</a> before changing either.</p>
 </div>
 <h2 id="leader-election">Leader election<a class="headerlink" href="#leader-election" title="Permanent link">&para;</a></h2>
 <p>All replicas maintain a current routing table and serve traffic; only the leader writes status back to <code>Ingress</code>, <code>Gateway</code>, and <code>HTTPRoute</code> objects. The lease parameters must satisfy <code>lease-ttl ≥ 3 × lease-renew-interval</code>.</p>
