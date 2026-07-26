@@ -2481,6 +2481,12 @@
 <td>Gauge</td>
 <td>— (seconds until the proxy's current SVID <code>notAfter</code>; approaching <code>0</code> means rotation is not keeping up with the TTL)</td>
 </tr>
+<tr>
+<td><code>coxswain_discovery_client_directives_total</code></td>
+<td>Client</td>
+<td>Counter</td>
+<td><code>outcome</code> (<code>applied</code>/<code>noop</code>/<code>rejected</code>) — upstream pointers processed. <code>applied</code>/<code>noop</code> cover live repoint directives; <code>rejected</code> covers <strong>both</strong> writers to the upstream cell (a live directive and the pointer riding a bootstrap response). <code>rejected</code> means a pointer named an upstream outside the node's <a href="../../operations/control-plane-security/#the-upstream-policy">upstream policy</a> and should be flat at zero forever; alert on any increase</td>
+</tr>
 </tbody>
 </table>
 <h3 id="metric-labels-per-gateway">Metric labels per Gateway<a class="headerlink" href="#metric-labels-per-gateway" title="Permanent link">&para;</a></h3>
