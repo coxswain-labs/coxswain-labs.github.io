@@ -2383,7 +2383,7 @@
 <td><code>coxswain_discovery_streams_total</code></td>
 <td>Server</td>
 <td>Counter</td>
-<td><code>result</code> (<code>accepted</code>/<code>rejected</code>/<code>rejected_not_leader</code>) — <code>rejected</code> covers wire-version mismatch, malformed scope, SVID/scope-binding denial, and a <code>node_id</code> colliding with an already-connected relay (a hijack attempt, or a legitimate relay losing its own reconnect race); <code>rejected_not_leader</code> is a standby replica declining the stream</td>
+<td><code>result</code> (<code>accepted</code>/<code>rejected</code>/<code>rejected_not_leader</code>) — <code>rejected</code> covers wire-version mismatch, malformed scope, SVID/scope-binding denial, and a <code>node_id</code> already claimed by a <strong>different</strong> authenticated identity (a hijack attempt, or two nodes that ended up with the same <code>node_id</code> — a persistent condition, retried with ordinary exponential backoff client-side, not a fast retry); <code>rejected_not_leader</code> is a standby replica declining the stream</td>
 </tr>
 <tr>
 <td><code>coxswain_discovery_acks_total</code></td>
