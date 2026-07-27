@@ -2383,13 +2383,19 @@
 <td><code>coxswain_discovery_streams_total</code></td>
 <td>Server</td>
 <td>Counter</td>
-<td><code>result</code> (<code>accepted</code>/<code>rejected</code>/<code>rejected_not_leader</code>) — <code>rejected</code> covers wire-version mismatch, malformed scope, and SVID/scope-binding denial; <code>rejected_not_leader</code> is a standby replica declining the stream</td>
+<td><code>result</code> (<code>accepted</code>/<code>rejected</code>/<code>rejected_not_leader</code>) — <code>rejected</code> covers wire-version mismatch, malformed scope, SVID/scope-binding denial, and a <code>node_id</code> colliding with an already-connected relay (a hijack attempt, or a legitimate relay losing its own reconnect race); <code>rejected_not_leader</code> is a standby replica declining the stream</td>
 </tr>
 <tr>
 <td><code>coxswain_discovery_acks_total</code></td>
 <td>Server</td>
 <td>Counter</td>
 <td>— (snapshot Acks received; tracks fleet convergence throughput)</td>
+</tr>
+<tr>
+<td><code>coxswain_discovery_roster_reports_total</code></td>
+<td>Server</td>
+<td>Counter</td>
+<td><code>result</code> (<code>accepted</code>/<code>partial</code>/<code>rejected</code>) — <code>RosterReport</code> fold outcomes. <code>accepted</code>: an authorized relay's report, every child in its own scope — the expected steady state. <code>partial</code>: an authorized relay named a child outside its own scope (another tenant's Gateway, or the shared pool); a well-formed relay can never produce this, so it should be flat at zero forever — alert on it. <code>rejected</code>: the sender was not authorized at all (a plain proxy, unauthenticated connection, or a relay whose namespace just started terminating, racing its own teardown) — not always zero, but a sustained or climbing rate outside of relay/namespace teardown is the signal worth alerting on</td>
 </tr>
 <tr>
 <td><code>coxswain_discovery_snapshot_messages_total</code></td>
