@@ -1696,7 +1696,8 @@
 <ul>
 <li><code>pattern</code> is a Rust <code>regex</code> pattern, compiled once at reconcile (size-bounded) and shared across requests. <code>replacement</code> is a template — <code>$1</code>…<code>$n</code> expand from the pattern's capture groups, and a reference to a missing group expands to empty.</li>
 <li>The pattern is matched against the request path and is <strong>unanchored</strong> unless you anchor it with <code>^</code>…<code>$</code>. A path that doesn't match is forwarded unchanged.</li>
-<li>An <strong>invalid</strong> <code>pattern</code>, or a <strong>missing</strong> <code>PathRewriteRegex</code> CR, fails <strong>open</strong>: the filter is skipped (a WARN is logged) and the path is left as-is.</li>
+<li>An <strong>invalid</strong> <code>pattern</code> on an existing CR fails <strong>open</strong>: the filter is skipped (a WARN is logged) and the path is left as-is — the reference itself resolved, so there's nothing dangling.</li>
+<li>A <strong>missing</strong> <code>PathRewriteRegex</code> CR fails <strong>closed</strong>: the rule installs as a <code>500</code> error route and <code>ResolvedRefs</code> goes <code>False</code> (<code>InvalidKind</code>) — a dangling <code>ExtensionRef</code> must not silently admit traffic the filter never saw (GEP-1364).</li>
 </ul>
 <h2 id="ip-access-control">IP access control<a class="headerlink" href="#ip-access-control" title="Permanent link">&para;</a></h2>
 <p><code>IpAccessControl</code> restricts a route to a set of source-IP CIDR ranges — the Gateway API surface for the Ingress <a href="../../ingress/annotations/#ip-access-control"><code>ip-access-control</code></a> annotation. It has no Gateway API standard equivalent; its merit anchor is Envoy's <code>rbac</code> CIDR-principal filter / Istio <code>AuthorizationPolicy</code> <code>ipBlocks</code>/<code>notIpBlocks</code>.</p>
@@ -1716,7 +1717,7 @@
 <li><strong><code>deny</code> is evaluated before <code>allow</code>.</strong> A client inside any <code>deny</code> range gets <code>403</code> even when <code>allow</code> would admit it.</li>
 <li><strong><code>allow</code> restricts to the listed ranges</strong> — a client outside every <code>allow</code> range gets <code>403</code>. An empty <code>allow</code> list imposes no allow-list restriction (only <code>deny</code> applies); empty <code>allow</code> <strong>and</strong> empty <code>deny</code> performs no filtering.</li>
 <li><strong>IPv4 and IPv6</strong> CIDRs are both accepted; a bare address (<code>203.0.113.5</code>) is treated as a host route (<code>/32</code> / <code>/128</code>). Invalid CIDR tokens are logged and skipped rather than rejecting the whole policy.</li>
-<li>A <strong>missing</strong> <code>IpAccessControl</code> CR fails open (a WARN is logged; the route is not filtered).</li>
+<li>A <strong>missing</strong> <code>IpAccessControl</code> CR fails <strong>closed</strong>: the rule installs as a <code>500</code> error route and <code>ResolvedRefs</code> goes <code>False</code> (<code>InvalidKind</code>) — a dangling <code>ExtensionRef</code> must not silently admit traffic the filter never saw (GEP-1364).</li>
 </ul>
 <p>The client IP is resolved through the same path as the rest of the data plane: the PROXY-protocol peer when a <code>ClientTrafficPolicy</code> enables PROXY protocol on the listener, otherwise the L4 downstream peer. There is no Gateway-side trusted-forwarded-header surface yet, so behind an L7 load balancer that terminates the connection, enable PROXY protocol so the real client IP reaches the filter.</p>
 <h2 id="basic-authentication">Basic authentication<a class="headerlink" href="#basic-authentication" title="Permanent link">&para;</a></h2>
@@ -1735,7 +1736,7 @@
 <li>The referenced <code>Secret</code> <strong>must</strong> carry the label <code>ingress.coxswain-labs.dev/auth-basic: "true"</code> and store the htpasswd file under the key <code>auth</code> (nginx convention) — the same requirements as the Ingress annotation, so one Secret can back both surfaces.</li>
 <li>Supported hash formats: bcrypt (<code>$2a$</code>/<code>$2b$</code>/<code>$2y$</code>) and Apache SHA1 (<code>{SHA}</code>, accepted but logged as weak).</li>
 <li>Valid credentials are forwarded; missing/invalid credentials get <code>401</code> with <code>WWW-Authenticate</code>.</li>
-<li>A missing, unlabeled, or unparseable Secret — or a missing <code>BasicAuth</code> CR's <code>secretRef</code> — fails <strong>closed</strong> with <code>503</code>, distinct from a missing <code>BasicAuth</code> CR itself (which fails open: no auth enforced).</li>
+<li>A missing, unlabeled, or unparseable Secret — or a missing <code>BasicAuth</code> CR's <code>secretRef</code> — fails <strong>closed</strong> with <code>503</code>. A missing <code>BasicAuth</code> CR itself also fails <strong>closed</strong>: the rule installs as a <code>500</code> error route — a dangling <code>ExtensionRef</code> must not silently admit traffic the filter never saw (GEP-1364).</li>
 <li>A <code>secretRef</code> whose <code>namespace</code> differs from the <code>BasicAuth</code> CR's namespace requires a matching <code>ReferenceGrant</code> in the Secret's namespace — <code>from</code> a <code>BasicAuth</code> (<code>gateway.coxswain-labs.dev</code>) in the CR's namespace, <code>to</code> a core <code>Secret</code>. Without the grant the reference fails <strong>closed</strong> (<code>503</code>); a tenant cannot bind another namespace's auth Secret. Same-namespace refs need no grant.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="c1"># In the Secret&#39;s namespace, to permit a BasicAuth in namespace `apps`:</span>
@@ -1782,7 +1783,7 @@
 <li>On success, <code>claimToHeaders</code> copies named claims onto upstream request headers, and <code>forwardPayloadHeader</code> (if set) carries the base64url-encoded full claims payload. The original token is stripped from the upstream request unless <code>forward: true</code>.</li>
 <li>Missing/invalid/expired/wrong-issuer/wrong-audience tokens get <code>401</code> with <code>WWW-Authenticate: Bearer</code>.</li>
 <li>An unresolved JWKS (fetch not yet complete, fetch failing, or unparseable/empty) fails <strong>closed</strong> with <code>503</code> — an operator who attached this filter expects enforcement.</li>
-<li>A missing <code>JwtAuth</code> CR fails <strong>open</strong> (no auth enforced), matching the other <code>ExtensionRef</code> auth resolvers.</li>
+<li>A missing <code>JwtAuth</code> CR fails <strong>closed</strong>: the rule installs as a <code>500</code> error route — a dangling <code>ExtensionRef</code> must not silently admit traffic the filter never saw (GEP-1364).</li>
 </ul>
 <h2 id="external-authorization-ext_authz">External authorization (ext_authz)<a class="headerlink" href="#external-authorization-ext_authz" title="Permanent link">&para;</a></h2>
 <p><code>CoxswainExternalAuth</code> delegates an allow/deny decision to an external authorization service before a request reaches its upstream — the Coxswain implementation of the Envoy / Istio / kgateway <code>ext_authz</code> model. The auth service is named by a <strong><code>backendRef</code></strong> (a <code>Service</code> + port), resolved to pod endpoints and load-balanced like any other backend; there is no URL form.</p>
@@ -1836,6 +1837,7 @@
 <ul>
 <li><code>failClosed: true</code> (the default) denies with <strong>503</strong> when the auth service is unreachable, errors, or times out; <code>failClosed: false</code> fails <strong>open</strong> (request proceeds unauthorized). A <code>backendRef</code> that resolves to no ready endpoints — or an unsupported protocol — always fails <strong>closed</strong>, regardless of <code>failClosed</code>.</li>
 <li>A <code>backendRef</code> whose <code>namespace</code> differs from the policy's namespace requires a matching <code>ReferenceGrant</code> — <code>from</code> a <code>CoxswainExternalAuth</code> (<code>gateway.coxswain-labs.dev</code>) <code>to</code> a core <code>Service</code>. Without it the reference fails <strong>closed</strong> (503). Same-namespace refs need no grant.</li>
+<li>A <strong>missing</strong> <code>CoxswainExternalAuth</code> CR named by a route filter's <code>ExtensionRef</code> fails <strong>closed</strong>: the rule installs as a <code>500</code> error route — a dangling <code>ExtensionRef</code> must not silently admit traffic the filter never saw (GEP-1364). This is distinct from the <code>failClosed</code>/no-endpoints rules above, which govern a CR that <em>did</em> resolve.</li>
 </ul>
 <h2 id="request-size-limit">Request size limit<a class="headerlink" href="#request-size-limit" title="Permanent link">&para;</a></h2>
 <p><code>RequestSizeLimit</code> caps the request body size for a route — the Gateway API surface for the Ingress <code>max-body-size</code> annotation. Like <code>BasicAuth</code>/<code>Compression</code>, this filter is <strong>HTTPRoute-only</strong> and is not enforced on <code>GRPCRoute</code> (see <a href="#request-size-limit-is-not-enforced-on-grpcroute">below</a>).</p>
@@ -1851,7 +1853,8 @@
 <li><code>maxSize</code> accepts a bare byte count or a <code>k</code>/<code>m</code>/<code>g</code>-suffixed size (binary multipliers, case-insensitive) — the same parser as the Ingress <code>max-body-size</code> annotation.</li>
 <li>On HTTP/1.x, requests exceeding the limit are rejected with <code>413 Payload Too Large</code>, checked up front against <code>Content-Length</code> when present and mid-stream for chunked/streaming bodies.</li>
 <li>On <strong>HTTP/2</strong>, only the up-front <code>Content-Length</code> check applies. A streaming HTTP/2 upload that omits <code>Content-Length</code> is <strong>not</strong> capped — it fails open (see the note below on why mid-stream HTTP/2 enforcement is deferred).</li>
-<li>A missing <code>RequestSizeLimit</code> CR or an unparseable <code>maxSize</code> fails open (no limit enforced).</li>
+<li>An <strong>unparseable</strong> <code>maxSize</code> on an existing CR fails <strong>open</strong> (no limit enforced) — the reference itself resolved, so there's nothing dangling.</li>
+<li>A <strong>missing</strong> <code>RequestSizeLimit</code> CR fails <strong>closed</strong>: the rule installs as a <code>500</code> error route — a dangling <code>ExtensionRef</code> must not silently admit traffic the filter never saw (GEP-1364).</li>
 </ul>
 <h3 id="request-size-limit-is-not-enforced-on-grpcroute">Request size limit is not enforced on GRPCRoute<a class="headerlink" href="#request-size-limit-is-not-enforced-on-grpcroute" title="Permanent link">&para;</a></h3>
 <p><code>RequestSizeLimit</code> attached to a <code>GRPCRoute</code> is accepted but <strong>not enforced</strong> — the reconciler skips it and logs a WARN line (as it does for <code>BasicAuth</code>/<code>Compression</code>). gRPC message sizes are instead governed by the backend's own <code>max_recv_msg_size</code> (gRPC servers reject oversized messages with <code>RESOURCE_EXHAUSTED</code>; the default receive cap is ~4 MB).</p>
@@ -1876,10 +1879,10 @@
 </code></pre></div>
 <p>Semantics:</p>
 <ul>
-<li>At least one of <code>gzip</code> / <code>brotli</code> must be <code>true</code> for the CR to have any effect; when both are <code>false</code> (the default) it is a no-op.</li>
+<li>At least one of <code>gzip</code> / <code>brotli</code> must be <code>true</code> for the CR to have any effect; when both are <code>false</code> (the default) it is a no-op — fails <strong>open</strong> (no compression), same as a missing CR would, but the reference itself resolved so there's nothing dangling.</li>
 <li>Brotli is preferred over gzip when both are enabled and the client advertises <code>br</code> in <code>Accept-Encoding</code>.</li>
 <li><code>level</code> (1–9, default <code>6</code>), <code>minSize</code> (bytes, default <code>1024</code>), and <code>types</code> (default: <code>text/html</code>, <code>text/plain</code>, <code>text/css</code>, <code>application/json</code>, <code>application/javascript</code>) are the same defaults applied when the Ingress <code>compression</code> annotation resolves this CR.</li>
-<li>A missing <code>Compression</code> CR fails open (no compression).</li>
+<li>A <strong>missing</strong> <code>Compression</code> CR fails <strong>closed</strong>: the rule installs as a <code>500</code> error route — a dangling <code>ExtensionRef</code> must not silently admit traffic the filter never saw (GEP-1364).</li>
 </ul>
 
 

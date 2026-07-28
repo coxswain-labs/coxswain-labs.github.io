@@ -1767,7 +1767,7 @@
 <span class="w">                </span><span class="nt">port</span><span class="p">:</span>
 <span class="w">                  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
 </code></pre></div>
-<p><strong>Fail-open</strong>: if the referenced <code>RateLimit</code> CR is missing, the route serves with rate limiting disabled (a WARN is logged) rather than failing the route — the same posture as the Gateway API binding below. See the <a href="#ratelimit-spec-fields"><code>RateLimit</code> spec fields</a> below for <code>requestsPerSecond</code>/<code>burst</code>/<code>byHeader</code>.</p>
+<p><strong>Fail-open</strong>: if the referenced <code>RateLimit</code> CR is missing, the route serves with rate limiting disabled (a WARN is logged) rather than failing the route. See the <a href="#ratelimit-spec-fields"><code>RateLimit</code> spec fields</a> below for <code>requestsPerSecond</code>/<code>burst</code>/<code>byHeader</code>.</p>
 <h3 id="example-5-reqs-per-api-key-header">Example: 5 req/s per API key header<a class="headerlink" href="#example-5-reqs-per-api-key-header" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RateLimit</span>
@@ -1856,7 +1856,7 @@
 </tbody>
 </table>
 <p>The <code>RateLimit</code> CR must be in the same namespace as the <code>HTTPRoute</code>. A rule can reference at most one <code>RateLimit</code> (the first <code>ExtensionRef</code> with <code>group: gateway.coxswain-labs.dev</code> and <code>kind: RateLimit</code> wins).</p>
-<p><strong>Fail-open</strong>: a dangling reference to a non-existent <code>RateLimit</code> CR emits a controller warning and installs the route with no rate limiting — traffic is never blocked by a missing CR.</p>
+<p><strong>Fail-closed</strong>: a dangling reference to a non-existent <code>RateLimit</code> CR emits a controller warning and installs the rule as a <code>500</code> error route (<code>ResolvedRefs=False</code>, reason <code>InvalidKind</code>) rather than admitting unlimited traffic — per GEP-1364, a filter reference that cannot be resolved must not be silently skipped. A CR that exists but sets <code>requestsPerSecond: 0</code> is a different, intentional case: that reference resolved, so the route installs normally with no rate limiting.</p>
 <h2 id="429-response-format">429 response format<a class="headerlink" href="#429-response-format" title="Permanent link">&para;</a></h2>
 <p>A rate-limited request receives:</p>
 <div class="highlight"><pre><span></span><code>HTTP/1.1 429 Too Many Requests

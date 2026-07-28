@@ -1675,7 +1675,7 @@
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ingress.coxswain-labs.dev/retry</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;shop/resilient&quot;</span>
 </code></pre></div>
-<p><strong>Fail-open</strong>: if the referenced <code>RetryPolicy</code> CR is missing, the route serves with retrying disabled (a WARN is logged) rather than failing the route — the same posture as the Gateway API binding below.</p>
+<p><strong>Fail-open</strong>: if the referenced <code>RetryPolicy</code> CR is missing, the route serves with retrying disabled (a WARN is logged) rather than failing the route.</p>
 <p>See the <a href="../../ingress/annotations/#retry">Ingress annotations reference</a> for the full annotation semantics.</p>
 <h2 id="gateway-api-extensionref">Gateway API <code>ExtensionRef</code><a class="headerlink" href="#gateway-api-extensionref" title="Permanent link">&para;</a></h2>
 <p>Define a <code>RetryPolicy</code> custom resource and reference it from an <code>HTTPRoute</code> or <code>GRPCRoute</code> rule's <code>filters</code> with <code>type: ExtensionRef</code>.</p>
@@ -1710,7 +1710,7 @@
 <span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resilient</span>
 </code></pre></div>
 <p>The same CR works on a <code>GRPCRoute</code> rule — the <code>grpcCodes</code> field then governs which <code>grpc-status</code> outcomes retry. <code>codes</code> still applies on a <code>GRPCRoute</code> for transport-level HTTP errors.</p>
-<p><strong>Fail-open</strong>: if the referenced <code>RetryPolicy</code> CR is missing, the route serves with retrying disabled (a WARN is logged) rather than failing the route.</p>
+<p><strong>Fail-closed</strong>: if the referenced <code>RetryPolicy</code> CR is missing, the rule installs as a <code>500</code> error route (<code>ResolvedRefs=False</code>, reason <code>InvalidKind</code>) rather than silently serving with retrying disabled — per GEP-1364, a filter reference that cannot be resolved must not be silently skipped.</p>
 
 
 
