@@ -2003,8 +2003,9 @@ a distinction a port can express and a path cannot:</p>
   is node-sourced and therefore not selectable by most CNIs, so this port cannot
   meaningfully be fenced. It carries nothing but pass/fail.</li>
 <li><strong>Telemetry, <code>8083</code></strong> — <code>/metrics</code> and <code>/statusz</code>, on every role. Read by
-  Prometheus and by the controller when it builds the fleet view. <strong>Never
-  authenticated</strong>: <code>PodMonitor</code> has no credential field, and a probing pod holds
+  Prometheus, and by a controller probing its <strong>peer controller replicas</strong> —
+  never a proxy or a relay, which report their own health over the discovery
+  stream instead. <strong>Never authenticated</strong>: <code>PodMonitor</code> has no credential field, and a probing pod holds
   only the bcrypt <em>hash</em> of the operator credential, so it could not present one
   even in principle. Open to all sources by default; fenceable on request.</li>
 <li><strong>Operator, <code>8082</code></strong> — the operator UI and the <code>/api/v1/*</code> surface, on the
@@ -2016,16 +2017,16 @@ a distinction a port can express and a path cannot:</p>
 </ul>
 <p>The operator port is reached through its own <code>Service</code>,
 <code>coxswain-controller-operator</code>, which selects the <strong>elected leader</strong>. That is not
-load-balancing avoidance: the topology view reads the node registry, and only the
-leader accepts discovery streams, so a standby's registry is empty rather than
-partial. A <code>Service</code> spanning replicas would serve an empty topology at random.
-During a leader election that <code>Service</code> briefly has no endpoints and the UI is
-unreachable — deliberately, because the honest alternative to "no answer" here is
-an empty topology indistinguishable from a healthy cluster with nothing
-connected. Health and telemetry stay reachable on the all-replica
-<code>coxswain-controller</code> <code>Service</code> throughout, so diagnosing the election itself is
-unaffected. A standby reached directly anyway answers <code>503</code> on
-<code>/api/v1/topology</code>, naming the reason.</p>
+load-balancing avoidance: the topology, fleet, and problems views all read the
+node registry, and only the leader accepts discovery streams, so a standby's
+registry is empty rather than partial. A <code>Service</code> spanning replicas would serve
+an empty topology — and a fleet in which every proxy reads as disconnected — at
+random. During a leader election that <code>Service</code> briefly has no endpoints and the
+UI is unreachable — deliberately, because the honest alternative to "no answer"
+here is a view indistinguishable from a cluster-wide outage. Health and telemetry
+stay reachable on the all-replica <code>coxswain-controller</code> <code>Service</code> throughout, so
+diagnosing the election itself is unaffected. A standby reached directly anyway
+answers <code>503</code> on those endpoints, naming the reason.</p>
 <p>The Kubernetes pod network is flat, so an unfenced operator port is readable by
 any pod in any namespace. That is a strong reconnaissance and credential-pivot
 primitive in a multi-tenant cluster, where a tenant in namespace A could
@@ -2056,9 +2057,17 @@ dropped — its targets sit at <code>context deadline exceeded</code> and a dash
 empty, with nothing logged anywhere. Enable it when untrusted workloads share the
 pod network, and add the scraper's namespace in the same change.</p>
 <p>When the telemetry fence is on, it admits two peers automatically: pods in the
-policy's own namespace, and pods in the install namespace. The second is what
-lets the controller probe <code>/statusz</code> on a dedicated proxy, which runs in its
-Gateway's namespace rather than alongside the controller.</p>
+policy's own namespace, and pods in the install namespace. Between them they
+cover a Prometheus deployed alongside either the workload or Coxswain itself; a
+scraper anywhere else needs an <code>extraIngress</code> entry.</p>
+<p>The controller does <strong>not</strong> probe this port on a proxy or relay. Those pods
+report their own health up the discovery stream they already authenticate with
+mTLS, so the controller reads their state from its node registry rather than
+dialling them back over a channel it has no way to authenticate. Fencing
+telemetry therefore cannot break the fleet view. The one exception is a
+controller replica probing its <strong>peer replicas</strong> — controllers run a discovery
+<em>server</em> and are never clients, so no stream carries a peer's health — and those
+are same-namespace by construction, which the first rule already admits.</p>
 <p>A proxy binds ports that are not knowable when the policy is written — the shared
 pool allocates one internal port per Gateway listener, and a dedicated proxy binds
 whatever its Gateway declares. Because a <code>NetworkPolicy</code> denies every port it does

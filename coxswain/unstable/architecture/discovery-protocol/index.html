@@ -1529,6 +1529,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#node-health-reporting-healthreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      Node health reporting (HealthReport)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#failure-and-rollout" class="md-nav__link">
     <span class="md-ellipsis">
       Failure and rollout
@@ -1691,6 +1700,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#node-health-reporting-healthreport" class="md-nav__link">
+    <span class="md-ellipsis">
+      Node health reporting (HealthReport)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#failure-and-rollout" class="md-nav__link">
     <span class="md-ellipsis">
       Failure and rollout
@@ -1824,7 +1842,7 @@
 <li><strong>Namespace relay</strong> subscribes a new <code>Namespace{ns}</code> scope &mdash; one stream carrying every dedicated Gateway's world in the namespace, each resource qualified with a <code>gw|&lt;ns&gt;|&lt;name&gt;|</code> key-segment prefix plus a per-Gateway <code>gwmeta|&lt;ns&gt;|&lt;name&gt;</code> resource (carrying that Gateway's publish-seq and bound proxy ServiceAccount). The relay demuxes these into a per-Gateway registry and serves leaves the unchanged <code>Gateway{ns,name}</code> world, enforcing the same SVID&harr;Gateway binding the controller does. Namespace relays are controller-provisioned and provenance-authorized: the controller authorizes a <code>Namespace{ns}</code> subscription only for a relay ServiceAccount it manages in that namespace, so the grant cannot drift and a forged subscription is bounded to the tenant's own namespace.</li>
 </ul>
 <p><code>Namespace</code> is exclusively the relay's <em>upstream</em> subscription: no leaf ever uses it, and a relay's own downstream server rejects it (relay-behind-relay is out of scope in v1). Bootstrap is <strong>not</strong> tiered &mdash; every node, relays included, obtains its SVID directly from the controller's all-replicas bootstrap listener.</p>
-<p>The wire changes are additive over v2 (the <code>Namespace</code> scope kind, the <code>GatewayMeta</code> resource, the <code>RosterReport</code> client message, and an envelope <code>publish_seq</code> on <code>Snapshot</code>; <code>WIRE_VERSION</code> stays 2), so all of the convergence machinery above is unchanged: version and per-Gateway publish-seq propagate verbatim leader &rarr; relay &rarr; leaf.</p>
+<p>The wire changes are additive over v2 (the <code>Namespace</code> scope kind, the <code>GatewayMeta</code> resource, the <code>RosterReport</code> and <code>HealthReport</code> client messages, and an envelope <code>publish_seq</code> on <code>Snapshot</code>; <code>WIRE_VERSION</code> stays 2), so all of the convergence machinery above is unchanged: version and per-Gateway publish-seq propagate verbatim leader &rarr; relay &rarr; leaf.</p>
 <h3 id="leaf-roster-reporting-rosterreport">Leaf roster reporting (<code>RosterReport</code>)<a class="headerlink" href="#leaf-roster-reporting-rosterreport" title="Permanent link">&para;</a></h3>
 <p>A relay's leaves connect to the relay, not the controller, so without extra plumbing the controller would see only the relay — and its <code>Programmed</code> gate and topology panel would be blind to the actual data plane behind it. Each relay closes that gap by reporting its downstream registry upstream.</p>
 <ul>
@@ -1833,11 +1851,22 @@
 <li><strong>Seq across the tier.</strong> For a leaf's ack to satisfy the gate, its acked publish-seq must be in the <strong>controller's</strong> seq space. A namespace relay re-stamps its downstream publish index to the max <code>GatewayMeta.publish_seq</code> it has applied; a shared-pool relay re-stamps to the envelope <code>Snapshot.publish_seq</code>. Either way a leaf acks a seq <code>&gt;=</code> its Gateway's controller stamp, and the fence — advance the counter only after storing the rebuilt cells — guarantees a leaf never acks a fresh seq over stale content.</li>
 </ul>
 <p>The <code>Programmed</code> gate then evaluates the folded <strong>leaf</strong> entries, never the relay's own ack (a relay caches but binds nothing; its own row is excluded from the shared quorum by the <code>is_relay</code> flag, and it is never <code>Gateway</code>-scoped). Relay outage evicts the subtree, so a re-arming gate fails closed rather than gating a new publish on a blind spot.</p>
+<h3 id="node-health-reporting-healthreport">Node health reporting (<code>HealthReport</code>)<a class="headerlink" href="#node-health-reporting-healthreport" title="Permanent link">&para;</a></h3>
+<p>Every proxy and relay reports <strong>its own subsystem health</strong> up the same stream, as a <code>HealthReport</code> client message: the reporting build's version plus each subsystem's named checks and their states. It is sent immediately after <code>Subscribe</code> on every (re)connect, and again on every genuine check transition — re-asserting a state a check already holds is not a transition, so a subsystem that re-confirms itself every reconcile tick sends nothing.</p>
+<p>This is what lets the operator API answer "what is broken on that pod" without dialling the pod. The controller previously fanned out plain, unauthenticated HTTP to each pod's <code>/statusz</code>, which meant maintaining a back-channel it could not authenticate in order to ask a question the pod could simply tell it over a stream already secured by SVID mTLS.</p>
+<p>A relay-fronted leaf never streams to the controller at all, so its health rides its relay's <code>RosterReport</code> alongside its convergence state; the fold carries it onto the leaf's registry row unchanged. A relay reports its own health directly, since a relay never appears in its own roster.</p>
+<p>Three properties are load-bearing:</p>
+<ul>
+<li><strong>It is its own message kind, not a field on <code>NodeStatus</code>.</strong> <code>NodeStatus.bound_ports</code> is wholesale-replace and proto3 gives a <code>repeated</code> field no presence, so a relay — which binds no listener ports — could not send health inside a <code>NodeStatus</code> without also sending an empty port set, which the controller must read as an affirmative "nothing bound" and which would fail that node's <code>Programmed</code> bind gate.</li>
+<li><strong>It gates nothing.</strong> <code>Programmed</code> turns on acked versions and bound ports; health is operator-visible only. A node cannot affect any other node's readiness by reporting badly, and recording health deliberately does not wake the gate.</li>
+<li><strong>Absent means unknown, never unhealthy.</strong> A node that just connected, or one still on a build that predates health reporting, has no report. That renders as "connected, health unknown" — the alternative would turn every rolling upgrade into a fleet-wide alarm.</li>
+</ul>
+<p>There is no periodic heartbeat, because the stream is itself the freshness proof: while it is up, the last report <em>is</em> the current state. The report carries the time the node sampled its own registry, which measures lag through a relay's coalesce-and-fold hop — the only staleness the stream cannot rule out.</p>
 <h3 id="failure-and-rollout">Failure and rollout<a class="headerlink" href="#failure-and-rollout" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Controller outage</strong> &mdash; the relay serves its last-good world (the same last-good / self-healing invariants above), degrades its health, and reconverges on reconnect. Leaves never disconnect.</li>
 <li><strong>Relay outage</strong> &mdash; leaves serve last-good and reconverge when the relay returns (a reconnecting leaf gets a fresh full via the <code>expect_full</code> gate). Relay HA is &ge;2 replicas behind the relay's Service, so a single-replica bounce is transparent. If a relay is genuinely unreachable (e.g. torn down in a rebalance race), the leaf <strong>re-bootstraps</strong> to the controller &mdash; the always-up anchor &mdash; and is re-pointed at whatever upstream is current. This is a bounded, last-resort SVID handshake per affected leaf, not a routing-snapshot stampede; the data plane keeps serving its last-good snapshot throughout the control-stream reconnect.</li>
-<li><strong>Rollout order</strong> is controller &rarr; relay &rarr; leaf, the same skew direction the wire already tolerates: a newer controller serves an older relay/leaf, and the additive <code>Namespace</code> / <code>GatewayMeta</code> resources are inert on any leaf that never subscribes them.</li>
+<li><strong>Rollout order</strong> is controller &rarr; relay &rarr; leaf, the same skew direction the wire already tolerates: a newer controller serves an older relay/leaf, and the additive <code>Namespace</code> / <code>GatewayMeta</code> resources are inert on any leaf that never subscribes them. A leaf that predates <code>HealthReport</code> simply never sends one and reads as "connected, health unknown" until it rolls.</li>
 </ul>
 <h2 id="how-programmed-status-is-gated">How <code>Programmed</code> status is gated<a class="headerlink" href="#how-programmed-status-is-gated" title="Permanent link">&para;</a></h2>
 <p>Each proxy reports its <strong>actually-bound listener ports</strong> back over the discovery stream (a <code>NodeStatus</code> message, sent on stream open and on every bind change). The leader uses these reports to decide when a Gateway's <code>Programmed</code> condition should flip to <code>True</code> — and it requires <em>two</em> independent signals to both hold, not just one:</p>
