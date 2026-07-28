@@ -2069,7 +2069,7 @@
 <span class="c1">#   old-app (created first)  → old-svc   — wins</span>
 <span class="c1">#   new-app (created later)  → new-svc   — shadowed, never serves /foo</span>
 </code></pre></div>
-<p>Delete or rename the conflicting path in one of the <code>Ingress</code> objects to restore it. Conflicts are reported via <code>GET /api/v1/problems</code> (<code>routing.conflicts</code>) on the controller admin port.</p>
+<p>Delete or rename the conflicting path in one of the <code>Ingress</code> objects to restore it. Conflicts are reported via <code>GET /api/v1/problems</code> (<code>routing.conflicts</code>) on the controller operator port.</p>
 <p>Routes with the same <code>(host, path)</code> but <strong>different predicate conditions</strong> — for example, an <code>HTTPRoute</code> rule with a method or header constraint on the same host and path — are not a conflict: they coexist and each serves its matching traffic.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

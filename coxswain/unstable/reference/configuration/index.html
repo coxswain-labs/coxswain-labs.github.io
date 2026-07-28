@@ -1808,28 +1808,34 @@
 <td>What the access-log <code>path</code> field records: <code>full</code>, <code>pattern</code>, or <code>none</code></td>
 </tr>
 <tr>
-<td><code>COXSWAIN_ADMIN_BASIC_AUTH_SECRET</code></td>
-<td><code>--admin-basic-auth-secret</code></td>
+<td><code>COXSWAIN_OPERATOR_BASIC_AUTH_SECRET</code></td>
+<td><code>--operator-basic-auth-secret</code></td>
 <td><em>(none)</em></td>
-<td><em>(controller)</em> Name of a Secret in the install namespace holding one bcrypt htpasswd line under key <code>auth</code>. Requires HTTP Basic auth on the whole admin listener, <code>/metrics</code> included. Re-read every 30s, so rotation needs no restart; a missing or unusable Secret closes the surface with <code>503</code> rather than serving it unauthenticated. See <a href="../../operations/running-in-production/#the-admin-and-management-ports">Running in production</a></td>
+<td><em>(controller)</em> Name of a Secret in the install namespace holding one bcrypt htpasswd line under key <code>auth</code>. Requires HTTP Basic auth on <strong>every</strong> path of the operator listener, with no exemptions. <code>/metrics</code> is unaffected — it lives on the telemetry port. Re-read every 30s, so rotation needs no restart; a missing or unusable Secret closes the surface with <code>503</code> rather than serving it unauthenticated. See <a href="../../operations/running-in-production/#the-management-ports">Running in production</a></td>
 </tr>
 <tr>
-<td><code>COXSWAIN_ADMIN_FENCE_ENABLED</code></td>
-<td><code>--admin-fence-enabled</code></td>
-<td><code>true</code></td>
-<td><em>(controller)</em> Restrict the admin port of every provisioned pod (shared pool, dedicated proxies, relays) to callers in the pod's own namespace, via a <code>NetworkPolicy</code>. All other ports stay reachable from anywhere. <code>false</code> removes any policy already applied</td>
+<td><code>COXSWAIN_TELEMETRY_FENCE_ENABLED</code></td>
+<td><code>--telemetry-fence-enabled</code></td>
+<td><code>false</code></td>
+<td><em>(controller)</em> Restrict the telemetry port of every provisioned pod (shared pool, dedicated proxies, relays) to callers in the pod's own namespace and the install namespace, via a <code>NetworkPolicy</code>. Off by default so Prometheus scrapes from any namespace unconfigured. All other ports stay reachable from anywhere; <code>false</code> removes any policy already applied</td>
 </tr>
 <tr>
-<td><code>COXSWAIN_ADMIN_FENCE_EXTRA_INGRESS</code></td>
-<td><code>--admin-fence-extra-ingress</code></td>
+<td><code>COXSWAIN_TELEMETRY_FENCE_EXTRA_INGRESS</code></td>
+<td><code>--telemetry-fence-extra-ingress</code></td>
 <td><code>[]</code></td>
-<td><em>(controller)</em> JSON array of Kubernetes <code>NetworkPolicyPeer</code> objects allowed through the admin-port restriction, e.g. to let a Prometheus in another namespace scrape <code>/metrics</code></td>
+<td><em>(controller)</em> JSON array of Kubernetes <code>NetworkPolicyPeer</code> objects allowed through the telemetry-port restriction, e.g. to let a Prometheus in another namespace scrape <code>/metrics</code>. Only consulted when the fence is enabled</td>
 </tr>
 <tr>
-<td><code>COXSWAIN_ADMIN_PORT</code></td>
-<td><code>--admin-port</code></td>
+<td><code>COXSWAIN_OPERATOR_PORT</code></td>
+<td><code>--operator-port</code></td>
 <td><code>8082</code></td>
-<td>Port for admin, metrics, and diagnostics endpoints</td>
+<td><em>(controller)</em> Port for the operator UI and <code>/api/v1/*</code></td>
+</tr>
+<tr>
+<td><code>COXSWAIN_TELEMETRY_PORT</code></td>
+<td><code>--telemetry-port</code></td>
+<td><code>8083</code></td>
+<td>Port for <code>/metrics</code> and <code>/statusz</code></td>
 </tr>
 <tr>
 <td><code>COXSWAIN_CONTROLLER_LEASE_RENEW_INTERVAL</code></td>
@@ -1961,7 +1967,7 @@
 <td><code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code></td>
 <td><code>--management-bind-address</code></td>
 <td><code>0.0.0.0</code></td>
-<td>IP the health (<code>/healthz</code>, <code>/readyz</code>) and admin (<code>/metrics</code>, <code>/api/v1/health</code>) servers bind to</td>
+<td>IP all three management servers (health, telemetry, operator) bind to</td>
 </tr>
 <tr>
 <td><code>COXSWAIN_INGRESS_ACCEPT_PROXY_PROTOCOL</code></td>
@@ -1973,7 +1979,7 @@
 <td><code>COXSWAIN_PROXY_BIND_ADDRESS</code></td>
 <td><code>--proxy-bind-address</code></td>
 <td><code>0.0.0.0</code></td>
-<td>IP the data-plane HTTP/HTTPS proxy listeners bind to; health and admin bind separately via <code>--management-bind-address</code></td>
+<td>IP the data-plane HTTP/HTTPS proxy listeners bind to; the management servers bind separately via <code>--management-bind-address</code></td>
 </tr>
 <tr>
 <td><code>COXSWAIN_PROXY_DEFAULT_BACKEND_REQUEST_TIMEOUT</code></td>
@@ -2092,13 +2098,19 @@
 <td>Health</td>
 <td><code>8081</code></td>
 <td><code>COXSWAIN_HEALTH_PORT</code></td>
-<td><code>/healthz</code>, <code>/readyz</code></td>
+<td><code>/healthz</code>, <code>/readyz</code> — kubelet probes</td>
 </tr>
 <tr>
-<td>Admin</td>
+<td>Telemetry</td>
+<td><code>8083</code></td>
+<td><code>COXSWAIN_TELEMETRY_PORT</code></td>
+<td><code>/metrics</code>, <code>/statusz</code> — Prometheus and the controller's fleet-view probes. Never authenticated</td>
+</tr>
+<tr>
+<td>Operator</td>
 <td><code>8082</code></td>
-<td><code>COXSWAIN_ADMIN_PORT</code></td>
-<td><code>/metrics</code>, <code>/api/v1/health</code> (controller role also serves <code>/api/v1/{fleet,routing,problems,...}</code>)</td>
+<td><code>COXSWAIN_OPERATOR_PORT</code></td>
+<td><em>(controller)</em> operator UI and <code>/api/v1/*</code>. Every path authenticated when <code>operatorAuth</code> is set</td>
 </tr>
 <tr>
 <td>Discovery (Stream)</td>
@@ -2116,7 +2128,7 @@
 </table>
 <p>Both API surfaces are enabled by default. Use <code>controller.gatewayApi.enabled=false</code> for Ingress-only installs and <code>controller.ingress.enabled=false</code> for Gateway-API-only installs. Port numbers are configured via <code>proxy.ingress.http.port</code> (default <code>80</code>) and <code>proxy.ingress.https.port</code> (default <code>443</code>).</p>
 <h3 id="self-healing-gateway-api-crd-detection">Self-healing Gateway API CRD detection<a class="headerlink" href="#self-healing-gateway-api-crd-detection" title="Permanent link">&para;</a></h3>
-<p>When the Gateway API surface is enabled but the CRDs aren't installed yet, Coxswain doesn't crash: a <code>gateway_api_crds</code> health check stays <code>Pending</code> (blocking <code>/readyz</code>), a background task re-probes every 30 s, and the Gateway API reflectors start in-process once the CRDs appear — no pod restart. The active surfaces show in every pod's <code>/api/v1/health</code> under <code>api_surfaces.gateway_api</code> / <code>api_surfaces.ingress</code>. See the <a href="../../gateway-api/capability-matrix/">capability matrix</a> for how detection degrades across Gateway API versions.</p>
+<p>When the Gateway API surface is enabled but the CRDs aren't installed yet, Coxswain doesn't crash: a <code>gateway_api_crds</code> health check stays <code>Pending</code> (blocking <code>/readyz</code>), a background task re-probes every 30 s, and the Gateway API reflectors start in-process once the CRDs appear — no pod restart. The active surfaces show in the controller's <code>/api/v1/health</code> under <code>api_surfaces.gateway_api</code> / <code>api_surfaces.ingress</code>. See the <a href="../../gateway-api/capability-matrix/">capability matrix</a> for how detection degrades across Gateway API versions.</p>
 <h2 id="http2-support">HTTP/2 support<a class="headerlink" href="#http2-support" title="Permanent link">&para;</a></h2>
 <p>Coxswain supports HTTP/2 on both the downstream (client → proxy) and upstream (proxy → backend) legs:</p>
 <ul>
@@ -2185,11 +2197,11 @@ for the model, CA provisioning modes (<code>auto</code> / <code>external</code> 
 SVID rotation, and troubleshooting.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The data plane and the management surface bind independently: <code>COXSWAIN_PROXY_BIND_ADDRESS</code> for the HTTP/HTTPS proxy listeners, and <code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code> for the health and admin servers. Both default to <code>0.0.0.0</code>; set the management address to a management-network IP to keep <code>/metrics</code>, <code>/api/v1/health</code>, and the health endpoints off the data-plane interface.</p>
+<p>The data plane and the management surface bind independently: <code>COXSWAIN_PROXY_BIND_ADDRESS</code> for the HTTP/HTTPS proxy listeners, and <code>COXSWAIN_MANAGEMENT_BIND_ADDRESS</code> for all three management servers. Both default to <code>0.0.0.0</code>; set the management address to a management-network IP to keep the health, telemetry, and operator endpoints off the data-plane interface.</p>
 </div>
 <div class="admonition warning">
-<p class="admonition-title">Fence the admin port</p>
-<p>On the controller, the admin port serves verbatim Kubernetes manifests (including Pod environment variables) and pod logs. It is fenced by a <code>NetworkPolicy</code> by default, and <code>COXSWAIN_ADMIN_BASIC_AUTH_SECRET</code> adds authentication. See <a href="../../operations/running-in-production/#the-admin-and-management-ports">the admin and management ports</a> before changing either.</p>
+<p class="admonition-title">Fence the operator port</p>
+<p>On the controller, the operator port serves verbatim Kubernetes manifests (including Pod environment variables) and pod logs. It is fenced by a <code>NetworkPolicy</code> by default, and <code>COXSWAIN_OPERATOR_BASIC_AUTH_SECRET</code> adds authentication. See <a href="../../operations/running-in-production/#the-management-ports">the management ports</a> before changing either.</p>
 </div>
 <h2 id="leader-election">Leader election<a class="headerlink" href="#leader-election" title="Permanent link">&para;</a></h2>
 <p>All replicas maintain a current routing table and serve traffic; only the leader writes status back to <code>Ingress</code>, <code>Gateway</code>, and <code>HTTPRoute</code> objects. The lease parameters must satisfy <code>lease-ttl ≥ 3 × lease-renew-interval</code>.</p>

@@ -1823,8 +1823,8 @@ curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Hos
 </div>
 </div>
 <h2 id="step-6-open-the-operator-console">Step 6 — Open the operator console<a class="headerlink" href="#step-6-open-the-operator-console" title="Permanent link">&para;</a></h2>
-<p>The controller exposes a built-in web UI on its admin port. Forward it locally:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-controller<span class="w"> </span><span class="m">8082</span>:8082
+<p>The controller exposes a built-in web UI on its operator port. Forward it locally — this Service targets the elected leader, so the topology view is served by the replica that actually holds the discovery streams:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-controller-operator<span class="w"> </span><span class="m">8082</span>:8082
 </code></pre></div>
 <p>Then open <code>http://localhost:8082</code> in your browser. The console shows cluster health, the live routing table across Gateways and Ingresses, per-pod fleet status, and recent events.</p>
 <h2 id="whats-next">What's next?<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>

@@ -1734,8 +1734,8 @@
 
 <h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h1>
 <h2 id="port-forward">Port forward<a class="headerlink" href="#port-forward" title="Permanent link">&para;</a></h2>
-<p>Most commands below query the admin port. Open a port-forward in a separate terminal first: </p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-shared-proxy-internal<span class="w"> </span><span class="m">8082</span>:8082
+<p>Most commands below query the telemetry port (<code>/metrics</code>, <code>/statusz</code>). Open a port-forward in a separate terminal first: </p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span class="w"> </span>port-forward<span class="w"> </span>svc/coxswain-shared-proxy-internal<span class="w"> </span><span class="m">8083</span>:8083
 </code></pre></div>
 <h2 id="readyz-returns-503-on-startup"><code>/readyz</code> returns 503 on startup<a class="headerlink" href="#readyz-returns-503-on-startup" title="Permanent link">&para;</a></h2>
 <p>The readiness endpoint gates on every registered subsystem reaching <code>Ready</code> or <code>Degraded</code>. During startup it stays <code>503</code> until each subsystem reports at least one successful completion:</p>
@@ -1744,7 +1744,7 @@
 <li><strong>Proxy</strong>: the discovery client connects to the controller, bootstraps an SVID, and receives its first routing snapshot.</li>
 </ul>
 <p>Inspect which subsystem is blocking:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/api/v1/health<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.subsystems
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8083/statusz<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.subsystems
 </code></pre></div>
 <p>Controller subsystem stuck in <code>Pending</code> (CRD missing or controller RBAC wrong):</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1778,8 +1778,8 @@
 - Bootstrap rejected — check for <code>BootstrapRejected</code> events: <code>kubectl -n coxswain-system get events --field-selector reason=BootstrapRejected</code>
 - Wire-version mismatch — proxy logs <code>FAILED_PRECONDITION</code> and backs off permanently; see <a href="../control-plane-security/#wire-version-skew">Wire-version skew</a></p>
 <h2 id="routes-are-not-being-picked-up">Routes are not being picked up<a class="headerlink" href="#routes-are-not-being-picked-up" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Check the routing table — served from the controller&#39;s admin port, not the proxy&#39;s</span>
-curl<span class="w"> </span>-s<span class="w"> </span>http://&lt;controller-admin-address&gt;:8082/api/v1/fleet/proxies/&lt;pod-name&gt;/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+<div class="highlight"><pre><span></span><code><span class="c1"># Check the routing table — served from the controller&#39;s operator port, not the proxy&#39;s</span>
+curl<span class="w"> </span>-s<span class="w"> </span>http://&lt;controller-operator-address&gt;:8082/api/v1/fleet/proxies/&lt;pod-name&gt;/routes<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 
 <span class="c1"># Check HTTPRoute status</span>
 kubectl<span class="w"> </span>describe<span class="w"> </span>httproute<span class="w"> </span>my-route
@@ -1903,7 +1903,7 @@ kubectl<span class="w"> </span>-n<span class="w"> </span>coxswain-system<span cl
 <h2 id="high-memory-usage">High memory usage<a class="headerlink" href="#high-memory-usage" title="Permanent link">&para;</a></h2>
 <p>The routing table is rebuilt from scratch on every reconcile. Very large clusters (thousands of <code>HTTPRoute</code> objects) may show elevated memory during rebuilds. Each completed rebuild releases the old table; the GC-free nature of Rust means this is deterministic rather than dependent on a garbage collector schedule.</p>
 <p>Profile with:</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8082/metrics<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>routing_table_rebuild_duration
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8083/metrics<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>routing_table_rebuild_duration
 </code></pre></div>
 
 

@@ -1708,7 +1708,7 @@ kind exists at every supported version but the field does not:</p>
 <li><strong>Their readiness checks report <code>degraded</code>, not <code>pending</code>.</strong> <code>/readyz</code> stays
   <code>200</code> and the pod serves traffic. A <code>degraded</code> check names the reason
   (<code>Gateway API CRD not installed</code>) and is visible at
-  <code>/api/v1/health</code> under <code>subsystems.controller.checks.&lt;name&gt;</code>. This is the
+  <code>/statusz</code> under <code>subsystems.controller.checks.&lt;name&gt;</code>. This is the
   distinction that matters operationally: <code>degraded</code> means "deliberately not
   running", <code>pending</code> would mean "still starting" and would block readiness
   forever.</li>

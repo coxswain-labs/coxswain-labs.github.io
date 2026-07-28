@@ -1952,8 +1952,8 @@
 <td style="text-align: center;">✓ (scoped to this Gateway)</td>
 </tr>
 <tr>
-<td><code>/api/v1/health</code></td>
-<td style="text-align: center;">✓ (subsystem detail, version, leader)</td>
+<td><code>/statusz</code></td>
+<td style="text-align: center;">✓ (subsystem detail, version)</td>
 <td style="text-align: center;">✓</td>
 <td style="text-align: center;">✓</td>
 </tr>
@@ -1971,7 +1971,7 @@
 </tr>
 </tbody>
 </table>
-<p>Proxy pods carry no admin query surface beyond <code>/healthz</code>/<code>/readyz</code>/<code>/metrics</code>/<code>/api/v1/health</code> — the
+<p>Proxy pods carry no management surface beyond <code>/healthz</code>/<code>/readyz</code>/<code>/metrics</code>/<code>/statusz</code> — the
 controller is the sole reader of Kubernetes state and pushes routing to proxies over the discovery
 stream, so it already holds what each proxy serves and answers <code>fleet/proxies/{name}/routes</code> from its
 own local snapshot rather than fanning out to the pod.</p>
