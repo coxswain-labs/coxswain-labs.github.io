@@ -914,9 +914,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#request-size-limit-is-not-enforced-on-grpcroute" class="md-nav__link">
+  <a href="#request-size-limit-is-not-supported-on-grpcroute" class="md-nav__link">
     <span class="md-ellipsis">
-      Request size limit is not enforced on GRPCRoute
+      Request size limit is not supported on GRPCRoute
     </span>
   </a>
   
@@ -1627,9 +1627,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#request-size-limit-is-not-enforced-on-grpcroute" class="md-nav__link">
+  <a href="#request-size-limit-is-not-supported-on-grpcroute" class="md-nav__link">
     <span class="md-ellipsis">
-      Request size limit is not enforced on GRPCRoute
+      Request size limit is not supported on GRPCRoute
     </span>
   </a>
   
@@ -1840,7 +1840,7 @@
 <li>A <strong>missing</strong> <code>CoxswainExternalAuth</code> CR named by a route filter's <code>ExtensionRef</code> fails <strong>closed</strong>: the rule installs as a <code>500</code> error route — a dangling <code>ExtensionRef</code> must not silently admit traffic the filter never saw (GEP-1364). This is distinct from the <code>failClosed</code>/no-endpoints rules above, which govern a CR that <em>did</em> resolve.</li>
 </ul>
 <h2 id="request-size-limit">Request size limit<a class="headerlink" href="#request-size-limit" title="Permanent link">&para;</a></h2>
-<p><code>RequestSizeLimit</code> caps the request body size for a route — the Gateway API surface for the Ingress <code>max-body-size</code> annotation. Like <code>BasicAuth</code>/<code>Compression</code>, this filter is <strong>HTTPRoute-only</strong> and is not enforced on <code>GRPCRoute</code> (see <a href="#request-size-limit-is-not-enforced-on-grpcroute">below</a>).</p>
+<p><code>RequestSizeLimit</code> caps the request body size for a route — the Gateway API surface for the Ingress <code>max-body-size</code> annotation. Like <code>BasicAuth</code>/<code>Compression</code>, this filter is <strong>HTTPRoute-only</strong>: attaching it to a <code>GRPCRoute</code> is rejected (see <a href="#request-size-limit-is-not-supported-on-grpcroute">below</a>).</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RequestSizeLimit</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -1856,9 +1856,9 @@
 <li>An <strong>unparseable</strong> <code>maxSize</code> on an existing CR fails <strong>open</strong> (no limit enforced) — the reference itself resolved, so there's nothing dangling.</li>
 <li>A <strong>missing</strong> <code>RequestSizeLimit</code> CR fails <strong>closed</strong>: the rule installs as a <code>500</code> error route — a dangling <code>ExtensionRef</code> must not silently admit traffic the filter never saw (GEP-1364).</li>
 </ul>
-<h3 id="request-size-limit-is-not-enforced-on-grpcroute">Request size limit is not enforced on GRPCRoute<a class="headerlink" href="#request-size-limit-is-not-enforced-on-grpcroute" title="Permanent link">&para;</a></h3>
-<p><code>RequestSizeLimit</code> attached to a <code>GRPCRoute</code> is accepted but <strong>not enforced</strong> — the reconciler skips it and logs a WARN line (as it does for <code>BasicAuth</code>/<code>Compression</code>). gRPC message sizes are instead governed by the backend's own <code>max_recv_msg_size</code> (gRPC servers reject oversized messages with <code>RESOURCE_EXHAUSTED</code>; the default receive cap is ~4 MB).</p>
-<p>The reason is a <code>pingora-proxy</code> limitation: a <code>request_body_filter</code> rejection over HTTP/2 is swallowed by pingora's h2 proxy loop and never delivered to the client, deadlocking the request. gRPC never sends <code>Content-Length</code>, so the up-front check that guards HTTP/2 elsewhere cannot apply. Faithful edge enforcement for gRPC/HTTP/2 needs buffer-first rejection (as Envoy's <code>buffer</code> filter does) and is deferred until pingora ships request-body buffering.</p>
+<h3 id="request-size-limit-is-not-supported-on-grpcroute">Request size limit is not supported on GRPCRoute<a class="headerlink" href="#request-size-limit-is-not-supported-on-grpcroute" title="Permanent link">&para;</a></h3>
+<p><code>RequestSizeLimit</code> attached to a <code>GRPCRoute</code> is rejected — the same treatment as <code>BasicAuth</code>/<code>Compression</code>: the route's <code>Accepted</code> condition reports <code>False</code>/<code>UnsupportedValue</code>, and the reconciler never resolves the CR. gRPC message sizes are instead governed by the backend's own <code>max_recv_msg_size</code> (gRPC servers reject oversized messages with <code>RESOURCE_EXHAUSTED</code>; the default receive cap is ~4 MB).</p>
+<p>The reason <code>RequestSizeLimit</code> isn't implemented for gRPC at all is a <code>pingora-proxy</code> limitation: a <code>request_body_filter</code> rejection over HTTP/2 is swallowed by pingora's h2 proxy loop and never delivered to the client, deadlocking the request. gRPC never sends <code>Content-Length</code>, so the up-front check that guards HTTP/2 elsewhere cannot apply. Faithful edge enforcement for gRPC/HTTP/2 needs buffer-first rejection (as Envoy's <code>buffer</code> filter does) and is deferred until pingora ships request-body buffering — until then, the filter is rejected outright rather than silently accepted and ignored.</p>
 <h2 id="response-compression">Response compression<a class="headerlink" href="#response-compression" title="Permanent link">&para;</a></h2>
 <p><code>Compression</code> enables gzip/brotli response compression for a route — the same CRD the Ingress <code>compression</code> annotation references (see <a href="../../ingress/annotations/#compression">Ingress annotations</a>). gRPC compresses per-message at the gRPC framing layer (<code>grpc-encoding</code>), not via HTTP <code>Content-Encoding</code>, so this filter is <strong>not</strong> supported on <code>GRPCRoute</code>; the proxy also refuses to compress any response whose <code>Content-Type</code> starts with <code>application/grpc</code>, even on an HTTPRoute (a gRPC-over-HTTPRoute edge case), regardless of the CR's <code>types</code> allow-list.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.coxswain-labs.dev/v1alpha1</span>
