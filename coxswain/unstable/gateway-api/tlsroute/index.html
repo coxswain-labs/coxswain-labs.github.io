@@ -844,6 +844,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cross-namespace-backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-namespace backends
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#supported-fields" class="md-nav__link">
     <span class="md-ellipsis">
       Supported fields
@@ -1632,6 +1641,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cross-namespace-backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-namespace backends
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#supported-fields" class="md-nav__link">
     <span class="md-ellipsis">
       Supported fields
@@ -1805,6 +1823,23 @@
 <p class="admonition-title">Note</p>
 <p>Wildcard matching here is routing-only (no cert is involved at the proxy on the passthrough path), and follows the same any-number-of-labels semantics as <a href="../httproute/#wildcard-hostnames">HTTPRoute wildcards</a>.</p>
 </div>
+<h2 id="cross-namespace-backends">Cross-namespace backends<a class="headerlink" href="#cross-namespace-backends" title="Permanent link">&para;</a></h2>
+<p>By default, a <code>TLSRoute</code> can only reference backends in its own namespace — this applies to both Passthrough and Terminate mode. To allow access to a Service in another namespace, create a <code>ReferenceGrant</code> in the namespace where the Service lives:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReferenceGrant</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">allow-tlsroute-from-default</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">target-namespace</span><span class="w">   </span><span class="c1"># namespace of the Service</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">from</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSRoute</span>
+<span class="w">      </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w">        </span><span class="c1"># namespace of the TLSRoute</span>
+<span class="w">  </span><span class="nt">to</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+</code></pre></div>
+<p>A <code>ReferenceGrant</code> scoped to <code>kind: HTTPRoute</code> does <strong>not</strong> permit a <code>TLSRoute</code>'s cross-namespace backendRef, and vice versa — each route kind requires its own grant. Routes that reference a backend without a matching <code>ReferenceGrant</code> are rejected with a <code>ResolvedRefs: False</code> condition.</p>
 <h2 id="supported-fields">Supported fields<a class="headerlink" href="#supported-fields" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
